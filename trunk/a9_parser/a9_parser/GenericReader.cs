@@ -102,9 +102,9 @@ namespace a9_parser
         public string ReadStringNumber() // read string with known length
         {
             string text = String.Empty;
-            int num = ReadInt32(); // string length
+            uint num = ReadUInt32(); // string length
 
-            for (int i = 0; i < num; i++)
+            for (uint i = 0; i < num; i++)
             {
                 text += (char)ReadByte();
             }
