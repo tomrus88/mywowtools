@@ -26,7 +26,7 @@ namespace a9_parser
                 return;
             }
 
-            GenericReader gr = new GenericReader(ifn);
+            GenericReader gr = new GenericReader(ifn, Encoding.ASCII);
 
             string error_log = "errors.txt";
             StreamWriter swe = new StreamWriter(error_log);
@@ -55,11 +55,18 @@ namespace a9_parser
 
             //MessageBox.Show(br.BaseStream.Position.ToString() + " " +  br.BaseStream.Length.ToString());
 
-            while (gr.PeekChar() >= 0)
+            try
             {
-                uint result = ParsePacket(gr, sw, swe, data);
-                if (result == 0 || result == 1)
-                    packet++;
+                while (gr.PeekChar() >= 0)
+                {
+                    uint result = ParsePacket(gr, sw, swe, data);
+                    if (result == 0 || result == 1)
+                        packet++;
+                }
+            }
+            catch(Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
             }
 
             sw.Close();
