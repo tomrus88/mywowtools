@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace a9_parser
 {
@@ -69,8 +70,24 @@ namespace a9_parser
         /// <summary>
         ///  Not yet.
         /// </summary>
+        public GenericReader(Stream input, Encoding encoding)
+            : base(input, encoding)
+        {
+        }
+
+        /// <summary>
+        ///  Not yet.
+        /// </summary>
         public GenericReader(string fname)
             : base(new FileStream(fname, FileMode.Open, FileAccess.Read))
+        {
+        }
+
+        /// <summary>
+        ///  Not yet.
+        /// </summary>
+        public GenericReader(string fname, Encoding encoding)
+            : base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
         {
         }
 
