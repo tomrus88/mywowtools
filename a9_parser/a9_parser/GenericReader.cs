@@ -4,6 +4,7 @@ using System.Text;
 
 namespace a9_parser
 {
+    #region Coords3
     /// <summary>
     ///  Represents a coordinates of WoW object without orientation.
     /// </summary>
@@ -27,7 +28,9 @@ namespace a9_parser
             return coords;
         }
     }
+    #endregion
 
+    #region Coords4
     /// <summary>
     ///  Represents a coordinates of WoW object with specified orientation.
     /// </summary>
@@ -38,7 +41,7 @@ namespace a9_parser
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public string GetCoords()
+        public string GetCoordsAsString()
         {
             string coords = String.Empty;
 
@@ -53,12 +56,15 @@ namespace a9_parser
             return coords;
         }
     }
+    #endregion
 
+    #region GenericReader
     /// <summary>
     ///  Reads WoW specific data types as binary values in a specific encoding.
     /// </summary>
     class GenericReader : BinaryReader
     {
+        #region GenericReader_stream
         /// <summary>
         ///  Not yet.
         /// </summary>
@@ -66,7 +72,9 @@ namespace a9_parser
             : base(input)
         {
         }
+        #endregion
 
+        #region GenericReader_stream_encoding
         /// <summary>
         ///  Not yet.
         /// </summary>
@@ -74,7 +82,9 @@ namespace a9_parser
             : base(input, encoding)
         {
         }
+        #endregion
 
+        #region GenericReader_filestream
         /// <summary>
         ///  Not yet.
         /// </summary>
@@ -82,7 +92,9 @@ namespace a9_parser
             : base(new FileStream(fname, FileMode.Open, FileAccess.Read))
         {
         }
+        #endregion
 
+        #region GenericReader_filestream_encoding
         /// <summary>
         ///  Not yet.
         /// </summary>
@@ -90,7 +102,9 @@ namespace a9_parser
             : base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
         {
         }
+        #endregion
 
+        #region ReadPackedGuid
         /// <summary>
         ///  Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
         /// </summary>
@@ -112,7 +126,9 @@ namespace a9_parser
             }
             return res;
         }
+        #endregion
 
+        #region ReadStringNumber
         /// <summary>
         ///  Reads the string with known length from the current stream and advances the current position of the stream by string length.
         /// </summary>
@@ -127,7 +143,9 @@ namespace a9_parser
             }
             return text;
         }
+        #endregion
 
+        #region ReadStringNull
         /// <summary>
         ///  Reads the NULL terminated string from the current stream and advances the current position of the stream by string length + 1.
         /// </summary>
@@ -142,7 +160,9 @@ namespace a9_parser
             }
             return text;
         }
+        #endregion
 
+        #region ReadCoords3
         /// <summary>
         ///  Reads the object coordinates from the current stream and advances the current position of the stream by 12 bytes.
         /// </summary>
@@ -156,7 +176,9 @@ namespace a9_parser
 
             return v;
         }
+        #endregion
 
+        #region ReadCoords4
         /// <summary>
         ///  Reads the object coordinates and orientation from the current stream and advances the current position of the stream by 16 bytes.
         /// </summary>
@@ -171,5 +193,7 @@ namespace a9_parser
 
             return v;
         }
+        #endregion
     }
+    #endregion
 }

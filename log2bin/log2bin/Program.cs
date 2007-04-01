@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace a9_parser
+namespace log2bin
 {
     static class Program
     {

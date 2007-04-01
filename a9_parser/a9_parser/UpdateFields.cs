@@ -6,7 +6,7 @@ namespace a9_parser
     {
         public UpdateFields()
         {
-            FillArrays();
+            //FillArrays();
         }
 
         public struct UpdateFields_s
@@ -68,6 +68,7 @@ namespace a9_parser
                 else
                     item_updatefields[i] = new UpdateFields_s(i, 0, item_updatefields_names[i], 0);
             }
+
             FillUnitUpdateFieldsNames();
             for (uint i = 0; i < PLAYER_END; i++)
             {
@@ -81,6 +82,7 @@ namespace a9_parser
                 else
                     unit_updatefields[i] = new UpdateFields_s(i, 0, unit_updatefields_names[i], 0); // uint
             }
+
             FillGoUpdateFieldsNames();
             for (uint i = 0; i < GO_END; i++)
             {
@@ -89,6 +91,7 @@ namespace a9_parser
                 else
                     go_updatefields[i] = new UpdateFields_s(i, 0, go_updatefields_names[i], 0); // uint
             }
+
             FillDoUpdateFieldsNames();
             for (uint i = 0; i < DO_END; i++)
             {
@@ -97,6 +100,7 @@ namespace a9_parser
                 else
                     do_updatefields[i] = new UpdateFields_s(i, 0, do_updatefields_names[i], 0); // uint
             }
+
             FillCorpseUpdateFieldsNames();
             for (uint i = 0; i < CORPSE_END; i++)
             {

@@ -504,18 +504,18 @@ namespace a9_parser
                 if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
                 {
                     coords = gr.ReadCoords4();
-                    sb.AppendLine("coords " + coords.GetCoords());
+                    sb.AppendLine("coords " + coords.GetCoordsAsString());
                 }
                 else // strange, we read the same data :)
                 {
                     coords = gr.ReadCoords4();
-                    sb.AppendLine("coords " + coords.GetCoords());
+                    sb.AppendLine("coords " + coords.GetCoordsAsString());
                 }
 
                 if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
                     data.WriteLine();
-                    data.WriteLine(objectTypeId + ": " + coords.GetCoords());
+                    data.WriteLine(objectTypeId + ": " + coords.GetCoordsAsString());
                 }
 
                 if ((flags2 & 0x0200) != 0) // transport
@@ -524,7 +524,7 @@ namespace a9_parser
                     sb.Append("t_guid " + t_guid.ToString("X2") + ", ");
 
                     Coords4 transport = gr.ReadCoords4();
-                    sb.AppendLine("t_coords " + transport.GetCoords());
+                    sb.AppendLine("t_coords " + transport.GetCoordsAsString());
 
                     uint unk1 = gr.ReadUInt32(); // unk, 2.0.6 == 0x11 or random
                     sb.AppendLine("unk1 " + unk1);
@@ -559,12 +559,12 @@ namespace a9_parser
                 sb.AppendLine("Swim speed " + ss);
                 float wbs = gr.ReadSingle();
                 sb.AppendLine("Walkback speed " + wbs);
-                float us1 = gr.ReadSingle();
-                sb.AppendLine("Unk speed1 " + us1); // fly
-                float us2 = gr.ReadSingle();
-                sb.AppendLine("Unk speed2 " + us2); // fly back
+                float fs = gr.ReadSingle();
+                sb.AppendLine("Fly speed " + fs);
+                float fbs = gr.ReadSingle();
+                sb.AppendLine("Flyback speed " + fbs);
                 float ts = gr.ReadSingle();
-                sb.AppendLine("Turn speed " + ts); // pi
+                sb.AppendLine("Turn speed " + ts); // pi = 3.14
             }
 
             // after 2.0.10 released, I can't figure out what is flags3 and when it used...
@@ -593,8 +593,8 @@ namespace a9_parser
 */
             if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
             {
-                uint guid_high = gr.ReadUInt32();
-                sb.AppendLine("guid_high " + guid_high); // from 2.0.10 there seems other value
+                uint guid_high = gr.ReadUInt32(); // 2.0.10 - it's not high guid anymore
+                sb.AppendLine("guid_high " + guid_high);
             }
 
             if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
