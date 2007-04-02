@@ -437,7 +437,7 @@ namespace a9_parser
 		/// <summary>
 		/// Converts uints array into BitArr.
 		/// </summary>
-		/// <param name="bytes">Uints array.</param>
+		/// <param name="uints">Uints array.</param>
 		/// <returns>Returns BitArr object.</returns>
 		/// <remarks>Perfoms shalow copy from array.</remarks>
 		public static implicit operator BitArr(uint[] uints)
