@@ -8,9 +8,15 @@ namespace a9_parser
 {
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// Update mask bit array.
+        /// </summary>
         public BitArr Mask;
         uint packet = 1;
 
+        /// <summary>
+        /// Constructor for application form.
+        /// </summary>
         public Form1()
         {
             InitializeComponent();

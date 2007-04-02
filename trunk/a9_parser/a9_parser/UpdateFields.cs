@@ -2,33 +2,49 @@ using System;
 
 namespace a9_parser
 {
+    /// <summary>
+    /// WoW update fields class.
+    /// </summary>
     public class UpdateFields
     {
-        public UpdateFields()
-        {
-            //FillArrays();
-        }
-
+        /// <summary>
+        /// Update fields structure.
+        /// </summary>
         public struct UpdateFields_s
         {
-            // updatefield number (for index)
+            /// <summary>
+            /// Update field id.
+            /// </summary>
             public uint updatefield;
 
-            // data type for updatefield (for reading)
+            /// <summary>
+            /// Update field type.
+            /// </summary>
             public byte type;
             // 0 - uint32 (default)
             // 1 - float
             // 2 - uint64
             // 3 - array
 
-            // updatefield name (for output)
+            /// <summary>
+            /// Update field name.
+            /// </summary>
             public string name;
 
-            // value format (for output)
+            /// <summary>
+            /// Output format.
+            /// </summary>
             public byte format;
             // 0 - decimal
             // 1 - hehadecimal
 
+            /// <summary>
+            /// Update field structure constructor.
+            /// </summary>
+            /// <param name="uf">Update field id.</param>
+            /// <param name="tp">Update field type.</param>
+            /// <param name="nm">Update field name.</param>
+            /// <param name="fmt">Update field output format.</param>
             public UpdateFields_s(uint uf, byte tp, string nm, byte fmt)
             {
                 updatefield = uf;
@@ -39,25 +55,76 @@ namespace a9_parser
         }
 
         // update fields count for WoW 2.0.10
+        /// <summary>
+        /// Item update fields end.
+        /// </summary>
         public static uint ITEM_END = 134;
+        /// <summary>
+        /// Unit update fields end.
+        /// </summary>
         public static uint UNIT_END = 226;
+        /// <summary>
+        /// Player updatefields end.
+        /// </summary>
         public static uint PLAYER_END = 1422;
+        /// <summary>
+        /// Game object update fields end.
+        /// </summary>
         public static uint GO_END = 26;
+        /// <summary>
+        /// Dynamic object fields end.
+        /// </summary>
         public static uint DO_END = 16;
+        /// <summary>
+        /// Corpse fields end.
+        /// </summary>
         public static uint CORPSE_END = 38;
 
+        /// <summary>
+        /// Item update fields array.
+        /// </summary>
         public static UpdateFields_s[] item_updatefields = new UpdateFields_s[ITEM_END]; // items+containers
+        /// <summary>
+        /// Unit update fields array.
+        /// </summary>
         public static UpdateFields_s[] unit_updatefields = new UpdateFields_s[PLAYER_END]; // units+players
+        /// <summary>
+        /// Game object update fields array.
+        /// </summary>
         public static UpdateFields_s[] go_updatefields = new UpdateFields_s[GO_END]; // gameobjects
+        /// <summary>
+        /// Dynamic object update fields array.
+        /// </summary>
         public static UpdateFields_s[] do_updatefields = new UpdateFields_s[DO_END]; // dynamic objects
+        /// <summary>
+        /// Corpse update fields array.
+        /// </summary>
         public static UpdateFields_s[] corpse_updatefields = new UpdateFields_s[CORPSE_END]; // corpses
 
+        /// <summary>
+        /// Item update fields names array.
+        /// </summary>
         public static string[] item_updatefields_names = new string[ITEM_END];
+        /// <summary>
+        /// Unit update fields names array.
+        /// </summary>
         public static string[] unit_updatefields_names = new string[PLAYER_END];
+        /// <summary>
+        /// Game object update fields names array.
+        /// </summary>
         public static string[] go_updatefields_names = new string[GO_END];
+        /// <summary>
+        /// Dynamic object update fields names array.
+        /// </summary>
         public static string[] do_updatefields_names = new string[DO_END];
+        /// <summary>
+        /// Corpse update fields names array.
+        /// </summary>
         public static string[] corpse_updatefields_names = new string[CORPSE_END];
 
+        /// <summary>
+        /// Fills update fields arrays with data.
+        /// </summary>
         public static void FillArrays()
         {
             FillItemUpdateFieldsNames();
@@ -111,6 +178,9 @@ namespace a9_parser
             }
         }
 
+        /// <summary>
+        /// Fills item update fields array with data.
+        /// </summary>
         public static void FillItemUpdateFieldsNames()
         {
             item_updatefields_names[0] = "ITEM_FIELD_GUID_LOW";
@@ -151,6 +221,9 @@ namespace a9_parser
                 item_updatefields_names[61 + i] = "CONTAINER_FIELD_SLOT_" + i.ToString();
         }
 
+        /// <summary>
+        /// Fills unit and player update fields array with data.
+        /// </summary>
         public static void FillUnitUpdateFieldsNames()
         {
             unit_updatefields_names[0] = "UNIT_FIELD_GUID_LOW";
@@ -311,7 +384,6 @@ namespace a9_parser
                 fn++;
                 for (uint j = 0; j < 12; j++)
                 {
-                    //unit_updatefields_names[fn + i + j] = "PLAYER_VISIBLE_ITEM_" + i.ToString() + "_0" + "_" + j.ToString();
                     unit_updatefields_names[fn + i] = "PLAYER_VISIBLE_ITEM_" + i.ToString() + "_0" + "_" + j.ToString();
                     fn++;
                 }
@@ -416,6 +488,9 @@ namespace a9_parser
             unit_updatefields_names[1421] = "PLAYER_FIELD_PADDING";
         }
 
+        /// <summary>
+        /// Fills game object update fields array with data.
+        /// </summary>
         public static void FillGoUpdateFieldsNames()
         {
             go_updatefields_names[0] = "GAMEOBJECT_GUID_LOW";
@@ -446,6 +521,9 @@ namespace a9_parser
             go_updatefields_names[25] = "GAMEOBJECT_PADDING";
         }
 
+        /// <summary>
+        /// Fills dynamic object update fields array with data.
+        /// </summary>
         public static void FillDoUpdateFieldsNames()
         {
             do_updatefields_names[0] = "DYNAMICOBJECT_GUID_LOW";
@@ -466,6 +544,9 @@ namespace a9_parser
             do_updatefields_names[15] = "DYNAMICOBJECT_PAD";
         }
 
+        /// <summary>
+        /// Fills corpse update fields array with data.
+        /// </summary>
         public static void FillCorpseUpdateFieldsNames()
         {
             corpse_updatefields_names[0] = "CORPSE_FIELD_GUID_LOW";

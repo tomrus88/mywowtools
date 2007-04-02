@@ -1,5 +1,8 @@
 ﻿namespace a9_parser
 {
+    /// <summary>
+    /// Application Form class.
+    /// </summary>
     partial class Form1
     {
         /// <summary>
@@ -64,4 +67,3 @@
         private System.Windows.Forms.Button button1;
     }
 }
-

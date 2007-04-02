@@ -68,6 +68,7 @@ namespace a9_parser
         /// <summary>
         ///  Not yet.
         /// </summary>
+        /// <param name="input">Input stream.</param>
         public GenericReader(Stream input)
             : base(input)
         {
@@ -78,6 +79,8 @@ namespace a9_parser
         /// <summary>
         ///  Not yet.
         /// </summary>
+        /// <param name="input">Input stream.</param>
+        /// <param name="encoding">Input encoding.</param>
         public GenericReader(Stream input, Encoding encoding)
             : base(input, encoding)
         {
@@ -88,6 +91,7 @@ namespace a9_parser
         /// <summary>
         ///  Not yet.
         /// </summary>
+        /// <param name="fname">Input file name.</param>
         public GenericReader(string fname)
             : base(new FileStream(fname, FileMode.Open, FileAccess.Read))
         {
@@ -98,6 +102,8 @@ namespace a9_parser
         /// <summary>
         ///  Not yet.
         /// </summary>
+        /// <param name="fname">Input file name.</param>
+        /// <param name="encoding">Input encoding.</param>
         public GenericReader(string fname, Encoding encoding)
             : base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
         {
@@ -131,8 +137,9 @@ namespace a9_parser
         #region ReadStringNumber
         /// <summary>
         ///  Reads the string with known length from the current stream and advances the current position of the stream by string length.
+        /// <seealso cref="GenericReader.ReadStringNull"/>
         /// </summary>
-        public string ReadStringNumber() // read string with known length
+        public string ReadStringNumber()
         {
             string text = String.Empty;
             uint num = ReadUInt32(); // string length
@@ -148,8 +155,9 @@ namespace a9_parser
         #region ReadStringNull
         /// <summary>
         ///  Reads the NULL terminated string from the current stream and advances the current position of the stream by string length + 1.
+        /// <seealso cref="GenericReader.ReadStringNumber"/>
         /// </summary>
-        public string ReadStringNull() // read NULL terminated string
+        public string ReadStringNull()
         {
             byte num;
             string text = String.Empty;

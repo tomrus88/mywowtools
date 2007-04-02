@@ -1,0 +1,730 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>a9_parser</name>
+    </assembly>
+    <members>
+        <member name="T:a9_parser.Form1">
+            <summary>
+            Application Form class.
+            </summary>
+        </member>
+        <member name="F:a9_parser.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:a9_parser.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:a9_parser.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:a9_parser.Form1.Mask">
+            <summary>
+            Update mask bit array.
+            </summary>
+        </member>
+        <member name="M:a9_parser.Form1.#ctor">
+            <summary>
+            Constructor for application form.
+            </summary>
+        </member>
+        <member name="T:A9_parser.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:A9_parser.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:A9_parser.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="M:a9_parser.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:a9_parser.UpdateFields">
+            <summary>
+            WoW update fields class.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.ITEM_END">
+            <summary>
+            Item update fields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.UNIT_END">
+            <summary>
+            Unit update fields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.PLAYER_END">
+            <summary>
+            Player updatefields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.GO_END">
+            <summary>
+            Game object update fields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.DO_END">
+            <summary>
+            Dynamic object fields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.CORPSE_END">
+            <summary>
+            Corpse fields end.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.item_updatefields">
+            <summary>
+            Item update fields array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.unit_updatefields">
+            <summary>
+            Unit update fields array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.go_updatefields">
+            <summary>
+            Game object update fields array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.do_updatefields">
+            <summary>
+            Dynamic object update fields array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.corpse_updatefields">
+            <summary>
+            Corpse update fields array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.item_updatefields_names">
+            <summary>
+            Item update fields names array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.unit_updatefields_names">
+            <summary>
+            Unit update fields names array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.go_updatefields_names">
+            <summary>
+            Game object update fields names array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.do_updatefields_names">
+            <summary>
+            Dynamic object update fields names array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.corpse_updatefields_names">
+            <summary>
+            Corpse update fields names array.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillArrays">
+            <summary>
+            Fills update fields arrays with data.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillItemUpdateFieldsNames">
+            <summary>
+            Fills item update fields array with data.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillUnitUpdateFieldsNames">
+            <summary>
+            Fills unit and player update fields array with data.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillGoUpdateFieldsNames">
+            <summary>
+            Fills game object update fields array with data.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillDoUpdateFieldsNames">
+            <summary>
+            Fills dynamic object update fields array with data.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.FillCorpseUpdateFieldsNames">
+            <summary>
+            Fills corpse update fields array with data.
+            </summary>
+        </member>
+        <member name="T:a9_parser.UpdateFields.UpdateFields_s">
+            <summary>
+            Update fields structure.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.UpdateFields_s.updatefield">
+            <summary>
+            Update field id.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.UpdateFields_s.type">
+            <summary>
+            Update field type.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.UpdateFields_s.name">
+            <summary>
+            Update field name.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFields.UpdateFields_s.format">
+            <summary>
+            Output format.
+            </summary>
+        </member>
+        <member name="M:a9_parser.UpdateFields.UpdateFields_s.#ctor(System.UInt32,System.Byte,System.String,System.Byte)">
+            <summary>
+            Update field structure constructor.
+            </summary>
+            <param name="uf">Update field id.</param>
+            <param name="tp">Update field type.</param>
+            <param name="nm">Update field name.</param>
+            <param name="fmt">Update field output format.</param>
+        </member>
+        <member name="T:a9_parser.UpdateTypes">
+            <summary>
+            WoW Update Types.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_VALUES">
+            <summary>
+            Update type that update only object field values.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_MOVEMENT">
+            <summary>
+            Update type that update only object movement.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_CREATE_OBJECT">
+            <summary>
+            Update type that create an object (full update).
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_CREATE_OBJECT2">
+            <summary>
+            Update type that create an object (gull update, self use).
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_OUT_OF_RANGE_OBJECTS">
+            <summary>
+            Update type that update only objects out of range.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateTypes.UPDATETYPE_NEAR_OBJECTS">
+            <summary>
+            Update type that update only near objects.
+            </summary>
+        </member>
+        <member name="T:a9_parser.UpdateFlags">
+            <summary>
+            WoW Update Flags
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_SELFTARGET">
+            <summary>
+            Update flag for self.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_TRANSPORT">
+            <summary>
+            Update flag for transport object.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_FULLGUID">
+            <summary>
+            Update flag with full guid.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_HIGHGUID">
+            <summary>
+            Update flag with high guid.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_ALL">
+            <summary>
+            Common update flag.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_LIVING">
+            <summary>
+            Update flag for living objects.
+            </summary>
+        </member>
+        <member name="F:a9_parser.UpdateFlags.UPDATEFLAG_HASPOSITION">
+            <summary>
+            Update flag for world objects (players, units, go, do, corpses).
+            </summary>
+        </member>
+        <member name="T:a9_parser.ObjectTypes">
+            <summary>
+            WoW object types.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_OBJECT">
+            <summary>
+            An object.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_ITEM">
+            <summary>
+            Item.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_CONTAINER">
+            <summary>
+            Container (item).
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_UNIT">
+            <summary>
+            Unit.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_PLAYER">
+            <summary>
+            Player (unit).
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_GAMEOBJECT">
+            <summary>
+            Game object.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_DYNAMICOBJECT">
+            <summary>
+            Dynamic object.
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_CORPSE">
+            <summary>
+            Player corpse (not used for units?).
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_AIGROUP">
+            <summary>
+            It really exist?
+            </summary>
+        </member>
+        <member name="F:a9_parser.ObjectTypes.TYPEID_AREATRIGGER">
+            <summary>
+            It really exist?
+            </summary>
+        </member>
+        <member name="T:a9_parser.BitArr">
+            <summary>
+            This class implements bit array logic.
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.word_size">
+            <summary>
+            The size of single word in data array.
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.word_hbit">
+            <summary>
+            Hight bit of the word.
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.word_hbitplus">
+            <summary>
+            Next bit to hight bit of the word.
+            </summary>
+        </member>
+        <member name="M:a9_parser.BitArr.Dispose">
+            <summary>
+            Clear all references to other objects.
+            </summary>
+        </member>
+        <member name="M:a9_parser.BitArr.Clone">
+            <summary>
+            Creates a new object that is a deep copy of the current instance.
+            </summary>
+            <returns>A new object that is a deep copy of this instance.</returns>
+        </member>
+        <member name="F:a9_parser.BitArr.words">
+            <summary>
+            Array to store data.
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.size">
+            <summary>
+            Variable for size storing (in bits!).
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.cutmasks">
+            <summary>
+            Masks to cut rest of byte's data.
+            </summary>
+        </member>
+        <member name="F:a9_parser.BitArr.randomizator">
+            <summary>
+            Randomizator for rand() method.
+            </summary>
+        </member>
+        <member name="M:a9_parser.BitArr.#ctor">
+            <summary>
+            It is default constructor.
+            </summary>
+        </member>
+        <member name="M:a9_parser.BitArr.#ctor(System.Int32)">
+            <summary>
+            It is constructor.
+            </summary>
+            <param name="size">Inital array size.</param>
+        </member>
+        <member name="M:a9_parser.BitArr.#ctor(System.Boolean[])">
+            <summary>
+            Constructor from bits array.
+            </summary>
+            <param name="bits">Bits or bits array.</param>
+        </member>
+        <member name="M:a9_parser.BitArr.#ctor(System.String)">
+            <summary>
+            Constructor from a string.
+            </summary>
+            <param name="bits">String with '1's and '0's.</param>
+        </member>
+        <member name="M:a9_parser.BitArr.BS2WS(System.Int32)">
+            <summary>
+            Transforms size in bits into size in words.
+            </summary>
+            <param name="bits">Size in bits.</param>
+            <returns>Size in words.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.ReSize(System.Int32)">
+            <summary>
+            Resize an array.
+            </summary>
+            <param name="newsize">New size (in bits!).</param>
+        </member>
+        <member name="M:a9_parser.BitArr.HighBit(System.UInt32)">
+            <summary>
+            Returns number of highest bit in word.
+            </summary>
+            <param name="w">Input word to analyze.</param>
+            <returns>Count of signified bits.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.Assign(a9_parser.BitArr)">
+            <summary>
+            Performs memberwise copy from BitArr.
+            </summary>
+            <param name="ba">Source BitArr.</param>
+            <remarks>I use it to avoid ****ing "Compiler Error CS1540" in derived
+            class's cast methods.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.rand">
+            <summary>
+            Fills array with random bits.
+            </summary>
+        </member>
+        <member name="M:a9_parser.BitArr.ToString01">
+            <summary>
+            Converts bits array into string.
+            </summary>
+            <returns>String with '1's and '0's.</returns>
+            <remarks>BigEndian</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.ToString10">
+            <summary>
+            Converts bits array into string.
+            </summary>
+            <returns>String with '1's and '0's.</returns>
+            <remarks>LowEndian</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.ToStringHex">
+            <summary>
+            Converts bits array into string.
+            </summary>
+            <returns>String in hex.</returns>
+            <remarks>LowEndian</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.ToString">
+            <summary>
+            Converts bits array into string.
+            </summary>
+            <returns>String.</returns>
+            <remarks>Calls ToStringHex().</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.GetHashCode">
+            <summary>
+            Serves as a hash function.
+            </summary>
+            <returns>A hash code for the current bits.</returns>
+            <remarks>Hash code depends on array length too.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.Equals(System.Object)">
+            <summary>
+            Comparison of two bits arrays.
+            </summary>
+            <param name="a">An other bits array.</param>
+            <returns>True, is arrays equals.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Implicit(System.String)~a9_parser.BitArr">
+            <summary>
+            Converts "1011"-string into BitArr.
+            </summary>
+            <param name="bits">String with '1's and '0's.</param>
+            <returns>Returns BitArr object.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Implicit(System.Byte[])~a9_parser.BitArr">
+            <summary>
+            Converts bytes array into BitArr.
+            </summary>
+            <param name="bytes">Bytes array.</param>
+            <returns>Returns BitArr object.</returns>
+            <remarks>Perfoms shalow copy from array.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Implicit(System.UInt32[])~a9_parser.BitArr">
+            <summary>
+            Converts uints array into BitArr.
+            </summary>
+            <param name="uints">Uints array.</param>
+            <returns>Returns BitArr object.</returns>
+            <remarks>Perfoms shalow copy from array.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(System.UInt16)~a9_parser.BitArr">
+            <summary>
+            Converts UInt16 into BitArr.
+            </summary>
+            <param name="bits">UInt16 with '1's and '0's.</param>
+            <returns>Returns BitArr object.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(System.UInt32)~a9_parser.BitArr">
+            <summary>
+            Converts UInt32 into BitArr.
+            </summary>
+            <param name="bits">UInt32 with '1's and '0's.</param>
+            <returns>Returns BitArr object.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(System.UInt64)~a9_parser.BitArr">
+            <summary>
+            Converts UInt64 into BitArr.
+            </summary>
+            <param name="bits">UInt64 with '1's and '0's.</param>
+            <returns>Returns BitArr object.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.String">
+            <summary>
+            Converts BitArr into string.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>String.</returns>
+            <remarks>Calls ToString method.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.Byte[]">
+            <summary>
+            Converts BitArr into bytes array.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>Bytes array.</returns>
+            <remarks>Creates shallow copy of bytes array.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.UInt32[]">
+            <summary>
+            Converts BitArr into uints array.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>Uints array.</returns>
+            <remarks>Creates shallow copy of uints array.</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.Int16">
+            <summary>
+            Converts bits array into Int16.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>Int16 or OverflowException.</returns>
+            <remarks>Int16 can hold 15 bits (use UInt16).</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.UInt16">
+            <summary>
+            Converts bits array into UInt16.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>UInt16 or OverflowException.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.Int32">
+            <summary>
+            Converts bits array into Int32.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>Int32 or OverflowException.</returns>
+            <remarks>Int32 can hold 31 bits (use UInt32).</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.UInt32">
+            <summary>
+            Converts bits array into UInt32.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>UInt32 or OverflowException.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.Int64">
+            <summary>
+            Converts bits array into Int64.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>Int64 or OverflowException.</returns>
+            <remarks>Int64 can hold 63 bits (use UInt64).</remarks>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Explicit(a9_parser.BitArr)~System.UInt64">
+            <summary>
+            Converts bits array into UInt64.
+            </summary>
+            <param name="ba">Bits array.</param>
+            <returns>UInt32 or OverflowException.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Equality(a9_parser.BitArr,a9_parser.BitArr)">
+            <summary>
+            Comparison.
+            </summary>
+            <param name="a">First bits array.</param>
+            <param name="b">Second bits array.</param>
+            <returns>True if equals.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_Inequality(a9_parser.BitArr,a9_parser.BitArr)">
+            <summary>
+            Negative comparison.
+            </summary>
+            <param name="a">First bits array.</param>
+            <param name="b">Second bits array.</param>
+            <returns>True if not equals.</returns>
+        </member>
+        <member name="M:a9_parser.BitArr.op_BitwiseOr(a9_parser.BitArr,a9_parser.BitArr)">
+            <summary>
+            Bitwise Or.
+            </summary>
+            <param name="a">First bits array.</param>
+            <param name="b">Second bits array.</param>
+            <returns>a bitwise or b</returns>
+        </member>
+        <member name="P:a9_parser.BitArr.Item(System.UInt32)">
+            <summary>
+            Indexer for the array. (recalls this[int index])
+            </summary>
+        </member>
+        <member name="P:a9_parser.BitArr.Item(System.Int32)">
+            <summary>
+            Indexer for the array.
+            </summary>
+        </member>
+        <member name="P:a9_parser.BitArr.Length">
+            <summary>
+            Returns or sets length of an array (in bits).
+            </summary>
+        </member>
+        <member name="P:a9_parser.BitArr.RealLength">
+            <summary>
+            Count of signified bits. Returns number of highest bit. Readonly.
+            </summary>
+        </member>
+        <member name="P:a9_parser.BitArr.IsZero">
+            <summary>
+            Is this empty or zeros array?
+            </summary>
+            <remarks>Readonly.</remarks>
+        </member>
+        <member name="T:a9_parser.Coords3">
+            <summary>
+             Represents a coordinates of WoW object without orientation.
+            </summary>
+        </member>
+        <member name="M:a9_parser.Coords3.GetCoords">
+            <summary>
+             Converts the numeric values of this instance to its equivalent string representations, separator is space.
+            </summary>
+        </member>
+        <member name="T:a9_parser.Coords4">
+            <summary>
+             Represents a coordinates of WoW object with specified orientation.
+            </summary>
+        </member>
+        <member name="M:a9_parser.Coords4.GetCoordsAsString">
+            <summary>
+             Converts the numeric values of this instance to its equivalent string representations, separator is space.
+            </summary>
+        </member>
+        <member name="T:a9_parser.GenericReader">
+            <summary>
+             Reads WoW specific data types as binary values in a specific encoding.
+            </summary>
+        </member>
+        <member name="M:a9_parser.GenericReader.#ctor(System.IO.Stream)">
+            <summary>
+             Not yet.
+            </summary>
+            <param name="input">Input stream.</param>
+        </member>
+        <member name="M:a9_parser.GenericReader.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+             Not yet.
+            </summary>
+            <param name="input">Input stream.</param>
+            <param name="encoding">Input encoding.</param>
+        </member>
+        <member name="M:a9_parser.GenericReader.#ctor(System.String)">
+            <summary>
+             Not yet.
+            </summary>
+            <param name="fname">Input file name.</param>
+        </member>
+        <member name="M:a9_parser.GenericReader.#ctor(System.String,System.Text.Encoding)">
+            <summary>
+             Not yet.
+            </summary>
+            <param name="fname">Input file name.</param>
+            <param name="encoding">Input encoding.</param>
+        </member>
+        <member name="M:a9_parser.GenericReader.ReadPackedGuid">
+            <summary>
+             Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
+            </summary>
+        </member>
+        <member name="M:a9_parser.GenericReader.ReadStringNumber">
+            <summary>
+             Reads the string with known length from the current stream and advances the current position of the stream by string length.
+            <seealso cref="M:a9_parser.GenericReader.ReadStringNull"/>
+            </summary>
+        </member>
+        <member name="M:a9_parser.GenericReader.ReadStringNull">
+            <summary>
+             Reads the NULL terminated string from the current stream and advances the current position of the stream by string length + 1.
+            <seealso cref="M:a9_parser.GenericReader.ReadStringNumber"/>
+            </summary>
+        </member>
+        <member name="M:a9_parser.GenericReader.ReadCoords3">
+            <summary>
+             Reads the object coordinates from the current stream and advances the current position of the stream by 12 bytes.
+            </summary>
+        </member>
+        <member name="M:a9_parser.GenericReader.ReadCoords4">
+            <summary>
+             Reads the object coordinates and orientation from the current stream and advances the current position of the stream by 16 bytes.
+            </summary>
+        </member>
+    </members>
+</doc>
