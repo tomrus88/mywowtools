@@ -7,12 +7,3 @@ obj\Release\a9_parser.csproj.GenerateResource.Cache
 obj\Release\a9_parser.exe
 obj\Release\a9_parser.pdb
 bin\Release\a9_parser.xml
-bin\Debug\a9_parser.xml
-bin\Debug\a9_parser.exe
-bin\Debug\a9_parser.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\a9_parser.Form1.resources
-obj\Debug\a9_parser.Properties.Resources.resources
-obj\Debug\a9_parser.csproj.GenerateResource.Cache
-obj\Debug\a9_parser.exe
-obj\Debug\a9_parser.pdb

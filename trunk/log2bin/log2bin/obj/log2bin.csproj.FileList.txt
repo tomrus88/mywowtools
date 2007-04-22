@@ -1,8 +1,0 @@
-bin\Debug\log2bin.exe
-bin\Debug\log2bin.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\log2bin.Form1.resources
-obj\Debug\log2bin.Properties.Resources.resources
-obj\Debug\log2bin.csproj.GenerateResource.Cache
-obj\Debug\log2bin.exe
-obj\Debug\log2bin.pdb
