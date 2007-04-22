@@ -32,7 +32,7 @@ namespace log2bin
             // 00b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
             // 00c0: 00 5e 00 00 00 -- -- -- -- -- -- -- -- -- -- -- : .^...
 
-            string ifn = "data.log";
+            string ifn = "tcp.log";
             string ofn = "data.dump";
             BinaryWriter bw = new BinaryWriter(new FileStream(ofn, FileMode.Create));
             StreamReader sr = new StreamReader(ifn);
@@ -52,6 +52,14 @@ namespace log2bin
                     string[] temp = temp1.Split(' ');
                     uint size = Convert.ToUInt32(temp[4]);
                     bw.Write(size);
+                }
+                else if(temp1.StartsWith("Log "))
+                {
+                    sr.ReadLine(); // useless line
+                }
+                else if(temp1.Contains("Search string found at"))
+                {
+                    sr.ReadLine(); // useless line
                 }
                 else
                 {
