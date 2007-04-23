@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -79,18 +75,18 @@ namespace bin_parser
             swe.AutoFlush = true;
             data.AutoFlush = true;
 
-            try
+            while (gr.PeekChar() >= 0)
             {
-                while (gr.PeekChar() >= 0)
+                try
                 {
-                    uint result = ParseHeader(gr, sw, swe, data);
-                    if (result == 0 || result == 1)
+                    if (ParseHeader(gr, sw, swe, data))
                         packet++;
                 }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.ToString());
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                    swe.WriteLine("error in pos " + gr.BaseStream.Position.ToString("X16"));
+                }
             }
 
             sw.Close();
@@ -98,12 +94,19 @@ namespace bin_parser
             data.Close();
 
             MessageBox.Show("Done!", "A9 parser", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly, false);
-            //MessageBox.Show(br.BaseStream.Position.ToString() + " " + br.BaseStream.Length.ToString());
 
             gr.Close();
         }
 
-        private uint ParseHeader(GenericReader gr, StreamWriter sw, StreamWriter swe, StreamWriter data)
+        /// <summary>
+        /// Packet header parser.
+        /// </summary>
+        /// <param name="gr">Main stream reader.</param>
+        /// <param name="sw">Data stream writer.</param>
+        /// <param name="swe">Error logger writer.</param>
+        /// <param name="data">Data logger writer.</param>
+        /// <returns>Successful</returns>
+        private bool ParseHeader(GenericReader gr, StreamWriter sw, StreamWriter swe, StreamWriter data)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -115,33 +118,44 @@ namespace bin_parser
 
             //sb.AppendLine("Data size " + datasize);
 
-            if (!ParsePacket(gr, sb, swe, data, datasize))
-            {
-                if (sb.ToString().Length != 0)
-                    sw.WriteLine(sb.ToString());
-                return 1;
-            }
-
-            if(sb.ToString().Length != 0)
-                sw.WriteLine(sb.ToString());
-
-            return 0;
-        }
-
-        private bool ParsePacket(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, int datasize)
-        {
             byte[] temp = gr.ReadBytes(datasize);
             MemoryStream ms = new MemoryStream(temp);
             GenericReader gr2 = new GenericReader(ms);
 
-            ushort opcode = gr2.ReadUInt16();
-            if (opcode != 0x00DD) // SMSG_MONSTER_MOVE
-            {
+            ushort opcode = 0;
+
+            if (gr2.PeekChar() >= 0)
+                opcode = gr2.ReadUInt16();
+            else
                 return false;
+
+            switch(opcode)
+            {
+                case 0x00DD:
+                    ParseMonsterMoveOpcode(gr, gr2, sb, swe);
+                    break;
+                default:
+                    break;
             }
 
-            sb.AppendLine("Packet offset " + (gr.BaseStream.Position - 4).ToString("X2"));
-            sb.AppendLine("Opcode " + opcode.ToString("X4"));
+            if (sb.ToString().Length != 0)
+                sw.WriteLine(sb.ToString());
+
+            return true;
+        }
+
+        /// <summary>
+        /// Monster move opcode parser method.
+        /// </summary>
+        /// <param name="gr">Main stream reader.</param>
+        /// <param name="gr2">Packet stream reader.</param>
+        /// <param name="sb">Logger string builder.</param>
+        /// <param name="swe">Error logger writer.</param>
+        /// <returns>Successful</returns>
+        private bool ParseMonsterMoveOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_MONSTER_MOVE (0x00DD)");
 
             ulong guid = gr2.ReadPackedGuid();
             sb.AppendLine("GUID " + guid.ToString("X16"));
@@ -155,7 +169,7 @@ namespace bin_parser
             byte unk = gr2.ReadByte();
             sb.AppendLine("unk_byte " + unk);
 
-            switch(unk)
+            switch (unk)
             {
                 case 0: // обычный пакет
                     break;
@@ -185,7 +199,7 @@ namespace bin_parser
             uint points = gr2.ReadUInt32();
             sb.AppendLine("Points " + points);
 
-            if((flags & Flags.flag10) != 0) // 0x200
+            if ((flags & Flags.flag10) != 0) // 0x200
             {
                 sb.AppendLine("Taxi");
                 for (uint i = 0; i < points; i++)
@@ -196,12 +210,12 @@ namespace bin_parser
             }
             else
             {
-                if((flags & Flags.flag09) == 0 && (flags & Flags.flag10) == 0 && flags != 0)
+                if ((flags & Flags.flag09) == 0 && (flags & Flags.flag10) == 0 && flags != 0)
                 {
                     swe.WriteLine("Unknown flags " + flags);
                 }
 
-                if((flags & Flags.flag09) != 0)
+                if ((flags & Flags.flag09) != 0)
                     sb.AppendLine("Running");
 
                 Coords3 end = gr2.ReadCoords3();
@@ -210,10 +224,9 @@ namespace bin_parser
                 for (uint i = 0; i < (points - 1); i++)
                 {
                     uint unk2 = gr2.ReadUInt32();
-                    sb.AppendLine("Shift" + i + " " + unk2);
+                    sb.AppendLine("Shift" + i + " " + unk2.ToString("X8"));
                 }
             }
-
             return true;
         }
     }

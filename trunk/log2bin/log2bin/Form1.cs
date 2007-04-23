@@ -13,26 +13,14 @@ namespace log2bin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // you must copy packet data to data.logfile
-            // output file named data.dump
-            // input packet must have following structure (first two lines required):
-            // Packet SMSG.COMPRESSED_UPDATE_OBJECT (502), len: 33
-            // (decompressed len=197)
-            // 0000: a9 00 01 00 00 00 00 00 07 6c 30 40 2d 00 00 40 : .........l0@-..@
-            // 0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 0090: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 00a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 00b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 : ................
-            // 00c0: 00 5e 00 00 00 -- -- -- -- -- -- -- -- -- -- -- : .^...
-
             string ifn = "tcp.log";
+
+            if (!File.Exists(ifn))
+            {
+                MessageBox.Show("File " + ifn + " not found!");
+                return;
+            }
+
             string ofn = "data.dump";
             BinaryWriter bw = new BinaryWriter(new FileStream(ofn, FileMode.Create));
             StreamReader sr = new StreamReader(ifn);
@@ -43,23 +31,27 @@ namespace log2bin
                 if(temp1.StartsWith("Packet SMSG.COMPRESSED_UPDATE_OBJECT (502)"))
                 {
                     // read additional line
-                    string[] temp = sr.ReadLine().Split('=');
-                    uint size = Convert.ToUInt32(temp[1].Substring(0, temp[1].Length - 1));
-                    bw.Write(size);
+                    string temp2 = sr.ReadLine();
+                    if(temp2.Contains("decompressed"))
+                    {
+                        string[] temp = temp2.Split('=');
+                        uint size = Convert.ToUInt32(temp[1].Substring(0, temp[1].Length - 1));
+                        bw.Write(size);
+                    }
                 }
-                else if (temp1.StartsWith("Packet SMSG"))
+                else if (temp1.StartsWith("Packet SMSG") && IsDataPresent(sr))
                 {
                     string[] temp = temp1.Split(' ');
                     uint size = Convert.ToUInt32(temp[4]);
                     bw.Write(size);
                 }
-                else if(temp1.StartsWith("Log "))
+                else if (temp1.StartsWith("Packet SMSG") && !IsDataPresent(sr))
                 {
-                    sr.ReadLine(); // useless line
+                    sr.ReadLine();
                 }
-                else if(temp1.Contains("Search string found at"))
+                else if(temp1.StartsWith("Log ") || temp1.Contains("Search string found at"))
                 {
-                    sr.ReadLine(); // useless line
+                    ;
                 }
                 else
                 {
@@ -79,6 +71,16 @@ namespace log2bin
             bw.Flush();
             bw.Close();
             MessageBox.Show("Done!");
+        }
+
+        public bool IsDataPresent(StreamReader streamreader)
+        {
+            // "(" or "0"
+            //if (streamreader.Peek() == 0x28)
+            //    return true;
+            if (streamreader.Peek() == 0x30)
+                return true;
+            return false;
         }
     }
 }

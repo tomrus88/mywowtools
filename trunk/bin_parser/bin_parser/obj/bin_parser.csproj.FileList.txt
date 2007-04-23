@@ -1,0 +1,8 @@
+bin\Debug\bin_parser.exe
+bin\Debug\bin_parser.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\bin_parser.Form1.resources
+obj\Debug\bin_parser.Properties.Resources.resources
+obj\Debug\bin_parser.csproj.GenerateResource.Cache
+obj\Debug\bin_parser.exe
+obj\Debug\bin_parser.pdb
