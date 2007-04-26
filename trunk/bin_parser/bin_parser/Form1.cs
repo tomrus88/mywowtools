@@ -52,50 +52,47 @@ namespace bin_parser
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string ifn = Directory.GetCurrentDirectory() + "\\" + "data.dump";
+            DirectoryInfo di = new DirectoryInfo("."); // DirectoryInfo
+            FileInfo[] fi = di.GetFiles("tcp*.log.dump", SearchOption.AllDirectories); // Get file list
 
-            if (!File.Exists(ifn))
+            foreach (FileInfo f in fi)
             {
-                MessageBox.Show("File " + ifn + " not found!");
-                return;
-            }
+                GenericReader gr = new GenericReader(f.FullName, Encoding.ASCII);
 
-            GenericReader gr = new GenericReader(ifn, Encoding.ASCII);
+                string error_log = f.FullName + ".errors.txt";
+                StreamWriter swe = new StreamWriter(error_log);
 
-            string error_log = "errors.txt";
-            StreamWriter swe = new StreamWriter(error_log);
+                string database_log = f.FullName + ".data.txt";
+                StreamWriter data = new StreamWriter(database_log);
 
-            string database_log = "data.txt";
-            StreamWriter data = new StreamWriter(database_log);
+                string ofn = f.FullName + ".data_out.txt";
+                StreamWriter sw = new StreamWriter(ofn);
 
-            string ofn = "data_out.txt";
-            StreamWriter sw = new StreamWriter(ofn);
+                sw.AutoFlush = true;
+                swe.AutoFlush = true;
+                data.AutoFlush = true;
 
-            sw.AutoFlush = true;
-            swe.AutoFlush = true;
-            data.AutoFlush = true;
-
-            while (gr.PeekChar() >= 0)
-            {
-                try
+                while (gr.PeekChar() >= 0)
                 {
-                    if (ParseHeader(gr, sw, swe, data))
-                        packet++;
+                    try
+                    {
+                        if (ParseHeader(gr, sw, swe, data))
+                            packet++;
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.ToString());
+                        swe.WriteLine("error in pos " + gr.BaseStream.Position.ToString("X16"));
+                    }
                 }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
-                    swe.WriteLine("error in pos " + gr.BaseStream.Position.ToString("X16"));
-                }
+
+                sw.Close();
+                swe.Close();
+                data.Close();
+                gr.Close();
             }
+            MessageBox.Show("Done!", "BIN parser", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly, false);
 
-            sw.Close();
-            swe.Close();
-            data.Close();
-
-            MessageBox.Show("Done!", "A9 parser", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly, false);
-
-            gr.Close();
         }
 
         /// <summary>
@@ -129,10 +126,13 @@ namespace bin_parser
             else
                 return false;
 
-            switch(opcode)
+            switch (opcode)
             {
                 case 0x00DD:
-                    ParseMonsterMoveOpcode(gr, gr2, sb, swe);
+                    //ParseMonsterMoveOpcode(gr, gr2, sb, swe);
+                    break;
+                case 0x012A:
+                    ParseInitialSpellsOpcode(gr, gr2, sb, swe);
                     break;
                 default:
                     break;
@@ -224,8 +224,48 @@ namespace bin_parser
                 for (uint i = 0; i < (points - 1); i++)
                 {
                     uint unk2 = gr2.ReadUInt32();
-                    sb.AppendLine("Shift" + i + " " + unk2.ToString("X8"));
+                    sb.AppendLine("vector" + i + " " + unk2.ToString("X8"));
                 }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="gr2"></param>
+        /// <param name="sb"></param>
+        /// <param name="swe"></param>
+        /// <returns></returns>
+        private bool ParseInitialSpellsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_INITIAL_SPELLS (0x012A)");
+
+            byte unk1 = gr2.ReadByte();
+
+            sb.AppendLine("unk byte " + unk1);
+
+            ushort spells_count = gr2.ReadUInt16();
+            sb.AppendLine("Spells count " + spells_count);
+            for (ushort i = 0; i < spells_count; i++)
+            {
+                ushort spellid = gr2.ReadUInt16();
+                ushort slotid = gr2.ReadUInt16();
+                sb.AppendLine("Spell ID " + spellid + ", slot " + slotid.ToString("X2"));
+            }
+
+            ushort cooldowns_count = gr2.ReadUInt16();
+            sb.AppendLine("Cooldowns count " + cooldowns_count);
+            for (ushort i = 0; i < cooldowns_count; i++)
+            {
+                ushort spellid = gr2.ReadUInt16();
+                ushort itemid = gr2.ReadUInt16();
+                ushort spellcategory = gr2.ReadUInt16();
+                uint cooldown1 = gr2.ReadUInt32();
+                uint cooldown2 = gr2.ReadUInt32();
+                sb.AppendLine("Spell Cooldown: spell id " + spellid + ", itemid " + itemid + ", spellcategory " + spellcategory + ", cooldown1 " + cooldown1 + ", cooldown2 " + cooldown2);
             }
             return true;
         }
