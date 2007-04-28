@@ -1,2 +1,0 @@
-Log open
-Log closed
