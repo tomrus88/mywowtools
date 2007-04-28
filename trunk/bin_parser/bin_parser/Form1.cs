@@ -132,7 +132,10 @@ namespace bin_parser
                     //ParseMonsterMoveOpcode(gr, gr2, sb, swe);
                     break;
                 case 0x012A:
-                    ParseInitialSpellsOpcode(gr, gr2, sb, swe);
+                    //ParseInitialSpellsOpcode(gr, gr2, sb, swe);
+                    break;
+                case 0x025C:
+                    ParseAuctionListResultOpcode(gr, gr2, sb, swe);
                     break;
                 default:
                     break;
@@ -267,6 +270,86 @@ namespace bin_parser
                 uint cooldown2 = gr2.ReadUInt32();
                 sb.AppendLine("Spell Cooldown: spell id " + spellid + ", itemid " + itemid + ", spellcategory " + spellcategory + ", cooldown1 " + cooldown1 + ", cooldown2 " + cooldown2);
             }
+            return true;
+        }
+
+        private bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_AUCTION_LIST_RESULT (0x025C)");
+
+            uint count = gr2.ReadUInt32();
+
+            sb.AppendLine("count " + count);
+
+            for(uint i = 0; i < count; i++)
+            {
+                uint auction_id = gr2.ReadUInt32();
+                sb.AppendLine("auction_id " + auction_id);
+                uint item_entry = gr2.ReadUInt32();
+                sb.AppendLine("item_entry " + item_entry);
+
+                uint ench1_1 = gr2.ReadUInt32();
+                uint ench1_2 = gr2.ReadUInt32();
+                uint ench1_3 = gr2.ReadUInt32();
+                sb.AppendLine("enchant1 " + ench1_1 + " " + ench1_2 + " " + ench1_3);
+
+                uint ench2_1 = gr2.ReadUInt32();
+                uint ench2_2 = gr2.ReadUInt32();
+                uint ench2_3 = gr2.ReadUInt32();
+                sb.AppendLine("enchant2 " + ench2_1 + " " + ench2_2 + " " + ench2_3);
+
+                uint socket1_1 = gr2.ReadUInt32();
+                uint socket1_2 = gr2.ReadUInt32();
+                uint socket1_3 = gr2.ReadUInt32();
+                sb.AppendLine("socket1 " + socket1_1 + " " + socket1_2 + " " + socket1_3);
+
+                uint socket2_1 = gr2.ReadUInt32();
+                uint socket2_2 = gr2.ReadUInt32();
+                uint socket2_3 = gr2.ReadUInt32();
+                sb.AppendLine("socket2 " + socket2_1 + " " + socket2_2 + " " + socket2_3);
+
+                uint socket3_1 = gr2.ReadUInt32();
+                uint socket3_2 = gr2.ReadUInt32();
+                uint socket3_3 = gr2.ReadUInt32();
+                sb.AppendLine("socket3 " + socket3_1 + " " + socket3_2 + " " + socket3_3);
+
+                uint bonus_1 = gr2.ReadUInt32();
+                uint bonus_2 = gr2.ReadUInt32();
+                uint bonus_3 = gr2.ReadUInt32();
+                sb.AppendLine("bonus " + bonus_1 + " " + bonus_2 + " " + bonus_3);
+
+                uint rand = gr2.ReadUInt32();
+                sb.AppendLine("random property " + rand);
+
+                uint unk1 = gr2.ReadUInt32();
+                sb.AppendLine("unk1 " + unk1);
+
+                uint itemcount = gr2.ReadUInt32();
+                sb.AppendLine("item count " + itemcount);
+
+                uint charges = gr2.ReadUInt32();
+                sb.AppendLine("charges " + charges);
+                uint unk2 = gr2.ReadUInt32();
+                sb.AppendLine("unk2 " + unk2);
+
+                if (unk2 != 0)
+                    swe.WriteLine("unk2 " + unk2);
+
+                ulong owner = gr2.ReadUInt64();
+                uint startbid = gr2.ReadUInt32();
+                uint outbid = gr2.ReadUInt32();
+                uint buyout = gr2.ReadUInt32();
+                uint time = gr2.ReadUInt32();
+                sb.AppendLine("owner: " + owner + " " + startbid + " " + outbid + " " + buyout + " " + time);
+
+                ulong bidder = gr2.ReadUInt64();
+                uint bid = gr2.ReadUInt32();
+                sb.AppendLine("bidder " + bidder + " " + bid);
+                sb.AppendLine();
+            }
+
+            uint totalcount = gr2.ReadUInt32();
             return true;
         }
     }
