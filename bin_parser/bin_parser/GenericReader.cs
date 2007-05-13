@@ -166,6 +166,10 @@ namespace bin_parser
             {
                 text += (char)num;
             }
+
+            if (text.Length == 0)
+                text = "empty";
+
             return text;
         }
         #endregion

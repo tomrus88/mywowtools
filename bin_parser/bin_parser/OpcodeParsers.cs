@@ -131,6 +131,14 @@ namespace bin_parser
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="gr2"></param>
+        /// <param name="sb"></param>
+        /// <param name="swe"></param>
+        /// <returns></returns>
         private bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
@@ -211,6 +219,14 @@ namespace bin_parser
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="gr2"></param>
+        /// <param name="sb"></param>
+        /// <param name="swe"></param>
+        /// <returns></returns>
         private bool ParsePartyMemberStatsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
@@ -271,9 +287,10 @@ namespace bin_parser
             }
             if ((flags & Flags.flag10) != 0)
             {
-                swe.WriteLine("flag10 there!");
+                swe.Write("flag10 there: ");
+                swe.WriteLine(gr.BaseStream.Position);
                 ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("flag 0x00000200, value " + unk1);
+                sb.AppendLine("flag 0x00000200, value " + unk1.ToString("X16"));
                 for (uint i = 0; i < 0; i++)    // unknown
                 {
 
@@ -321,14 +338,21 @@ namespace bin_parser
             }
             if ((flags & Flags.flag19) != 0)
             {
-                swe.WriteLine("flag19 there!");
+                swe.Write("flag19 there: ");
+                swe.WriteLine(gr.BaseStream.Position);
                 ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("flag 0x00040000, value " + unk1);
+                sb.AppendLine("flag 0x00040000, value " + unk1.ToString("X16"));
                 for (uint i = 0; i < 0; i++)    // unknown
                 {
 
                 }
             }
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sb.AppendLine("parsed: ok...");
+            else
+                sb.AppendLine("parsed: error...");
+
             return true;
         }
     }
