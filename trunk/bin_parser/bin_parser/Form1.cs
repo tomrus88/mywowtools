@@ -138,10 +138,7 @@ namespace bin_parser
                     //ParseAuctionListResultOpcode(gr, gr2, sb, swe);
                     break;
                 case 0x007E:
-                    //ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
-                    break;
-                case 0x00A9:
-                    ParseUpdatePacket(gr, gr2, sb, swe);
+                    ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
                     break;
                 default:
                     break;
@@ -151,11 +148,6 @@ namespace bin_parser
                 sw.WriteLine(sb.ToString());
 
             return true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            UpdateFields.LoadUpdateFields();
         }
     }
 }
