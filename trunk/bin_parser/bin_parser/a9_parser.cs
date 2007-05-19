@@ -153,7 +153,7 @@ namespace bin_parser
                 sb.AppendLine("guids_count " + objects_count);
 
                 for(uint i = 0; i < objects_count; i++)
-                    sb.AppendLine("Guid" + i + ": " + gr.ReadPackedGuid());
+                    sb.AppendLine("Guid" + i + ": " + gr.ReadPackedGuid().ToString("X16"));
                 return true;
             }
 
@@ -397,23 +397,10 @@ namespace bin_parser
         private bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId)
         {
             Coords4 coords;
-            // need figure out flags2, check flags, because we can't read packet without it...
-            // flags2:
-
-            // 0x1 - not affect data
-            // 0x2 - need check
-            // 0x4
-            // 0x8
-            // 0x10 - need check
-            // 0x20 - not affect data
-            // 0x100
-            // 0x800
-            // 0x2000 - need check
-            // 0x4000
-            // 0x200000
-            // 0x8000000 ?
-            // 0x10000000
-            // 0x20000000
+            coords.X = 0;
+            coords.Y = 0;
+            coords.Z = 0;
+            coords.O = 0;
 
             sb.AppendLine("=== movement_update_block_start ===");
             uint flags2 = 0;
@@ -432,6 +419,7 @@ namespace bin_parser
 
             if ((UpdateFlags.UPDATEFLAG_HASPOSITION & flags) != 0) // 0x40
             {
+                // same data, but different for transport and st.
                 if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
                 {
                     coords = gr.ReadCoords4();
@@ -442,14 +430,17 @@ namespace bin_parser
                     coords = gr.ReadCoords4();
                     sb.AppendLine("coords " + coords.GetCoordsAsString());
                 }
+            }
 
+            if((flags & UpdateFlags.UPDATEFLAG_LIVING) != 0)   // 0x20
+            {
                 if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
                     data.WriteLine();
                     data.WriteLine(objectTypeId + ": " + coords.GetCoordsAsString());
                 }
 
-                if ((flags2 & 0x0200) != 0) // transport
+                if ((flags2 & 0x00000200) != 0) // transport
                 {
                     ulong t_guid = gr.ReadUInt64();
                     sb.Append("t_guid " + t_guid.ToString("X2") + ", ");
@@ -457,27 +448,36 @@ namespace bin_parser
                     Coords4 transport = gr.ReadCoords4();
                     sb.AppendLine("t_coords " + transport.GetCoordsAsString());
 
-                    uint unk1 = gr.ReadUInt32(); // unk, 2.0.6 == 0x11 or random
-                    sb.AppendLine("unk1 " + unk1);
+                    uint unk2 = gr.ReadUInt32(); // unk
+                    sb.AppendLine("unk2 " + unk2);
                 }
-            }
 
-            if ((UpdateFlags.UPDATEFLAG_LIVING & flags) != 0) // 0x20
-            {
+                if ((flags2 & 0x00200000) != 0)
+                {
+                    float unkf1 = gr.ReadSingle();
+                    sb.AppendLine("flags2 & 0x200000: " + unkf1);
+                }
+
                 uint unk1 = gr.ReadUInt32();
                 sb.AppendLine("unk1 " + unk1);
 
-                if ((flags2 & 0x2000) != 0) // <---
+                if ((flags2 & 0x00002000) != 0)
                 {
                     // looks like orientation/coords/speed
-                    float unk2 = gr.ReadSingle();
-                    sb.AppendLine("unk2 " + unk2);
                     float unk3 = gr.ReadSingle();
                     sb.AppendLine("unk3 " + unk3);
                     float unk4 = gr.ReadSingle();
                     sb.AppendLine("unk4 " + unk4);
                     float unk5 = gr.ReadSingle();
                     sb.AppendLine("unk5 " + unk5);
+                    float unk6 = gr.ReadSingle();
+                    sb.AppendLine("unk6 " + unk6);
+                }
+
+                if ((flags2 & 0x04000000) != 0)
+                {
+                    float unkf2 = gr.ReadSingle();
+                    sb.AppendLine("flags2 & 0x4000000: " + unkf2);
                 }
 
                 float ws = gr.ReadSingle();
@@ -496,109 +496,87 @@ namespace bin_parser
                 sb.AppendLine("Flyback speed " + fbs);
                 float ts = gr.ReadSingle();
                 sb.AppendLine("Turn speed " + ts); // pi = 3.14
-            }
 
-            // after 2.0.10 released, I can't figure out what is flags3 and when it used...
-            uint flags3 = 0;
-            if ((UpdateFlags.UPDATEFLAG_ALL & flags) != 0) // 0x10
-            {
-                flags3 = gr.ReadUInt32(); // looks like flags (0x0, 0x1, 0x100, 0x20000, 0x40000)...
-                sb.AppendLine("flags3 " + flags3.ToString("X2"));
-            }
-/*
-            // still used, but can't figure out when...
-            if ((flags2 & 0x8000000) == 0 && objectTypeId == ObjectTypes.TYPEID_UNIT)
-            {
-                if ((flags3 & 0x40000) != 0)
+                if ((flags2 & 0x8000000) != 0)
                 {
-                    uint f3_3 = br.ReadUInt32();
-                    sb.AppendLine("flags3_unk_value3 " + f3_3);
-                }
+                    uint flags3 = gr.ReadUInt32();
+                    sb.AppendLine("flags3 " + flags3.ToString("X2"));
 
-                if ((flags3 & 0x20000) != 0)
-                {
-                    ulong g3 = br.ReadUInt64();
-                    sb.AppendLine("flags3_guid " + g3); // ????
-                }
-            }
-*/
-            if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
-            {
-                uint guid_high = gr.ReadUInt32(); // 2.0.10 - it's not high guid anymore
-                sb.AppendLine("guid_high " + guid_high);
-            }
+                    if ((flags3 & 0x10000) != 0)
+                    {
+                        Coords3 c = gr.ReadCoords3();
+                        sb.AppendLine("flags2 & 0x10000: " + c.GetCoords());
+                    }
+                    if ((flags3 & 0x20000) != 0)
+                    {
+                        ulong g3 = gr.ReadUInt64();
+                        sb.AppendLine("flags3_guid " + g3); // ????
+                    }
+                    if ((flags3 & 0x40000) != 0)
+                    {
+                        uint f3_3 = gr.ReadUInt32();
+                        sb.AppendLine("flags3_unk_value3 " + f3_3);
+                    }
 
-            if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
-            //if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0 && (flags3 & 0x20000) == 0) // 0x04
-            //if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0 && (flags3 & 0x40000) == 0) // 0x04
-            {
-                //long pos = br.BaseStream.Position;
-                //swe.WriteLine("flags & 0x4 at position " + pos.ToString("X2"));
+                    uint t1 = gr.ReadUInt32();
+                    sb.AppendLine("curr tick " + t1);
 
-                ulong guid2 = gr.ReadPackedGuid(); // looks like guid, but what guid?
-                sb.AppendLine("unk guid " + guid2);
-            }
+                    uint t2 = gr.ReadUInt32();
+                    sb.AppendLine("last tick " + t2);
 
-            if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
-            {
-                uint time = gr.ReadUInt32();
-                sb.AppendLine("t_time " + time);
-            }
+                    uint t3 = gr.ReadUInt32();
+                    sb.AppendLine("tick count " + t3);
 
-            if ((flags2 & 0x8000000) != 0) // splines
-            {
-                uint t1 = gr.ReadUInt32();
-                sb.AppendLine("t1 " + t1);
+                    uint coords_count = gr.ReadUInt32();
+                    sb.AppendLine("coords_count " + coords_count);
 
-                uint t2 = gr.ReadUInt32();
-                sb.AppendLine("t2 " + t2);
+                    /*if (coords_count > 1000) // prevent overflow in case wrong packet parsing :)
+                    {
+                        long pos = gr.BaseStream.Position;
+                        swe.WriteLine("error position " + pos.ToString("X2"));
 
-                //outdated 2.0.10
-                //uint t3 = br.ReadUInt32();
-                //sb.AppendLine("t3 " + t3);
+                        swe.WriteLine("error while parsing movement update block, flags: " + flags.ToString("X") + ", flags2: " + flags2.ToString("X") + ", flags3: " + flags3.ToString("X") + ", objecttype " + objectTypeId);
+                        return false;
+                    }*/
 
-                uint coords_count = gr.ReadUInt32();
-                sb.AppendLine("coords_count " + coords_count);
-
-                //if (coords_count > 1000)
-                //{
-                //    coords_count = br.ReadUInt32();
-                //    sb.AppendLine("second attempt to get correct coords count, now " + coords_count);
-                //}
-
-                //if (coords_count > 1000)
-                //{
-                //    coords_count = br.ReadUInt32();
-                //    sb.AppendLine("third attempt to get correct coords count, now " + coords_count);
-                //}
-
-                if (coords_count > 1000) // prevent overflow in case wrong packet parsing :)
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing movement update block, flags: " + flags.ToString("X") + ", flags2: " + flags2.ToString("X") + ", flags3: " + flags3.ToString("X") + ", objecttype " + objectTypeId);
-                    return false;
-                }
-
-                if (coords_count > 0)
-                {
                     for (uint i = 0; i < coords_count; i++)
                     {
                         Coords3 v = gr.ReadCoords3();
                         sb.AppendLine("coord" + i + ": " + v.GetCoords());
                     }
+
+                    Coords3 end = gr.ReadCoords3();
+                    sb.AppendLine("end: " + end.GetCoords());
                 }
+            }
 
-                Coords3 end = gr.ReadCoords3();
-                sb.AppendLine("end: " + end.GetCoords());
+            if((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
+            {
+                uint temp = gr.ReadUInt32();
+                sb.AppendLine("flags & 0x10: " + temp.ToString("X4"));
+            }
 
-                uint t8 = gr.ReadUInt32();
-                sb.AppendLine("t8 " + t8);
+            if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
+            {
+                uint guid_high = gr.ReadUInt32();
+                sb.AppendLine("flags & 0x08: " + guid_high.ToString("X4"));
+            }
 
-                // added in 2.0.10 (really?)
-                uint t9 = gr.ReadUInt32();
-                sb.AppendLine("t9 " + t9);
+            if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
+            {
+                ulong guid2 = gr.ReadPackedGuid(); // looks like guid, but what guid?
+                sb.AppendLine("flags & 0x04 guid: " + guid2.ToString("X8"));
+            }
+
+            if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
+            {
+                uint time = gr.ReadUInt32();
+                sb.AppendLine("flags & 0x02 t_time: " + time);
+            }
+
+            if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
+            {
+                // nothing
             }
 
             sb.AppendLine("=== movement_update_block_end ===");

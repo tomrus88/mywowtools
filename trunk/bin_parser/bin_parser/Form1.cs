@@ -74,16 +74,16 @@ namespace bin_parser
 
                 while (gr.PeekChar() >= 0)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         if (ParseHeader(gr, sw, swe, data))
                             packet++;
-                    }
-                    catch (Exception exc)
-                    {
-                        MessageBox.Show(exc.ToString());
-                        swe.WriteLine("error in pos " + gr.BaseStream.Position.ToString("X16"));
-                    }
+                    //}
+                    //catch (Exception exc)
+                    //{
+                    //    MessageBox.Show(exc.ToString());
+                    //    swe.WriteLine("error in pos " + gr.BaseStream.Position.ToString("X16"));
+                    //}
                 }
 
                 sw.Close();
