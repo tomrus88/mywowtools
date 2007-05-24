@@ -39,6 +39,12 @@ namespace bin_parser
                 if (!ParseBlock(gr2, sb, swe, data2))
                     break;
             }
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sb.AppendLine("packet parse: OK...");
+            else
+                sb.AppendLine("packet parse: ERROR!");
+
             data2.Flush();
             data2.Close();
         }
@@ -74,6 +80,10 @@ namespace bin_parser
                 }
 
                 // object type auto detection:
+                // F00C0000, F02B0000 - gameobjects
+                // F00CXXXX, F02BXXXX - units (XXXX == 0000 for pets etc...)
+                // F02B00000000XXXX - corpses
+                // F02B00000000XXXX - dynamicobjects
                 ObjectTypes objecttype;
                 if (guid.ToString("X16").Substring(0, 8) == "40000000")
                     objecttype = ObjectTypes.TYPEID_ITEM;
@@ -162,8 +172,6 @@ namespace bin_parser
 
         private bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype)
         {
-            // may be we can reduce size of code there...
-
             sb.AppendLine("=== values_update_block_start ===");
 
             byte blocks_count = gr.ReadByte(); // count of update blocks (4 bytes for each update block)
@@ -197,15 +205,7 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.item_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3: // float
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
-                                break;
-                            default:
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32());
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
@@ -230,21 +230,7 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.unit_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3:
-                                string val1 = gr.ReadSingle().ToString().Replace(",", ".");
-                                if(updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
-                                    data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val1);
-                                sb.AppendLine(uf.Name + " (" + index + "): " + val1);
-                                break;
-                            default:
-                                uint val2 = gr.ReadUInt32();
-                                if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
-                                    data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val2);
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val2);
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
@@ -269,17 +255,7 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.unit_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3:
-                                string val1 = gr.ReadSingle().ToString().Replace(",", ".");
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val1);
-                                break;
-                            default:
-                                uint val2 = gr.ReadUInt32();
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val2);
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
@@ -304,21 +280,7 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.go_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3:
-                                string val1 = gr.ReadSingle().ToString().Replace(",", ".");
-                                if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
-                                    data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val1);
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val1);
-                                break;
-                            default:
-                                uint val2 = gr.ReadUInt32();
-                                if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
-                                    data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val2);
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val2);
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
@@ -343,15 +305,7 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.do_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3:
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
-                                break;
-                            default:
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32());
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
@@ -376,22 +330,51 @@ namespace bin_parser
                     if (Mask[index])
                     {
                         UpdateField uf = UpdateFields.corpse_uf[index];
-                        switch (uf.Type)
-                        {
-                            case 3:
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
-                                break;
-                            default:
-                                sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32());
-                                break;
-                        }
+                        ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
             }
 
-            //swe.WriteLine("ok...");
             sb.AppendLine("=== values_update_block_end ===");
             return true;
+        }
+
+        private void ReadAndDumpField(UpdateField uf, StringBuilder sb, GenericReader gr, UpdateTypes updatetype, StreamWriter data)
+        {
+            switch (uf.Type)
+            {
+                // TODO: add data writing
+                /*case 3:
+                    string val1 = gr.ReadSingle().ToString().Replace(",", ".");
+                    if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
+                        data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val1);
+                    sb.AppendLine(uf.Name + " (" + index + "): " + val1);
+                    break;
+                default:
+                    uint val2 = gr.ReadUInt32();
+                    if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
+                        data.WriteLine(uf.Name + " (" + uf.Identifier + "): " + val2);
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val2);
+                    break;*/
+                case 1: // uint32
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    break;
+                case 2: // uint16+uint16
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + gr.ReadUInt16().ToString("X4") + ", second " + gr.ReadUInt16().ToString("X4"));
+                    break;
+                case 3: // float
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
+                    break;
+                case 4: // uint64 (can be only low part)
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    break;
+                case 5: // bytes
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    break;
+                default:
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "unknown type " + gr.ReadUInt32().ToString("X8"));
+                    break;
+            }
         }
 
         private bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId)
@@ -434,11 +417,11 @@ namespace bin_parser
 
             if((flags & UpdateFlags.UPDATEFLAG_LIVING) != 0)   // 0x20
             {
-                if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
+                /*if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
                     data.WriteLine();
                     data.WriteLine(objectTypeId + ": " + coords.GetCoordsAsString());
-                }
+                }*/
 
                 if ((flags2 & 0x00000200) != 0) // transport
                 {
@@ -449,7 +432,7 @@ namespace bin_parser
                     sb.AppendLine("t_coords " + transport.GetCoordsAsString());
 
                     uint unk2 = gr.ReadUInt32(); // unk
-                    sb.AppendLine("unk2 " + unk2);
+                    sb.AppendLine("t_unk2 " + unk2);
                 }
 
                 if ((flags2 & 0x00200000) != 0)
@@ -529,15 +512,6 @@ namespace bin_parser
 
                     uint coords_count = gr.ReadUInt32();
                     sb.AppendLine("coords_count " + coords_count);
-
-                    /*if (coords_count > 1000) // prevent overflow in case wrong packet parsing :)
-                    {
-                        long pos = gr.BaseStream.Position;
-                        swe.WriteLine("error position " + pos.ToString("X2"));
-
-                        swe.WriteLine("error while parsing movement update block, flags: " + flags.ToString("X") + ", flags2: " + flags2.ToString("X") + ", flags3: " + flags3.ToString("X") + ", objecttype " + objectTypeId);
-                        return false;
-                    }*/
 
                     for (uint i = 0; i < coords_count; i++)
                     {
