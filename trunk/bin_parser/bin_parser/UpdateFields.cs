@@ -57,7 +57,7 @@ namespace bin_parser
         /// </summary>
         UPDATEFLAG_FULLGUID = 0x04,
         /// <summary>
-        /// Update flag with high guid.
+        /// Update flag unknown...
         /// </summary>
         UPDATEFLAG_HIGHGUID = 0x08,
         /// <summary>
@@ -171,11 +171,11 @@ namespace bin_parser
 
         static byte type = 0;
 
-        public static List<UpdateField> item_uf = new List<UpdateField>(); // item + container
-        public static List<UpdateField> unit_uf = new List<UpdateField>(); // unit + player
-        public static List<UpdateField> go_uf = new List<UpdateField>();
-        public static List<UpdateField> do_uf = new List<UpdateField>();
-        public static List<UpdateField> corpse_uf = new List<UpdateField>();
+        public static Dictionary<uint, UpdateField> item_uf = new Dictionary<uint, UpdateField>(); // item + container
+        public static Dictionary<uint, UpdateField> unit_uf = new Dictionary<uint, UpdateField>(); // unit + player
+        public static Dictionary<uint, UpdateField> go_uf = new Dictionary<uint, UpdateField>();
+        public static Dictionary<uint, UpdateField> do_uf = new Dictionary<uint, UpdateField>();
+        public static Dictionary<uint, UpdateField> corpse_uf = new Dictionary<uint, UpdateField>();
 
         public static void LoadUpdateFields()
         {
@@ -219,19 +219,19 @@ namespace bin_parser
                 switch (type)
                 {
                     case 0:
-                        item_uf.Add(uf);
+                        item_uf.Add(id, uf);
                         break;
                     case 1:
-                        unit_uf.Add(uf);
+                        unit_uf.Add(id, uf);
                         break;
                     case 2:
-                        go_uf.Add(uf);
+                        go_uf.Add(id, uf);
                         break;
                     case 3:
-                        do_uf.Add(uf);
+                        do_uf.Add(id, uf);
                         break;
                     case 4:
-                        corpse_uf.Add(uf);
+                        corpse_uf.Add(id, uf);
                         break;
                 }
             }

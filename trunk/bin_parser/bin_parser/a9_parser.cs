@@ -79,18 +79,27 @@ namespace bin_parser
                     return false;
                 }
 
-                // object type auto detection:
-                // F00C0000, F02B0000 - gameobjects
-                // F00CXXXX, F02BXXXX - units (XXXX == 0000 for pets etc...)
-                // F02B00000000XXXX - corpses
-                // F02B00000000XXXX - dynamicobjects
-                ObjectTypes objecttype;
-                if (guid.ToString("X16").Substring(0, 8) == "40000000")
-                    objecttype = ObjectTypes.TYPEID_ITEM;
-                else if (guid.ToString("X16").Substring(0, 8) == "00000000")
-                    objecttype = ObjectTypes.TYPEID_PLAYER;
-                else
-                    objecttype = ObjectTypes.TYPEID_UNIT;
+                ObjectTypes objecttype = ObjectTypes.TYPEID_OBJECT; // 0
+                if(m_objects.ContainsKey(guid))
+                    objecttype = m_objects[guid];
+                else    // try old method...
+                {
+                    // object type auto detection:
+                    // F00C0000, F02B0000 - gameobjects
+                    // F00CXXXX, F02BXXXX - units (XXXX == 0000 for pets etc...)
+                    // F02B00000000XXXX - corpses
+                    // F02B00000000XXXX - dynamicobjects
+                    if (guid.ToString("X16").Substring(0, 8) == "40000000")
+                        objecttype = ObjectTypes.TYPEID_ITEM;
+                    else if (guid.ToString("X16").Substring(0, 8) == "00000000")
+                        objecttype = ObjectTypes.TYPEID_PLAYER;
+                    else
+                        objecttype = ObjectTypes.TYPEID_UNIT;
+
+                    swe.WriteLine("problem with objecttypeid detection for UPDATETYPE_VALUES");
+                }
+
+                sb.AppendLine("objectTypeId " + objecttype);
 
                 if (!ParseValuesUpdateBlock(gr, sb, swe, data, objecttype, updatetype))
                     return false;
@@ -101,7 +110,7 @@ namespace bin_parser
             if (updatetype == UpdateTypes.UPDATETYPE_MOVEMENT)
             {
                 ulong guid = gr.ReadPackedGuid();
-                sb.AppendLine("Object guid: " + guid.ToString("X2"));
+                sb.AppendLine("Object guid: " + guid.ToString("X16"));
 
                 if (!ParseMovementUpdateBlock(gr, sb, swe, data, ObjectTypes.TYPEID_UNIT))
                     return false;
@@ -112,10 +121,17 @@ namespace bin_parser
             if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
             {
                 ulong guid = gr.ReadPackedGuid();
-                sb.AppendLine("Object guid: " + guid.ToString("X2"));
+                sb.AppendLine("Object guid: " + guid.ToString("X16"));
 
                 ObjectTypes objectTypeId = (ObjectTypes)gr.ReadByte();
                 sb.AppendLine("objectTypeId " + objectTypeId);
+
+                // check object existance and remove it if needed...
+                if(m_objects.ContainsKey(guid))
+                    m_objects.Remove(guid);
+
+                // now we can add this object to Dictionary to get correct object type later...
+                m_objects.Add(guid, objectTypeId);
 
                 switch (objectTypeId)
                 {
@@ -197,7 +213,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.ITEM_END)
                         break;
@@ -222,7 +238,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.UNIT_END)
                         break;
@@ -247,7 +263,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.PLAYER_END)
                         break;
@@ -272,7 +288,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.GO_END)
                         break;
@@ -297,7 +313,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.DO_END)
                         break;
@@ -322,7 +338,7 @@ namespace bin_parser
                     return false;
                 }
 
-                for (int index = 0; index < reallength; index++)
+                for (uint index = 0; index < reallength; index++)
                 {
                     if (index > UpdateFields.CORPSE_END)
                         break;
@@ -397,7 +413,7 @@ namespace bin_parser
                 sb.AppendLine("flags2 " + flags2.ToString("X8"));
 
                 uint time = gr.ReadUInt32();
-                sb.AppendLine("time " + time);
+                sb.AppendLine("time " + time.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_HASPOSITION & flags) != 0) // 0x40
@@ -426,13 +442,13 @@ namespace bin_parser
                 if ((flags2 & 0x00000200) != 0) // transport
                 {
                     ulong t_guid = gr.ReadUInt64();
-                    sb.Append("t_guid " + t_guid.ToString("X2") + ", ");
+                    sb.Append("t_guid " + t_guid.ToString("X16") + ", ");
 
                     Coords4 transport = gr.ReadCoords4();
                     sb.AppendLine("t_coords " + transport.GetCoordsAsString());
 
                     uint unk2 = gr.ReadUInt32(); // unk
-                    sb.AppendLine("t_unk2 " + unk2);
+                    sb.AppendLine("t_unk2 " + unk2.ToString("X8"));
                 }
 
                 if ((flags2 & 0x00200000) != 0)
@@ -442,7 +458,7 @@ namespace bin_parser
                 }
 
                 uint unk1 = gr.ReadUInt32();
-                sb.AppendLine("unk1 " + unk1);
+                sb.AppendLine("unk1 " + unk1.ToString("X8"));
 
                 if ((flags2 & 0x00002000) != 0)
                 {
@@ -483,7 +499,7 @@ namespace bin_parser
                 if ((flags2 & 0x8000000) != 0)
                 {
                     uint flags3 = gr.ReadUInt32();
-                    sb.AppendLine("flags3 " + flags3.ToString("X2"));
+                    sb.AppendLine("flags3 " + flags3.ToString("X8"));
 
                     if ((flags3 & 0x10000) != 0)
                     {
@@ -493,25 +509,25 @@ namespace bin_parser
                     if ((flags3 & 0x20000) != 0)
                     {
                         ulong g3 = gr.ReadUInt64();
-                        sb.AppendLine("flags3_guid " + g3); // ????
+                        sb.AppendLine("flags3_guid " + g3.ToString("X16")); // ????
                     }
                     if ((flags3 & 0x40000) != 0)
                     {
                         uint f3_3 = gr.ReadUInt32();
-                        sb.AppendLine("flags3_unk_value3 " + f3_3);
+                        sb.AppendLine("flags3_unk_value3 " + f3_3.ToString("X8"));
                     }
 
                     uint t1 = gr.ReadUInt32();
-                    sb.AppendLine("curr tick " + t1);
+                    sb.AppendLine("curr tick " + t1.ToString("X8"));
 
                     uint t2 = gr.ReadUInt32();
-                    sb.AppendLine("last tick " + t2);
+                    sb.AppendLine("last tick " + t2.ToString("X8"));
 
                     uint t3 = gr.ReadUInt32();
-                    sb.AppendLine("tick count " + t3);
+                    sb.AppendLine("tick count " + t3.ToString("X8"));
 
                     uint coords_count = gr.ReadUInt32();
-                    sb.AppendLine("coords_count " + coords_count);
+                    sb.AppendLine("coords_count " + coords_count.ToString("X8"));
 
                     for (uint i = 0; i < coords_count; i++)
                     {
@@ -527,25 +543,25 @@ namespace bin_parser
             if((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
             {
                 uint temp = gr.ReadUInt32();
-                sb.AppendLine("flags & 0x10: " + temp.ToString("X4"));
+                sb.AppendLine("flags & 0x10: " + temp.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
             {
                 uint guid_high = gr.ReadUInt32();
-                sb.AppendLine("flags & 0x08: " + guid_high.ToString("X4"));
+                sb.AppendLine("flags & 0x08: " + guid_high.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
             {
                 ulong guid2 = gr.ReadPackedGuid(); // looks like guid, but what guid?
-                sb.AppendLine("flags & 0x04 guid: " + guid2.ToString("X8"));
+                sb.AppendLine("flags & 0x04 guid: " + guid2.ToString("X16"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
             {
                 uint time = gr.ReadUInt32();
-                sb.AppendLine("flags & 0x02 t_time: " + time);
+                sb.AppendLine("flags & 0x02 t_time: " + time.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
