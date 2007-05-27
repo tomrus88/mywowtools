@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using Defines;
 
 namespace bin_parser
 {
