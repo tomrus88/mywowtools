@@ -37,4 +37,21 @@ namespace Defines
         flag30 = 0x20000000,
         flag31 = 0x40000000
     };
+
+    enum TrainerType
+    {
+        type1 = 0,
+        type2 = 1,
+        type3 = 2,
+        type4 = 3,
+        type5 = 4
+    };
+
+    enum TrainerSpellState
+    {
+        TRAINER_SPELL_GREEN = 0,
+        TRAINER_SPELL_RED = 1,
+        TRAINER_SPELL_GRAY = 2
+    };
+
 }

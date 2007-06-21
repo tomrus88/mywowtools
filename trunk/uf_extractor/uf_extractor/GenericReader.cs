@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Globalization;
+using System.Runtime.InteropServices;
 
-namespace WoWReader
+namespace uf_extractor
 {
     #region Coords3
     /// <summary>
     ///  Represents a coordinates of WoW object without orientation.
     /// </summary>
-    public struct Coords3
+    [StructLayout(LayoutKind.Sequential)]
+    struct Coords3
     {
         public float X, Y, Z;
 
@@ -20,11 +21,11 @@ namespace WoWReader
         {
             string coords = String.Empty;
 
-            coords += X.ToString();//.Replace(",", ".");
+            coords += X.ToString().Replace(",", ".");
             coords += " ";
-            coords += Y.ToString();//.Replace(",", ".");
+            coords += Y.ToString().Replace(",", ".");
             coords += " ";
-            coords += Z.ToString();//.Replace(",", ".");
+            coords += Z.ToString().Replace(",", ".");
 
             return coords;
         }
@@ -35,7 +36,8 @@ namespace WoWReader
     /// <summary>
     ///  Represents a coordinates of WoW object with specified orientation.
     /// </summary>
-    public struct Coords4
+    [StructLayout(LayoutKind.Sequential)]
+    struct Coords4
     {
         public float X, Y, Z, O;
 
@@ -46,13 +48,13 @@ namespace WoWReader
         {
             string coords = String.Empty;
 
-            coords += X.ToString();//.Replace(",", ".");
+            coords += X.ToString().Replace(",", ".");
             coords += " ";
-            coords += Y.ToString();//.Replace(",", ".");
+            coords += Y.ToString().Replace(",", ".");
             coords += " ";
-            coords += Z.ToString();//.Replace(",", ".");
+            coords += Z.ToString().Replace(",", ".");
             coords += " ";
-            coords += O.ToString();//.Replace(",", ".");
+            coords += O.ToString().Replace(",", ".");
 
             return coords;
         }
@@ -63,7 +65,7 @@ namespace WoWReader
     /// <summary>
     ///  Reads WoW specific data types as binary values in a specific encoding.
     /// </summary>
-    public class GenericReader : BinaryReader
+    class GenericReader : BinaryReader
     {
         #region GenericReader_stream
         /// <summary>
@@ -147,8 +149,7 @@ namespace WoWReader
 
             for (uint i = 0; i < num; i++)
             {
-                //text += (char)ReadByte();
-                text += ReadChar();
+                text += (char)ReadByte();
             }
             return text;
         }
@@ -163,7 +164,7 @@ namespace WoWReader
         {
             byte num;
             string text = String.Empty;
-
+            //ReadChar();
             while ((num = ReadByte()) != 0)
             {
                 text += (char)num;

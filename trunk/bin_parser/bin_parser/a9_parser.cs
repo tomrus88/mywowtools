@@ -3,17 +3,48 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Globalization;
+//using ICSharpCode.SharpZipLib;
+using System.IO.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-namespace bin_parser
+using WoWReader;
+using BitArray;
+using UpdateFields;
+using bin_parser;
+
+namespace A9parser
 {
-    public partial class Form1
+    public class A9
     {
         /// <summary>
         /// Update mask bit array.
         /// </summary>
-        public BitArr Mask;
+        public static BitArr Mask;
 
-        private void ParseUpdatePacket(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static GenericReader Decompress(GenericReader gr2)
+        {
+            int decompressedsize = gr2.ReadInt32();
+            byte[] data = gr2.ReadBytes((int)(gr2.BaseStream.Length - gr2.BaseStream.Position));
+            gr2.Close();
+
+            MemoryStream ms = new MemoryStream(data);
+
+            //DeflateStream ds = new DeflateStream(ms, CompressionMode.Decompress, true);
+
+            InflaterInputStream istream = new InflaterInputStream(ms);
+            //InflaterInputStream istream = new InflaterInputStream(gr2.BaseStream);
+
+            //GenericReader gr3 = new GenericReader(ds);
+            //GenericReader gr3 = new GenericReader(istream);
+            gr2 = new GenericReader(istream);
+            //gr2 = new GenericReader(istream);
+
+            //return gr3;
+            return gr2;
+        }
+
+        public static void ParseUpdatePacket(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             //MessageBox.Show(gr.BaseStream.Position.ToString() + " " + gr.BaseStream.Length.ToString());
 
@@ -23,7 +54,7 @@ namespace bin_parser
 
             sb.AppendLine("Packet offset " + (gr.BaseStream.Position - 2).ToString("X2"));
 
-            sb.AppendLine("Packet number: " + packet);
+            //sb.AppendLine("Packet number: " + packet);
 
             uint count = gr2.ReadUInt32();
             sb.AppendLine("Object count: " + count);
@@ -31,7 +62,7 @@ namespace bin_parser
             uint unk = gr2.ReadByte();
             sb.AppendLine("Unk: " + unk);
 
-            for (uint i = 1; i < count+1; i++)
+            for (uint i = 1; i < count + 1; i++)
             {
                 sb.AppendLine("Update block for object " + i + ":");
                 sb.AppendLine("Block offset " + gr.BaseStream.Position.ToString("X2"));
@@ -49,144 +80,144 @@ namespace bin_parser
             data2.Close();
         }
 
-        private bool ParseBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data)
+        private static bool ParseBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data)
         {
+            ulong guid = 0;
+
             UpdateTypes updatetype = (UpdateTypes)gr.ReadByte();
             sb.AppendLine("Updatetype: " + updatetype);
 
+            // check if updatetype is valid
             if (updatetype < UpdateTypes.UPDATETYPE_VALUES || updatetype > UpdateTypes.UPDATETYPE_NEAR_OBJECTS)
             {
                 long pos = gr.BaseStream.Position;
-                swe.WriteLine("wrong updatetype at position " + pos.ToString("X2"));
+                swe.WriteLine("wrong updatetype at position {0}", pos.ToString("X16"));
 
                 // we there only if we read packet wrong way
-                swe.WriteLine("Updatetype " + updatetype + " is not supported");
+                swe.WriteLine("Updatetype {0} is not supported", updatetype);
                 return false;
             }
 
-            if (updatetype == UpdateTypes.UPDATETYPE_VALUES)
+            switch (updatetype)
             {
-                ulong guid = gr.ReadPackedGuid();
-                sb.AppendLine("Object guid: " + guid.ToString("X16"));
+                case UpdateTypes.UPDATETYPE_VALUES:
+                    guid = gr.ReadPackedGuid();
+                    sb.AppendLine("Object guid: " + guid.ToString("X16"));
 
-                if (guid == 0)
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("wrong guid at position " + pos.ToString("X2"));
+                    if (guid == 0)
+                    {
+                        long pos = gr.BaseStream.Position;
+                        swe.WriteLine("wrong guid at position {0}", pos.ToString("X2"));
 
-                    // we there only if we read packet wrong way
-                    swe.WriteLine("Updatetype " + updatetype + " can't be with NULL guid");
-                    return false;
-                }
-
-                ObjectTypes objecttype = ObjectTypes.TYPEID_OBJECT; // 0
-                if(m_objects.ContainsKey(guid))
-                    objecttype = m_objects[guid];
-                else    // try old method...
-                {
-                    // object type auto detection:
-                    // F00C0000, F02B0000 - gameobjects
-                    // F00CXXXX, F02BXXXX - units (XXXX == 0000 for pets etc...)
-                    // F02B00000000XXXX - corpses
-                    // F02B00000000XXXX - dynamicobjects
-                    if (guid.ToString("X16").Substring(0, 8) == "40000000")
-                        objecttype = ObjectTypes.TYPEID_ITEM;
-                    else if (guid.ToString("X16").Substring(0, 8) == "00000000")
-                        objecttype = ObjectTypes.TYPEID_PLAYER;
-                    else
-                        objecttype = ObjectTypes.TYPEID_UNIT;
-
-                    swe.WriteLine("problem with objecttypeid detection for UPDATETYPE_VALUES");
-                }
-
-                sb.AppendLine("objectTypeId " + objecttype);
-
-                if (!ParseValuesUpdateBlock(gr, sb, swe, data, objecttype, updatetype))
-                    return false;
-
-                return true;
-            }
-
-            if (updatetype == UpdateTypes.UPDATETYPE_MOVEMENT)
-            {
-                ulong guid = gr.ReadPackedGuid();
-                sb.AppendLine("Object guid: " + guid.ToString("X16"));
-
-                if (!ParseMovementUpdateBlock(gr, sb, swe, data, ObjectTypes.TYPEID_UNIT))
-                    return false;
-
-                return true;
-            }
-
-            if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
-            {
-                ulong guid = gr.ReadPackedGuid();
-                sb.AppendLine("Object guid: " + guid.ToString("X16"));
-
-                ObjectTypes objectTypeId = (ObjectTypes)gr.ReadByte();
-                sb.AppendLine("objectTypeId " + objectTypeId);
-
-                // check object existance and remove it if needed...
-                if(m_objects.ContainsKey(guid))
-                    m_objects.Remove(guid);
-
-                // now we can add this object to Dictionary to get correct object type later...
-                m_objects.Add(guid, objectTypeId);
-
-                switch (objectTypeId)
-                {
-                    case ObjectTypes.TYPEID_OBJECT:
-                        swe.WriteLine("Unhandled object type " + objectTypeId);
-                        break;
-                    case ObjectTypes.TYPEID_ITEM:
-                    case ObjectTypes.TYPEID_CONTAINER:
-                    case ObjectTypes.TYPEID_UNIT:
-                    case ObjectTypes.TYPEID_PLAYER:
-                    case ObjectTypes.TYPEID_GAMEOBJECT:
-                    case ObjectTypes.TYPEID_DYNAMICOBJECT:
-                    case ObjectTypes.TYPEID_CORPSE:
-                        if (!ParseMovementUpdateBlock(gr, sb, swe, data, objectTypeId))
-                            return false;
-                        if (!ParseValuesUpdateBlock(gr, sb, swe, data, objectTypeId, updatetype))
-                            return false;
-                        break;
-                    case ObjectTypes.TYPEID_AIGROUP:
-                        swe.WriteLine("Unhandled object type " + objectTypeId);
-                        break;
-                    case ObjectTypes.TYPEID_AREATRIGGER:
-                        swe.WriteLine("Unhandled object type " + objectTypeId);
-                        break;
-                    default:
-                        swe.WriteLine("Unknown object type " + objectTypeId);
+                        // we there only if we read packet wrong way
+                        swe.WriteLine("Updatetype {0} can't be with NULL guid", updatetype);
                         return false;
-                }
-                return true;
-            }
+                    }
 
-            if (updatetype == UpdateTypes.UPDATETYPE_OUT_OF_RANGE_OBJECTS || updatetype == UpdateTypes.UPDATETYPE_NEAR_OBJECTS)
-            {
-                uint objects_count = gr.ReadUInt32();
+                    ObjectTypes objecttype = ObjectTypes.TYPEID_OBJECT; // 0
+                    if (Binparser.m_objects.ContainsKey(guid))
+                        objecttype = Binparser.m_objects[guid];
+                    else    // try old method...
+                    {
+                        // object type auto detection:
+                        // F00C0000, F02B0000 - gameobjects
+                        // F00CXXXX, F02BXXXX - units (XXXX == 0000 for pets etc...)
+                        // F02B00000000XXXX - corpses
+                        // F02B00000000XXXX - dynamicobjects
+                        if (guid.ToString("X16").Substring(0, 8).Equals("40000000"))
+                            objecttype = ObjectTypes.TYPEID_ITEM;
+                        else if (guid.ToString("X16").Substring(0, 8).Equals("00000000"))
+                            objecttype = ObjectTypes.TYPEID_PLAYER;
+                        else
+                            objecttype = ObjectTypes.TYPEID_UNIT;
 
-                if (objects_count > 1000) // we read packet wrong way
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                        swe.WriteLine("problem with objecttypeid detection for UPDATETYPE_VALUES");
+                    }
 
-                    swe.WriteLine("Too many " + updatetype + " objects");
-                    return false;
-                }
+                    sb.AppendLine("objectTypeId " + objecttype);
 
-                sb.AppendLine("guids_count " + objects_count);
+                    if (!ParseValuesUpdateBlock(gr, sb, swe, data, objecttype, updatetype))
+                        return false;
 
-                for(uint i = 0; i < objects_count; i++)
-                    sb.AppendLine("Guid" + i + ": " + gr.ReadPackedGuid().ToString("X16"));
-                return true;
+                    return true;
+                //break;
+                case UpdateTypes.UPDATETYPE_MOVEMENT:
+                    guid = gr.ReadPackedGuid();
+                    sb.AppendLine("Object guid: " + guid.ToString("X16"));
+
+                    if (!ParseMovementUpdateBlock(gr, sb, swe, data, ObjectTypes.TYPEID_UNIT))
+                        return false;
+
+                    return true;
+                //break;
+                case UpdateTypes.UPDATETYPE_CREATE_OBJECT:
+                case UpdateTypes.UPDATETYPE_CREATE_OBJECT2:
+                    guid = gr.ReadPackedGuid();
+                    sb.AppendLine("Object guid: " + guid.ToString("X16"));
+
+                    ObjectTypes objectTypeId = (ObjectTypes)gr.ReadByte();
+                    sb.AppendLine("objectTypeId " + objectTypeId);
+
+                    // check object existance and remove it if needed...
+                    if (Binparser.m_objects.ContainsKey(guid))
+                        Binparser.m_objects.Remove(guid);
+
+                    // now we can add this object to Dictionary to get correct object type later...
+                    Binparser.m_objects.Add(guid, objectTypeId);
+
+                    switch (objectTypeId)
+                    {
+                        case ObjectTypes.TYPEID_OBJECT:
+                        case ObjectTypes.TYPEID_AIGROUP:
+                        case ObjectTypes.TYPEID_AREATRIGGER:
+                            swe.WriteLine("Unhandled object type {0}", objectTypeId);
+                            break;
+                        case ObjectTypes.TYPEID_ITEM:
+                        case ObjectTypes.TYPEID_CONTAINER:
+                        case ObjectTypes.TYPEID_UNIT:
+                        case ObjectTypes.TYPEID_PLAYER:
+                        case ObjectTypes.TYPEID_GAMEOBJECT:
+                        case ObjectTypes.TYPEID_DYNAMICOBJECT:
+                        case ObjectTypes.TYPEID_CORPSE:
+                            if (!ParseMovementUpdateBlock(gr, sb, swe, data, objectTypeId))
+                                return false;
+                            if (!ParseValuesUpdateBlock(gr, sb, swe, data, objectTypeId, updatetype))
+                                return false;
+                            break;
+                        default:
+                            swe.WriteLine("Unknown object type {0}", objectTypeId);
+                            return false;
+                    }
+                    return true;
+                //break;
+                case UpdateTypes.UPDATETYPE_OUT_OF_RANGE_OBJECTS:
+                case UpdateTypes.UPDATETYPE_NEAR_OBJECTS:
+                    uint objects_count = gr.ReadUInt32();
+
+                    if (objects_count > 1000) // we read packet wrong way
+                    {
+                        long pos = gr.BaseStream.Position;
+                        swe.WriteLine("error position {0}", pos.ToString("X2"));
+
+                        swe.WriteLine("Too many {0} objects", updatetype);
+                        return false;
+                    }
+
+                    sb.AppendLine("guids_count " + objects_count);
+
+                    for (uint i = 0; i < objects_count; i++)
+                        sb.AppendLine("Guid" + i + ": " + gr.ReadPackedGuid().ToString("X16"));
+                    return true;
+                //break;
+                default:
+                    swe.WriteLine("Unknown updatetype {0}", updatetype);
+                    break;
             }
 
             return true;
         }
 
-        private bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype)
+        private static bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype)
         {
             sb.AppendLine("=== values_update_block_start ===");
 
@@ -207,20 +238,20 @@ namespace bin_parser
                 if (reallength > 160) // 5*32, ??
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing ITEM values update block, count " + reallength);
+                    swe.WriteLine("error while parsing ITEM values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.ITEM_END)
+                    if (index > UpdateFields.UpdateFields.CONTAINER_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.item_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.item_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -232,20 +263,20 @@ namespace bin_parser
                 if (reallength > 256) // 32*8 (for units bitmask = 8)
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing UNIT values update block, count " + reallength);
+                    swe.WriteLine("error while parsing UNIT values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UNIT_END)
+                    if (index > UpdateFields.UpdateFields.UNIT_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.unit_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.unit_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -257,20 +288,20 @@ namespace bin_parser
                 if (reallength > 1440) // 32*45 (for player bitmask = 45)
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing PLAYER values update block, count " + reallength);
+                    swe.WriteLine("error while parsing PLAYER values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.PLAYER_END)
+                    if (index > UpdateFields.UpdateFields.PLAYER_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.unit_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.unit_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -282,20 +313,20 @@ namespace bin_parser
                 if (reallength > 32) // 1*32
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing GO values update block, count " + reallength);
+                    swe.WriteLine("error while parsing GO values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.GO_END)
+                    if (index > UpdateFields.UpdateFields.GO_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.go_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.go_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -307,20 +338,20 @@ namespace bin_parser
                 if (reallength > 32) // 1*32
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing DO values update block, count " + reallength);
+                    swe.WriteLine("error while parsing DO values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.DO_END)
+                    if (index > UpdateFields.UpdateFields.DO_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.do_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.do_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -332,20 +363,20 @@ namespace bin_parser
                 if (reallength > 64) // 2*32
                 {
                     long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position " + pos.ToString("X2"));
+                    swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing CORPSE values update block, count " + reallength);
+                    swe.WriteLine("error while parsing CORPSE values update block, count {0}", reallength);
                     return false;
                 }
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.CORPSE_END)
+                    if (index > UpdateFields.UpdateFields.CORPSE_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.corpse_uf[index];
+                        UpdateField uf = UpdateFields.UpdateFields.corpse_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -355,7 +386,7 @@ namespace bin_parser
             return true;
         }
 
-        private void ReadAndDumpField(UpdateField uf, StringBuilder sb, GenericReader gr, UpdateTypes updatetype, StreamWriter data)
+        private static void ReadAndDumpField(UpdateField uf, StringBuilder sb, GenericReader gr, UpdateTypes updatetype, StreamWriter data)
         {
             switch (uf.Type)
             {
@@ -379,7 +410,8 @@ namespace bin_parser
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + gr.ReadUInt16().ToString("X4") + ", second " + gr.ReadUInt16().ToString("X4"));
                     break;
                 case 3: // float
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle());
+                    //sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
                     break;
                 case 4: // uint64 (can be only low part)
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
@@ -393,7 +425,7 @@ namespace bin_parser
             }
         }
 
-        private bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId)
+        private static bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId)
         {
             Coords4 coords;
             coords.X = 0;
@@ -431,7 +463,7 @@ namespace bin_parser
                 }
             }
 
-            if((flags & UpdateFlags.UPDATEFLAG_LIVING) != 0)   // 0x20
+            if ((flags & UpdateFlags.UPDATEFLAG_LIVING) != 0)   // 0x20
             {
                 /*if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
@@ -540,7 +572,7 @@ namespace bin_parser
                 }
             }
 
-            if((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
+            if ((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
             {
                 uint temp = gr.ReadUInt32();
                 sb.AppendLine("flags & 0x10: " + temp.ToString("X8"));
@@ -564,10 +596,10 @@ namespace bin_parser
                 sb.AppendLine("flags & 0x02 t_time: " + time.ToString("X8"));
             }
 
-            if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
+            /*if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
             {
                 // nothing
-            }
+            }*/
 
             sb.AppendLine("=== movement_update_block_end ===");
             return true;
