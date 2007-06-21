@@ -1,0 +1,5 @@
+bin\Debug\character_convertor.exe
+bin\Debug\character_convertor.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\character_convertor.exe
+obj\Debug\character_convertor.pdb

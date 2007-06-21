@@ -1,10 +1,11 @@
 using System.IO;
 using System.Text;
 using Defines;
+using WoWReader;
 
-namespace bin_parser
+namespace OpcodeParsers
 {
-    public partial class Form1
+    public class OpcodeParsers
     {
         /// <summary>
         /// Monster move opcode parser method.
@@ -14,7 +15,7 @@ namespace bin_parser
         /// <param name="sb">Logger string builder.</param>
         /// <param name="swe">Error logger writer.</param>
         /// <returns>Successful</returns>
-        private bool ParseMonsterMoveOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseMonsterMoveOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_MONSTER_MOVE (0x00DD)");
@@ -100,7 +101,7 @@ namespace bin_parser
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        private bool ParseInitialSpellsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseInitialSpellsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_INITIAL_SPELLS (0x012A)");
@@ -140,14 +141,16 @@ namespace bin_parser
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        private bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
-            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Packet offset ");
+            sb.AppendLine(gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_AUCTION_LIST_RESULT (0x025C)");
 
             uint count = gr2.ReadUInt32();
 
-            sb.AppendLine("count " + count);
+            sb.AppendLine("count ");
+            sb.AppendLine(count.ToString());
 
             for (uint i = 0; i < count; i++)
             {
@@ -228,7 +231,7 @@ namespace bin_parser
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        private bool ParsePartyMemberStatsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParsePartyMemberStatsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_PARTY_MEMBER_STATS (0x007E)");
@@ -348,6 +351,50 @@ namespace bin_parser
 
                 }
             }
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sb.AppendLine("parsed: ok...");
+            else
+                sb.AppendLine("parsed: error...");
+
+            return true;
+        }
+
+        public static bool ParseTrainerListOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_TRAINER_LIST (0x01B1)");
+
+            StreamWriter sw = new StreamWriter("trainer.log", true, Encoding.ASCII);
+
+            ulong guid = gr2.ReadUInt64();
+            TrainerType trainer_type = (TrainerType)gr2.ReadUInt32();
+            uint spells_count = gr2.ReadUInt32();
+
+            sw.WriteLine("Trainer {0}, type {1}, spells_count {2}", guid.ToString("X16"), trainer_type, spells_count);
+
+            for (uint i = 0; i < spells_count; i++)
+            {
+                uint spellid = gr2.ReadUInt32();
+                TrainerSpellState state = (TrainerSpellState)gr2.ReadByte();
+                uint spellcost = gr2.ReadUInt32();
+                uint unk1 = gr2.ReadUInt32();   // isProfession?
+                uint unk2 = gr2.ReadUInt32();
+                byte reqlevel = gr2.ReadByte();
+                uint reqskill = gr2.ReadUInt32();
+                uint reqskillvalue = gr2.ReadUInt32();
+                uint reqspell = gr2.ReadUInt32();
+                uint unk3 = gr2.ReadUInt32();
+                uint unk4 = gr2.ReadUInt32();
+
+                sw.WriteLine("Spell {0}, state {1}, cost {2}, unk1 {3}, unk2 {4}, reqlevel {5}, reqskill {6}, reqskillvalue {7}, reqspell {8}, unk3 {9} unk4 {10}", spellid, state, spellcost, unk1, unk2, reqlevel, reqskill, reqskillvalue, reqspell, unk3, unk4);
+            }
+
+            string title = gr2.ReadStringNull();
+            sw.WriteLine("title {0}", title);
+
+            sw.Flush();
+            sw.Close();
 
             if (gr2.BaseStream.Position == gr2.BaseStream.Length)
                 sb.AppendLine("parsed: ok...");

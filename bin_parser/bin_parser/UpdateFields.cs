@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace bin_parser
+namespace UpdateFields
 {
     #region UpdateTypes
     /// <summary>
@@ -79,7 +79,7 @@ namespace bin_parser
     /// <summary>
     /// WoW object types.
     /// </summary>
-    public enum ObjectTypes
+    public enum ObjectTypes : uint
     {
         /// <summary>
         /// An object.
@@ -131,13 +131,15 @@ namespace bin_parser
         public string Name;
         public uint Type;
         public uint Format;
+        public uint Value;
 
-        public UpdateField(uint id, string name, uint type, uint format)
+        public UpdateField(uint id, string name, uint type, uint format, uint value)
         {
             Identifier = id;
             Name = name;
             Type = type;
             Format = format;
+            Value = value;
         }
     }
     #endregion
@@ -145,9 +147,17 @@ namespace bin_parser
     public class UpdateFields
     {
         /// <summary>
+        /// Object update fields end.
+        /// </summary>
+        public static uint OBJECT_END = 6;
+        /// <summary>
         /// Item update fields end.
         /// </summary>
-        public static uint ITEM_END = 134;
+        public static uint ITEM_END = 60;
+        /// <summary>
+        /// Container update fields end.
+        /// </summary>
+        public static uint CONTAINER_END = 134;
         /// <summary>
         /// Unit update fields end.
         /// </summary>
@@ -215,7 +225,7 @@ namespace bin_parser
                 //uint format = Convert.ToUInt32(arr[3]);
                 uint format = 0;
 
-                UpdateField uf = new UpdateField(id, name, type1, format);
+                UpdateField uf = new UpdateField(id, name, type1, format, 0);
                 switch (type)
                 {
                     case 0:
