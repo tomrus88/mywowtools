@@ -437,7 +437,7 @@ namespace A9parser
             uint flags2 = 0;
 
             UpdateFlags flags = (UpdateFlags)gr.ReadByte();
-            sb.AppendLine("flags " + flags.ToString("X"));
+            sb.AppendLine("flags " + flags.ToString("X") + ": " + flags);
 
             if ((UpdateFlags.UPDATEFLAG_LIVING & flags) != 0) // 0x20
             {

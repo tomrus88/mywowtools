@@ -276,22 +276,22 @@ namespace uf_extractor
             // пишем в файл
             StreamWriter sw = new StreamWriter("UpdateFields.h");
             sw.WriteLine("/*");
-            sw.WriteLine("* Copyright (C) 2005,2006,2007 MaNGOS <http://www.mangosproject.org/>");
-            sw.WriteLine("*");
-            sw.WriteLine("* This program is free software; you can redistribute it and/or modify");
-            sw.WriteLine("* it under the terms of the GNU General Public License as published by");
-            sw.WriteLine("* the Free Software Foundation; either version 2 of the License, or");
-            sw.WriteLine("* (at your option) any later version.");
-            sw.WriteLine("*");
-            sw.WriteLine("* This program is distributed in the hope that it will be useful,");
-            sw.WriteLine("* but WITHOUT ANY WARRANTY; without even the implied warranty of");
-            sw.WriteLine("* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
-            sw.WriteLine("* GNU General Public License for more details.");
-            sw.WriteLine("*");
-            sw.WriteLine("* You should have received a copy of the GNU General Public License");
-            sw.WriteLine("* along with this program; if not, write to the Free Software");
-            sw.WriteLine("* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA");
-            sw.WriteLine("*/");
+            sw.WriteLine(" * Copyright (C) 2005,2006,2007 MaNGOS <http://www.mangosproject.org/>");
+            sw.WriteLine(" *");
+            sw.WriteLine(" * This program is free software; you can redistribute it and/or modify");
+            sw.WriteLine(" * it under the terms of the GNU General Public License as published by");
+            sw.WriteLine(" * the Free Software Foundation; either version 2 of the License, or");
+            sw.WriteLine(" * (at your option) any later version.");
+            sw.WriteLine(" *");
+            sw.WriteLine(" * This program is distributed in the hope that it will be useful,");
+            sw.WriteLine(" * but WITHOUT ANY WARRANTY; without even the implied warranty of");
+            sw.WriteLine(" * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+            sw.WriteLine(" * GNU General Public License for more details.");
+            sw.WriteLine(" *");
+            sw.WriteLine(" * You should have received a copy of the GNU General Public License");
+            sw.WriteLine(" * along with this program; if not, write to the Free Software");
+            sw.WriteLine(" * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA");
+            sw.WriteLine(" */");
             sw.WriteLine();
             sw.WriteLine("#include \"Common.h\"");
             sw.WriteLine();
@@ -367,6 +367,7 @@ namespace uf_extractor
             }
             sw.WriteLine("    " + zsp(list[count - 1].Name.Substring(0, list[count - 1].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0},", (list[count - 1].Pos + 1 + delta).ToString("X4"));
             sw.WriteLine("};");
+            sw.WriteLine("#endif");
 
             sw.Flush();
             sw.Close();
