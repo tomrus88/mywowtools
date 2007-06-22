@@ -403,5 +403,63 @@ namespace OpcodeParsers
 
             return true;
         }
+
+        public static bool ParseAttackerStateUpdateOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_ATTACKERSTATEUPDATE (0x01B1)");
+
+            StreamWriter sw = new StreamWriter("attacker_state.log", true, Encoding.ASCII);
+
+            HitInfo hi = (HitInfo)gr2.ReadUInt32();
+            ulong attacker = gr2.ReadPackedGuid();
+            ulong target = gr2.ReadPackedGuid();
+
+            uint damage = gr2.ReadUInt32();
+
+            sw.WriteLine("HitInfo {0}", hi);
+            sw.WriteLine("attacker {0}", attacker.ToString("X16"));
+            sw.WriteLine("target {0}", target.ToString("X16"));
+            sw.WriteLine("damage {0}", damage);
+
+            byte count = gr2.ReadByte();
+            sw.WriteLine("count {0}", count);
+
+            for (byte i = 0; i < count; i++)
+            {
+                ITEM_DAMAGE_TYPE damagetype = (ITEM_DAMAGE_TYPE)gr2.ReadUInt32();
+                float damage2 = gr2.ReadSingle();
+                uint damage3 = gr2.ReadUInt32();
+                uint adsorb = gr2.ReadUInt32();
+                uint resist = gr2.ReadUInt32();
+
+                sw.WriteLine("damagetype {0}", damagetype);
+                sw.WriteLine("damage2 {0}", damage2);
+                sw.WriteLine("damage3 {0}", damage3);
+                sw.WriteLine("adsorb {0}", adsorb);
+                sw.WriteLine("resist {0}", resist);
+            }
+
+            VictimState targetstate = (VictimState)gr2.ReadUInt32();
+            uint unk1 = gr2.ReadUInt32();
+            uint unk2 = gr2.ReadUInt32();
+            uint blocked = gr2.ReadUInt32();
+
+            sw.WriteLine("targetstate {0}", targetstate);
+            sw.WriteLine("unk1 {0}", unk1);
+            sw.WriteLine("unk2 {0}", unk2);
+            sw.WriteLine("blocked {0}", blocked);
+            sw.WriteLine();
+
+            sw.Flush();
+            sw.Close();
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sb.AppendLine("parsed: ok...");
+            else
+                sb.AppendLine("parsed: error...");
+
+            return true;
+        }
     }
 }

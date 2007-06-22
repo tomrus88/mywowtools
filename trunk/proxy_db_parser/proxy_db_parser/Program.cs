@@ -11,9 +11,16 @@ namespace proxy_db_parser
     {
         static void Main(string[] args)
         {
+            // Get current directory info
             DirectoryInfo di = new DirectoryInfo(".");
+
+            // Get file info for files in current directory and subfolders
             FileInfo[] fi = di.GetFiles("*.sqlite", SearchOption.AllDirectories);
 
+            // Output small info
+            Console.WriteLine("Found {0} files to parse", fi.Length);
+
+            // Create dump file for each database
             foreach (FileInfo f in fi)
             {
                 Console.WriteLine("Parsing {0}...", f.Name);
@@ -25,16 +32,16 @@ namespace proxy_db_parser
                 SQLiteConnection connection = new SQLiteConnection("Data Source=" + f.Name);
                 SQLiteCommand command = new SQLiteCommand(connection);
                 connection.Open();
-                command.CommandText = "SELECT opcode,data FROM packets;";
+                command.CommandText = "SELECT opcode, data FROM packets;";
                 command.Prepare();
                 SQLiteDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    uint opcode = (uint)reader.GetInt32(0);
+                    ushort opcode = (ushort)reader.GetInt16(0);
                     byte[] data = (byte[])reader.GetValue(1);
 
-                    uint size = sizeof(uint) + (uint)data.Length;
+                    uint size = sizeof(ushort) + (uint)data.Length;
 
                     bw.Write(size);
                     bw.Write(opcode);

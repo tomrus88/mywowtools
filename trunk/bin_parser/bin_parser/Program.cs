@@ -32,7 +32,8 @@ namespace bin_parser
             Console.WriteLine("Starting at {0}", starttime);
 
             DirectoryInfo di = new DirectoryInfo("."); // DirectoryInfo
-            FileInfo[] fi = di.GetFiles("tcp*.log.dump", SearchOption.AllDirectories); // Get file list
+            //FileInfo[] fi = di.GetFiles("tcp*.log.dump", SearchOption.AllDirectories); // Get file list
+            FileInfo[] fi = di.GetFiles("*.dump", SearchOption.AllDirectories); // Get file list
 
             Console.WriteLine("Found {0} files to parse", fi.Length);
 
@@ -152,16 +153,19 @@ namespace bin_parser
                 /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
                     //OpcodeParsers.OpcodeParsers.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
                     break;*/
-                /*case 0x00A9:    // SMSG_UPDATE_OBJECT
+                case 0x00A9:    // SMSG_UPDATE_OBJECT
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;*/
-                /*case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
+                    break;
+                case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
                     gr2 = A9.Decompress(gr2);
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;*/
-                case 0x01B1:
-                    OpcodeParsers.OpcodeParsers.ParseTrainerListOpcode(gr, gr2, sb, swe);
                     break;
+                /*case 0x01B1:
+                    OpcodeParsers.OpcodeParsers.ParseTrainerListOpcode(gr, gr2, sb, swe);
+                    break;*/
+                /*case 0x014A:
+                    OpcodeParsers.OpcodeParsers.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe);
+                    break;*/
                 default:    // unhandled opcode
                     return false;
             }
