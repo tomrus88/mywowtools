@@ -1,5 +1,0 @@
-bin\Debug\pass_gen.exe
-bin\Debug\pass_gen.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\pass_gen.exe
-obj\Debug\pass_gen.pdb
