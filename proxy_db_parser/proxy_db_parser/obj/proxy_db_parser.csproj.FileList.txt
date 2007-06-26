@@ -1,6 +1,0 @@
-bin\Debug\proxy_db_parser.exe
-bin\Debug\proxy_db_parser.pdb
-bin\Debug\System.Data.SQLite.dll
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\proxy_db_parser.exe
-obj\Debug\proxy_db_parser.pdb

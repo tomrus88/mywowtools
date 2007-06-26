@@ -1,5 +1,0 @@
-bin\Debug\uf_extractor.exe
-bin\Debug\uf_extractor.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\uf_extractor.exe
-obj\Debug\uf_extractor.pdb

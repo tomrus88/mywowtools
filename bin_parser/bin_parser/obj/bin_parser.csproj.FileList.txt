@@ -1,6 +1,0 @@
-bin\Debug\bin_parser.exe
-bin\Debug\bin_parser.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\bin_parser.exe
-obj\Debug\bin_parser.pdb
-bin\Debug\ICSharpCode.SharpZipLib.dll
