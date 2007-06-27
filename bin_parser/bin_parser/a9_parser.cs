@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
-//using ICSharpCode.SharpZipLib;
-using System.IO.Compression;
+
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 using WoWReader;
@@ -246,12 +243,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.CONTAINER_END)
+                    if (index > UpdateFieldsLoader.CONTAINER_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.item_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.item_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -271,12 +268,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.UNIT_END)
+                    if (index > UpdateFieldsLoader.UNIT_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.unit_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.unit_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -296,12 +293,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.PLAYER_END)
+                    if (index > UpdateFieldsLoader.PLAYER_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.unit_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.unit_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -321,12 +318,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.GO_END)
+                    if (index > UpdateFieldsLoader.GO_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.go_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.go_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -346,12 +343,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.DO_END)
+                    if (index > UpdateFieldsLoader.DO_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.do_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.do_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }
@@ -371,12 +368,12 @@ namespace A9parser
 
                 for (uint index = 0; index < reallength; index++)
                 {
-                    if (index > UpdateFields.UpdateFields.CORPSE_END)
+                    if (index > UpdateFieldsLoader.CORPSE_END)
                         break;
 
                     if (Mask[index])
                     {
-                        UpdateField uf = UpdateFields.UpdateFields.corpse_uf[index];
+                        UpdateField uf = UpdateFieldsLoader.corpse_uf[index];
                         ReadAndDumpField(uf, sb, gr, updatetype, data);
                     }
                 }

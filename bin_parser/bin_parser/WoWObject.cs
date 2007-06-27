@@ -75,7 +75,7 @@ namespace WoWObjects
 
         public WoWObject()
         {
-            END = UpdateFields.UpdateFields.OBJECT_END;
+            END = UpdateFieldsLoader.OBJECT_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             m_typeId = UpdateFields.ObjectTypes.TYPEID_OBJECT;
         }
@@ -86,7 +86,7 @@ namespace WoWObjects
     {
         public Item()
         {
-            END = UpdateFields.UpdateFields.ITEM_END;
+            END = UpdateFieldsLoader.ITEM_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_ITEM;
         }
@@ -97,7 +97,7 @@ namespace WoWObjects
     {
         public Container()
         {
-            END = UpdateFields.UpdateFields.CONTAINER_END;
+            END = UpdateFieldsLoader.CONTAINER_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_CONTAINER;
         }
@@ -108,7 +108,7 @@ namespace WoWObjects
     {
         public Unit()
         {
-            END = UpdateFields.UpdateFields.UNIT_END;
+            END = UpdateFieldsLoader.UNIT_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_UNIT;
         }
@@ -119,7 +119,7 @@ namespace WoWObjects
     {
         public Player()
         {
-            END = UpdateFields.UpdateFields.PLAYER_END;
+            END = UpdateFieldsLoader.PLAYER_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_PLAYER;
         }
@@ -130,7 +130,7 @@ namespace WoWObjects
     {
         public GameObject()
         {
-            END = UpdateFields.UpdateFields.GO_END;
+            END = UpdateFieldsLoader.GO_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_GAMEOBJECT;
         }
@@ -141,7 +141,7 @@ namespace WoWObjects
     {
         public DynamicObject()
         {
-            END = UpdateFields.UpdateFields.DO_END;
+            END = UpdateFieldsLoader.DO_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_DYNAMICOBJECT;
         }
@@ -152,7 +152,7 @@ namespace WoWObjects
     {
         public Corpse()
         {
-            END = UpdateFields.UpdateFields.CORPSE_END;
+            END = UpdateFieldsLoader.CORPSE_END;
             fields = new Dictionary<uint, UpdateField>((int)END);
             TypeId = UpdateFields.ObjectTypes.TYPEID_CORPSE;
         }
