@@ -25,7 +25,7 @@ namespace bin_parser
             bp.nfi = new CultureInfo("en-us", false).NumberFormat;
             bp.nfi.NumberDecimalSeparator = ".";
 
-            UpdateFields.UpdateFields.LoadUpdateFields();
+            UpdateFieldsLoader.LoadUpdateFields();
 
             DateTime starttime = DateTime.Now;
 
@@ -177,12 +177,6 @@ namespace bin_parser
             gr2.Close();
 
             return true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //UpdateFields.LoadUpdateFields();
-            UpdateFields.UpdateFields.LoadUpdateFields();
         }
     }
 }

@@ -144,7 +144,7 @@ namespace UpdateFields
     }
     #endregion
 
-    public class UpdateFields
+    public class UpdateFieldsLoader
     {
         /// <summary>
         /// Object update fields end.
