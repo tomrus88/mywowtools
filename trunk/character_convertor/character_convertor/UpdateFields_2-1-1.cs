@@ -1,6 +1,6 @@
-// Auto generated for version 2.1.1, build 6739
+// Auto generated for version 2.1.2, build 6803
 
-enum UpdateFieldsNew
+enum UpdateFieldsNew : ushort
 {
     OBJECT_FIELD_GUID                         = 0x0000, // 2 4 1
     OBJECT_FIELD_TYPE                         = 0x0002, // 1 1 1
