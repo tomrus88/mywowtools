@@ -57,7 +57,7 @@ namespace Defines
     [Flags]
     enum HitInfo
     {
-        HITINFO_NORMALSWING  = 0x00000000,
+        HITINFO_NORMALSWING = 0x00000000,
         HITINFO_UNK1 = 0x00000001,
         HITINFO_NORMALSWING2 = 0x00000002,
         HITINFO_LEFTSWING = 0x00000004,
@@ -113,5 +113,64 @@ namespace Defines
         VICTIMSTATE_EVADES = 6,
         VICTIMSTATE_IS_IMMUNE = 7,
         VICTIMSTATE_DEFLECTS = 8
+    };
+
+    enum Races
+    {
+        RACE_HUMAN = 1,
+        RACE_ORC = 2,
+        RACE_DWARF = 3,
+        RACE_NIGHTELF = 4,
+        RACE_UNDEAD_PLAYER = 5,
+        RACE_TAUREN = 6,
+        RACE_GNOME = 7,
+        RACE_TROLL = 8,
+        RACE_GOBLIN = 9,
+        RACE_BLOODELF = 10,
+        RACE_DRAENEI = 11,
+        RACE_FEL_ORC = 12,
+        RACE_NAGA = 13,
+        RACE_BROKEN = 14,
+        RACE_SKELETON = 15
+    };
+
+    enum Class
+    {
+        CLASS_WARRIOR = 1,
+        CLASS_PALADIN = 2,
+        CLASS_HUNTER = 3,
+        CLASS_ROGUE = 4,
+        CLASS_PRIEST = 5,
+        // CLASS_UNK1   = 6, unused
+        CLASS_SHAMAN = 7,
+        CLASS_MAGE = 8,
+        CLASS_WARLOCK = 9,
+        // CLASS_UNK2   = 10,unused
+        CLASS_DRUID = 11
+    };
+
+    enum Gender
+    {
+        MALE = 0,
+        FEMALE = 1,
+        NOSEX = 2
+    };
+
+    enum Powers
+    {
+        POWER_MANA = 0,
+        POWER_RAGE = 1,
+        POWER_FOCUS = 2,
+        POWER_ENERGY = 3,
+        POWER_HAPPINESS = 4
+    };
+
+    [Flags]
+    enum ProfessionFlags
+    {
+        PROF_FLAG_NONE = 0,
+        PROF_FLAG_PASSIVE = 1,
+        PROF_FLAG_SECONDARY = 2,
+        PROF_FLAG_PRIMARY = 4,
     };
 }

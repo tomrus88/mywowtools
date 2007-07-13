@@ -9,6 +9,7 @@ using WoWReader;
 using BitArray;
 using UpdateFields;
 using bin_parser;
+using Defines;
 
 namespace A9parser
 {
@@ -404,7 +405,38 @@ namespace A9parser
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
                     break;
                 case 2: // uint16+uint16
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + gr.ReadUInt16().ToString("X4") + ", second " + gr.ReadUInt16().ToString("X4"));
+                    ushort value1 = gr.ReadUInt16();
+                    ushort value2 = gr.ReadUInt16();
+
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + value1.ToString("X4") + ", second " + value2.ToString("X4"));
+                    if (uf.Identifier > 857 && uf.Identifier < 1242)
+                    {
+                        uint num = uf.Identifier - 858;
+                        if ((num % 3) == 0)
+                        {
+                            ushort skill = value1;
+                            ushort flag = value2;
+
+                            string str = String.Format("skill {0}, flag {1}", skill, (ProfessionFlags)flag);
+                            sb.AppendLine(str);
+                        }
+                        else if (((num - 1) % 3) == 0)
+                        {
+                            ushort minskill = value1;
+                            ushort maxskill = value2;
+
+                            string str = String.Format("minskill {0}, maxskill {1}", minskill, maxskill);
+                            sb.AppendLine(str);
+                        }
+                        else
+                        {
+                            ushort minbonus = value1;
+                            ushort maxbonus = value2;
+
+                            string str = String.Format("minbonus {0}, maxbonus {1}", minbonus, maxbonus);
+                            sb.AppendLine(str);
+                        }
+                    }
                     break;
                 case 3: // float
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle());
@@ -414,7 +446,19 @@ namespace A9parser
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
                     break;
                 case 5: // bytes
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    uint value = gr.ReadUInt32();
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + value.ToString("X8"));
+                    if (uf.Identifier == 36) // UNIT_FIELD_BYTES_0
+                    {
+                        byte[] bytes = BitConverter.GetBytes(value);
+                        Races race = (Races)bytes[0];
+                        Class class_ = (Class)bytes[1];
+                        Gender gender = (Gender)bytes[2];
+                        Powers powertype = (Powers)bytes[3];
+
+                        string str = String.Format("Race: {0}, class: {1}, gender: {2}, powertype: {3}", race, class_, gender, powertype);
+                        sb.AppendLine(str);
+                    }
                     break;
                 default:
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "unknown type " + gr.ReadUInt32().ToString("X8"));
