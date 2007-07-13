@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace uf_extractor
 {
@@ -31,7 +32,7 @@ namespace uf_extractor
         private static TextReader tr;
         private static long start_str_ofs, start_ofs, str_ofs, str_ofs_delta;
         private static long last_end, delta;
-        private static string release_ver, release_build;
+        private static string version;
         private static string stream_string;
         private static long object_end, container_end, item_end, unit_end, player_end, gameobject_end, dynobject_end;
         private static List<UpdateField> list = new List<UpdateField>();
@@ -71,7 +72,7 @@ namespace uf_extractor
                 return;
             }
 
-            fs = new FileStream(wow_exe_name, FileMode.Open);
+            fs = new FileStream(wow_exe_name, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             gr = new GenericReader(fs);
 
@@ -112,24 +113,13 @@ namespace uf_extractor
 
         private static bool FindVersionInfo()
         {
-            release_ver = "0";
-            release_build = "0";
+            string dir = Directory.GetCurrentDirectory();
 
-            int i = stream_string.IndexOf("RELEASE_BUILD");
-            if (i > 0)
-            {
-                Console.WriteLine("Version info found at {0}", i.ToString("X8"));
+            FileVersionInfo info = FileVersionInfo.GetVersionInfo(dir + "\\" + wow_exe_name);
 
-                gr.BaseStream.Position = i - 0x10;
-                release_build = gr.ReadStringNull();
+            version = info.FileVersion;
 
-                gr.BaseStream.Position += 0x03;
-                release_ver = gr.ReadStringNull();
-
-                return true;
-            }
-            Console.WriteLine("Version info not found");
-            return false;
+            return true;
         }
 
         private static bool FindFieldsNamesStart()
@@ -296,7 +286,7 @@ namespace uf_extractor
             sw.WriteLine("#ifndef _UPDATEFIELDS_AUTO_H");
             sw.WriteLine("#define _UPDATEFIELDS_AUTO_H");
             sw.WriteLine();
-            sw.WriteLine("// Auto generated for version {0}, build {1}", release_ver, release_build);
+            sw.WriteLine("// Auto generated for version {0}", version);
             sw.WriteLine();
             sw.WriteLine("enum EObjectFields");
             sw.WriteLine("{");
