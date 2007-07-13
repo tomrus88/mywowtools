@@ -293,10 +293,9 @@ namespace uf_extractor
             sw.WriteLine(" * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA");
             sw.WriteLine(" */");
             sw.WriteLine();
-            sw.WriteLine("#include \"Common.h\"");
-            sw.WriteLine();
             sw.WriteLine("#ifndef _UPDATEFIELDS_AUTO_H");
             sw.WriteLine("#define _UPDATEFIELDS_AUTO_H");
+            sw.WriteLine();
             sw.WriteLine("// Auto generated for version {0}, build {1}", release_ver, release_build);
             sw.WriteLine();
             sw.WriteLine("enum EObjectFields");
@@ -365,7 +364,7 @@ namespace uf_extractor
 
                 sw.WriteLine("    " + zsp(list[k].Name, 42, true) + " = 0x{0}, // {1}", (list[k].Pos + delta).ToString("X4"), list[k].Descr);
             }
-            sw.WriteLine("    " + zsp(list[count - 1].Name.Substring(0, list[count - 1].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0},", (list[count - 1].Pos + 1 + delta).ToString("X4"));
+            sw.WriteLine("    " + zsp(list[count].Name.Substring(0, list[count].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0},", (list[count].Pos + 1 + delta).ToString("X4"));
             sw.WriteLine("};");
             sw.WriteLine("#endif");
 
