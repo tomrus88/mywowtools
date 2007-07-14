@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Security.Cryptography;
 
 namespace pass_gen
@@ -16,12 +17,7 @@ namespace pass_gen
 
             string temp = username + ":" + password;
 
-            byte[] temp2 = new byte[temp.Length];
-
-            for(int i = 0; i < temp.Length;i++)
-            {
-                temp2[i] = (byte)temp[i];
-            }
+            byte[] temp2 = Encoding.ASCII.GetBytes(temp);
 
             sha.ComputeHash(temp2, 0, temp2.Length);
 
