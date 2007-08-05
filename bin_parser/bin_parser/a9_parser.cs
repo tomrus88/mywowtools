@@ -6,7 +6,7 @@ using System.Globalization;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 using WoWReader;
-using BitArray;
+using MyBitArray;
 using UpdateFields;
 using bin_parser;
 using Defines;
@@ -138,7 +138,6 @@ namespace A9parser
                         return false;
 
                     return true;
-                //break;
                 case UpdateTypes.UPDATETYPE_MOVEMENT:
                     guid = gr.ReadPackedGuid();
                     sb.AppendLine("Object guid: " + guid.ToString("X16"));
@@ -147,7 +146,6 @@ namespace A9parser
                         return false;
 
                     return true;
-                //break;
                 case UpdateTypes.UPDATETYPE_CREATE_OBJECT:
                 case UpdateTypes.UPDATETYPE_CREATE_OBJECT2:
                     guid = gr.ReadPackedGuid();
@@ -169,7 +167,7 @@ namespace A9parser
                         case ObjectTypes.TYPEID_AIGROUP:
                         case ObjectTypes.TYPEID_AREATRIGGER:
                             swe.WriteLine("Unhandled object type {0}", objectTypeId);
-                            break;
+                            return false;
                         case ObjectTypes.TYPEID_ITEM:
                         case ObjectTypes.TYPEID_CONTAINER:
                         case ObjectTypes.TYPEID_UNIT:
@@ -181,13 +179,11 @@ namespace A9parser
                                 return false;
                             if (!ParseValuesUpdateBlock(gr, sb, swe, data, objectTypeId, updatetype))
                                 return false;
-                            break;
+                            return true;
                         default:
                             swe.WriteLine("Unknown object type {0}", objectTypeId);
                             return false;
                     }
-                    return true;
-                //break;
                 case UpdateTypes.UPDATETYPE_OUT_OF_RANGE_OBJECTS:
                 case UpdateTypes.UPDATETYPE_NEAR_OBJECTS:
                     uint objects_count = gr.ReadUInt32();
@@ -206,13 +202,10 @@ namespace A9parser
                     for (uint i = 0; i < objects_count; i++)
                         sb.AppendLine("Guid" + i + ": " + gr.ReadPackedGuid().ToString("X16"));
                     return true;
-                //break;
                 default:
                     swe.WriteLine("Unknown updatetype {0}", updatetype);
-                    break;
+                    return false;
             }
-
-            return true;
         }
 
         private static bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype)
@@ -230,153 +223,79 @@ namespace A9parser
 
             int reallength = Mask.RealLength; // bitmask size (bits)
 
-            // item/container values update block
-            if (objectTypeId == ObjectTypes.TYPEID_ITEM || objectTypeId == ObjectTypes.TYPEID_CONTAINER)
+            int bitmask_max_size = 0;
+            uint values_end = 0;
+
+            switch (objectTypeId)
             {
-                if (reallength > 160) // 5*32, ??
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing ITEM values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.CONTAINER_END)
-                        break;
-
-                    if (Mask[index])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.item_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
-                    }
-                }
+                case ObjectTypes.TYPEID_ITEM:
+                    bitmask_max_size = 64;
+                    values_end = UpdateFieldsLoader.ITEM_END;
+                    break;
+                case ObjectTypes.TYPEID_CONTAINER:
+                    bitmask_max_size = 160;
+                    values_end = UpdateFieldsLoader.CONTAINER_END;
+                    break;
+                case ObjectTypes.TYPEID_UNIT:
+                    bitmask_max_size = 256;
+                    values_end = UpdateFieldsLoader.UNIT_END;
+                    break;
+                case ObjectTypes.TYPEID_PLAYER:
+                    bitmask_max_size = 1440;
+                    values_end = UpdateFieldsLoader.PLAYER_END;
+                    break;
+                case ObjectTypes.TYPEID_GAMEOBJECT:
+                    bitmask_max_size = 32;
+                    values_end = UpdateFieldsLoader.GO_END;
+                    break;
+                case ObjectTypes.TYPEID_DYNAMICOBJECT:
+                    bitmask_max_size = 32;
+                    values_end = UpdateFieldsLoader.DO_END;
+                    break;
+                case ObjectTypes.TYPEID_CORPSE:
+                    bitmask_max_size = 64;
+                    values_end = UpdateFieldsLoader.CORPSE_END;
+                    break;
             }
 
-            // unit values update block
-            if (objectTypeId == ObjectTypes.TYPEID_UNIT)
+            if (reallength > bitmask_max_size)
             {
-                if (reallength > 256) // 32*8 (for units bitmask = 8)
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
+                long pos = gr.BaseStream.Position;
+                swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                    swe.WriteLine("error while parsing UNIT values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.UNIT_END)
-                        break;
-
-                    if (Mask[index])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.unit_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
-                    }
-                }
+                swe.WriteLine("error while parsing ITEM values update block, count {0}", reallength);
+                return false;
             }
 
-            // player values update block
-            if (objectTypeId == ObjectTypes.TYPEID_PLAYER)
+            for (uint index = 0; index < reallength; index++)
             {
-                if (reallength > 1440) // 32*45 (for player bitmask = 45)
+                if (index > values_end)
+                    break;
+
+                if (Mask[index])
                 {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing PLAYER values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.PLAYER_END)
-                        break;
-
-                    if (Mask[index])
+                    UpdateField uf = new UpdateField();
+                    switch (objectTypeId)
                     {
-                        UpdateField uf = UpdateFieldsLoader.unit_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
+                        case ObjectTypes.TYPEID_ITEM:
+                        case ObjectTypes.TYPEID_CONTAINER:
+                            uf = UpdateFieldsLoader.item_uf[index];
+                            break;
+                        case ObjectTypes.TYPEID_UNIT:
+                        case ObjectTypes.TYPEID_PLAYER:
+                            uf = UpdateFieldsLoader.unit_uf[index];
+                            break;
+                        case ObjectTypes.TYPEID_GAMEOBJECT:
+                            uf = UpdateFieldsLoader.go_uf[index];
+                            break;
+                        case ObjectTypes.TYPEID_DYNAMICOBJECT:
+                            uf = UpdateFieldsLoader.do_uf[index];
+                            break;
+                        case ObjectTypes.TYPEID_CORPSE:
+                            uf = UpdateFieldsLoader.corpse_uf[index];
+                            break;
                     }
-                }
-            }
-
-            // gameobject values update block
-            if (objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
-            {
-                if (reallength > 32) // 1*32
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing GO values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.GO_END)
-                        break;
-
-                    if (Mask[index])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.go_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
-                    }
-                }
-            }
-
-            // dynamicobject values update block
-            if (objectTypeId == ObjectTypes.TYPEID_DYNAMICOBJECT)
-            {
-                if (reallength > 32) // 1*32
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing DO values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.DO_END)
-                        break;
-
-                    if (Mask[index])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.do_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
-                    }
-                }
-            }
-
-            // corpse values update block
-            if (objectTypeId == ObjectTypes.TYPEID_CORPSE)
-            {
-                if (reallength > 64) // 2*32
-                {
-                    long pos = gr.BaseStream.Position;
-                    swe.WriteLine("error position {0}", pos.ToString("X2"));
-
-                    swe.WriteLine("error while parsing CORPSE values update block, count {0}", reallength);
-                    return false;
-                }
-
-                for (uint index = 0; index < reallength; index++)
-                {
-                    if (index > UpdateFieldsLoader.CORPSE_END)
-                        break;
-
-                    if (Mask[index])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.corpse_uf[index];
-                        ReadAndDumpField(uf, sb, gr, updatetype, data);
-                    }
+                    ReadAndDumpField(uf, sb, gr, updatetype, data);
                 }
             }
 
@@ -409,7 +328,7 @@ namespace A9parser
                     ushort value2 = gr.ReadUInt16();
 
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + value1.ToString("X4") + ", second " + value2.ToString("X4"));
-                    if (uf.Identifier > 857 && uf.Identifier < 1242)
+                    if (uf.Name.StartsWith("PLAYER_SKILL_INFO_1_"))
                     {
                         uint num = uf.Identifier - 858;
                         if ((num % 3) == 0)
@@ -520,7 +439,7 @@ namespace A9parser
                     Coords4 transport = gr.ReadCoords4();
                     sb.AppendLine("t_coords " + transport.GetCoordsAsString());
 
-                    uint unk2 = gr.ReadUInt32(); // unk
+                    uint unk2 = gr.ReadUInt32(); // unk, probably timestamp
                     sb.AppendLine("t_unk2 " + unk2.ToString("X8"));
                 }
 
@@ -615,13 +534,13 @@ namespace A9parser
 
             if ((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
             {
-                uint temp = gr.ReadUInt32();
+                uint temp = gr.ReadUInt32(); // timestamp or something like it
                 sb.AppendLine("flags & 0x10: " + temp.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
             {
-                uint guid_high = gr.ReadUInt32();
+                uint guid_high = gr.ReadUInt32(); // timestamp or something like it
                 sb.AppendLine("flags & 0x08: " + guid_high.ToString("X8"));
             }
 
@@ -633,7 +552,7 @@ namespace A9parser
 
             if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
             {
-                uint time = gr.ReadUInt32();
+                uint time = gr.ReadUInt32(); // time
                 sb.AppendLine("flags & 0x02 t_time: " + time.ToString("X8"));
             }
 

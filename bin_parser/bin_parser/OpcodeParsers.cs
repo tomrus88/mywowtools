@@ -1,5 +1,8 @@
+using System;
 using System.IO;
 using System.Text;
+using System.Collections;
+
 using Defines;
 using WoWReader;
 
@@ -39,6 +42,10 @@ namespace OpcodeParsers
                 case 1: // стоп, конец пакета...
                     sb.AppendLine("stop");
                     return true;
+                case 2:
+                    Coords3 point = gr2.ReadCoords3();
+                    sb.AppendLine("unk point " + point.GetCoords());
+                    break;
                 case 3: // чей-то гуид, скорее всего таргета...
                     ulong target_guid = gr2.ReadUInt64();
                     sb.AppendLine("GUID unknown " + target_guid.ToString("X16"));
@@ -236,119 +243,138 @@ namespace OpcodeParsers
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_PARTY_MEMBER_STATS (0x007E)");
 
+            byte MAX_AURAS = 56;
+
             ulong guid = gr2.ReadPackedGuid();
             sb.AppendLine("GUID " + guid.ToString("X16"));
 
-            Flags flags = (Flags)gr2.ReadUInt32();
+            GroupUpdateFlags flags = (GroupUpdateFlags)gr2.ReadUInt32();
             sb.AppendLine("Flags " + flags);
 
-            if ((flags & Flags.flag01) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_ONLINE) != 0)
             {
-                byte unk1 = gr2.ReadByte(); // flag
-                sb.AppendLine("flag 0x00000001, value " + unk1);
+                GroupMemberOnlineStatus unk1 = (GroupMemberOnlineStatus)gr2.ReadByte(); // flag
+                sb.AppendLine("Online state " + unk1);
             }
-            if ((flags & Flags.flag02) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_CUR_HP) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000002, value " + unk1);
+                sb.AppendLine("Cur. Health " + unk1);
             }
-            if ((flags & Flags.flag03) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_MAX_HP) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000004, value " + unk1);
+                sb.AppendLine("Max Health " + unk1);
             }
-            if ((flags & Flags.flag04) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_POWER_TYPE) != 0)
+            {
+                byte unk1 = gr2.ReadByte();
+                sb.AppendLine("Power type " + (Powers)unk1);
+            }
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_CUR_POWER) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000008, value " + unk1);
+                sb.AppendLine("Cur. Power " + unk1);
             }
-            if ((flags & Flags.flag05) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_MAX_POWER) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000010, value " + unk1);
+                sb.AppendLine("Max power " + unk1);
             }
-            if ((flags & Flags.flag06) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_LEVEL) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000020, value " + unk1);
+                sb.AppendLine("Level " + unk1);
             }
-            if ((flags & Flags.flag07) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_ZONE) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000040, value " + unk1);
+                sb.AppendLine("Zone " + unk1);
             }
-            if ((flags & Flags.flag08) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_POSITION) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000080, value " + unk1);
+                ushort x = gr2.ReadUInt16();
+                ushort y = gr2.ReadUInt16();
+                sb.AppendLine("Position: " + x + ", " + y);
             }
-            if ((flags & Flags.flag09) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_AURAS) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000100, value1 " + unk1);
-                ushort unk2 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00000100, value2 " + unk1);
-            }
-            if ((flags & Flags.flag10) != 0)
-            {
-                swe.Write("flag10 there: ");
-                swe.WriteLine(gr.BaseStream.Position);
-                ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("flag 0x00000200, value " + unk1.ToString("X16"));
-                for (uint i = 0; i < 0; i++)    // unknown
-                {
+                ulong mask = gr2.ReadUInt64();
+                sb.AppendLine("Auras mask " + mask.ToString("X16"));
 
+                uint i = 0; // aura slot
+                BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
+                foreach (bool b in bitArr)
+                {
+                    if (i >= MAX_AURAS) // we can have only 56 auras
+                        break;
+
+                    if (b)
+                    {
+                        ushort spellid = gr2.ReadUInt16();
+                        sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
+                    }
+                    i++;
                 }
             }
-            if ((flags & Flags.flag11) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK0) != 0)
             {
                 ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("flag 0x00000400, value " + unk1);
+                sb.AppendLine("Target guid " + unk1.ToString("X16"));
             }
-            if ((flags & Flags.flag12) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_NAME) != 0)
             {
                 string str = gr2.ReadStringNull();
-                sb.AppendLine("flag 0x00000800, value " + str);
+                sb.AppendLine("Player name " + str);
             }
-            if ((flags & Flags.flag13) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK1) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
                 sb.AppendLine("flag 0x00001000, value " + unk1);
             }
-            if ((flags & Flags.flag14) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK2) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00002000, value " + unk1);
+                sb.AppendLine("flag 0x00002000, value " + unk1); // current value
             }
-            if ((flags & Flags.flag15) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK3) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00004000, value " + unk1);
+                sb.AppendLine("flag 0x00004000, value " + unk1); // max value
             }
-            if ((flags & Flags.flag16) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK4) != 0)
             {
                 byte unk1 = gr2.ReadByte();
                 sb.AppendLine("flag 0x00008000, value " + unk1);
             }
-            if ((flags & Flags.flag17) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK5) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00010000, value " + unk1);
+                sb.AppendLine("flag 0x00010000, value " + unk1); // current value
             }
-            if ((flags & Flags.flag18) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK6) != 0)
             {
                 ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00020000, value " + unk1);
+                sb.AppendLine("flag 0x00020000, value " + unk1); // max value
             }
-            if ((flags & Flags.flag19) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_AURAS2) != 0)
             {
-                swe.Write("flag19 there: ");
-                swe.WriteLine(gr.BaseStream.Position);
-                ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("flag 0x00040000, value " + unk1.ToString("X16"));
-                for (uint i = 0; i < 0; i++)    // unknown
-                {
+                ulong mask = gr2.ReadUInt64();
+                sb.AppendLine("Auras mask " + mask.ToString("X16"));
 
+                uint i = 0; // aura slot
+                BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
+                foreach (bool b in bitArr)
+                {
+                    if (i >= MAX_AURAS) // we can have only 56 auras
+                        break;
+
+                    if (b)
+                    {
+                        ushort spellid = gr2.ReadUInt16();
+                        sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
+                    }
+                    i++;
                 }
             }
 
@@ -450,6 +476,29 @@ namespace OpcodeParsers
             sw.WriteLine("unk2 {0}", unk2);
             sw.WriteLine("blocked {0}", blocked);
             sw.WriteLine();
+
+            sw.Flush();
+            sw.Close();
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sb.AppendLine("parsed: ok...");
+            else
+                sb.AppendLine("parsed: error...");
+
+            return true;
+        }
+
+        public static bool ParseLoginSetTimeSpeedOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        {
+            sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
+            sb.AppendLine("Opcode SMSG_LOGIN_SETTIMESPEED (0x0042)");
+
+            StreamWriter sw = new StreamWriter("login_timespeed.log", true, Encoding.ASCII);
+
+            uint time = gr2.ReadUInt32();
+            float speed = gr2.ReadSingle();
+
+            sw.WriteLine("time {0}, speed {1}", time, speed);
 
             sw.Flush();
             sw.Close();

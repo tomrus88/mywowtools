@@ -1545,8 +1545,13 @@ namespace character_convertor
             sb.Append("' WHERE `guid`='" + GetGUIDLow() + "'");
 
             MySqlConnection conn = new MySqlConnection(cs);
+
             conn.Open();
+
             MySqlCommand cmd = new MySqlCommand(sb.ToString(), conn);
+
+            cmd.CommandTimeout = 1000;
+
             int affected = cmd.ExecuteNonQuery();
 
             if (affected == 0)

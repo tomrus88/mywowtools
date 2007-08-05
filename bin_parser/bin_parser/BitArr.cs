@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace BitArray
+namespace MyBitArray
 {
     #region BitArr
     /// <summary>
