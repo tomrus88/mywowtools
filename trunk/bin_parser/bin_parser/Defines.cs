@@ -66,8 +66,8 @@ namespace Defines
         HITINFO_ABSORB = 0x00000020,
         HITINFO_RESIST = 0x00000040,
         HITINFO_CRITICALHIT = 0x00000080,
-        HITINFO_UNK3 = 0x00000100, // running
-        HITINFO_UNK4 = 0x00000200, // taxi
+        HITINFO_UNK3 = 0x00000100,
+        HITINFO_UNK4 = 0x00000200,
         HITINFO_UNK5 = 0x00000400,
         HITINFO_UNK6 = 0x00000800,
         HITINFO_UNK7 = 0x00001000,
@@ -172,5 +172,56 @@ namespace Defines
         PROF_FLAG_PASSIVE = 1,
         PROF_FLAG_SECONDARY = 2,
         PROF_FLAG_PRIMARY = 4,
+    };
+
+    [Flags]
+    enum GroupUpdateFlags
+    {
+        GROUP_UPDATE_FLAG_NONE = 0x00000000,
+        GROUP_UPDATE_FLAG_ONLINE = 0x00000001, // uint8
+        GROUP_UPDATE_FLAG_CUR_HP = 0x00000002, // uint16
+        GROUP_UPDATE_FLAG_MAX_HP = 0x00000004, // uint16
+        GROUP_UPDATE_FLAG_POWER_TYPE = 0x00000008, // uint8
+        GROUP_UPDATE_FLAG_CUR_POWER = 0x00000010, // uint16
+        GROUP_UPDATE_FLAG_MAX_POWER = 0x00000020, // uint16
+        GROUP_UPDATE_FLAG_LEVEL = 0x00000040, // uint16
+        GROUP_UPDATE_FLAG_ZONE = 0x00000080, // uint16
+        GROUP_UPDATE_FLAG_POSITION = 0x00000100, // uint16, uint16
+        GROUP_UPDATE_FLAG_AURAS = 0x00000200, // uint64 mask, for each bit set uint16 spellid?
+        GROUP_UPDATE_FLAG_UNK0 = 0x00000400, // unk uint64, it's 100% guid, probably target guid
+        GROUP_UPDATE_FLAG_NAME = 0x00000800, // player name, NULL terminated string
+        GROUP_UPDATE_FLAG_UNK1 = 0x00001000, // unk uint16, don't know what it is, probably target related
+        GROUP_UPDATE_FLAG_UNK2 = 0x00002000, // unk cur value uint16 (may be target cur health)
+        GROUP_UPDATE_FLAG_UNK3 = 0x00004000, // unk max value uint16 (may be target max health)
+        GROUP_UPDATE_FLAG_UNK4 = 0x00008000, // unk uint8 (may be target power type)
+        GROUP_UPDATE_FLAG_UNK5 = 0x00010000, // unk cur value uint16 (may be target cur power)
+        GROUP_UPDATE_FLAG_UNK6 = 0x00020000, // unk max value uint16 (may be target max power)
+        GROUP_UPDATE_FLAG_AURAS2 = 0x00040000, // uint64 mask, for each bit set uint16 spellid?, probably it's target auras...
+        GROUP_UPDATE_FLAG_UNK7 = 0x00080000, // unused
+        GROUP_UPDATE_FLAG_UNK8 = 0x00100000, // unused
+        GROUP_UPDATE_FLAG_UNK9 = 0x00200000, // unused
+        GROUP_UPDATE_FLAG_UNK10 = 0x00400000, // unused
+        GROUP_UPDATE_FLAG_UNK11 = 0x00800000, // unused
+        GROUP_UPDATE_FLAG_UNK12 = 0x01000000, // unused
+        GROUP_UPDATE_FLAG_UNK13 = 0x02000000, // unused
+        GROUP_UPDATE_FLAG_UNK14 = 0x04000000, // unused
+        GROUP_UPDATE_FLAG_UNK15 = 0x08000000, // unused
+        GROUP_UPDATE_FLAG_UNK16 = 0x10000000, // unused
+        GROUP_UPDATE_FLAG_UNK17 = 0x20000000, // unused
+        GROUP_UPDATE_FLAG_UNK18 = 0x40000000, // unused
+    };
+
+    [Flags]
+    enum GroupMemberOnlineStatus
+    {
+        MEMBER_STATUS_OFFLINE = 0x00,
+        MEMBER_STATUS_ONLINE = 0x01,
+        MEMBER_STATUS_PVP = 0x02,
+        MEMBER_STATUS_UNK0 = 0x04, // dead? (health=0)
+        MEMBER_STATUS_UNK1 = 0x08, // ghost? (health=1)
+        MEMBER_STATUS_UNK2 = 0x10, // never seen
+        MEMBER_STATUS_UNK3 = 0x20, // never seen
+        MEMBER_STATUS_UNK4 = 0x40, // appears with dead and ghost
+        MEMBER_STATUS_UNK5 = 0x80, // never seen
     };
 }

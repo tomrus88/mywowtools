@@ -142,16 +142,16 @@ namespace bin_parser
             switch (opcode)
             {
                 /*case 0x00DD:  // SMSG_MONSTER_MOVE
-                    //OpcodeParsers.OpcodeParsers.ParseMonsterMoveOpcode(gr, gr2, sb, swe);
+                    OpcodeParsers.OpcodeParsers.ParseMonsterMoveOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x012A:  // SMSG_INITIAL_SPELLS
-                    //OpcodeParsers.OpcodeParsers.ParseInitialSpellsOpcode(gr, gr2, sb, swe);
+                    OpcodeParsers.OpcodeParsers.ParseInitialSpellsOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x025C:  // SMSG_AUCTION_LIST_RESULT
-                    //OpcodeParsers.OpcodeParsers.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
+                    OpcodeParsers.OpcodeParsers.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
-                    //OpcodeParsers.OpcodeParsers.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
+                    OpcodeParsers.OpcodeParsers.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
                     break;*/
                 case 0x00A9:    // SMSG_UPDATE_OBJECT
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
@@ -160,6 +160,9 @@ namespace bin_parser
                     gr2 = A9.Decompress(gr2);
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;
+                /*case 0x0042:
+                    OpcodeParsers.OpcodeParsers.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe);
+                    break;/*
                 /*case 0x01B1:
                     OpcodeParsers.OpcodeParsers.ParseTrainerListOpcode(gr, gr2, sb, swe);
                     break;*/
