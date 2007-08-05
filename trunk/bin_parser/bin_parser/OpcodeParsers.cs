@@ -253,48 +253,48 @@ namespace OpcodeParsers
 
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_ONLINE) != 0)
             {
-                GroupMemberOnlineStatus unk1 = (GroupMemberOnlineStatus)gr2.ReadByte(); // flag
-                sb.AppendLine("Online state " + unk1);
+                GroupMemberOnlineStatus online = (GroupMemberOnlineStatus)gr2.ReadByte(); // flag
+                sb.AppendLine("Online state " + online);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_CUR_HP) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Cur. Health " + unk1);
+                ushort hp = gr2.ReadUInt16();
+                sb.AppendLine("Cur. health " + hp);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_MAX_HP) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Max Health " + unk1);
+                ushort maxhp = gr2.ReadUInt16();
+                sb.AppendLine("Max health " + maxhp);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_POWER_TYPE) != 0)
             {
-                byte unk1 = gr2.ReadByte();
-                sb.AppendLine("Power type " + (Powers)unk1);
+                Powers power = (Powers)gr2.ReadByte();
+                sb.AppendLine("Power type " + power);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_CUR_POWER) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Cur. Power " + unk1);
+                ushort curpower = gr2.ReadUInt16();
+                sb.AppendLine("Cur. power " + curpower);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_MAX_POWER) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Max power " + unk1);
+                ushort maxpower = gr2.ReadUInt16();
+                sb.AppendLine("Max power " + maxpower);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_LEVEL) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Level " + unk1);
+                ushort level = gr2.ReadUInt16();
+                sb.AppendLine("Level " + level);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_ZONE) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("Zone " + unk1);
+                ushort zone = gr2.ReadUInt16();
+                sb.AppendLine("Zone " + zone);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_POSITION) != 0)
             {
-                ushort x = gr2.ReadUInt16();
-                ushort y = gr2.ReadUInt16();
+                short x = gr2.ReadInt16();
+                short y = gr2.ReadInt16();
                 sb.AppendLine("Position: " + x + ", " + y);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_AURAS) != 0)
@@ -317,50 +317,50 @@ namespace OpcodeParsers
                     i++;
                 }
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK0) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_GUID) != 0)
             {
-                ulong unk1 = gr2.ReadUInt64();
-                sb.AppendLine("Target guid " + unk1.ToString("X16"));
+                ulong petguid = gr2.ReadUInt64();
+                sb.AppendLine("Pet guid " + petguid.ToString("X16"));
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_NAME) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_NAME) != 0)
             {
-                string str = gr2.ReadStringNull();
-                sb.AppendLine("Player name " + str);
+                string name = gr2.ReadStringNull();
+                sb.AppendLine("Pet name " + name);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK1) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_MODEL_ID) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00001000, value " + unk1);
+                ushort modelid = gr2.ReadUInt16();
+                sb.AppendLine("Pet model id " + modelid);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK2) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_CUR_HP) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00002000, value " + unk1); // current value
+                ushort pethp = gr2.ReadUInt16();
+                sb.AppendLine("Pet cur. HP " + pethp);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK3) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_MAX_HP) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00004000, value " + unk1); // max value
+                ushort petmaxhp = gr2.ReadUInt16();
+                sb.AppendLine("Pet max HP " + petmaxhp);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK4) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_POWER_TYPE) != 0)
             {
-                byte unk1 = gr2.ReadByte();
-                sb.AppendLine("flag 0x00008000, value " + unk1);
+                Powers power = (Powers)gr2.ReadByte();
+                sb.AppendLine("Pet power type " + power);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK5) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_CUR_POWER) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00010000, value " + unk1); // current value
+                ushort petpower = gr2.ReadUInt16();
+                sb.AppendLine("Pet cur. power " + petpower);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_UNK6) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_MAX_POWER) != 0)
             {
-                ushort unk1 = gr2.ReadUInt16();
-                sb.AppendLine("flag 0x00020000, value " + unk1); // max value
+                ushort petmaxpower = gr2.ReadUInt16();
+                sb.AppendLine("Pet max power " + petmaxpower);
             }
-            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_AURAS2) != 0)
+            if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_AURAS) != 0)
             {
                 ulong mask = gr2.ReadUInt64();
-                sb.AppendLine("Auras mask " + mask.ToString("X16"));
+                sb.AppendLine("Pet auras mask " + mask.ToString("X16"));
 
                 uint i = 0; // aura slot
                 BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
@@ -372,7 +372,7 @@ namespace OpcodeParsers
                     if (b)
                     {
                         ushort spellid = gr2.ReadUInt16();
-                        sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
+                        sb.AppendLine("Pet aura " + i.ToString() + ": " + spellid.ToString());
                     }
                     i++;
                 }

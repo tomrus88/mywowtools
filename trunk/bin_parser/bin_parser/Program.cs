@@ -151,22 +151,22 @@ namespace bin_parser
                     OpcodeParsers.OpcodeParsers.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
+                case 0x02F2:  // SMSG_PARTY_MEMBER_STATS_FULL
                     OpcodeParsers.OpcodeParsers.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
                     break;*/
                 case 0x00A9:    // SMSG_UPDATE_OBJECT
-                    A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;
                 case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
-                    gr2 = A9.Decompress(gr2);
+                    if(opcode == 0x01F6)
+                        gr2 = A9.Decompress(gr2);
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;
-                /*case 0x0042:
+                /*case 0x0042: // SMSG_LOGIN_SETTIMESPEED
                     OpcodeParsers.OpcodeParsers.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe);
                     break;/*
-                /*case 0x01B1:
+                /*case 0x01B1: // SMSG_TRAINER_LIST
                     OpcodeParsers.OpcodeParsers.ParseTrainerListOpcode(gr, gr2, sb, swe);
                     break;*/
-                /*case 0x014A:
+                /*case 0x014A: // SMSG_ATTACKERSTATEUPDATE
                     OpcodeParsers.OpcodeParsers.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe);
                     break;*/
                 default:    // unhandled opcode

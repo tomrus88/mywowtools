@@ -127,13 +127,13 @@ namespace UpdateFields
     #region Updatefield struct
     public struct UpdateField
     {
-        public uint Identifier;
+        public int Identifier;
         public string Name;
         public uint Type;
         public uint Format;
         public uint Value;
 
-        public UpdateField(uint id, string name, uint type, uint format, uint value)
+        public UpdateField(int id, string name, uint type, uint format, uint value)
         {
             Identifier = id;
             Name = name;
@@ -181,11 +181,11 @@ namespace UpdateFields
 
         static byte type = 0;
 
-        public static Dictionary<uint, UpdateField> item_uf = new Dictionary<uint, UpdateField>(); // item + container
-        public static Dictionary<uint, UpdateField> unit_uf = new Dictionary<uint, UpdateField>(); // unit + player
-        public static Dictionary<uint, UpdateField> go_uf = new Dictionary<uint, UpdateField>();
-        public static Dictionary<uint, UpdateField> do_uf = new Dictionary<uint, UpdateField>();
-        public static Dictionary<uint, UpdateField> corpse_uf = new Dictionary<uint, UpdateField>();
+        public static Dictionary<int, UpdateField> item_uf = new Dictionary<int, UpdateField>(); // item + container
+        public static Dictionary<int, UpdateField> unit_uf = new Dictionary<int, UpdateField>(); // unit + player
+        public static Dictionary<int, UpdateField> go_uf = new Dictionary<int, UpdateField>();
+        public static Dictionary<int, UpdateField> do_uf = new Dictionary<int, UpdateField>();
+        public static Dictionary<int, UpdateField> corpse_uf = new Dictionary<int, UpdateField>();
 
         public static void LoadUpdateFields()
         {
@@ -219,7 +219,7 @@ namespace UpdateFields
                 if (arr.Length < 3)
                     continue;
 
-                uint id = Convert.ToUInt32(arr[0]);
+                int id = Convert.ToInt32(arr[0]);
                 string name = arr[1];
                 uint type1 = Convert.ToUInt32(arr[2]);
                 //uint format = Convert.ToUInt32(arr[3]);
