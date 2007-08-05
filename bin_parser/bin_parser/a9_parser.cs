@@ -2,11 +2,11 @@
 using System.Text;
 using System.IO;
 using System.Globalization;
+using System.Collections;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 using WoWReader;
-using MyBitArray;
 using UpdateFields;
 using bin_parser;
 using Defines;
@@ -18,7 +18,7 @@ namespace A9parser
         /// <summary>
         /// Update mask bit array.
         /// </summary>
-        public static BitArr Mask;
+        public static BitArray Mask;
 
         public static GenericReader Decompress(GenericReader gr2)
         {
@@ -215,13 +215,13 @@ namespace A9parser
             byte blocks_count = gr.ReadByte(); // count of update blocks (4 bytes for each update block)
             sb.AppendLine("Bit mask blocks count: " + blocks_count);
 
-            uint[] updatemask = new uint[blocks_count]; // create array of update blocks
+            int[] updatemask = new int[blocks_count]; // create array of update blocks
             for (int j = 0; j < blocks_count; j++)
-                updatemask[j] = gr.ReadUInt32(); // populate array of update blocks with data
+                updatemask[j] = gr.ReadInt32(); // populate array of update blocks with data
 
-            Mask = (BitArr)updatemask; // convert array of update blocks to bitmask array
+            Mask = new BitArray(updatemask);
 
-            int reallength = Mask.RealLength; // bitmask size (bits)
+            int reallength = Mask.Count; // bitmask size (bits)
 
             int bitmask_max_size = 0;
             uint values_end = 0;
@@ -267,7 +267,7 @@ namespace A9parser
                 return false;
             }
 
-            for (uint index = 0; index < reallength; index++)
+            for (int index = 0; index < reallength; index++)
             {
                 if (index > values_end)
                     break;
@@ -330,7 +330,7 @@ namespace A9parser
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + value1.ToString("X4") + ", second " + value2.ToString("X4"));
                     if (uf.Name.StartsWith("PLAYER_SKILL_INFO_1_"))
                     {
-                        uint num = uf.Identifier - 858;
+                        int num = uf.Identifier - 858;
                         if ((num % 3) == 0)
                         {
                             ushort skill = value1;

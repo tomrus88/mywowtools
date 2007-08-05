@@ -178,7 +178,7 @@ namespace Defines
     enum GroupUpdateFlags
     {
         GROUP_UPDATE_FLAG_NONE = 0x00000000,
-        GROUP_UPDATE_FLAG_ONLINE = 0x00000001, // uint8
+        GROUP_UPDATE_FLAG_ONLINE = 0x00000001, // uint8, flags
         GROUP_UPDATE_FLAG_CUR_HP = 0x00000002, // uint16
         GROUP_UPDATE_FLAG_MAX_HP = 0x00000004, // uint16
         GROUP_UPDATE_FLAG_POWER_TYPE = 0x00000008, // uint8
@@ -188,15 +188,15 @@ namespace Defines
         GROUP_UPDATE_FLAG_ZONE = 0x00000080, // uint16
         GROUP_UPDATE_FLAG_POSITION = 0x00000100, // uint16, uint16
         GROUP_UPDATE_FLAG_AURAS = 0x00000200, // uint64 mask, for each bit set uint16 spellid?
-        GROUP_UPDATE_FLAG_UNK0 = 0x00000400, // unk uint64, it's 100% guid, probably target guid
-        GROUP_UPDATE_FLAG_NAME = 0x00000800, // player name, NULL terminated string
-        GROUP_UPDATE_FLAG_UNK1 = 0x00001000, // unk uint16, don't know what it is, probably target related
-        GROUP_UPDATE_FLAG_UNK2 = 0x00002000, // unk cur value uint16 (may be target cur health)
-        GROUP_UPDATE_FLAG_UNK3 = 0x00004000, // unk max value uint16 (may be target max health)
-        GROUP_UPDATE_FLAG_UNK4 = 0x00008000, // unk uint8 (may be target power type)
-        GROUP_UPDATE_FLAG_UNK5 = 0x00010000, // unk cur value uint16 (may be target cur power)
-        GROUP_UPDATE_FLAG_UNK6 = 0x00020000, // unk max value uint16 (may be target max power)
-        GROUP_UPDATE_FLAG_AURAS2 = 0x00040000, // uint64 mask, for each bit set uint16 spellid?, probably it's target auras...
+        GROUP_UPDATE_FLAG_PET_GUID = 0x00000400, // uint64 pet guid
+        GROUP_UPDATE_FLAG_PET_NAME = 0x00000800, // pet name, NULL terminated string
+        GROUP_UPDATE_FLAG_PET_MODEL_ID = 0x00001000, // uint16, model id
+        GROUP_UPDATE_FLAG_PET_CUR_HP = 0x00002000, // uint16 pet cur health
+        GROUP_UPDATE_FLAG_PET_MAX_HP = 0x00004000, // uint16 pet max health
+        GROUP_UPDATE_FLAG_PET_POWER_TYPE = 0x00008000, // uint8 pet power type
+        GROUP_UPDATE_FLAG_PET_CUR_POWER = 0x00010000, // uint16 pet cur power
+        GROUP_UPDATE_FLAG_PET_MAX_POWER = 0x00020000, // uint16 pet max power
+        GROUP_UPDATE_FLAG_PET_AURAS = 0x00040000, // uint64 mask, for each bit set uint16 spellid?, pet auras...
         GROUP_UPDATE_FLAG_UNK7 = 0x00080000, // unused
         GROUP_UPDATE_FLAG_UNK8 = 0x00100000, // unused
         GROUP_UPDATE_FLAG_UNK9 = 0x00200000, // unused
@@ -221,7 +221,7 @@ namespace Defines
         MEMBER_STATUS_UNK1 = 0x08, // ghost? (health=1)
         MEMBER_STATUS_UNK2 = 0x10, // never seen
         MEMBER_STATUS_UNK3 = 0x20, // never seen
-        MEMBER_STATUS_UNK4 = 0x40, // appears with dead and ghost
+        MEMBER_STATUS_UNK4 = 0x40, // appears with dead and ghost flags
         MEMBER_STATUS_UNK5 = 0x80, // never seen
     };
 }

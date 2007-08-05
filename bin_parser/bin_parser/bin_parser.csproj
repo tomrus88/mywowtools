@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="a9_parser.cs">
     </Compile>
-    <Compile Include="BitArr.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="GenericReader.cs" />
     <Compile Include="OpcodeParsers.cs">
