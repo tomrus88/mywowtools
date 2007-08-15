@@ -245,6 +245,37 @@ namespace UpdateFields
                         break;
                 }
             }
+
+            CheckIntegrity();
+        }
+
+        public static void CheckIntegrity()
+        {
+            // program will crash there if updatefields.dat contains errors
+            for (int i = 0; i < item_uf.Count; i++)
+            {
+                UpdateField uf = item_uf[i];
+            }
+
+            for (int i = 0; i < unit_uf.Count; i++)
+            {
+                UpdateField uf = unit_uf[i];
+            }
+
+            for (int i = 0; i < go_uf.Count; i++)
+            {
+                UpdateField uf = go_uf[i];
+            }
+
+            for (int i = 0; i < do_uf.Count; i++)
+            {
+                UpdateField uf = do_uf[i];
+            }
+
+            for (int i = 0; i < corpse_uf.Count; i++)
+            {
+                UpdateField uf = corpse_uf[i];
+            }
         }
     }
 }

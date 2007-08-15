@@ -4,10 +4,13 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
+using System.Data.SQLite;
+
 using WoWReader;
 using UpdateFields;
 using A9parser;
 using WoWObjects;
+using OpcodeParsers;
 
 namespace bin_parser
 {
@@ -32,8 +35,7 @@ namespace bin_parser
             Console.WriteLine("Starting at {0}", starttime);
 
             DirectoryInfo di = new DirectoryInfo("."); // DirectoryInfo
-            //FileInfo[] fi = di.GetFiles("tcp*.log.dump", SearchOption.AllDirectories); // Get file list
-            FileInfo[] fi = di.GetFiles("*.dump", SearchOption.AllDirectories); // Get file list
+            FileInfo[] fi = di.GetFiles("*.sqlite", SearchOption.AllDirectories); // Get file list
 
             Console.WriteLine("Found {0} files to parse", fi.Length);
 
@@ -43,7 +45,6 @@ namespace bin_parser
             }
 
             TimeSpan worktime = DateTime.Now - starttime;
-            //MessageBox.Show("Done in " + worktime.ToString() + "!", "BIN parser", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly, false);
             Console.WriteLine("Done in " + worktime.ToString() + "!");
             Console.ReadKey();
         }
@@ -60,7 +61,35 @@ namespace bin_parser
 
             Console.Write("Parsing {0}...", f.Name);
 
-            GenericReader gr = new GenericReader(f.FullName, Encoding.ASCII);
+            SQLiteConnection connection = new SQLiteConnection("Data Source=" + f.FullName);
+            SQLiteCommand command = new SQLiteCommand(connection);
+            connection.Open();
+            command.CommandText = "SELECT opcode, data FROM packets;";
+            command.Prepare();
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            MemoryStream ms = new MemoryStream();
+
+            while (reader.Read())
+            {
+                ushort opcode = (ushort)reader.GetInt16(0);
+                byte[] data_ = (byte[])reader.GetValue(1);
+
+                uint size = sizeof(ushort) + (uint)data_.Length;
+
+                byte[] op = BitConverter.GetBytes(opcode);
+                byte[] sz = BitConverter.GetBytes(size);
+
+                ms.Write(sz, 0, sz.Length);
+                ms.Write(op, 0, op.Length);
+                ms.Write(data_, 0, data_.Length);
+            }
+
+            reader.Close();
+            connection.Close();
+
+            GenericReader gr = new GenericReader(ms);
+            gr.BaseStream.Position = 0;
 
             string error_log = f.FullName + ".errors.txt";
             StreamWriter swe = new StreamWriter(error_log);
@@ -142,17 +171,17 @@ namespace bin_parser
             switch (opcode)
             {
                 /*case 0x00DD:  // SMSG_MONSTER_MOVE
-                    OpcodeParsers.OpcodeParsers.ParseMonsterMoveOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x012A:  // SMSG_INITIAL_SPELLS
-                    OpcodeParsers.OpcodeParsers.ParseInitialSpellsOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x025C:  // SMSG_AUCTION_LIST_RESULT
-                    OpcodeParsers.OpcodeParsers.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
                 case 0x02F2:  // SMSG_PARTY_MEMBER_STATS_FULL
-                    OpcodeParsers.OpcodeParsers.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
                     break;*/
                 case 0x00A9:    // SMSG_UPDATE_OBJECT
                 case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
@@ -161,13 +190,13 @@ namespace bin_parser
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;
                 /*case 0x0042: // SMSG_LOGIN_SETTIMESPEED
-                    OpcodeParsers.OpcodeParsers.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe);
-                    break;/*
+                    OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe);
+                    break;*/
                 /*case 0x01B1: // SMSG_TRAINER_LIST
-                    OpcodeParsers.OpcodeParsers.ParseTrainerListOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseTrainerListOpcode(gr, gr2, sb, swe);
                     break;*/
                 /*case 0x014A: // SMSG_ATTACKERSTATEUPDATE
-                    OpcodeParsers.OpcodeParsers.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe);
                     break;*/
                 default:    // unhandled opcode
                     return false;
