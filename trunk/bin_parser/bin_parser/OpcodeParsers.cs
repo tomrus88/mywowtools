@@ -8,7 +8,7 @@ using WoWReader;
 
 namespace OpcodeParsers
 {
-    public class OpcodeParsers
+    public class OpcodeParser
     {
         /// <summary>
         /// Monster move opcode parser method.

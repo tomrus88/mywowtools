@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 using UpdateFields;
 
@@ -9,75 +10,173 @@ namespace WoWObjects
     // common class
     public class WoWObject
     {
-        //public static ulong GUID = fields[0] & fields[1];
-
-        public uint END;
-        public Dictionary<uint, UpdateField> fields;
+        uint m_valuesCount;
+        uint[] m_uint32Values;
         ObjectTypes m_typeId;
+        bool m_new;
+
+        // position
+        float x, y, z, o;
+
+        public WoWObject(uint valuesCount, ObjectTypes typeId)
+        {
+            if (m_valuesCount != 0)
+                m_valuesCount = valuesCount;
+            else
+                m_valuesCount = GetValuesCountByObjectType(typeId);
+
+            m_uint32Values = new uint[m_valuesCount];
+            m_typeId = typeId;
+        }
+
+        uint GetValuesCountByObjectType(ObjectTypes typeId)
+        {
+            switch (typeId)
+            {
+                case ObjectTypes.TYPEID_ITEM:
+                    return UpdateFieldsLoader.ITEM_END;
+                case ObjectTypes.TYPEID_CONTAINER:
+                    return UpdateFieldsLoader.CONTAINER_END;
+                case ObjectTypes.TYPEID_UNIT:
+                    return UpdateFieldsLoader.UNIT_END;
+                case ObjectTypes.TYPEID_PLAYER:
+                    return UpdateFieldsLoader.PLAYER_END;
+                case ObjectTypes.TYPEID_GAMEOBJECT:
+                    return UpdateFieldsLoader.GO_END;
+                case ObjectTypes.TYPEID_DYNAMICOBJECT:
+                    return UpdateFieldsLoader.DO_END;
+                case ObjectTypes.TYPEID_CORPSE:
+                    return UpdateFieldsLoader.CORPSE_END;
+                default:
+                    return 0;
+            }
+        }
+
+        public WoWObject()
+        {
+            m_valuesCount = 0;
+            m_uint32Values = null;
+            m_typeId = ObjectTypes.TYPEID_OBJECT;
+        }
+
+        ~WoWObject()
+        {
+
+        }
+
+        public void SetPosition(float X, float Y, float Z, float O)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+            o = O;
+        }
+
+        public bool IsNew
+        {
+            get { return m_new; }
+            set { m_new = value; }
+        }
 
         public ObjectTypes TypeId
         {
             get { return m_typeId; }
             set { m_typeId = value; }
         }
-        //public static ObjectTypes GetTypeId() { return m_typeId; }
-        //public static void SetTypeId(ObjectTypes typeid) { m_typeId = typeid; }
 
-        public float GetFloatValue(uint index)
+        public uint ValuesCount
         {
-            float result = 0;
-            result = Convert.ToSingle(fields[index].Value);
-            //result = BitConverter.ToSingle(fields[index].Value, 0);
-            return result;
+            get { return m_valuesCount; }
+            set { m_valuesCount = value; }
         }
 
-        public uint GetUInt32Value(uint index)
+        public uint[] UInt32Values
         {
-            uint result = 0;
-            result = fields[index].Value;
-            return result;
+            get { return m_uint32Values; }
+            set { m_uint32Values = value; }
         }
 
-        public ulong GetUInt64Value(uint index)
+        public ulong GetGUID()
+        {
+            return GetUInt64Value(0);
+        }
+
+        public uint GetGUIDLow()
+        {
+            return m_uint32Values[0];
+        }
+
+        public uint GetGUIDHigh()
+        {
+            return m_uint32Values[1];
+        }
+
+        public uint GetUInt32Value(int index)
+        {
+            return m_uint32Values[index];
+        }
+
+        public ulong GetUInt64Value(int index)
         {
             ulong result = 0;
 
-            result += fields[index].Value;
-            result += fields[index + 1].Value << 32;
-            //result += fields[index + 1].Value >> 32;
-            //result = Convert.ToUInt64(value1 + value2);
+            result += m_uint32Values[index];
+            result += ((ulong)m_uint32Values[index + 1] << 32);
+
             return result;
         }
 
-        public void SetFloatValue(uint index, float value)
+        public float GetFloatValue(int index)
         {
-            //fields[index].Value = Convert.ToUInt32(value);
+            byte[] temp = BitConverter.GetBytes(m_uint32Values[index]);
+            return BitConverter.ToSingle(temp, 0);
         }
 
-        public void SetUInt32Value(uint index, uint value)
+        public void SetUInt32Value(int index, uint value)
         {
-            //fields[index].Value = value;
+            m_uint32Values[index] = value;
         }
 
-        public void SetUInt64Value(uint index, ulong value)
+        public void SetUInt64Value(int index, ulong value)
         {
-            uint low = (uint)(value >> 32);
-            uint high = (uint)value;
-            //UpdateField uf;
-            //fields[index] = low;
-            //fields[index + 1] = high;
+            uint low = (uint)value;
+            uint high = (uint)(value >> 32);
+
+            m_uint32Values[index] = low;
+            m_uint32Values[index + 1] = high;
         }
 
-        public void SetField(uint field, UpdateField value)
+        public void SetFloatValue(int index, float value)
         {
-            fields[field] = value;
+            byte[] temp = BitConverter.GetBytes(value);
+            m_uint32Values[index] = BitConverter.ToUInt32(temp, 0);
         }
 
-        public WoWObject()
+        public void LoadValues(string data)
         {
-            END = UpdateFieldsLoader.OBJECT_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            m_typeId = UpdateFields.ObjectTypes.TYPEID_OBJECT;
+            string[] values = data.Split(' ');
+
+            for (ushort i = 0; i < m_valuesCount; i++)
+                m_uint32Values[i] = Convert.ToUInt32(values[i]);
+        }
+
+        public void Save()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("INSERT INTO `objects` VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '", GetGUIDHigh(), GetGUIDLow(), x, y, z, o, (int)m_typeId);
+
+            for (ushort i = 0; i < m_valuesCount; i++)
+            {
+                sb.AppendFormat("{0} ", GetUInt32Value(i));
+            }
+
+            sb.Append("');");
+
+            StreamWriter sw = new StreamWriter("data.sql", true);
+            sw.WriteLine(sb.ToString());
+            sw.Flush();
+            sw.Close();
         }
     }
 
@@ -86,9 +185,9 @@ namespace WoWObjects
     {
         public Item()
         {
-            END = UpdateFieldsLoader.ITEM_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_ITEM;
+            ValuesCount = UpdateFieldsLoader.ITEM_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_ITEM;
         }
     }
 
@@ -97,9 +196,9 @@ namespace WoWObjects
     {
         public Container()
         {
-            END = UpdateFieldsLoader.CONTAINER_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_CONTAINER;
+            ValuesCount = UpdateFieldsLoader.CONTAINER_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_CONTAINER;
         }
     }
 
@@ -108,9 +207,9 @@ namespace WoWObjects
     {
         public Unit()
         {
-            END = UpdateFieldsLoader.UNIT_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_UNIT;
+            ValuesCount = UpdateFieldsLoader.UNIT_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_UNIT;
         }
     }
 
@@ -119,9 +218,9 @@ namespace WoWObjects
     {
         public Player()
         {
-            END = UpdateFieldsLoader.PLAYER_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_PLAYER;
+            ValuesCount = UpdateFieldsLoader.PLAYER_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_PLAYER;
         }
     }
 
@@ -130,9 +229,9 @@ namespace WoWObjects
     {
         public GameObject()
         {
-            END = UpdateFieldsLoader.GO_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_GAMEOBJECT;
+            ValuesCount = UpdateFieldsLoader.GO_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_GAMEOBJECT;
         }
     }
 
@@ -141,9 +240,9 @@ namespace WoWObjects
     {
         public DynamicObject()
         {
-            END = UpdateFieldsLoader.DO_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_DYNAMICOBJECT;
+            ValuesCount = UpdateFieldsLoader.DO_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_DYNAMICOBJECT;
         }
     }
 
@@ -152,9 +251,9 @@ namespace WoWObjects
     {
         public Corpse()
         {
-            END = UpdateFieldsLoader.CORPSE_END;
-            fields = new Dictionary<uint, UpdateField>((int)END);
-            TypeId = UpdateFields.ObjectTypes.TYPEID_CORPSE;
+            ValuesCount = UpdateFieldsLoader.CORPSE_END;
+            UInt32Values = new uint[ValuesCount];
+            TypeId = ObjectTypes.TYPEID_CORPSE;
         }
     }
 }

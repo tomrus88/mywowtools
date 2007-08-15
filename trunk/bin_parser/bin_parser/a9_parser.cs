@@ -7,6 +7,7 @@ using System.Collections;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 using WoWReader;
+using WoWObjects;
 using UpdateFields;
 using bin_parser;
 using Defines;
@@ -31,12 +32,21 @@ namespace A9parser
             //DeflateStream ds = new DeflateStream(ms, CompressionMode.Decompress, true);
 
             InflaterInputStream istream = new InflaterInputStream(ms);
+
+            //if (istream.Length != decompressedsize)
+            //    Console.WriteLine("Error while decompressing packet!");
+
+            //byte[] buff = new byte[istream.Length];
+            //istream.Read(buff, 0, (int)istream.Length);
+
+            //MemoryStream ms2 = new MemoryStream(buff);
+
             //InflaterInputStream istream = new InflaterInputStream(gr2.BaseStream);
 
             //GenericReader gr3 = new GenericReader(ds);
             //GenericReader gr3 = new GenericReader(istream);
+            //gr2 = new GenericReader(ms2);
             gr2 = new GenericReader(istream);
-            //gr2 = new GenericReader(istream);
 
             //return gr3;
             return gr2;
@@ -134,7 +144,7 @@ namespace A9parser
 
                     sb.AppendLine("objectTypeId " + objecttype);
 
-                    if (!ParseValuesUpdateBlock(gr, sb, swe, data, objecttype, updatetype))
+                    if (!ParseValuesUpdateBlock(gr, sb, swe, data, objecttype, updatetype, null))
                         return false;
 
                     return true;
@@ -142,7 +152,7 @@ namespace A9parser
                     guid = gr.ReadPackedGuid();
                     sb.AppendLine("Object guid: " + guid.ToString("X16"));
 
-                    if (!ParseMovementUpdateBlock(gr, sb, swe, data, ObjectTypes.TYPEID_UNIT))
+                    if (!ParseMovementUpdateBlock(gr, sb, swe, data, ObjectTypes.TYPEID_UNIT, null))
                         return false;
 
                     return true;
@@ -155,11 +165,20 @@ namespace A9parser
                     sb.AppendLine("objectTypeId " + objectTypeId);
 
                     // check object existance and remove it if needed...
-                    if (Binparser.m_objects.ContainsKey(guid))
-                        Binparser.m_objects.Remove(guid);
+                    //if (Binparser.m_objects.ContainsKey(guid))
+                    //    Binparser.m_objects.Remove(guid);
 
                     // now we can add this object to Dictionary to get correct object type later...
-                    Binparser.m_objects.Add(guid, objectTypeId);
+                    //Binparser.m_objects.Add(guid, objectTypeId);
+
+                    WoWObject obj = new WoWObject(0, objectTypeId);
+
+                    // add new object only if we not have it already
+                    if (!Binparser.m_objects.ContainsKey(guid))
+                    {
+                        obj.IsNew = true;
+                        Binparser.m_objects.Add(guid, objectTypeId);
+                    }
 
                     switch (objectTypeId)
                     {
@@ -175,9 +194,9 @@ namespace A9parser
                         case ObjectTypes.TYPEID_GAMEOBJECT:
                         case ObjectTypes.TYPEID_DYNAMICOBJECT:
                         case ObjectTypes.TYPEID_CORPSE:
-                            if (!ParseMovementUpdateBlock(gr, sb, swe, data, objectTypeId))
+                            if (!ParseMovementUpdateBlock(gr, sb, swe, data, objectTypeId, obj))
                                 return false;
-                            if (!ParseValuesUpdateBlock(gr, sb, swe, data, objectTypeId, updatetype))
+                            if (!ParseValuesUpdateBlock(gr, sb, swe, data, objectTypeId, updatetype, obj))
                                 return false;
                             return true;
                         default:
@@ -208,7 +227,7 @@ namespace A9parser
             }
         }
 
-        private static bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype)
+        private static bool ParseValuesUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, UpdateTypes updatetype, WoWObject obj)
         {
             sb.AppendLine("=== values_update_block_start ===");
 
@@ -263,7 +282,7 @@ namespace A9parser
                 long pos = gr.BaseStream.Position;
                 swe.WriteLine("error position {0}", pos.ToString("X2"));
 
-                swe.WriteLine("error while parsing ITEM values update block, count {0}", reallength);
+                swe.WriteLine("error while parsing {0} values update block, count {1}", objectTypeId, reallength);
                 return false;
             }
 
@@ -295,16 +314,28 @@ namespace A9parser
                             uf = UpdateFieldsLoader.corpse_uf[index];
                             break;
                     }
-                    ReadAndDumpField(uf, sb, gr, updatetype, data);
+                    ReadAndDumpField(uf, sb, gr, updatetype, data, obj);
                 }
             }
+
+            if((objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT || objectTypeId == ObjectTypes.TYPEID_UNIT) && (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2) && obj.IsNew)
+                obj.Save();
 
             sb.AppendLine("=== values_update_block_end ===");
             return true;
         }
 
-        private static void ReadAndDumpField(UpdateField uf, StringBuilder sb, GenericReader gr, UpdateTypes updatetype, StreamWriter data)
+        private static void ReadAndDumpField(UpdateField uf, StringBuilder sb, GenericReader gr, UpdateTypes updatetype, StreamWriter data, WoWObject obj)
         {
+            MemoryStream ms = new MemoryStream(gr.ReadBytes(4));
+            GenericReader gr2 = new GenericReader(ms);
+
+            if (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2)
+            {
+                obj.SetUInt32Value(uf.Identifier, gr2.ReadUInt32());
+                gr2.BaseStream.Position -= 4;
+            }
+
             switch (uf.Type)
             {
                 // TODO: add data writing
@@ -321,11 +352,11 @@ namespace A9parser
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + val2);
                     break;*/
                 case 1: // uint32
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr2.ReadUInt32().ToString("X8"));
                     break;
                 case 2: // uint16+uint16
-                    ushort value1 = gr.ReadUInt16();
-                    ushort value2 = gr.ReadUInt16();
+                    ushort value1 = gr2.ReadUInt16();
+                    ushort value2 = gr2.ReadUInt16();
 
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "first " + value1.ToString("X4") + ", second " + value2.ToString("X4"));
                     if (uf.Name.StartsWith("PLAYER_SKILL_INFO_1_"))
@@ -358,14 +389,14 @@ namespace A9parser
                     }
                     break;
                 case 3: // float
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle());
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr2.ReadSingle());
                     //sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadSingle().ToString().Replace(",", "."));
                     break;
                 case 4: // uint64 (can be only low part)
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr.ReadUInt32().ToString("X8"));
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + gr2.ReadUInt32().ToString("X8"));
                     break;
                 case 5: // bytes
-                    uint value = gr.ReadUInt32();
+                    uint value = gr2.ReadUInt32();
                     sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + value.ToString("X8"));
                     if (uf.Identifier == 36) // UNIT_FIELD_BYTES_0
                     {
@@ -380,12 +411,14 @@ namespace A9parser
                     }
                     break;
                 default:
-                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "unknown type " + gr.ReadUInt32().ToString("X8"));
+                    sb.AppendLine(uf.Name + " (" + uf.Identifier + "): " + "unknown type " + gr2.ReadUInt32().ToString("X8"));
                     break;
             }
+
+            gr2.Close();
         }
 
-        private static bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId)
+        private static bool ParseMovementUpdateBlock(GenericReader gr, StringBuilder sb, StreamWriter swe, StreamWriter data, ObjectTypes objectTypeId, WoWObject obj)
         {
             Coords4 coords;
             coords.X = 0;
@@ -420,6 +453,11 @@ namespace A9parser
                 {
                     coords = gr.ReadCoords4();
                     sb.AppendLine("coords " + coords.GetCoordsAsString());
+                }
+
+                if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
+                {
+                    obj.SetPosition(coords.X, coords.Y, coords.Z, coords.O);
                 }
             }
 

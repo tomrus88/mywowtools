@@ -197,18 +197,18 @@ namespace Defines
         GROUP_UPDATE_FLAG_PET_CUR_POWER = 0x00010000, // uint16 pet cur power
         GROUP_UPDATE_FLAG_PET_MAX_POWER = 0x00020000, // uint16 pet max power
         GROUP_UPDATE_FLAG_PET_AURAS = 0x00040000, // uint64 mask, for each bit set uint16 spellid?, pet auras...
-        GROUP_UPDATE_FLAG_UNK7 = 0x00080000, // unused
-        GROUP_UPDATE_FLAG_UNK8 = 0x00100000, // unused
-        GROUP_UPDATE_FLAG_UNK9 = 0x00200000, // unused
-        GROUP_UPDATE_FLAG_UNK10 = 0x00400000, // unused
-        GROUP_UPDATE_FLAG_UNK11 = 0x00800000, // unused
-        GROUP_UPDATE_FLAG_UNK12 = 0x01000000, // unused
-        GROUP_UPDATE_FLAG_UNK13 = 0x02000000, // unused
-        GROUP_UPDATE_FLAG_UNK14 = 0x04000000, // unused
-        GROUP_UPDATE_FLAG_UNK15 = 0x08000000, // unused
-        GROUP_UPDATE_FLAG_UNK16 = 0x10000000, // unused
-        GROUP_UPDATE_FLAG_UNK17 = 0x20000000, // unused
-        GROUP_UPDATE_FLAG_UNK18 = 0x40000000, // unused
+        GROUP_UPDATE_FLAG_UNK1 = 0x00080000, // unused
+        GROUP_UPDATE_FLAG_UNK2 = 0x00100000, // unused
+        GROUP_UPDATE_FLAG_UNK3 = 0x00200000, // unused
+        GROUP_UPDATE_FLAG_UNK4 = 0x00400000, // unused
+        GROUP_UPDATE_FLAG_UNK5 = 0x00800000, // unused
+        GROUP_UPDATE_FLAG_UNK6 = 0x01000000, // unused
+        GROUP_UPDATE_FLAG_UNK7 = 0x02000000, // unused
+        GROUP_UPDATE_FLAG_UNK8 = 0x04000000, // unused
+        GROUP_UPDATE_FLAG_UNK9 = 0x08000000, // unused
+        GROUP_UPDATE_FLAG_UNK10 = 0x10000000, // unused
+        GROUP_UPDATE_FLAG_UNK11 = 0x20000000, // unused
+        GROUP_UPDATE_FLAG_UNK12 = 0x40000000, // unused
     };
 
     [Flags]
