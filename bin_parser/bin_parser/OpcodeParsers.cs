@@ -18,7 +18,7 @@ namespace OpcodeParsers
         /// <param name="sb">Logger string builder.</param>
         /// <param name="swe">Error logger writer.</param>
         /// <returns>Successful</returns>
-        public static bool ParseMonsterMoveOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseMonsterMoveOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_MONSTER_MOVE (0x00DD)");
@@ -93,8 +93,20 @@ namespace OpcodeParsers
 
                 for (uint i = 0; i < (points - 1); i++)
                 {
-                    uint unk2 = gr2.ReadUInt32();
-                    sb.AppendLine("vector" + i + " " + unk2.ToString("X8"));
+                    int mask = gr2.ReadInt32();
+                    sb.AppendLine("shift mask" + i + " " + mask.ToString("X8"));
+
+                    int temp1, temp2, temp3;
+                    temp1 = (mask & 0x07FF) << 0x15;
+                    temp2 = ((mask >> 0x0B) & 0x07FF) << 0x15;
+                    temp3 = (mask >> 0x16) << 0x16;
+                    temp1 >>= 0x15;
+                    temp2 >>= 0x15;
+                    temp3 >>= 0x16;
+                    float x = temp1 * 0.25f;
+                    float y = temp2 * 0.25f;
+                    float z = temp3 * 0.25f;
+                    sb.AppendLine("shift is " + x + " " + y + " " + z + ".");
                 }
             }
             return true;
@@ -108,7 +120,7 @@ namespace OpcodeParsers
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        public static bool ParseInitialSpellsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseInitialSpellsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_INITIAL_SPELLS (0x012A)");
@@ -148,7 +160,7 @@ namespace OpcodeParsers
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        public static bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseAuctionListResultOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset ");
             sb.AppendLine(gr.BaseStream.Position.ToString("X2"));
@@ -238,7 +250,7 @@ namespace OpcodeParsers
         /// <param name="sb"></param>
         /// <param name="swe"></param>
         /// <returns></returns>
-        public static bool ParsePartyMemberStatsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParsePartyMemberStatsOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_PARTY_MEMBER_STATS (0x007E)");
@@ -386,7 +398,7 @@ namespace OpcodeParsers
             return true;
         }
 
-        public static bool ParseTrainerListOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseTrainerListOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_TRAINER_LIST (0x01B1)");
@@ -430,7 +442,7 @@ namespace OpcodeParsers
             return true;
         }
 
-        public static bool ParseAttackerStateUpdateOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseAttackerStateUpdateOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_ATTACKERSTATEUPDATE (0x01B1)");
@@ -488,7 +500,7 @@ namespace OpcodeParsers
             return true;
         }
 
-        public static bool ParseLoginSetTimeSpeedOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
+        public static bool ParseLoginSetTimeSpeedOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
         {
             sb.AppendLine("Packet offset " + gr.BaseStream.Position.ToString("X2"));
             sb.AppendLine("Opcode SMSG_LOGIN_SETTIMESPEED (0x0042)");
@@ -507,6 +519,41 @@ namespace OpcodeParsers
                 sb.AppendLine("parsed: ok...");
             else
                 sb.AppendLine("parsed: error...");
+
+            return true;
+        }
+
+        public static bool ParseCorpseQueryOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
+        {
+            if (direction == 0)  // client packet
+                return false;
+
+            StreamWriter sw = new StreamWriter("corpse_query.log", true, Encoding.ASCII);
+
+            sw.WriteLine("Packet offset {0}", gr.BaseStream.Position.ToString("X2"));
+            sw.WriteLine("Opcode MSG_CORPSE_QUERY (0x0216)");
+
+            byte unk = gr2.ReadByte();
+            sw.WriteLine("unk {0}", unk);
+            if (unk > 0)
+            {
+                uint mapid1 = gr2.ReadUInt32();
+                float x = gr2.ReadSingle();
+                float y = gr2.ReadSingle();
+                float z = gr2.ReadSingle();
+                uint mapid2 = gr2.ReadUInt32();
+                sw.WriteLine("map {0}, pos {1} {2} {3}", mapid1, x, y, z);
+                sw.WriteLine("map2 {0}", mapid2);
+            }
+
+            if (gr2.BaseStream.Position == gr2.BaseStream.Length)
+                sw.WriteLine("parsed: ok...");
+            else
+                sw.WriteLine("parsed: error...");
+
+            sw.WriteLine();
+            sw.Flush();
+            sw.Close();
 
             return true;
         }

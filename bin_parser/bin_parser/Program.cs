@@ -64,7 +64,7 @@ namespace bin_parser
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + f.FullName);
             SQLiteCommand command = new SQLiteCommand(connection);
             connection.Open();
-            command.CommandText = "SELECT opcode, data FROM packets;";
+            command.CommandText = "SELECT direction, opcode, data FROM packets;";
             command.Prepare();
             SQLiteDataReader reader = command.ExecuteReader();
 
@@ -72,15 +72,17 @@ namespace bin_parser
 
             while (reader.Read())
             {
-                ushort opcode = (ushort)reader.GetInt16(0);
-                byte[] data_ = (byte[])reader.GetValue(1);
+                byte direction = reader.GetByte(0);
+                ushort opcode = (ushort)reader.GetInt16(1);
+                byte[] data_ = (byte[])reader.GetValue(2);
 
-                uint size = sizeof(ushort) + (uint)data_.Length;
+                uint size = sizeof(byte) + sizeof(ushort) + (uint)data_.Length;
 
                 byte[] op = BitConverter.GetBytes(opcode);
                 byte[] sz = BitConverter.GetBytes(size);
 
                 ms.Write(sz, 0, sz.Length);
+                ms.WriteByte(direction);
                 ms.Write(op, 0, op.Length);
                 ms.Write(data_, 0, data_.Length);
             }
@@ -157,6 +159,17 @@ namespace bin_parser
             MemoryStream ms = new MemoryStream(temp);
             GenericReader gr2 = new GenericReader(ms);
 
+            byte direction = 0;     // 0-CMSG, 1-SMSG
+
+            if (gr2.PeekChar() >= 0)
+                direction = gr2.ReadByte();
+            else
+            {
+                ms.Close();
+                gr2.Close();
+                return false;
+            }
+
             ushort opcode = 0;
 
             if (gr2.PeekChar() >= 0)
@@ -170,33 +183,36 @@ namespace bin_parser
 
             switch (opcode)
             {
-                /*case 0x00DD:  // SMSG_MONSTER_MOVE
-                    OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe);
-                    break;*/
+                case 0x00DD:  // SMSG_MONSTER_MOVE
+                    OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe, direction);
+                    break;
                 /*case 0x012A:  // SMSG_INITIAL_SPELLS
-                    OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 /*case 0x025C:  // SMSG_AUCTION_LIST_RESULT
-                    OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
                 case 0x02F2:  // SMSG_PARTY_MEMBER_STATS_FULL
-                    OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                case 0x00A9:    // SMSG_UPDATE_OBJECT
+                /*case 0x00A9:    // SMSG_UPDATE_OBJECT
                 case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
                     if(opcode == 0x01F6)
                         gr2 = A9.Decompress(gr2);
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;
+                    break;*/
                 /*case 0x0042: // SMSG_LOGIN_SETTIMESPEED
-                    OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 /*case 0x01B1: // SMSG_TRAINER_LIST
-                    OpcodeParser.ParseTrainerListOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseTrainerListOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 /*case 0x014A: // SMSG_ATTACKERSTATEUPDATE
-                    OpcodeParser.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe);
+                    OpcodeParser.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe, direction);
+                    break;*/
+                /*case 0x0216:
+                    OpcodeParser.ParseCorpseQueryOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 default:    // unhandled opcode
                     return false;
