@@ -52,6 +52,7 @@
     <Compile Include="GenericReader.cs" />
     <Compile Include="OpcodeParsers.cs">
     </Compile>
+    <Compile Include="Opcodes.cs" />
     <Compile Include="Program.cs">
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

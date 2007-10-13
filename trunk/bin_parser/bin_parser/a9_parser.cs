@@ -437,6 +437,9 @@ namespace A9parser
                 flags2 = gr.ReadUInt32();
                 sb.AppendLine("flags2 " + flags2.ToString("X8"));
 
+                //byte unk = gr.ReadByte();
+                //sb.AppendLine("new unk byte: {0}" + unk.ToString("X2"));
+
                 uint time = gr.ReadUInt32();
                 sb.AppendLine("time " + time.ToString("X8"));
             }

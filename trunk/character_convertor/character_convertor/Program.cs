@@ -44,7 +44,7 @@ namespace character_convertor
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(TopLevelErrorHandler);
 
             Console.WriteLine("Character convertor for MaNGoS");
-            Console.WriteLine("Client version 2.0.12->2.1.2");
+            Console.WriteLine("Client version 2.0.12->2.1.3");
 
             Console.Write("Enter DB name: ");
             string dbName = Console.ReadLine();
@@ -73,7 +73,11 @@ namespace character_convertor
                 return;
             }
 
-            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = query;
+
+            //MySqlCommand command = new MySqlCommand(query, connection);
+
             MySqlDataReader reader;
             try
             {
@@ -1548,7 +1552,9 @@ namespace character_convertor
 
             conn.Open();
 
-            MySqlCommand cmd = new MySqlCommand(sb.ToString(), conn);
+            //MySqlCommand cmd = new MySqlCommand(sb.ToString(), conn);
+            MySqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sb.ToString();
 
             cmd.CommandTimeout = 1000;
 

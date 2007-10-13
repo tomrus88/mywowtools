@@ -10,6 +10,23 @@ namespace OpcodeParsers
 {
     public class OpcodeParser
     {
+        static uint MapId
+        {
+            get
+            {
+                return MapId;
+            }
+            set
+            {
+                MapId = value;
+            }
+        }
+
+        OpcodeParser()
+        {
+            MapId = 0;
+        }
+
         /// <summary>
         /// Monster move opcode parser method.
         /// </summary>
@@ -314,9 +331,22 @@ namespace OpcodeParsers
                 ulong mask = gr2.ReadUInt64();
                 sb.AppendLine("Auras mask " + mask.ToString("X16"));
 
-                uint i = 0; // aura slot
+                //uint i = 0; // aura slot
                 BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
-                foreach (bool b in bitArr)
+
+                for (int i = 0; i < bitArr.Length; i++)
+                {
+                    if (i >= MAX_AURAS) // we can have only 56 auras
+                        break;
+
+                    if (bitArr[i])
+                    {
+                        ushort spellid = gr2.ReadUInt16();
+                        sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
+                    }
+                }
+
+                /*foreach (bool b in bitArr)
                 {
                     if (i >= MAX_AURAS) // we can have only 56 auras
                         break;
@@ -327,7 +357,7 @@ namespace OpcodeParsers
                         sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
                     }
                     i++;
-                }
+                }*/
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_GUID) != 0)
             {
@@ -555,6 +585,16 @@ namespace OpcodeParsers
             sw.Flush();
             sw.Close();
 
+            return true;
+        }
+
+        public static bool ParseLoginVerifyWorldOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
+        {
+            // used to get current map id
+            uint mapid = gr2.ReadUInt32();
+            Coords4 coords = gr2.ReadCoords4();
+
+            MapId = mapid;
             return true;
         }
     }

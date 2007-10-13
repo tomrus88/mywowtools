@@ -11,6 +11,7 @@ using UpdateFields;
 using A9parser;
 using WoWObjects;
 using OpcodeParsers;
+using OpcodesEnum;
 
 namespace bin_parser
 {
@@ -64,7 +65,7 @@ namespace bin_parser
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + f.FullName);
             SQLiteCommand command = new SQLiteCommand(connection);
             connection.Open();
-            command.CommandText = "SELECT direction, opcode, data FROM packets;";
+            command.CommandText = "SELECT id, sess_id, timestamp, direction, opcode, data FROM packets ORDER BY id;";
             command.Prepare();
             SQLiteDataReader reader = command.ExecuteReader();
 
@@ -72,16 +73,26 @@ namespace bin_parser
 
             while (reader.Read())
             {
-                byte direction = reader.GetByte(0);
-                ushort opcode = (ushort)reader.GetInt16(1);
-                byte[] data_ = (byte[])reader.GetValue(2);
+                uint id = (uint)reader.GetInt32(0);
+                uint sess_id = (uint)reader.GetInt32(1);
+                string timestamp = reader.GetString(2);
+                byte direction = reader.GetByte(3);
+                ushort opcode = (ushort)reader.GetInt16(4);
+                byte[] data_ = (byte[])reader.GetValue(5);
 
-                uint size = sizeof(byte) + sizeof(ushort) + (uint)data_.Length;
+                uint size = sizeof(uint) + sizeof(uint) + (uint)timestamp.Length + 1 + sizeof(byte) + sizeof(ushort) + (uint)data_.Length;
 
+                byte[] id_arr = BitConverter.GetBytes(id);
+                byte[] sessid_arr = BitConverter.GetBytes(sess_id);
+                byte[] time_arr = Encoding.ASCII.GetBytes(timestamp);
                 byte[] op = BitConverter.GetBytes(opcode);
                 byte[] sz = BitConverter.GetBytes(size);
 
                 ms.Write(sz, 0, sz.Length);
+                ms.Write(id_arr, 0, id_arr.Length);
+                ms.Write(sessid_arr, 0, sessid_arr.Length);
+                ms.Write(time_arr, 0, time_arr.Length);
+                ms.WriteByte(0);
                 ms.WriteByte(direction);
                 ms.Write(op, 0, op.Length);
                 ms.Write(data_, 0, data_.Length);
@@ -99,18 +110,22 @@ namespace bin_parser
             string database_log = f.FullName + ".data.txt";
             StreamWriter data = new StreamWriter(database_log);
 
+            string hex_log = f.FullName + ".hex.log";
+            StreamWriter hex = new StreamWriter(hex_log);
+
             string ofn = f.FullName + ".data_out.txt";
             StreamWriter sw = new StreamWriter(ofn);
 
             sw.AutoFlush = true;
             swe.AutoFlush = true;
             data.AutoFlush = true;
+            hex.AutoFlush = true;
 
             while (gr.PeekChar() >= 0)
             {
                 //try
                 //{
-                if (ParseHeader(gr, sw, swe, data))
+                if (ParseHeader(gr, sw, swe, data, hex))
                     packet++;
                 //}
                 //catch (Exception exc)
@@ -126,6 +141,7 @@ namespace bin_parser
             sw.Close();
             swe.Close();
             data.Close();
+            hex.Close();
             gr.Close();
 
             TimeSpan fileworktime = DateTime.Now - filestarttime;
@@ -143,7 +159,7 @@ namespace bin_parser
         /// <param name="swe">Error logger writer.</param>
         /// <param name="data">Data logger writer.</param>
         /// <returns>Successful</returns>
-        private static bool ParseHeader(GenericReader gr, StreamWriter sw, StreamWriter swe, StreamWriter data)
+        private static bool ParseHeader(GenericReader gr, StreamWriter sw, StreamWriter swe, StreamWriter data, StreamWriter hex)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -159,60 +175,62 @@ namespace bin_parser
             MemoryStream ms = new MemoryStream(temp);
             GenericReader gr2 = new GenericReader(ms);
 
-            byte direction = 0;     // 0-CMSG, 1-SMSG
+            uint id = 0;
+            uint sess_id = 0;
+            string time = "";
+            byte direction = 0; // 0-CMSG, 1-SMSG
+            OpCodes opcode = OpCodes.MSG_NULL_ACTION;
 
-            if (gr2.PeekChar() >= 0)
-                direction = gr2.ReadByte();
-            else
-            {
-                ms.Close();
-                gr2.Close();
-                return false;
-            }
+            id = gr2.ReadUInt32();
+            sess_id = gr2.ReadUInt32();
+            time = gr2.ReadStringNull();
+            direction = gr2.ReadByte();
+            opcode = (OpCodes)gr2.ReadUInt16();
 
-            ushort opcode = 0;
+            long cur_pos = gr2.BaseStream.Position;
 
-            if (gr2.PeekChar() >= 0)
-                opcode = gr2.ReadUInt16();
-            else
-            {
-                ms.Close();
-                gr2.Close();
-                return false;
-            }
+            HexLike(gr2, hex, id, sess_id, time, direction, opcode);
+
+            gr2.BaseStream.Position = cur_pos;
 
             switch (opcode)
             {
-                case 0x00DD:  // SMSG_MONSTER_MOVE
+                /*case OpCodes.SMSG_MONSTER_MOVE:
                     OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe, direction);
-                    break;
-                /*case 0x012A:  // SMSG_INITIAL_SPELLS
+                    break;*/
+                /*case OpCodes.SMSG_INITIAL_SPELLS:
                     OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                /*case 0x025C:  // SMSG_AUCTION_LIST_RESULT
+                /*case OpCodes.SMSG_AUCTION_LIST_RESULT:
                     OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                /*case 0x007E:  // SMSG_PARTY_MEMBER_STATS
-                case 0x02F2:  // SMSG_PARTY_MEMBER_STATS_FULL
+                /*case OpCodes.SMSG_PARTY_MEMBER_STATS:
+                case OpCodes.SMSG_PARTY_MEMBER_STATS_FULL:
                     OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                /*case 0x00A9:    // SMSG_UPDATE_OBJECT
-                case 0x01F6:    // SMSG_COMPRESSED_UPDATE_OBJECT
-                    if(opcode == 0x01F6)
+                case OpCodes.SMSG_UPDATE_OBJECT:
+                case OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT:
+                    if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
+                    {
                         gr2 = A9.Decompress(gr2);
+                        HexLike(gr2, hex, id, sess_id, time, direction, opcode);
+                    }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;*/
-                /*case 0x0042: // SMSG_LOGIN_SETTIMESPEED
+                    break;
+                case OpCodes.SMSG_LOGIN_SETTIMESPEED:
                     OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case 0x01B1: // SMSG_TRAINER_LIST
+                    break;
+                /*case OpCodes.SMSG_TRAINER_LIST:
                     OpcodeParser.ParseTrainerListOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                /*case 0x014A: // SMSG_ATTACKERSTATEUPDATE
+                /*case OpCodes.SMSG_ATTACKERSTATEUPDATE:
                     OpcodeParser.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                /*case 0x0216:
+                /*case OpCodes.MSG_CORPSE_QUERY:
                     OpcodeParser.ParseCorpseQueryOpcode(gr, gr2, sb, swe, direction);
+                    break;*/
+                /*case OpCodes.SMSG_LOGIN_VERIFY_WORLD:
+                    OpcodeParser.ParseLoginVerifyWorldOpcode(gr, gr2, sb, swe, direction);
                     break;*/
                 default:    // unhandled opcode
                     return false;
@@ -225,6 +243,84 @@ namespace bin_parser
             gr2.Close();
 
             return true;
+        }
+
+        private static void HexLike(GenericReader gr, StreamWriter hex, uint id, uint sess_id, string time, byte direction, OpCodes opcode)
+        {
+            Stream input = gr.BaseStream;
+            int length = (int)(gr.BaseStream.Length - gr.BaseStream.Position);
+
+            string dir = "";
+
+            if (direction == 0)
+                dir = "C->S";
+            else
+                dir = "S->C";
+
+            hex.WriteLine("Packet {0}, id {1}, {2} ({3}), len {4}", dir, id, opcode, (ushort)opcode, length);
+            //hex.WriteLine("Session {0}, time {1}", sess_id, time);
+
+            int byteIndex = 0;
+
+            int full_lines = length >> 4;
+            int rest = length & 0x0F;
+
+            if ((full_lines == 0) && (rest == 0)) // empty packet (no data provided)
+            {
+                hex.WriteLine("0000: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- | ................");
+            }
+            else
+            {
+                for (int i = 0; i < full_lines; ++i, byteIndex += 0x10)
+                {
+                    StringBuilder bytes = new StringBuilder();
+                    StringBuilder chars = new StringBuilder();
+
+                    for (int j = 0; j < 0x10; ++j)
+                    {
+                        int c = input.ReadByte();
+
+                        bytes.Append(c.ToString("X2"));
+
+                        bytes.Append(' ');
+
+                        if (c >= 0x20 && c < 0x80)
+                            chars.Append((char)c);
+                        else
+                            chars.Append('.');
+                    }
+
+                    hex.WriteLine(byteIndex.ToString("X4") + ": " + bytes.ToString() + "| " + chars.ToString());
+                }
+
+                if (rest != 0)
+                {
+                    StringBuilder bytes = new StringBuilder();
+                    StringBuilder chars = new StringBuilder(rest);
+
+                    for (int j = 0; j < 0x10; ++j)
+                    {
+                        if (j < rest)
+                        {
+                            int c = input.ReadByte();
+
+                            bytes.Append(c.ToString("X2"));
+
+                            bytes.Append(' ');
+
+                            if (c >= 0x20 && c < 0x80)
+                                chars.Append((char)c);
+                            else
+                                chars.Append('.');
+                        }
+                        else
+                            bytes.Append("-- ");
+                    }
+                    hex.WriteLine(byteIndex.ToString("X4") + ": " + bytes.ToString() + "| " + chars.ToString());
+                }
+            }
+
+            hex.WriteLine();
         }
     }
 }
