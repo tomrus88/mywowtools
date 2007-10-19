@@ -437,8 +437,8 @@ namespace A9parser
                 flags2 = gr.ReadUInt32();
                 sb.AppendLine("flags2 " + flags2.ToString("X8"));
 
-                //byte unk = gr.ReadByte();
-                //sb.AppendLine("new unk byte: {0}" + unk.ToString("X2"));
+                byte unk = gr.ReadByte();
+                sb.AppendLine("new unk byte: {0}" + unk.ToString("X2"));
 
                 uint time = gr.ReadUInt32();
                 sb.AppendLine("time " + time.ToString("X8"));
@@ -484,7 +484,7 @@ namespace A9parser
                     sb.AppendLine("t_unk2 " + unk2.ToString("X8"));
                 }
 
-                if ((flags2 & 0x00200000) != 0)
+                if ((flags2 & 0x02200000) != 0)
                 {
                     float unkf1 = gr.ReadSingle();
                     sb.AppendLine("flags2 & 0x200000: " + unkf1);
@@ -493,7 +493,7 @@ namespace A9parser
                 uint unk1 = gr.ReadUInt32();
                 sb.AppendLine("unk1 " + unk1.ToString("X8"));
 
-                if ((flags2 & 0x00002000) != 0)
+                if ((flags2 & 0x00001000) != 0)
                 {
                     // looks like orientation/coords/speed
                     float unk3 = gr.ReadSingle();
