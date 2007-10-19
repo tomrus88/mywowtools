@@ -164,7 +164,8 @@ namespace uf_extractor
         private static int FillList()
         {
             int i = 0;
-            str_ofs_delta = 0x400000;
+            //str_ofs_delta = 0x400000; // for 2.2.3
+            str_ofs_delta = 0x401800; // for 2.3.0
 
             string old_s = String.Empty;
             string s = String.Empty;
@@ -185,14 +186,17 @@ namespace uf_extractor
                 p4 = gr.ReadUInt32();
                 p5 = gr.ReadUInt32();
 
-                if (i == 0)
-                    str_ofs_delta = p1 - start_str_ofs;
+                // uncomment for 2.2.3
+                //if (i == 0)
+                //    str_ofs_delta = p1 - start_str_ofs;
 
                 str_ofs = p1 - str_ofs_delta;
                 s = "";
 
                 long oldpos = gr.BaseStream.Position;
-                gr.BaseStream.Position = str_ofs + 1;
+                //gr.BaseStream.Position = str_ofs + 1; // for 2.2.3
+                gr.BaseStream.Position = str_ofs; // for 2.3.0
+
                 s = gr.ReadStringNull();
                 gr.BaseStream.Position = oldpos;
 
