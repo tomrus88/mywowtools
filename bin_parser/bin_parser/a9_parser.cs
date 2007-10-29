@@ -22,6 +22,7 @@ namespace A9parser
         public static BitArray Mask;
 
         public static GenericReader Decompress(GenericReader gr2)
+        //public static void Decompress(GenericReader gr2)
         {
             int decompressedsize = gr2.ReadInt32();
             byte[] data = gr2.ReadBytes((int)(gr2.BaseStream.Length - gr2.BaseStream.Position));
@@ -260,7 +261,8 @@ namespace A9parser
                     values_end = UpdateFieldsLoader.UNIT_END;
                     break;
                 case ObjectTypes.TYPEID_PLAYER:
-                    bitmask_max_size = 1440;
+                    //bitmask_max_size = 1440; // 2.2.3
+                    bitmask_max_size = 1472; // 2.3.0
                     values_end = UpdateFieldsLoader.PLAYER_END;
                     break;
                 case ObjectTypes.TYPEID_GAMEOBJECT:
@@ -438,7 +440,7 @@ namespace A9parser
                 sb.AppendLine("flags2 " + flags2.ToString("X8"));
 
                 byte unk = gr.ReadByte();
-                sb.AppendLine("new unk byte: {0}" + unk.ToString("X2"));
+                sb.AppendLine("new unk byte: " + unk.ToString("X2"));
 
                 uint time = gr.ReadUInt32();
                 sb.AppendLine("time " + time.ToString("X8"));
@@ -460,7 +462,8 @@ namespace A9parser
 
                 if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
-                    obj.SetPosition(coords.X, coords.Y, coords.Z, coords.O);
+                    if (obj != null)
+                        obj.SetPosition(coords.X, coords.Y, coords.Z, coords.O);
                 }
             }
 
@@ -485,9 +488,10 @@ namespace A9parser
                 }
 
                 if ((flags2 & 0x02200000) != 0)
+                //if ((flags2 & 0x00200000) != 0)
                 {
                     float unkf1 = gr.ReadSingle();
-                    sb.AppendLine("flags2 & 0x200000: " + unkf1);
+                    sb.AppendLine("flags2 & 0x02200000: " + unkf1);
                 }
 
                 uint unk1 = gr.ReadUInt32();
