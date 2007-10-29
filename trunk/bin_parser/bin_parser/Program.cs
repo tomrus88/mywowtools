@@ -101,7 +101,7 @@ namespace bin_parser
             reader.Close();
             connection.Close();
 
-            GenericReader gr = new GenericReader(ms);
+            GenericReader gr = new GenericReader(ms, Encoding.ASCII);
             gr.BaseStream.Position = 0;
 
             string error_log = f.FullName + ".errors.txt";
@@ -213,7 +213,9 @@ namespace bin_parser
                     if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                     {
                         gr2 = A9.Decompress(gr2);
+                        //A9.Decompress(gr2);
                         HexLike(gr2, hex, id, sess_id, time, direction, opcode);
+                        //gr2.BaseStream.Position = 0;
                     }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;

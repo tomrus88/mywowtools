@@ -161,11 +161,12 @@ namespace UpdateFields
         /// <summary>
         /// Unit update fields end.
         /// </summary>
-        public static uint UNIT_END = 226;
+        public static uint UNIT_END = 232; // 2.3.0
         /// <summary>
         /// Player updatefields end.
         /// </summary>
-        public static uint PLAYER_END = 1436;
+        //public static uint PLAYER_END = 1436; // 2.2.3
+        public static uint PLAYER_END = 1450; // 2.3.0
         /// <summary>
         /// Game object update fields end.
         /// </summary>

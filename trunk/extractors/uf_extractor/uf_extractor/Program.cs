@@ -165,7 +165,7 @@ namespace uf_extractor
         {
             int i = 0;
             //str_ofs_delta = 0x400000; // for 2.2.3
-            str_ofs_delta = 0x401800; // for 2.3.0
+            str_ofs_delta = 0x400E00; // for 0.3.0.7485
 
             string old_s = String.Empty;
             string s = String.Empty;
