@@ -320,7 +320,7 @@ namespace A9parser
                 }
             }
 
-            if((objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT || objectTypeId == ObjectTypes.TYPEID_UNIT) && (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2) && obj.IsNew)
+            if ((objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT || objectTypeId == ObjectTypes.TYPEID_UNIT) && (updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT || updatetype == UpdateTypes.UPDATETYPE_CREATE_OBJECT2) && obj.IsNew)
                 obj.Save();
 
             sb.AppendLine("=== values_update_block_end ===");
@@ -601,10 +601,10 @@ namespace A9parser
                 sb.AppendLine("flags & 0x02 t_time: " + time.ToString("X8"));
             }
 
-            /*if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
+            if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01
             {
-                // nothing
-            }*/
+                sb.AppendLine("updating self!");
+            }
 
             sb.AppendLine("=== movement_update_block_end ===");
             return true;
