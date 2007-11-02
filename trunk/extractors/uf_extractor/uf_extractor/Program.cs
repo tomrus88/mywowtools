@@ -83,10 +83,15 @@ namespace uf_extractor
 
             if (!FindVersionInfo())
                 return;
+
+            Console.WriteLine("Client version {0}", version);
+
             if (!FindFieldsNamesStart())
                 return;
             if (!FindFieldsInfoStart())
                 return;
+
+            GetStringsOffsetDelta();
 
             int count = FillList();
 
@@ -126,13 +131,13 @@ namespace uf_extractor
         {
             start_str_ofs = 0;
 
-            int i = stream_string.IndexOf("OBJECT_FIELD_GUID");
+            int i = stream_string.IndexOf("OBJECT_FIELD_GUID" + (char)0);
 
             if (i > 0)
             {
-                Console.WriteLine("Fields names start position found at {0}", i.ToString("X8"));
+                start_str_ofs = i;
 
-                start_str_ofs = i - 1;
+                Console.WriteLine("Fields names start position found at 0x{0}", i.ToString("X8"));
 
                 return true;
             }
@@ -151,9 +156,9 @@ namespace uf_extractor
             int i = stream_string.IndexOf(sstr);
             if (i > 0)
             {
-                Console.WriteLine("Found fields info start position at {0}", i.ToString("X8"));
-
                 start_ofs = i - 4;
+
+                Console.WriteLine("Found fields info start position at 0x{0}", start_ofs.ToString("X8"));
 
                 return true;
             }
@@ -161,11 +166,19 @@ namespace uf_extractor
             return false;
         }
 
+        private static void GetStringsOffsetDelta()
+        {
+            long oldpos = gr.BaseStream.Position;
+            gr.BaseStream.Position = start_ofs;
+            long temp = gr.ReadInt64();
+            gr.BaseStream.Position = oldpos;
+            str_ofs_delta = temp - start_str_ofs;
+            Console.WriteLine("str_ofs_delta = temp - start_str_ofs = 0x{0} - 0x{1} = 0x{2}", temp.ToString("X8"), start_str_ofs.ToString("X8"), str_ofs_delta.ToString("X8"));
+        }
+
         private static int FillList()
         {
             int i = 0;
-            //str_ofs_delta = 0x400000; // for 2.2.3
-            str_ofs_delta = 0x400E00; // for 0.3.0.7485
 
             string old_s = String.Empty;
             string s = String.Empty;
@@ -186,15 +199,10 @@ namespace uf_extractor
                 p4 = gr.ReadUInt32();
                 p5 = gr.ReadUInt32();
 
-                // uncomment for 2.2.3
-                //if (i == 0)
-                //    str_ofs_delta = p1 - start_str_ofs;
-
                 str_ofs = p1 - str_ofs_delta;
                 s = "";
 
                 long oldpos = gr.BaseStream.Position;
-                //gr.BaseStream.Position = str_ofs + 1; // for 2.2.3
                 gr.BaseStream.Position = str_ofs; // for 2.3.0
 
                 s = gr.ReadStringNull();
