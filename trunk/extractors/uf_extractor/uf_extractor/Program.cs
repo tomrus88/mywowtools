@@ -24,7 +24,32 @@ namespace uf_extractor
                 Total = total;
                 Descr = descr;
             }
-        }
+        };
+
+        [Flags]
+        enum UpdatafieldFlags
+        {
+            NONE = 0,
+            PUBLIC = 1,
+            PRIVATE = 2,
+            OWNER_ONLY = 4,
+            UNK1 = 8,
+            UNK2 = 16,
+            UNK3 = 32,
+            GROUP_ONLY = 64,
+            UNK4 = 128,
+            DYNAMIC = 256
+        };
+
+        enum UpdateFieldType
+        {
+            NONE = 0,
+            INT = 1,
+            TWO_SHORT = 2,
+            FLOAT = 3,
+            GUID = 4,
+            BYTES = 5
+        };
 
         private static string wow_exe_name = "WoW.exe";
         private static FileStream fs;
@@ -88,6 +113,7 @@ namespace uf_extractor
 
             if (!FindFieldsNamesStart())
                 return;
+
             if (!FindFieldsInfoStart())
                 return;
 
@@ -182,7 +208,7 @@ namespace uf_extractor
 
             string old_s = String.Empty;
             string s = String.Empty;
-            long p1, p2, p3, p4, p5;
+            uint p1, p2, p3, p4, p5;
 
             gr.BaseStream.Position = start_ofs;
 
@@ -200,20 +226,22 @@ namespace uf_extractor
                 p5 = gr.ReadUInt32();
 
                 str_ofs = p1 - str_ofs_delta;
-                s = "";
 
                 long oldpos = gr.BaseStream.Position;
-                gr.BaseStream.Position = str_ofs; // for 2.3.0
+                gr.BaseStream.Position = str_ofs;
 
                 s = gr.ReadStringNull();
                 gr.BaseStream.Position = oldpos;
 
                 StringBuilder sb = new StringBuilder();
+                sb.Append("Size: ");
                 sb.Append(p3);
-                sb.Append(" ");
-                sb.Append(p4);
-                sb.Append(" ");
-                sb.Append(p5);
+                sb.Append(", Type: ");
+                UpdateFieldType type = (UpdateFieldType)p4;
+                sb.Append(type);
+                sb.Append(", Flags: ");
+                UpdatafieldFlags flags = (UpdatafieldFlags)p5;
+                sb.Append(flags);
 
                 UpdateField uf = new UpdateField(s, p2, p3, sb.ToString());
                 list.Add(uf);
@@ -313,7 +341,7 @@ namespace uf_extractor
                     {
                         last_end = list[k - 1].Pos + list[k - 1].Total + delta;
 
-                        sw.WriteLine("    " + zsp(list[k - 1].Name.Substring(0, list[k - 1].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0},", last_end.ToString("X4"));
+                        sw.WriteLine("    " + zsp(list[k - 1].Name.Substring(0, list[k - 1].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0}", last_end.ToString("X4"));
 
                         if (!list[k - 1].Name.Contains("UNIT"))
                         {
@@ -366,7 +394,7 @@ namespace uf_extractor
 
                 sw.WriteLine("    " + zsp(list[k].Name, 42, true) + " = 0x{0}, // {1}", (list[k].Pos + delta).ToString("X4"), list[k].Descr);
             }
-            sw.WriteLine("    " + zsp(list[count].Name.Substring(0, list[count].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0},", (list[count].Pos + 1 + delta).ToString("X4"));
+            sw.WriteLine("    " + zsp(list[count].Name.Substring(0, list[count].Name.IndexOf("_")) + "_END", 42, true) + " = 0x{0}", (list[count].Pos + 1 + delta).ToString("X4"));
             sw.WriteLine("};");
             sw.WriteLine("#endif");
 
