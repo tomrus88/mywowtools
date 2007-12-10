@@ -1415,12 +1415,24 @@ namespace character_convertor
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_21           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_21));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_22           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_22));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_23           ,0);
-                                                                
-
-            //need cleanup Arena Team Info
-            for (ushort  i = (ushort)UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1; i < (ushort)UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_17; i++)
-                dstobj.SetUInt32Value(i,0);
-
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5        ,0);
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11       ,0);
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_15, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_16, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_17       ,0);
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_HONOR_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_HONOR_CURRENCY));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_CURRENCY));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_FIELD_MOD_MANA_REGEN                ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_FIELD_MOD_MANA_REGEN));

@@ -1,4 +1,3 @@
-
 // Auto generated for version 2, 2, 3, 7359
 
 enum UpdateFieldsOld : ushort
