@@ -1476,7 +1476,7 @@ namespace character_convertor
 
             if (values.Length != m_valuesCount)
             {
-                Console.WriteLine("Broken character, it has {0} fields instead of {1], skipped", values.Length, m_valuesCount);
+                Console.WriteLine("Broken character, it has {0} fields instead of {1}, skipped", values.Length, m_valuesCount);
                 return false;
             }
 
