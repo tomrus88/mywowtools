@@ -186,98 +186,12 @@ namespace character_convertor
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_5,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_5));
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS,             srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS));
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS_2,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA,              srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_1,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_2,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_3,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_4,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_5,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_6,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_7,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_7));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_8,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_8));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_9,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_9));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_10,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_10));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_11, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_11));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_12, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_12));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_13, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_13));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_14, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_14));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_15, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_15));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_16, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_16));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_17, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_17));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_18, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_18));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_19, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_19));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_20, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_20));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_21, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_21));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_22, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_22));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_23, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_23));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_24, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_24));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_25, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_25));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_26, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_26));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_27, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_27));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_28, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_28));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_29, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_29));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_30, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_30));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_31, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_31));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_32, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_32));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_33, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_33));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_34, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_34));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_35, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_35));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_36, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_36));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_37, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_37));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_38, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_38));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_39, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_39));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_40, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_40));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_41, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_41));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_42, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_42));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_43, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_43));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_44, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_44));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_45, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_45));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_46, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_46));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_47, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_47));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_48, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_48));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_49, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_49));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_50, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_50));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_51, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_51));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_52, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_52));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_53, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_53));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_54, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_54));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURA_55, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURA_55));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAFLAGS_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAFLAGS_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS,   srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_7, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_7));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_8, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_8));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_9, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_9));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_10, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_10));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_11, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_11));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_12, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_12));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURALEVELS_13, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURALEVELS_13));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_7, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_7));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_8, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_8));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_9, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_9));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_10, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_10));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_11, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_11));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_12, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_12));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURAAPPLICATIONS_13, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURAAPPLICATIONS_13));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_AURASTATE,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_AURASTATE));
+
+            //need cleanup Auras         
+            for (ushort  i = (ushort)UpdateFieldsNew.UNIT_FIELD_AURA; i < (ushort)UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME; i++)
+                dstobj.SetUInt32Value(i,0);
+
+
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME,      srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME));
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME + 1,  srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME + 1));
             dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGEDATTACKTIME,    srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGEDATTACKTIME));
@@ -364,7 +278,7 @@ namespace character_convertor
             dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_4,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_4));
             dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_5,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_5));
             dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_6,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PADDING,                       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PADDING));
+
             dstobj.SetUInt64Value(UpdateFieldsNew.PLAYER_DUEL_ARBITER                       ,srcobj.GetUInt64Value(UpdateFieldsOld.PLAYER_DUEL_ARBITER));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FLAGS                              ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FLAGS));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_GUILDID                            ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_GUILDID));
@@ -1341,6 +1255,7 @@ namespace character_convertor
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_BLOCK_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_BLOCK_PERCENTAGE));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_DODGE_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_DODGE_PERCENTAGE));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_PARRY_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_PARRY_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_EXPERTISE                          ,0);            
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_CRIT_PERCENTAGE                    ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_CRIT_PERCENTAGE));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_RANGED_CRIT_PERCENTAGE             ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_RANGED_CRIT_PERCENTAGE));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_OFFHAND_CRIT_PERCENTAGE            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_OFFHAND_CRIT_PERCENTAGE));
@@ -1351,6 +1266,8 @@ namespace character_convertor
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_4           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_4));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_5           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_5));
             dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_6           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_6));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SHIELD_BLOCK                       ,0);
+
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_EXPLORED_ZONES_1                   ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_EXPLORED_ZONES_1));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_EXPLORED_ZONES_1_1                 ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_EXPLORED_ZONES_1_1));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_EXPLORED_ZONES_1_2                 ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_EXPLORED_ZONES_1_2));
@@ -1497,20 +1414,13 @@ namespace character_convertor
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_20           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_20));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_21           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_21));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_22           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_22));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1          ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3        ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4        ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8        ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9        ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13       ,0);
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_23           ,0);
+                                                                
+
+            //need cleanup Arena Team Info
+            for (ushort  i = (ushort)UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1; i < (ushort)UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_17; i++)
+                dstobj.SetUInt32Value(i,0);
+
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14       ,0);
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_HONOR_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_HONOR_CURRENCY));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_CURRENCY));
