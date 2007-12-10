@@ -1597,12 +1597,9 @@ namespace character_convertor
 
         public ulong GetUInt64Value(ushort index)
         {
-            ulong result = 0;
-
-            result += m_uint32Values[index];
-            result += ((ulong)m_uint32Values[index + 1] << 32);
-
-            return result;
+            uint low =  m_uint32Values[index];
+            uint high = m_uint32Values[index + 1];
+            return (ulong)(low | (high << 32));
         }
 
         public float GetFloatValue(ushort index)
@@ -1618,12 +1615,9 @@ namespace character_convertor
 
         public ulong GetUInt64Value(UpdateFieldsOld index)
         {
-            ulong result = 0;
-
-            result += m_uint32Values[(int)index];
-            result += ((ulong)m_uint32Values[(int)index + 1] << 32);
-
-            return result;
+            uint low = m_uint32Values[(int)index];
+            uint high = m_uint32Values[(int)index + 1];
+            return (ulong)(low | (high << 32));
         }
 
         public float GetFloatValue(UpdateFieldsOld index)
@@ -1639,11 +1633,8 @@ namespace character_convertor
 
         public void SetUInt64Value(ushort index, ulong value)
         {
-            uint low = (uint)value;
-            uint high = (uint)(value >> 32);
-
-            m_uint32Values[index] = low;
-            m_uint32Values[index + 1] = high;
+            m_uint32Values[index] = (uint)(value & 0xFFFFFFFF);
+            m_uint32Values[index + 1] = (uint)(value >> 32);
         }
 
         public void SetFloatValue(ushort index, float value)
@@ -1659,11 +1650,8 @@ namespace character_convertor
 
         public void SetUInt64Value(UpdateFieldsNew index, ulong value)
         {
-            uint low = (uint)value;
-            uint high = (uint)(value >> 32);
-
-            m_uint32Values[(int)index] = low;
-            m_uint32Values[(int)index + 1] = high;
+            m_uint32Values[(int)index] = (uint)(value & 0xFFFFFFFF);
+            m_uint32Values[(int)index + 1] = (uint)(value >> 32);
         }
 
         public void SetFloatValue(UpdateFieldsNew index, float value)
