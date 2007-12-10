@@ -429,21 +429,21 @@ namespace A9parser
             coords.O = 0;
 
             sb.AppendLine("=== movement_update_block_start ===");
-            uint flags2 = 0;
+            MovementFlags mf = MovementFlags.MOVEMENTFLAG_NONE;    // movement flags
 
             UpdateFlags flags = (UpdateFlags)gr.ReadByte();
-            sb.AppendLine("flags " + flags.ToString("X") + ": " + flags);
+            sb.AppendLine("Update Flags: " + flags.ToString("X") + " : " + flags);
 
             if ((UpdateFlags.UPDATEFLAG_LIVING & flags) != 0) // 0x20
             {
-                flags2 = gr.ReadUInt32();
-                sb.AppendLine("flags2 " + flags2.ToString("X8"));
+                mf = (MovementFlags)gr.ReadUInt32();
+                sb.AppendLine("Movement Flags: " + mf.ToString("X8"));
 
                 byte unk = gr.ReadByte();
-                sb.AppendLine("new unk byte: " + unk.ToString("X2"));
+                sb.AppendLine("Unknown Byte: " + unk.ToString("X2"));
 
                 uint time = gr.ReadUInt32();
-                sb.AppendLine("time " + time.ToString("X8"));
+                sb.AppendLine("Time: " + time.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_HASPOSITION & flags) != 0) // 0x40
@@ -452,12 +452,12 @@ namespace A9parser
                 if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
                 {
                     coords = gr.ReadCoords4();
-                    sb.AppendLine("coords " + coords.GetCoordsAsString());
+                    sb.AppendLine("Coords: " + coords.GetCoordsAsString());
                 }
                 else // strange, we read the same data :)
                 {
                     coords = gr.ReadCoords4();
-                    sb.AppendLine("coords " + coords.GetCoordsAsString());
+                    sb.AppendLine("Coords: " + coords.GetCoordsAsString());
                 }
 
                 if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
@@ -475,96 +475,96 @@ namespace A9parser
                     data.WriteLine(objectTypeId + ": " + coords.GetCoordsAsString());
                 }*/
 
-                if ((flags2 & 0x00000200) != 0) // transport
+                if ((mf & MovementFlags.MOVEMENTFLAG_ONTRANSPORT) != 0) // transport
                 {
                     ulong t_guid = gr.ReadUInt64();
-                    sb.Append("t_guid " + t_guid.ToString("X16") + ", ");
+                    sb.Append("Transport GUID: " + t_guid.ToString("X16") + ", ");
 
                     Coords4 transport = gr.ReadCoords4();
-                    sb.AppendLine("t_coords " + transport.GetCoordsAsString());
+                    sb.AppendLine("Transport Coords: " + transport.GetCoordsAsString());
 
                     uint unk2 = gr.ReadUInt32(); // unk, probably timestamp
-                    sb.AppendLine("t_unk2 " + unk2.ToString("X8"));
+                    sb.AppendLine("Transport Unk: " + unk2.ToString("X8"));
                 }
 
-                if ((flags2 & 0x02200000) != 0)
+                if ((mf & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != 0)
                 //if ((flags2 & 0x00200000) != 0)
                 {
                     float unkf1 = gr.ReadSingle();
-                    sb.AppendLine("flags2 & 0x02200000: " + unkf1);
+                    sb.AppendLine("MovementFlags & (MOVEMENTFLAG_SWIMMING | MOVEMENTFLAG_UNK5): " + unkf1);
                 }
 
                 uint unk1 = gr.ReadUInt32();
-                sb.AppendLine("unk1 " + unk1.ToString("X8"));
+                sb.AppendLine("Unk1: " + unk1.ToString("X8"));
 
-                if ((flags2 & 0x00001000) != 0)
+                if ((mf & MovementFlags.MOVEMENTFLAG_JUMPING) != 0)
                 {
                     // looks like orientation/coords/speed
                     float unk3 = gr.ReadSingle();
-                    sb.AppendLine("unk3 " + unk3);
+                    sb.AppendLine("unk3: " + unk3);
                     float unk4 = gr.ReadSingle();
-                    sb.AppendLine("unk4 " + unk4);
+                    sb.AppendLine("unk4: " + unk4);
                     float unk5 = gr.ReadSingle();
-                    sb.AppendLine("unk5 " + unk5);
+                    sb.AppendLine("unk5: " + unk5);
                     float unk6 = gr.ReadSingle();
-                    sb.AppendLine("unk6 " + unk6);
+                    sb.AppendLine("unk6: " + unk6);
                 }
 
-                if ((flags2 & 0x04000000) != 0)
+                if ((mf & MovementFlags.MOVEMENTFLAG_SPLINE) != 0)
                 {
                     float unkf2 = gr.ReadSingle();
-                    sb.AppendLine("flags2 & 0x4000000: " + unkf2);
+                    sb.AppendLine("MovementFlags & MOVEMENTFLAG_SPLINE: " + unkf2);
                 }
 
                 float ws = gr.ReadSingle();
-                sb.AppendLine("Walk speed " + ws);
+                sb.AppendLine("Walk speed: " + ws);
                 float rs = gr.ReadSingle();
-                sb.AppendLine("Run speed " + rs);
+                sb.AppendLine("Run speed: " + rs);
                 float sbs = gr.ReadSingle();
-                sb.AppendLine("Swimback speed " + sbs);
+                sb.AppendLine("Swimback speed: " + sbs);
                 float ss = gr.ReadSingle();
-                sb.AppendLine("Swim speed " + ss);
+                sb.AppendLine("Swim speed: " + ss);
                 float wbs = gr.ReadSingle();
-                sb.AppendLine("Walkback speed " + wbs);
+                sb.AppendLine("Walkback speed: " + wbs);
                 float fs = gr.ReadSingle();
-                sb.AppendLine("Fly speed " + fs);
+                sb.AppendLine("Fly speed: " + fs);
                 float fbs = gr.ReadSingle();
-                sb.AppendLine("Flyback speed " + fbs);
+                sb.AppendLine("Flyback speed: " + fbs);
                 float ts = gr.ReadSingle();
-                sb.AppendLine("Turn speed " + ts); // pi = 3.14
+                sb.AppendLine("Turn speed: " + ts); // pi = 3.14
 
-                if ((flags2 & 0x8000000) != 0)
+                if ((mf & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
                 {
                     uint flags3 = gr.ReadUInt32();
-                    sb.AppendLine("flags3 " + flags3.ToString("X8"));
+                    sb.AppendLine("SplineFlags " + flags3.ToString("X8"));
 
                     if ((flags3 & 0x10000) != 0)
                     {
                         Coords3 c = gr.ReadCoords3();
-                        sb.AppendLine("flags2 & 0x10000: " + c.GetCoords());
+                        sb.AppendLine("SplineFlags & 0x10000: " + c.GetCoords());
                     }
                     if ((flags3 & 0x20000) != 0)
                     {
                         ulong g3 = gr.ReadUInt64();
-                        sb.AppendLine("flags3_guid " + g3.ToString("X16")); // ????
+                        sb.AppendLine("flags3_guid: " + g3.ToString("X16")); // ????
                     }
                     if ((flags3 & 0x40000) != 0)
                     {
                         uint f3_3 = gr.ReadUInt32();
-                        sb.AppendLine("flags3_unk_value3 " + f3_3.ToString("X8"));
+                        sb.AppendLine("flags3_unk_value3: " + f3_3.ToString("X8"));
                     }
 
                     uint t1 = gr.ReadUInt32();
-                    sb.AppendLine("curr tick " + t1.ToString("X8"));
+                    sb.AppendLine("curr tick: " + t1.ToString("X8"));
 
                     uint t2 = gr.ReadUInt32();
-                    sb.AppendLine("last tick " + t2.ToString("X8"));
+                    sb.AppendLine("last tick: " + t2.ToString("X8"));
 
                     uint t3 = gr.ReadUInt32();
                     sb.AppendLine("tick count " + t3.ToString("X8"));
 
                     uint coords_count = gr.ReadUInt32();
-                    sb.AppendLine("coords_count " + coords_count.ToString("X8"));
+                    sb.AppendLine("coords_count: " + coords_count.ToString("X8"));
 
                     for (uint i = 0; i < coords_count; i++)
                     {
@@ -580,25 +580,25 @@ namespace A9parser
             if ((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
             {
                 uint temp = gr.ReadUInt32(); // timestamp or something like it
-                sb.AppendLine("flags & 0x10: " + temp.ToString("X8"));
+                sb.AppendLine("UpdateFlags & 0x10: " + temp.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
             {
                 uint guid_high = gr.ReadUInt32(); // timestamp or something like it
-                sb.AppendLine("flags & 0x08: " + guid_high.ToString("X8"));
+                sb.AppendLine("UpdateFlags & 0x08: " + guid_high.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
             {
                 ulong guid2 = gr.ReadPackedGuid(); // looks like guid, but what guid?
-                sb.AppendLine("flags & 0x04 guid: " + guid2.ToString("X16"));
+                sb.AppendLine("UpdateFlags & 0x04 guid: " + guid2.ToString("X16"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
             {
                 uint time = gr.ReadUInt32(); // time
-                sb.AppendLine("flags & 0x02 t_time: " + time.ToString("X8"));
+                sb.AppendLine("UpdateFlags & 0x02 t_time: " + time.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_SELFTARGET & flags) != 0) // 0x01

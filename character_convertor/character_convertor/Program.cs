@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 using MySql.Data.MySqlClient;
 
@@ -37,6 +38,7 @@ namespace character_convertor
     class Program
     {
         static string cs = String.Empty;
+        static List<Object> objects = new List<Object>();
 
         static void Main(string[] args)
         {
@@ -44,8 +46,12 @@ namespace character_convertor
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(TopLevelErrorHandler);
 
             Console.WriteLine("Character convertor for MaNGoS");
-            Console.WriteLine("Client version 2.0.12->2.1.3");
+            Console.WriteLine("Client version 2.2.3->2.3.2");
 
+            Console.Write("Enter DB host: ");
+            string dbServer = Console.ReadLine();
+            Console.Write("Enter DB port: ");
+            string dbPort = Console.ReadLine();
             Console.Write("Enter DB name: ");
             string dbName = Console.ReadLine();
             Console.Write("Enter DB user name: ");
@@ -53,10 +59,10 @@ namespace character_convertor
             Console.Write("Enter DB password: ");
             string dbPass = Console.ReadLine();
 
-            string dbServer = "localhost";
-            string dbPort = "3306";
+            // connection string
+            cs = String.Format("Server={0};Port={1};Database={2};Uid={3};Pwd={4}", dbServer, dbPort, dbName, dbUser, dbPass);
 
-            cs = "Server=" + dbServer + ";Port=" + dbPort + ";Database=" + dbName + ";Uid=" + dbUser + ";Pwd=" + dbPass;
+            // main query
             string query = "SELECT `data` FROM `character`";
 
             MySqlConnection connection = new MySqlConnection(cs);
@@ -67,25 +73,34 @@ namespace character_convertor
             }
             catch (Exception exc)
             {
-                //Console.WriteLine(exc.ToString());
                 Console.WriteLine(exc.Message);
                 Console.ReadKey();
                 return;
             }
 
-            MySqlCommand command = connection.CreateCommand();
+            MySqlCommand command;
+
+            try
+            {
+                command = connection.CreateCommand();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                Console.ReadKey();
+                return;
+            }
+
             command.CommandText = query;
 
-            //MySqlCommand command = new MySqlCommand(query, connection);
-
             MySqlDataReader reader;
+
             try
             {
                 reader = command.ExecuteReader();
             }
             catch (Exception exc)
             {
-                //Console.WriteLine(exc.ToString());
                 Console.WriteLine(exc.Message);
                 Console.ReadKey();
                 return;
@@ -102,8 +117,18 @@ namespace character_convertor
                 src.LoadValues(data);
                 // update fields
                 UpdatePlayerFields(src, dst);
-                // save
-                dst.Save(cs);
+                // add to list
+                objects.Add(dst);
+            }
+
+            // close reader
+            reader.Close();
+
+            // now save all converted characters
+            List<Object>.Enumerator eobjects = objects.GetEnumerator();
+            while (eobjects.MoveNext())
+            {
+                eobjects.Current.Save(command);
             }
 
             // close connection to database
@@ -116,7 +141,6 @@ namespace character_convertor
         private static void TopLevelErrorHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
-            //Console.WriteLine("Error Occured : " + e.Message);
             Console.WriteLine("Error Occured : " + e.ToString());
         }
 
@@ -1529,11 +1553,11 @@ namespace character_convertor
         {
             string[] values = data.Split(' ');
 
-            for (ushort i = 0; i < m_valuesCount; i++)
+            for (ushort i = 0; i < m_valuesCount; ++i)
                 m_uint32Values[i] = Convert.ToUInt32(values[i]);
         }
 
-        public void Save(string cs)
+        public void Save(MySqlCommand cmd)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -1542,21 +1566,11 @@ namespace character_convertor
             for (ushort i = 0; i < m_valuesCount; i++)
             {
                 sb.AppendFormat("{0} ", GetUInt32Value(i));
-                //sb.Append(GetUInt32Value(i));
-                //sb.Append(" ");
             }
 
             sb.Append("' WHERE `guid`='" + GetGUIDLow() + "'");
 
-            MySqlConnection conn = new MySqlConnection(cs);
-
-            conn.Open();
-
-            //MySqlCommand cmd = new MySqlCommand(sb.ToString(), conn);
-            MySqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = sb.ToString();
-
-            cmd.CommandTimeout = 1000;
 
             int affected = cmd.ExecuteNonQuery();
 
@@ -1564,8 +1578,6 @@ namespace character_convertor
                 Console.WriteLine("Query failed for player {0}", GetGUIDLow());
             else
                 Console.WriteLine("Player {0} saved", GetGUIDLow());
-
-            conn.Close();
         }
 
         public uint GetGUIDLow()
