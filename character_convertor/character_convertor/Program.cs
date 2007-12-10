@@ -114,7 +114,8 @@ namespace character_convertor
                 Object dst = new Object((ushort)UpdateFieldsNew.PLAYER_END);
 
                 // load values
-                src.LoadValues(data);
+                if(!src.LoadValues(data))
+                    continue;
                 // update fields
                 UpdatePlayerFields(src, dst);
                 // add to list
@@ -127,9 +128,9 @@ namespace character_convertor
             // now save all converted characters
             List<Object>.Enumerator eobjects = objects.GetEnumerator();
             while (eobjects.MoveNext())
-            {
                 eobjects.Current.Save(command);
-            }
+
+            objects.Clear();
 
             // close connection to database
             connection.Close();
@@ -147,137 +148,136 @@ namespace character_convertor
         #region UpdatePlayerFields
         static void UpdatePlayerFields(Object srcobj, Object dstobj)
         {
-            dstobj.SetUInt64Value(UpdateFieldsNew.OBJECT_FIELD_GUID,          srcobj.GetUInt64Value(UpdateFieldsOld.OBJECT_FIELD_GUID));
-            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_TYPE,          srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_TYPE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_ENTRY,         srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_ENTRY));
-            dstobj.SetFloatValue(UpdateFieldsNew.OBJECT_FIELD_SCALE_X,        srcobj.GetFloatValue(UpdateFieldsOld.OBJECT_FIELD_SCALE_X));
-            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_PADDING,       srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_PADDING));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHARM,           srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHARM));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_SUMMON,          srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_SUMMON));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHARMEDBY,       srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHARMEDBY));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_SUMMONEDBY,      srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_SUMMONEDBY));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CREATEDBY,       srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CREATEDBY));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_TARGET,          srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_TARGET));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_PERSUADED,       srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_PERSUADED));
-            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHANNEL_OBJECT,  srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHANNEL_OBJECT));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_HEALTH,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_HEALTH));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER1,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER2,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER3,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER4,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER5,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXHEALTH,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXHEALTH));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER1,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER2,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER3,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER4,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER5,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_LEVEL,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_LEVEL));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FACTIONTEMPLATE,  srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FACTIONTEMPLATE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_0,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_0));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_1,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_2,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_3,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_4,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_5,     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS,             srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS_2,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS_2));
+            dstobj.SetUInt64Value(UpdateFieldsNew.OBJECT_FIELD_GUID                         ,srcobj.GetUInt64Value(UpdateFieldsOld.OBJECT_FIELD_GUID));
+            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_TYPE                         ,srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_TYPE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_ENTRY                        ,srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_ENTRY));
+            dstobj.SetFloatValue(UpdateFieldsNew.OBJECT_FIELD_SCALE_X                       ,srcobj.GetFloatValue(UpdateFieldsOld.OBJECT_FIELD_SCALE_X));
+            dstobj.SetUInt32Value(UpdateFieldsNew.OBJECT_FIELD_PADDING                      ,srcobj.GetUInt32Value(UpdateFieldsOld.OBJECT_FIELD_PADDING));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHARM                          ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHARM));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_SUMMON                         ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_SUMMON));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHARMEDBY                      ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHARMEDBY));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_SUMMONEDBY                     ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_SUMMONEDBY));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CREATEDBY                      ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CREATEDBY));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_TARGET                         ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_TARGET));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_PERSUADED                      ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_PERSUADED));
+            dstobj.SetUInt64Value(UpdateFieldsNew.UNIT_FIELD_CHANNEL_OBJECT                 ,srcobj.GetUInt64Value(UpdateFieldsOld.UNIT_FIELD_CHANNEL_OBJECT));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_HEALTH                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_HEALTH));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER1                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER2                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER3                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER4                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER5                         ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXHEALTH                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXHEALTH));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER1                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER2                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER3                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER4                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MAXPOWER5                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MAXPOWER5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_LEVEL                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_LEVEL));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FACTIONTEMPLATE                ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FACTIONTEMPLATE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_0                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_0));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY            ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_1          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_2          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO                    ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_1                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_2                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_3                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_4                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_VIRTUAL_ITEM_INFO_5                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_VIRTUAL_ITEM_INFO_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_FLAGS_2                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_FLAGS_2));
 
             //need cleanup Auras         
-            for (ushort  i = (ushort)UpdateFieldsNew.UNIT_FIELD_AURA; i < (ushort)UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME; i++)
-                dstobj.SetUInt32Value(i,0);
+            for (ushort i = (ushort)UpdateFieldsNew.UNIT_FIELD_AURA; i < (ushort)UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME; i++)
+                dstobj.SetUInt32Value(i, 0);
 
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME                 ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME + 1             ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME + 1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGEDATTACKTIME               ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGEDATTACKTIME));
 
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME,      srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASEATTACKTIME + 1,  srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASEATTACKTIME + 1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGEDATTACKTIME,    srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGEDATTACKTIME));
-
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_BOUNDINGRADIUS, srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_BOUNDINGRADIUS));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_COMBATREACH, srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_COMBATREACH));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_DISPLAYID, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_DISPLAYID));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NATIVEDISPLAYID, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NATIVEDISPLAYID));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MOUNTDISPLAYID, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MOUNTDISPLAYID));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINDAMAGE,         srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINDAMAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXDAMAGE,         srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXDAMAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINOFFHANDDAMAGE,  srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINOFFHANDDAMAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXOFFHANDDAMAGE,  srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXOFFHANDDAMAGE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_1,            srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETNUMBER,          srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETNUMBER));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PET_NAME_TIMESTAMP, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PET_NAME_TIMESTAMP));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETEXPERIENCE,   srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETEXPERIENCE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETNEXTLEVELEXP, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETNEXTLEVELEXP));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_DYNAMIC_FLAGS,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_DYNAMIC_FLAGS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_CHANNEL_SPELL,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_CHANNEL_SPELL));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_MOD_CAST_SPEED,         srcobj.GetFloatValue(UpdateFieldsOld.UNIT_MOD_CAST_SPEED));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_CREATED_BY_SPELL,      srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_CREATED_BY_SPELL));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_NPC_FLAGS,             srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_NPC_FLAGS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_NPC_EMOTESTATE,        srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_NPC_EMOTESTATE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_TRAINING_POINTS,       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_TRAINING_POINTS));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT0,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT0));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT1,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT2,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT3,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT4,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT0, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT0));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT0, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT0));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE,   srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_1, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_2, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_3, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_4, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_5, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_6, srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASE_MANA,                     srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASE_MANA));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASE_HEALTH,                   srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASE_HEALTH));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_2,                       srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER,                  srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER_MODS,             srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER_MODS));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER_MULTIPLIER,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER_MULTIPLIER));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER_MODS,      srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER_MODS));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER, srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINRANGEDDAMAGE,                srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINRANGEDDAMAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXRANGEDDAMAGE,                srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXRANGEDDAMAGE));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER,           srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_1,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_2,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_3,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_4,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_4));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_5,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_6,         srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_6));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER,          srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_1,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_1));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_2,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_2));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_3,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_3));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_4,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_4));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_5,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_5));
-            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_6,        srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_6));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_BOUNDINGRADIUS                  ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_BOUNDINGRADIUS));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_COMBATREACH                     ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_COMBATREACH));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_DISPLAYID                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_DISPLAYID));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NATIVEDISPLAYID                ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NATIVEDISPLAYID));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_MOUNTDISPLAYID                 ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_MOUNTDISPLAYID));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINDAMAGE                       ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINDAMAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXDAMAGE                       ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXDAMAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINOFFHANDDAMAGE                ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINOFFHANDDAMAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXOFFHANDDAMAGE                ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXOFFHANDDAMAGE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_1                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETNUMBER                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETNUMBER));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PET_NAME_TIMESTAMP             ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PET_NAME_TIMESTAMP));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETEXPERIENCE                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETEXPERIENCE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_PETNEXTLEVELEXP                ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_PETNEXTLEVELEXP));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_DYNAMIC_FLAGS                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_DYNAMIC_FLAGS));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_CHANNEL_SPELL                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_CHANNEL_SPELL));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_MOD_CAST_SPEED                        ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_MOD_CAST_SPEED));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_CREATED_BY_SPELL                     ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_CREATED_BY_SPELL));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_NPC_FLAGS                            ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_NPC_FLAGS));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_NPC_EMOTESTATE                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_NPC_EMOTESTATE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_TRAINING_POINTS                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_TRAINING_POINTS));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT0                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT0));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT1                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT2                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT3                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_STAT4                          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_STAT4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT0                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT0));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT1                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT2                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT3                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POSSTAT4                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POSSTAT4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT0                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT0));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT1                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT2                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT3                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_NEGSTAT4                       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_NEGSTAT4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES                    ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_1                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_2                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_3                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_4                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_5                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCES_6                  ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCES_6));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE     ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_1   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_2   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_3   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_4   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_5   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_6   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_6));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE     ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_1   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_2   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_3   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_4   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_5   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_6   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_6));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASE_MANA                      ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASE_MANA));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BASE_HEALTH                    ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BASE_HEALTH));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_BYTES_2                        ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_BYTES_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER                   ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER_MODS              ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER_MODS));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_ATTACK_POWER_MULTIPLIER         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_ATTACK_POWER_MULTIPLIER));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER            ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER_MODS       ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER_MODS));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER  ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MINRANGEDDAMAGE                 ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MINRANGEDDAMAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_MAXRANGEDDAMAGE                 ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_MAXRANGEDDAMAGE));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER            ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_1          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_2          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_3          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_4          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_5          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MODIFIER_6          ,srcobj.GetUInt32Value(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MODIFIER_6));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER           ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_1         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_1));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_2         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_2));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_3         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_3));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_4         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_4));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_5         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_5));
+            dstobj.SetFloatValue(UpdateFieldsNew.UNIT_FIELD_POWER_COST_MULTIPLIER_6         ,srcobj.GetFloatValue(UpdateFieldsOld.UNIT_FIELD_POWER_COST_MULTIPLIER_6));
 
             dstobj.SetUInt64Value(UpdateFieldsNew.PLAYER_DUEL_ARBITER                       ,srcobj.GetUInt64Value(UpdateFieldsOld.PLAYER_DUEL_ARBITER));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FLAGS                              ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FLAGS));
@@ -1252,21 +1252,21 @@ namespace character_convertor
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_CHARACTER_POINTS2                  ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_CHARACTER_POINTS2));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_TRACK_CREATURES                    ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_TRACK_CREATURES));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_TRACK_RESOURCES                    ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_TRACK_RESOURCES));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_BLOCK_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_BLOCK_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_DODGE_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_DODGE_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_PARRY_PERCENTAGE                   ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_PARRY_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_EXPERTISE                          ,0);            
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_CRIT_PERCENTAGE                    ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_CRIT_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_RANGED_CRIT_PERCENTAGE             ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_RANGED_CRIT_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_OFFHAND_CRIT_PERCENTAGE            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_OFFHAND_CRIT_PERCENTAGE));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1             ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_1           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_1));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_2           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_2));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_3           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_3));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_4           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_4));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_5           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_5));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_6           ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_6));
-            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SHIELD_BLOCK                       ,0);
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_BLOCK_PERCENTAGE                    ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_BLOCK_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_DODGE_PERCENTAGE                    ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_DODGE_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_PARRY_PERCENTAGE                    ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_PARRY_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_EXPERTISE                           ,0);            
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_CRIT_PERCENTAGE                     ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_CRIT_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_RANGED_CRIT_PERCENTAGE              ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_RANGED_CRIT_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_OFFHAND_CRIT_PERCENTAGE             ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_OFFHAND_CRIT_PERCENTAGE));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1              ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_1            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_1));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_2            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_2));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_3            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_3));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_4            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_4));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_5            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_5));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SPELL_CRIT_PERCENTAGE1_6            ,srcobj.GetFloatValue(UpdateFieldsOld.PLAYER_SPELL_CRIT_PERCENTAGE1_6));
+            dstobj.SetFloatValue(UpdateFieldsNew.PLAYER_SHIELD_BLOCK                        ,0);
 
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_EXPLORED_ZONES_1                   ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_EXPLORED_ZONES_1));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_EXPLORED_ZONES_1_1                 ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_EXPLORED_ZONES_1_1));
@@ -1415,23 +1415,23 @@ namespace character_convertor
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_21           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_21));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_22           ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_COMBAT_RATING_1_22));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_COMBAT_RATING_1_23           ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1          ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_1));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_2));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_3));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_4));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5        ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_5));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_6));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_7));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9        ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_8));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_9));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11       ,0);
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_15, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13));
-            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_16, srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_10));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_11));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_12));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_15       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_13));
+            dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_16       ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_14));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_TEAM_INFO_1_1_17       ,0);
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_HONOR_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_HONOR_CURRENCY));
             dstobj.SetUInt32Value(UpdateFieldsNew.PLAYER_FIELD_ARENA_CURRENCY               ,srcobj.GetUInt32Value(UpdateFieldsOld.PLAYER_FIELD_ARENA_CURRENCY));
@@ -1470,12 +1470,20 @@ namespace character_convertor
 
         }
 
-        public void LoadValues(string data)
+        public bool LoadValues(string data)
         {
             string[] values = data.Split(' ');
 
+            if (values.Length != m_valuesCount)
+            {
+                Console.WriteLine("Broken character, it has {0} fields, skipped", values.Length);
+                return false;
+            }
+
             for (ushort i = 0; i < m_valuesCount; ++i)
                 m_uint32Values[i] = Convert.ToUInt32(values[i]);
+
+            return true;
         }
 
         public void Save(MySqlCommand cmd)
@@ -1496,7 +1504,7 @@ namespace character_convertor
             int affected = cmd.ExecuteNonQuery();
 
             if (affected == 0)
-                Console.WriteLine("Query failed for player {0}", GetGUIDLow());
+                Console.WriteLine("Player {0} not saved", GetGUIDLow());
             else
                 Console.WriteLine("Player {0} saved", GetGUIDLow());
         }
