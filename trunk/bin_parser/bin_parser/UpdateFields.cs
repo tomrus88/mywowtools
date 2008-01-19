@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace UpdateFields
 {
@@ -59,11 +59,11 @@ namespace UpdateFields
         /// <summary>
         /// Update flag unknown...
         /// </summary>
-        UPDATEFLAG_HIGHGUID = 0x08,
+        UPDATEFLAG_LOWGUID = 0x08,
         /// <summary>
         /// Common update flag.
         /// </summary>
-        UPDATEFLAG_ALL = 0x10,
+        UPDATEFLAG_HIGHGUID = 0x10,
         /// <summary>
         /// Update flag for living objects.
         /// </summary>
@@ -250,6 +250,9 @@ namespace UpdateFields
             CheckIntegrity();
         }
 
+        /// <summary>
+        /// Check updatefields.dat integrity
+        /// </summary>
         public static void CheckIntegrity()
         {
             // program will crash there if updatefields.dat contains errors

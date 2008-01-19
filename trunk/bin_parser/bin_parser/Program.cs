@@ -1,23 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
-using System.Data.SQLite;
-
-using WoWReader;
-using UpdateFields;
 using A9parser;
-using WoWObjects;
 using OpcodeParsers;
 using OpcodesEnum;
+using UpdateFields;
+using WoWReader;
 
 namespace bin_parser
 {
     internal class Binparser
     {
-        private NumberFormatInfo nfi;
+        private static NumberFormatInfo nfi;
+        static uint packet = 1;
+        // we must use clear dictionary for each new file...
+        public static Dictionary<ulong, ObjectTypes> m_objects = new Dictionary<ulong, ObjectTypes>();
+        //public static Dictionary<ulong, WoWObject> m_objects2 = new Dictionary<ulong, WoWObject>();
+
+        Binparser()
+        {
+            nfi = new CultureInfo("en-us", false).NumberFormat;
+            nfi.NumberDecimalSeparator = ".";
+        }
+
+        ~Binparser()
+        {
+            m_objects.Clear();
+        }
 
         /// <summary>
         /// The main entry point for the application.
@@ -26,8 +38,6 @@ namespace bin_parser
         static void Main()
         {
             Binparser bp = new Binparser();
-            bp.nfi = new CultureInfo("en-us", false).NumberFormat;
-            bp.nfi.NumberDecimalSeparator = ".";
 
             UpdateFieldsLoader.LoadUpdateFields();
 
@@ -49,12 +59,6 @@ namespace bin_parser
             Console.WriteLine("Done in " + worktime.ToString() + "!");
             Console.ReadKey();
         }
-
-        static uint packet = 1;
-
-        // we must use clear dictionary for each new file...
-        public static Dictionary<ulong, ObjectTypes> m_objects = new Dictionary<ulong, ObjectTypes>();
-        //public static Dictionary<ulong, WoWObject> m_objects2 = new Dictionary<ulong, WoWObject>();
 
         private static bool ParseFile(FileInfo f)
         {
@@ -158,6 +162,7 @@ namespace bin_parser
         /// <param name="sw">Data stream writer.</param>
         /// <param name="swe">Error logger writer.</param>
         /// <param name="data">Data logger writer.</param>
+        /// <param name="hex">HEX logger writer.</param>
         /// <returns>Successful</returns>
         private static bool ParseHeader(GenericReader gr, StreamWriter sw, StreamWriter swe, StreamWriter data, StreamWriter hex)
         {
@@ -213,9 +218,10 @@ namespace bin_parser
                     if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                     {
                         gr2 = A9.Decompress(gr2);
-                        //A9.Decompress(gr2);
-                        HexLike(gr2, hex, id, sess_id, time, direction, opcode);
-                        //gr2.BaseStream.Position = 0;
+                        gr2.BaseStream.Position = 0;
+                        hex.WriteLine("Decompressed SMSG_COMPRESSED_UPDATE_OBJECT:");
+                        HexLike(gr2, hex, id, sess_id, time, direction, OpCodes.SMSG_UPDATE_OBJECT);
+                        gr2.BaseStream.Position = 0;
                     }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;
@@ -249,8 +255,7 @@ namespace bin_parser
 
         private static void HexLike(GenericReader gr, StreamWriter hex, uint id, uint sess_id, string time, byte direction, OpCodes opcode)
         {
-            Stream input = gr.BaseStream;
-            int length = (int)(gr.BaseStream.Length - gr.BaseStream.Position);
+            int length = (int)(gr.Remaining);
 
             string dir = "";
 
@@ -280,7 +285,7 @@ namespace bin_parser
 
                     for (int j = 0; j < 0x10; ++j)
                     {
-                        int c = input.ReadByte();
+                        int c = gr.ReadByte();
 
                         bytes.Append(c.ToString("X2"));
 
@@ -304,7 +309,7 @@ namespace bin_parser
                     {
                         if (j < rest)
                         {
-                            int c = input.ReadByte();
+                            int c = gr.ReadByte();
 
                             bytes.Append(c.ToString("X2"));
 

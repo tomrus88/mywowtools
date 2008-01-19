@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Globalization;
 
 namespace WoWReader
 {
@@ -103,10 +102,10 @@ namespace WoWReader
         /// <summary>
         ///  Not yet.
         /// </summary>
-        /// <param name="fname">Input file name.</param>
+        /// <param name="fileName">Input file name.</param>
         /// <param name="encoding">Input encoding.</param>
-        public GenericReader(string fname, Encoding encoding)
-            : base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
+        public GenericReader(string fileName, Encoding encoding)
+            : base(new FileStream(fileName, FileMode.Open, FileAccess.Read), encoding)
         {
         }
         #endregion
@@ -206,6 +205,16 @@ namespace WoWReader
             v.O = ReadSingle();
 
             return v;
+        }
+        #endregion
+
+        #region Remaining
+        /// <summary>
+        /// Get count of remaining bytes.
+        /// </summary>
+        public long Remaining
+        {
+            get { return base.BaseStream.Length - base.BaseStream.Position; }
         }
         #endregion
     }

@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Text;
-using System.IO;
-using System.Globalization;
 using System.Collections;
-
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-
-using WoWReader;
-using WoWObjects;
-using UpdateFields;
+using System.IO;
+using System.Text;
 using bin_parser;
 using Defines;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using UpdateFields;
+using WoWObjects;
+using WoWReader;
 
 namespace A9parser
 {
+    /// <summary>
+    /// This class is used for parsing A9 update packets.
+    /// </summary>
     public class A9
     {
         /// <summary>
@@ -21,42 +21,46 @@ namespace A9parser
         /// </summary>
         public static BitArray Mask;
 
-        public static GenericReader Decompress(GenericReader gr2)
-        //public static void Decompress(GenericReader gr2)
+        public static GenericReader Decompress(GenericReader gr)
         {
-            int decompressedsize = gr2.ReadInt32();
-            byte[] data = gr2.ReadBytes((int)(gr2.BaseStream.Length - gr2.BaseStream.Position));
-            gr2.Close();
+            int uncompressedLength = gr.ReadInt32();
+            byte[] input = gr.ReadBytes((int)gr.Remaining);
+            byte[] output = new byte[uncompressedLength];
+            gr.Close();
+            InflaterInputStream istream = new InflaterInputStream(new MemoryStream(input));
+            int offset = 0;
+            while (true)
+            {
+                int size = istream.Read(output, offset, uncompressedLength);
+                if (size == uncompressedLength)
+                    break;
+                offset += size;
+                uncompressedLength -= size;
+            }
+            return new GenericReader(new MemoryStream(output));
+        }
 
-            MemoryStream ms = new MemoryStream(data);
-
-            //DeflateStream ds = new DeflateStream(ms, CompressionMode.Decompress, true);
-
-            InflaterInputStream istream = new InflaterInputStream(ms);
-
-            //if (istream.Length != decompressedsize)
-            //    Console.WriteLine("Error while decompressing packet!");
-
-            //byte[] buff = new byte[istream.Length];
-            //istream.Read(buff, 0, (int)istream.Length);
-
-            //MemoryStream ms2 = new MemoryStream(buff);
-
-            //InflaterInputStream istream = new InflaterInputStream(gr2.BaseStream);
-
-            //GenericReader gr3 = new GenericReader(ds);
-            //GenericReader gr3 = new GenericReader(istream);
-            //gr2 = new GenericReader(ms2);
-            gr2 = new GenericReader(istream);
-
-            //return gr3;
-            return gr2;
+        public static void Decompress(ref GenericReader gr)
+        {
+            int uncompressedLength = gr.ReadInt32();
+            byte[] output = new byte[gr.ReadInt32()];
+            byte[] temp = gr.ReadBytes((int)gr.Remaining);
+            gr.Close();
+            Stream s = new InflaterInputStream(new MemoryStream(temp));
+            int offset = 0;
+            while (true)
+            {
+                int size = s.Read(output, offset, uncompressedLength);
+                if (size == uncompressedLength) break;
+                offset += size;
+                uncompressedLength -= size;
+            }
+            gr = new GenericReader(new MemoryStream(output));
+            //gr.BaseStream.Position = 0;
         }
 
         public static void ParseUpdatePacket(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe)
         {
-            //MessageBox.Show(gr.BaseStream.Position.ToString() + " " + gr.BaseStream.Length.ToString());
-
             string database_log = "data.txt";
             StreamWriter data2 = new StreamWriter(database_log, true);
             data2.AutoFlush = true;
@@ -69,7 +73,7 @@ namespace A9parser
             sb.AppendLine("Object count: " + count);
 
             uint unk = gr2.ReadByte();
-            sb.AppendLine("Unk: " + unk);
+            sb.AppendLine("HasTransport: " + unk);
 
             for (uint i = 1; i < count + 1; i++)
             {
@@ -138,7 +142,7 @@ namespace A9parser
                         else if (guid.ToString("X16").Substring(0, 8).Equals("00000000"))
                             objecttype = ObjectTypes.TYPEID_PLAYER;
                         else
-                            objecttype = ObjectTypes.TYPEID_UNIT;
+                            objecttype = ObjectTypes.TYPEID_UNIT; // also can be go, do, corpse
 
                         swe.WriteLine("problem with objecttypeid detection for UPDATETYPE_VALUES");
                     }
@@ -261,8 +265,7 @@ namespace A9parser
                     values_end = UpdateFieldsLoader.UNIT_END;
                     break;
                 case ObjectTypes.TYPEID_PLAYER:
-                    //bitmask_max_size = 1440; // 2.2.3
-                    bitmask_max_size = 1472; // 2.3.0
+                    bitmask_max_size = 1472; // 2.3.2
                     values_end = UpdateFieldsLoader.PLAYER_END;
                     break;
                 case ObjectTypes.TYPEID_GAMEOBJECT:
@@ -437,7 +440,7 @@ namespace A9parser
             if ((UpdateFlags.UPDATEFLAG_LIVING & flags) != 0) // 0x20
             {
                 mf = (MovementFlags)gr.ReadUInt32();
-                sb.AppendLine("Movement Flags: " + mf.ToString("X8"));
+                sb.AppendLine("Movement Flags: " + mf.ToString("X") + " : " + mf);
 
                 byte unk = gr.ReadByte();
                 sb.AppendLine("Unknown Byte: " + unk.ToString("X2"));
@@ -448,17 +451,8 @@ namespace A9parser
 
             if ((UpdateFlags.UPDATEFLAG_HASPOSITION & flags) != 0) // 0x40
             {
-                // same data, but different for transport and st.
-                if ((UpdateFlags.UPDATEFLAG_TRANSPORT & flags) != 0) // 0x02
-                {
-                    coords = gr.ReadCoords4();
-                    sb.AppendLine("Coords: " + coords.GetCoordsAsString());
-                }
-                else // strange, we read the same data :)
-                {
-                    coords = gr.ReadCoords4();
-                    sb.AppendLine("Coords: " + coords.GetCoordsAsString());
-                }
+                coords = gr.ReadCoords4();
+                sb.AppendLine("Coords: " + coords.GetCoordsAsString());
 
                 if (objectTypeId == ObjectTypes.TYPEID_UNIT || objectTypeId == ObjectTypes.TYPEID_GAMEOBJECT)
                 {
@@ -488,7 +482,6 @@ namespace A9parser
                 }
 
                 if ((mf & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != 0)
-                //if ((flags2 & 0x00200000) != 0)
                 {
                     float unkf1 = gr.ReadSingle();
                     sb.AppendLine("MovementFlags & (MOVEMENTFLAG_SWIMMING | MOVEMENTFLAG_UNK5): " + unkf1);
@@ -577,21 +570,21 @@ namespace A9parser
                 }
             }
 
-            if ((flags & UpdateFlags.UPDATEFLAG_ALL) != 0)   // 0x10
+            if ((flags & UpdateFlags.UPDATEFLAG_LOWGUID) != 0)   // 0x08
             {
                 uint temp = gr.ReadUInt32(); // timestamp or something like it
-                sb.AppendLine("UpdateFlags & 0x10: " + temp.ToString("X8"));
+                sb.AppendLine("UpdateFlags & 0x08 (lowguid): " + temp.ToString("X8"));
             }
 
-            if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x08
+            if ((UpdateFlags.UPDATEFLAG_HIGHGUID & flags) != 0) // 0x10
             {
                 uint guid_high = gr.ReadUInt32(); // timestamp or something like it
-                sb.AppendLine("UpdateFlags & 0x08: " + guid_high.ToString("X8"));
+                sb.AppendLine("UpdateFlags & 0x10 (highguid): " + guid_high.ToString("X8"));
             }
 
             if ((UpdateFlags.UPDATEFLAG_FULLGUID & flags) != 0) // 0x04
             {
-                ulong guid2 = gr.ReadPackedGuid(); // looks like guid, but what guid?
+                ulong guid2 = gr.ReadPackedGuid(); // guid, but what guid?
                 sb.AppendLine("UpdateFlags & 0x04 guid: " + guid2.ToString("X16"));
             }
 
