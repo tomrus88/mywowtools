@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.IO;
 using System.Collections.Generic;
-
+using System.Text;
 using MySql.Data.MySqlClient;
 
 namespace character_convertor
@@ -1472,11 +1470,17 @@ namespace character_convertor
 
         public bool LoadValues(string data)
         {
-            string[] values = data.Split(' ');
+            string[] values = data.Trim().Split(' ');
 
-            if (values.Length != m_valuesCount)
+            if (values.Length == (int)UpdateFieldsNew.PLAYER_END)
             {
-                Console.WriteLine("Broken character, it has {0} fields instead of {1}, skipped", values.Length, m_valuesCount);
+                Console.WriteLine("Character already converted, skipping...");
+                return false;
+            }
+
+            if (values.Length != (int)UpdateFieldsOld.PLAYER_END)
+            {
+                Console.WriteLine("Broken character, it has {0} fields instead of {1}, skipped...", values.Length, (int)UpdateFieldsOld.PLAYER_END);
                 return false;
             }
 
