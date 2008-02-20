@@ -537,7 +537,7 @@ namespace UpdatePacketParser
                     if (update.updatemask[i])
                     {
                         UpdateField uf = UpdateFieldsLoader.GetUpdateField(type, i);
-                        Object value = GetValueBaseOnType(obj.UInt32Values[i], uf.Type);
+                        Object value = GetValueBaseOnType(update.updatedata[i], uf.Type);
                         ListViewItem item = new ListViewItem(new string[] { uf.Name, value.ToString() }, group);
                         listView.Items.Add(item);
                     }

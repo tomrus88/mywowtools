@@ -17,6 +17,12 @@ namespace UpdatePacketParser
         public Form1()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhanledExceptionHandler);
+        }
+
+        private void UnhanledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            MessageBox.Show(args.ExceptionObject.ToString());
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,7 +45,37 @@ namespace UpdatePacketParser
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string temp = listView1.SelectedItems.ToString();
+            StringBuilder sb = new StringBuilder();
+
+            ListView.SelectedListViewItemCollection slvic = listView1.SelectedItems;
+            for (int i = 0; i < slvic.Count; i++)
+            {
+                ListViewItem.ListViewSubItemCollection lvsic = slvic[i].SubItems;
+                if (lvsic.Count != 2)
+                    return;
+                sb.AppendLine(lvsic[0].Text + '\t' + lvsic[1].Text);
+            }
+
+            string temp = sb.ToString();
+            if (String.IsNullOrEmpty(temp))
+                return;
+            Clipboard.SetText(temp);
+        }
+
+        private void copyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ListView.SelectedListViewItemCollection slvic = listView2.SelectedItems;
+            for (int i = 0; i < slvic.Count; i++)
+            {
+                ListViewItem.ListViewSubItemCollection lvsic = slvic[i].SubItems;
+                if (lvsic.Count != 2)
+                    return;
+                sb.AppendLine(lvsic[0].Text + '\t' + lvsic[1].Text);
+            }
+
+            string temp = sb.ToString();
             if (String.IsNullOrEmpty(temp))
                 return;
             Clipboard.SetText(temp);
@@ -64,14 +100,6 @@ namespace UpdatePacketParser
             listView2.Items.Clear();
             m_parser = new Parser(filename);
             m_parser.PrintObjects(listBox1);
-        }
-
-        private void copyToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            string temp = listView2.SelectedItems.ToString();
-            if (String.IsNullOrEmpty(temp))
-                return;
-            Clipboard.SetText(temp);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
