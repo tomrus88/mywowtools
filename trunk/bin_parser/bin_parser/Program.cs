@@ -202,14 +202,14 @@ namespace bin_parser
             {
                 /*case OpCodes.SMSG_MONSTER_MOVE:
                     OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.SMSG_INITIAL_SPELLS:
+                    break;
+                case OpCodes.SMSG_INITIAL_SPELLS:
                     OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.SMSG_AUCTION_LIST_RESULT:
+                    break;
+                case OpCodes.SMSG_AUCTION_LIST_RESULT:
                     OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.SMSG_PARTY_MEMBER_STATS:
+                    break;
+                case OpCodes.SMSG_PARTY_MEMBER_STATS:
                 case OpCodes.SMSG_PARTY_MEMBER_STATS_FULL:
                     OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe, direction);
                     break;*/
@@ -225,23 +225,23 @@ namespace bin_parser
                     }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
                     break;
-                case OpCodes.SMSG_LOGIN_SETTIMESPEED:
+                /*case OpCodes.SMSG_LOGIN_SETTIMESPEED:
                     OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe, direction);
                     break;
-                /*case OpCodes.SMSG_TRAINER_LIST:
+                case OpCodes.SMSG_TRAINER_LIST:
                     OpcodeParser.ParseTrainerListOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.SMSG_ATTACKERSTATEUPDATE:
+                    break;
+                case OpCodes.SMSG_ATTACKERSTATEUPDATE:
                     OpcodeParser.ParseAttackerStateUpdateOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.MSG_CORPSE_QUERY:
+                    break;
+                case OpCodes.MSG_CORPSE_QUERY:
                     OpcodeParser.ParseCorpseQueryOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                /*case OpCodes.SMSG_LOGIN_VERIFY_WORLD:
+                    break;
+                case OpCodes.SMSG_LOGIN_VERIFY_WORLD:
                     OpcodeParser.ParseLoginVerifyWorldOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
+                    break;
                 default:    // unhandled opcode
-                    return false;
+                    return false;*/
             }
 
             if (sb.ToString().Length != 0)

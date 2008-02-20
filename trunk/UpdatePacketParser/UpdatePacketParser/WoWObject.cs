@@ -10,7 +10,7 @@ namespace WoWObjects
     public struct WoWObjectUpdate
     {
         public BitArray updatemask;
-        Dictionary<int, uint> updatedata;
+        public Dictionary<int, uint> updatedata;
 
         public WoWObjectUpdate(BitArray _mask, Dictionary<int, uint> _data)
         {
