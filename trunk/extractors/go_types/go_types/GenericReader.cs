@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace uf_extractor2
+namespace go_types
 {
     #region Coords3
     /// <summary>

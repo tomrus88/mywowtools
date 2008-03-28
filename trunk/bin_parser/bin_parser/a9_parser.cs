@@ -265,7 +265,7 @@ namespace A9parser
                     values_end = UpdateFieldsLoader.UNIT_END;
                     break;
                 case ObjectTypes.TYPEID_PLAYER:
-                    bitmask_max_size = 1472; // 2.3.2
+                    bitmask_max_size = 1536; // 2.3.2 - 1472
                     values_end = UpdateFieldsLoader.PLAYER_END;
                     break;
                 case ObjectTypes.TYPEID_GAMEOBJECT:

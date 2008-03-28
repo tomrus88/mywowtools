@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Defines;
@@ -85,13 +86,20 @@ namespace OpcodeParsers
             uint points = gr2.ReadUInt32();
             sb.AppendLine("Points " + points);
 
+            List<Node> nodes = new List<Node>((int)points);
+
             if ((flags & Flags.flag10) != 0) // 0x200
             {
                 sb.AppendLine("Taxi");
                 for (uint i = 0; i < points; i++)
                 {
-                    Coords3 path = gr2.ReadCoords3();
-                    sb.AppendLine("Path point" + i + ": " + path.GetCoords());
+                    Node node = new Node();
+                    node.x = gr2.ReadSingle();
+                    node.y = gr2.ReadSingle();
+                    node.z = gr2.ReadSingle();
+                    nodes.Add(node);
+                    //Coords3 path = gr2.ReadCoords3();
+                    //sb.AppendLine("Path point" + i + ": " + path.GetCoords());
                 }
             }
             else
@@ -124,6 +132,57 @@ namespace OpcodeParsers
                     float z = temp3 * 0.25f;
                     sb.AppendLine("shift is " + x + " " + y + " " + z + ".");
                 }
+            }
+
+            if ((flags & Flags.flag10) != 0)
+            {
+                StreamWriter sw = new StreamWriter("taxiinfo.txt", true);
+                sw.WriteLine("GUID: 0x" + guid.ToString("X16"));
+                sw.WriteLine(string.Format("Position: {0} {1} {2}", coords.X, coords.Y, coords.Z));
+                sw.WriteLine("Time: " + time);
+                sw.WriteLine("Movetime: " + movetime);
+                sw.WriteLine("Nodes: " + points);
+                for (int i = 0; i < points; i++)
+                    sw.WriteLine(string.Format("Node {0}: {1} {2} {3}", i, nodes[i].x, nodes[i].y, nodes[i].z));
+
+                uint mangos_time = 0;
+
+                float len = 0, xd, yd, zd;
+
+                /*xd = nodes[0].x - coords.X;
+                yd = nodes[0].y - coords.Y;
+                zd = nodes[0].z - coords.Z;
+                len += (float)Math.Sqrt((xd * xd + yd * yd + zd * zd));*/
+
+                for (int i = 1; i < points; i++)
+                {
+                    xd = nodes[i].x - nodes[i - 1].x;
+                    yd = nodes[i].y - nodes[i - 1].y;
+                    zd = nodes[i].z - nodes[i - 1].z;
+                    len += (float)Math.Sqrt((xd * xd + yd * yd + zd * zd));
+                }
+
+                mangos_time = (uint)(len * 33.360f);    // 33.373f / 33.336
+
+                sw.WriteLine("Mangostime 3D: " + mangos_time);
+
+                mangos_time = 0;
+                len = 0;
+
+                for (int i = 1; i < points; i++)
+                {
+                    xd = nodes[i].x - nodes[i - 1].x;
+                    yd = nodes[i].y - nodes[i - 1].y;
+                    len += (float)Math.Sqrt((xd * xd + yd * yd));
+                }
+
+                mangos_time = (uint)(len * 33.360f);
+
+                sw.WriteLine("Mangostime 2D: " + mangos_time);
+                sw.WriteLine();
+
+                sw.Flush();
+                sw.Close();
             }
             return true;
         }
@@ -281,7 +340,7 @@ namespace OpcodeParsers
 
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_ONLINE) != 0)
             {
-                GroupMemberOnlineStatus online = (GroupMemberOnlineStatus)gr2.ReadByte(); // flag
+                GroupMemberOnlineStatus online = (GroupMemberOnlineStatus)gr2.ReadUInt16(); // flag
                 sb.AppendLine("Online state " + online);
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_CUR_HP) != 0)
@@ -330,7 +389,6 @@ namespace OpcodeParsers
                 ulong mask = gr2.ReadUInt64();
                 sb.AppendLine("Auras mask " + mask.ToString("X16"));
 
-                //uint i = 0; // aura slot
                 BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
 
                 for (int i = 0; i < bitArr.Length; i++)
@@ -342,21 +400,10 @@ namespace OpcodeParsers
                     {
                         ushort spellid = gr2.ReadUInt16();
                         sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
+                        byte unk = gr2.ReadByte();
+                        sb.AppendLine("Aura unk " + i.ToString() + ": " + unk.ToString());
                     }
                 }
-
-                /*foreach (bool b in bitArr)
-                {
-                    if (i >= MAX_AURAS) // we can have only 56 auras
-                        break;
-
-                    if (b)
-                    {
-                        ushort spellid = gr2.ReadUInt16();
-                        sb.AppendLine("Aura " + i.ToString() + ": " + spellid.ToString());
-                    }
-                    i++;
-                }*/
             }
             if ((flags & GroupUpdateFlags.GROUP_UPDATE_FLAG_PET_GUID) != 0)
             {
@@ -403,17 +450,18 @@ namespace OpcodeParsers
                 ulong mask = gr2.ReadUInt64();
                 sb.AppendLine("Pet auras mask " + mask.ToString("X16"));
 
-                uint i = 0; // aura slot
                 BitArray bitArr = new BitArray(BitConverter.GetBytes(mask));
-                foreach (bool b in bitArr)
+                for (int i = 0; i < bitArr.Length; i++)
                 {
                     if (i >= MAX_AURAS) // we can have only 56 auras
                         break;
 
-                    if (b)
+                    if (bitArr[i])
                     {
                         ushort spellid = gr2.ReadUInt16();
                         sb.AppendLine("Pet aura " + i.ToString() + ": " + spellid.ToString());
+                        byte unk = gr2.ReadByte();
+                        sb.AppendLine("Pet aura unk " + i.ToString() + ": " + unk.ToString());
                     }
                     i++;
                 }
@@ -594,6 +642,180 @@ namespace OpcodeParsers
             Coords4 coords = gr2.ReadCoords4();
 
             MapId = mapid;
+            return true;
+        }
+
+        public static bool ParseSpellNonMeleeDamageLogOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
+        {
+            StreamWriter sw = new StreamWriter("SpellNonMeleeDamageLog.log", true, Encoding.ASCII);
+
+            sw.WriteLine("Packet offset {0}", gr.BaseStream.Position.ToString("X2"));
+            sw.WriteLine("Opcode SpellNonMeleeDamageLog (0x0250)");
+
+            ulong target = gr2.ReadPackedGuid();
+            ulong caster = gr2.ReadPackedGuid();
+            sw.WriteLine("target {0}, caster {1}", target, caster);
+            uint spellid = gr2.ReadUInt32();
+            sw.WriteLine("spell {0}", spellid);
+            uint damage = gr2.ReadUInt32();
+            sw.WriteLine("damage {0}", damage);
+            byte unk1 = gr2.ReadByte();
+            sw.WriteLine("unk1 {0}", unk1);
+            uint adsorb = gr2.ReadUInt32();
+            sw.WriteLine("adsorb {0}", adsorb);
+            uint resist = gr2.ReadUInt32();
+            sw.WriteLine("resist {0}", resist);
+            byte unk2 = gr2.ReadByte();
+            sw.WriteLine("unk2 {0}", unk2);
+            byte unk3 = gr2.ReadByte();
+            sw.WriteLine("unk3 {0}", unk3);
+            uint blocked = gr2.ReadUInt32();
+            sw.WriteLine("blocked {0}", blocked);
+            uint flags = gr2.ReadUInt32();
+            sw.WriteLine("flags {0}", flags.ToString("X8"));
+            byte unk4 = gr2.ReadByte();
+            sw.WriteLine("unk4 {0}", unk4);
+
+            if ((flags & 0x1) != 0)
+            {
+                float a = gr2.ReadSingle();
+                float b = gr2.ReadSingle();
+                sw.WriteLine("0x1: a {0}, b {1}", a, b);
+            }
+            if ((flags & 0x4) != 0)
+            {
+                float a = gr2.ReadSingle();
+                float b = gr2.ReadSingle();
+                sw.WriteLine("0x4: a {0}, b {1}", a, b);
+            }
+            if ((flags & 0x20) != 0)
+            {
+                float a = gr2.ReadSingle();
+                float b = gr2.ReadSingle();
+                float c = gr2.ReadSingle();
+                float d = gr2.ReadSingle();
+                float e = gr2.ReadSingle();
+                float f = gr2.ReadSingle();
+                sw.WriteLine("0x20: a {0}, b {1}, c {2}, d {3}, e {4}, f {5}", a, b, c, d, e, f);
+            }
+
+            if (gr2.BaseStream.Position != gr2.BaseStream.Length)
+                sw.WriteLine("FUCK!: " + flags.ToString("X8"));
+
+            sw.WriteLine();
+            sw.Flush();
+            sw.Close();
+
+            return true;
+        }
+
+        public static bool ParseSpellLogExecuteOpcode(GenericReader gr, GenericReader gr2, StringBuilder sb, StreamWriter swe, byte direction)
+        {
+            StreamWriter sw = new StreamWriter("SpellLogExecute.log", true, Encoding.ASCII);
+
+            sw.WriteLine("Packet offset {0}", gr.BaseStream.Position.ToString("X2"));
+            sw.WriteLine("Opcode SMSG_SPELLLOGEXECUTE (0x024C)");
+
+            ulong caster = gr2.ReadPackedGuid();
+            sw.WriteLine("caster {0}", caster.ToString("X16"));
+            uint spellid = gr2.ReadUInt32();
+            sw.WriteLine("spellid {0}", spellid);
+            uint count1 = gr2.ReadUInt32();
+            sw.WriteLine("count1 {0}", count1);
+            for (uint i = 0; i < count1; ++i)
+            {
+                uint spelleffect = gr2.ReadUInt32();
+                sw.WriteLine("spelleffect {0}", spelleffect);
+                uint count2 = gr2.ReadUInt32();
+                sw.WriteLine("count2 {0}", count2);
+                for (uint j = 0; j < count2; ++j)
+                {
+                    ulong guid;
+                    uint unk1;
+                    uint unk2;
+                    float unk3;
+
+                    switch (spelleffect)
+                    {
+                        case 0x08:                                  // SPELL_EFFECT_MANA_DRAIN
+                            guid = gr2.ReadPackedGuid();
+                            unk1 = gr2.ReadUInt32();
+                            unk2 = gr2.ReadUInt32();
+                            unk3 = gr2.ReadSingle();
+                            sw.WriteLine("0x08: {0} {1} {2} {3}", guid.ToString("X16"), unk1, unk2, unk3);
+                            break;
+                        case 0x13:                                  // SPELL_EFFECT_ADD_EXTRA_ATTACKS
+                            guid = gr2.ReadPackedGuid();
+                            unk1 = gr2.ReadUInt32();
+                            sw.WriteLine("0x13: {0} {1}", guid.ToString("X16"), unk1);
+                            break;
+                        case 0x44:                                  // SPELL_EFFECT_INTERRUPT_CAST
+                            guid = gr2.ReadPackedGuid();
+                            unk1 = gr2.ReadUInt32();
+                            sw.WriteLine("0x44: {0} {1}", guid.ToString("X16"), unk1);
+                            break;
+                        case 0x6F:                                  // SPELL_EFFECT_DURABILITY_DAMAGE
+                            guid = gr2.ReadPackedGuid();
+                            unk1 = gr2.ReadUInt32();
+                            unk2 = gr2.ReadUInt32();
+                            sw.WriteLine("0x6F: {0} {1} {2}", guid.ToString("X16"), unk1, unk2);
+                            break;
+                        case 0x21:                                  // SPELL_EFFECT_OPEN_LOCK
+                        case 0x3B:                                  // SPELL_EFFECT_OPEN_LOCK_ITEM
+                            guid = gr2.ReadPackedGuid();
+                            sw.WriteLine("0x21,0x3B: {0}", guid.ToString("X16"));
+                            break;
+                        case 0x18:                                  // SPELL_EFFECT_CREATE_ITEM
+                            unk1 = gr2.ReadUInt32();
+                            sw.WriteLine("0x18: {0}", unk1);
+                            break;
+                        case 0x1C:                                  // SPELL_EFFECT_SUMMON
+                        case 0x29:                                  // SPELL_EFFECT_SUMMON_WILD
+                        case 0x2A:                                  // SPELL_EFFECT_SUMMON_GUARDIAN
+                        case 0x32:                                  // SPELL_EFFECT_TRANS_DOOR
+                        case 0x38:                                  // SPELL_EFFECT_SUMMON_PET
+                        case 0x49:                                  // SPELL_EFFECT_SUMMON_POSSESSED
+                        case 0x4A:                                  // SPELL_EFFECT_SUMMON_TOTEM
+                        case 0x4C:                                  // SPELL_EFFECT_SUMMON_OBJECT_WILD
+                        case 0x51:                                  // SPELL_EFFECT_CREATE_HOUSE
+                        case 0x53:                                  // SPELL_EFFECT_DUEL
+                        case 0x57:                                  // SPELL_EFFECT_SUMMON_TOTEM_SLOT1
+                        case 0x58:                                  // SPELL_EFFECT_SUMMON_TOTEM_SLOT2
+                        case 0x59:                                  // SPELL_EFFECT_SUMMON_TOTEM_SLOT3
+                        case 0x5A:                                  // SPELL_EFFECT_SUMMON_TOTEM_SLOT4
+                        case 0x5D:                                  // SPELL_EFFECT_SUMMON_PHANTASM
+                        case 0x61:                                  // SPELL_EFFECT_SUMMON_CRITTER
+                        case 0x68:                                  // SPELL_EFFECT_SUMMON_OBJECT_SLOT1
+                        case 0x69:                                  // SPELL_EFFECT_SUMMON_OBJECT_SLOT2
+                        case 0x6A:                                  // SPELL_EFFECT_SUMMON_OBJECT_SLOT3
+                        case 0x6B:                                  // SPELL_EFFECT_SUMMON_OBJECT_SLOT4
+                        case 0x70:                                  // SPELL_EFFECT_SUMMON_DEMON
+                        case 0x96:                                  // SPELL_EFFECT_150
+                            guid = gr2.ReadPackedGuid();
+                            sw.WriteLine("summon: {0}", guid.ToString("X16"));
+                            break;
+                        case 0x65:                                  // SPELL_EFFECT_FEED_PET
+                            unk1 = gr2.ReadUInt32();
+                            sw.WriteLine("0x65: {0}", unk1);
+                            break;
+                        case 0x66:                                  // SPELL_EFFECT_DISMISS_PET
+                            guid = gr2.ReadPackedGuid();
+                            sw.WriteLine("0x66: {0}", guid.ToString("X16"));
+                            break;
+                        default:
+                            sw.WriteLine("unknown spell effect {0}", spelleffect);
+                            break;
+                    }
+                }
+            }
+
+            if (gr2.BaseStream.Position != gr2.BaseStream.Length)
+                sw.WriteLine("FUCK!");
+
+            sw.WriteLine();
+            sw.Flush();
+            sw.Close();
+
             return true;
         }
     }

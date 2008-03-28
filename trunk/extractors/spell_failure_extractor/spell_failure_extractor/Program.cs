@@ -59,7 +59,7 @@ namespace spell_failure_extractor
             {
                 string temp = str;
 
-                int spaces = 41 - temp.Length;
+                int spaces = 43 - temp.Length;
 
                 for (int i = 0; i < spaces; i++)
                     temp += " ";

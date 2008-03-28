@@ -50,16 +50,16 @@ namespace auth_codes
 
             names.Reverse();
 
-            StreamWriter sw = new StreamWriter("authcodes.h");
+            StreamWriter sw = new StreamWriter("ResponseCodes.h");
 
-            sw.WriteLine("enum AuthCodes");
+            sw.WriteLine("enum ResponseCodes");
             sw.WriteLine("{");
 
             foreach (string str in names)
             {
                 string temp = str;
 
-                int spaces = 41 - temp.Length;
+                int spaces = 54 - temp.Length;
 
                 for (int i = 0; i < spaces; i++)
                     temp += " ";
@@ -77,7 +77,7 @@ namespace auth_codes
 
         static int FindStartPos()
         {
-            return stream_string.IndexOf("CHAR_NAME_SUCCESS");
+            return stream_string.IndexOf("CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME");
         }
 
         static int FindNextPos()
