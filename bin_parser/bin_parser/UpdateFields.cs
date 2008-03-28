@@ -161,12 +161,11 @@ namespace UpdateFields
         /// <summary>
         /// Unit update fields end.
         /// </summary>
-        public static uint UNIT_END = 232; // 2.3.0
+        public static uint UNIT_END = 234; // 2.3.0 - 232
         /// <summary>
         /// Player updatefields end.
         /// </summary>
-        //public static uint PLAYER_END = 1436; // 2.2.3
-        public static uint PLAYER_END = 1450; // 2.3.0
+        public static uint PLAYER_END = 1528; // 2.3.0 - 1450
         /// <summary>
         /// Game object update fields end.
         /// </summary>
@@ -190,7 +189,7 @@ namespace UpdateFields
 
         public static void LoadUpdateFields()
         {
-            StreamReader sr = new StreamReader("updatefields.dat");
+            StreamReader sr = new StreamReader("updatefields_240.dat");
             while (sr.Peek() >= 0)
             {
                 string curline = sr.ReadLine();

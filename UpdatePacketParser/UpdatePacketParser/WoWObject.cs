@@ -55,9 +55,9 @@ namespace WoWObjects
     enum SplineFlags
     {
         NONE = 0x00000000,
-        POINT = 0x10000,
-        TARGET = 0x20000,
-        ORIENT = 0x40000
+        POINT = 0x00010000,
+        TARGET = 0x00020000,
+        ORIENT = 0x00040000
     };
 
     /// <summary>

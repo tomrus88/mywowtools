@@ -7,8 +7,8 @@
     <ProjectGuid>{F35341FB-3520-4374-AE27-ABC9F799E047}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>uf_extractor2</RootNamespace>
-    <AssemblyName>uf_extractor2</AssemblyName>
+    <RootNamespace>go_types</RootNamespace>
+    <AssemblyName>go_types</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

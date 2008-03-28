@@ -38,6 +38,13 @@ namespace Defines
         flag31 = 0x40000000
     };
 
+    struct Node
+    {
+        public float x;
+        public float y;
+        public float z;
+    };
+
     enum TrainerType
     {
         type1 = 0,
@@ -197,32 +204,28 @@ namespace Defines
         GROUP_UPDATE_FLAG_PET_CUR_POWER = 0x00010000, // uint16 pet cur power
         GROUP_UPDATE_FLAG_PET_MAX_POWER = 0x00020000, // uint16 pet max power
         GROUP_UPDATE_FLAG_PET_AURAS = 0x00040000, // uint64 mask, for each bit set uint16 spellid?, pet auras...
-        GROUP_UPDATE_FLAG_UNK1 = 0x00080000, // unused
-        GROUP_UPDATE_FLAG_UNK2 = 0x00100000, // unused
-        GROUP_UPDATE_FLAG_UNK3 = 0x00200000, // unused
-        GROUP_UPDATE_FLAG_UNK4 = 0x00400000, // unused
-        GROUP_UPDATE_FLAG_UNK5 = 0x00800000, // unused
-        GROUP_UPDATE_FLAG_UNK6 = 0x01000000, // unused
-        GROUP_UPDATE_FLAG_UNK7 = 0x02000000, // unused
-        GROUP_UPDATE_FLAG_UNK8 = 0x04000000, // unused
-        GROUP_UPDATE_FLAG_UNK9 = 0x08000000, // unused
-        GROUP_UPDATE_FLAG_UNK10 = 0x10000000, // unused
-        GROUP_UPDATE_FLAG_UNK11 = 0x20000000, // unused
-        GROUP_UPDATE_FLAG_UNK12 = 0x40000000, // unused
     };
 
     [Flags]
     enum GroupMemberOnlineStatus
     {
-        MEMBER_STATUS_OFFLINE = 0x00,
-        MEMBER_STATUS_ONLINE = 0x01,
-        MEMBER_STATUS_PVP = 0x02,
-        MEMBER_STATUS_UNK0 = 0x04, // dead? (health=0)
-        MEMBER_STATUS_UNK1 = 0x08, // ghost? (health=1)
-        MEMBER_STATUS_UNK2 = 0x10, // never seen
-        MEMBER_STATUS_UNK3 = 0x20, // never seen
-        MEMBER_STATUS_UNK4 = 0x40, // appears with dead and ghost flags
-        MEMBER_STATUS_UNK5 = 0x80, // never seen
+        MEMBER_STATUS_OFFLINE = 0x0000,
+        MEMBER_STATUS_ONLINE = 0x0001,
+        MEMBER_STATUS_PVP = 0x0002,
+        MEMBER_STATUS_UNK0 = 0x0004, // dead? (health=0)
+        MEMBER_STATUS_UNK1 = 0x0008, // ghost? (health=1)
+        MEMBER_STATUS_UNK2 = 0x0010, // never seen
+        MEMBER_STATUS_UNK3 = 0x0020, // never seen
+        MEMBER_STATUS_UNK4 = 0x0040, // appears with dead and ghost flags
+        MEMBER_STATUS_UNK5 = 0x0080, // never seen
+        MEMBER_STATUS_UNK6 = 0x0100,
+        MEMBER_STATUS_UNK7 = 0x0200,
+        MEMBER_STATUS_UNK8 = 0x0400,
+        MEMBER_STATUS_UNK9 = 0x0800,
+        MEMBER_STATUS_UNK10 = 0x1000,
+        MEMBER_STATUS_UNK11 = 0x2000,
+        MEMBER_STATUS_UNK12 = 0x4000,
+        MEMBER_STATUS_UNK13 = 0x8000,
     };
 
     [Flags]

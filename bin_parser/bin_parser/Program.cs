@@ -81,7 +81,12 @@ namespace bin_parser
                 uint sess_id = (uint)reader.GetInt32(1);
                 string timestamp = reader.GetString(2);
                 byte direction = reader.GetByte(3);
-                ushort opcode = (ushort)reader.GetInt16(4);
+                ushort opcode = (ushort)reader.GetInt32(4);
+                if (opcode > 1054)
+                {
+                    Console.WriteLine(opcode);
+                    throw new Exception("Test");
+                }
                 byte[] data_ = (byte[])reader.GetValue(5);
 
                 uint size = sizeof(uint) + sizeof(uint) + (uint)timestamp.Length + 1 + sizeof(byte) + sizeof(ushort) + (uint)data_.Length;
@@ -202,18 +207,18 @@ namespace bin_parser
             {
                 /*case OpCodes.SMSG_MONSTER_MOVE:
                     OpcodeParser.ParseMonsterMoveOpcode(gr, gr2, sb, swe, direction);
-                    break;
-                case OpCodes.SMSG_INITIAL_SPELLS:
+                    break;*/
+                /*case OpCodes.SMSG_INITIAL_SPELLS:
                     OpcodeParser.ParseInitialSpellsOpcode(gr, gr2, sb, swe, direction);
                     break;
                 case OpCodes.SMSG_AUCTION_LIST_RESULT:
                     OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe, direction);
-                    break;
+                    break;*/
                 case OpCodes.SMSG_PARTY_MEMBER_STATS:
                 case OpCodes.SMSG_PARTY_MEMBER_STATS_FULL:
                     OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe, direction);
-                    break;*/
-                case OpCodes.SMSG_UPDATE_OBJECT:
+                    break;
+                /*case OpCodes.SMSG_UPDATE_OBJECT:
                 case OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT:
                     if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                     {
@@ -224,7 +229,13 @@ namespace bin_parser
                         gr2.BaseStream.Position = 0;
                     }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
+                    break;*/
+                /*case OpCodes.SMSG_SPELLNONMELEEDAMAGELOG:
+                    OpcodeParser.ParseSpellNonMeleeDamageLogOpcode(gr, gr2, sb, swe, direction);
                     break;
+                case OpCodes.SMSG_SPELLLOGEXECUTE:
+                    OpcodeParser.ParseSpellLogExecuteOpcode(gr, gr2, sb, swe, direction);
+                    break;*/
                 /*case OpCodes.SMSG_LOGIN_SETTIMESPEED:
                     OpcodeParser.ParseLoginSetTimeSpeedOpcode(gr, gr2, sb, swe, direction);
                     break;
