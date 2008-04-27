@@ -214,11 +214,11 @@ namespace bin_parser
                 case OpCodes.SMSG_AUCTION_LIST_RESULT:
                     OpcodeParser.ParseAuctionListResultOpcode(gr, gr2, sb, swe, direction);
                     break;*/
-                case OpCodes.SMSG_PARTY_MEMBER_STATS:
+                /*case OpCodes.SMSG_PARTY_MEMBER_STATS:
                 case OpCodes.SMSG_PARTY_MEMBER_STATS_FULL:
                     OpcodeParser.ParsePartyMemberStatsOpcode(gr, gr2, sb, swe, direction);
-                    break;
-                /*case OpCodes.SMSG_UPDATE_OBJECT:
+                    break;*/
+                case OpCodes.SMSG_UPDATE_OBJECT:
                 case OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT:
                     if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                     {
@@ -229,7 +229,7 @@ namespace bin_parser
                         gr2.BaseStream.Position = 0;
                     }
                     A9.ParseUpdatePacket(gr, gr2, sb, swe);
-                    break;*/
+                    break;
                 /*case OpCodes.SMSG_SPELLNONMELEEDAMAGELOG:
                     OpcodeParser.ParseSpellNonMeleeDamageLogOpcode(gr, gr2, sb, swe, direction);
                     break;
