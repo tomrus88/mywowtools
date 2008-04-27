@@ -79,7 +79,7 @@ namespace UpdateFields
     /// <summary>
     /// WoW object types.
     /// </summary>
-    public enum ObjectTypes : uint
+    public enum ObjectTypes : byte
     {
         /// <summary>
         /// An object.
