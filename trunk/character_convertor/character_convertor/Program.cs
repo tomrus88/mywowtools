@@ -45,6 +45,7 @@ namespace character_convertor
 
             Console.WriteLine("Character convertor for MaNGoS");
             Console.WriteLine("Client version 2.3.3->2.4.1");
+            Console.WriteLine("Written by TOM_RUS");
 
             Console.Write("Enter DB host: ");
             string dbServer = Console.ReadLine();
@@ -61,7 +62,7 @@ namespace character_convertor
             cs = String.Format("Server={0};Port={1};Database={2};Uid={3};Pwd={4}", dbServer, dbPort, dbName, dbUser, dbPass);
 
             // main query
-            string query = "SELECT `data` FROM `character`";
+            string query = "SELECT `data` FROM `characters`";
 
             MySqlConnection connection = new MySqlConnection(cs);
 
