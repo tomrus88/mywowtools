@@ -22,10 +22,14 @@ namespace go_types
         string WOW_EXE_NAME = String.Empty;
         string WOW_VERSION = String.Empty;
         string STREAM = String.Empty;
-        long GO_TYPE_INFO_START = 0x4F0A70;
-        long OFFSET = 0x401400;
-        long OFFSET2 = 0x401800;
-        long GO_DATA_INFO_START = 0x4EF9C8;
+        //long GO_TYPE_INFO_START = 0x4F0A70;
+        long GO_TYPE_INFO_START = 0x4A9B60;
+        //long OFFSET = 0x401400;
+        long OFFSET = 0x401200;
+        //long OFFSET2 = 0x401800;
+        long OFFSET2 = 0x401400;
+        //long GO_DATA_INFO_START = 0x4EF9C8;
+        long GO_DATA_INFO_START = 0x4A8AB8; // 2.4.2.8125
 
         GenericReader gr;
         List<GameObjectTypeInfo> m_GoTypes = new List<GameObjectTypeInfo>();

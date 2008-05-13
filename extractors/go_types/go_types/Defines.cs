@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace go_types
 {
     // 0x4F0A70 for 0.4.0.8063
+    // 0x4A9B60 for 2.4.2.8125
     [StructLayout(LayoutKind.Sequential)]
     struct GameObjectTypeInfo
     {
