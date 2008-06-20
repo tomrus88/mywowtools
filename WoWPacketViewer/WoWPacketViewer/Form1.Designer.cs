@@ -97,7 +97,7 @@
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Opcode Size";
+            this.columnHeader4.Text = "Packet Size";
             this.columnHeader4.Width = 100;
             // 
             // textBox1
