@@ -264,7 +264,7 @@ namespace uf_extractor2
                 if (list[i].Name.StartsWith("PLAYER"))
                     delta = "UNIT_END";
 
-                WriteFormat(sw, list[i].Name, delta, (list[i].Pos).ToString("X4"), list[i].Descr, false);
+                WriteFormat(sw, list[i].Name, delta, list[i].Pos.ToString("X4"), list[i].Descr, false);
             }
             WriteFormat(sw, list[list.Count - 1].Name, delta, (list[list.Count - 1].Pos + 1).ToString("X4"), "", true);
             sw.WriteLine("};");
