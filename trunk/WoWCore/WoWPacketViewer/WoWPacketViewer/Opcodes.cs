@@ -1143,10 +1143,10 @@
         CMSG_CHAR_CUSTOMIZE                             = 0x472,    // lua: CustomizeExistingCharacter
         SMSG_CHAR_CUSTOMIZE_RESULT                      = 0x473,    // response to CMSG_CHAR_CUSTOMIZE
         SMSG_UNKNOWN_1140                               = 0x474,
-        CMSG_UNKNOWN_1141                               = 0x475,    // lua: VehicleExit
-        CMSG_UNKNOWN_1142                               = 0x476,    // lua: VehiclePrevSeat
-        CMSG_UNKNOWN_1143                               = 0x477,    // lua: VehicleNextSeat
-        CMSG_UNKNOWN_1144                               = 0x478,    // lua: LearnTalent
+        CMSG_VEHICLE_EXIT                               = 0x475,    // lua: VehicleExit
+        CMSG_VEHICLE_PREV_SEAT                          = 0x476,    // lua: VehiclePrevSeat
+        CMSG_VEHICLE_NEXT_SEAT                          = 0x477,    // lua: VehicleNextSeat
+        CMSG_LEARN_TALENT_NEW                           = 0x478,    // lua: LearnTalent
         UMSG_UNKNOWN_1145                               = 0x479,
         SMSG_UNKNOWN_1146                               = 0x47A,
         SMSG_UNKNOWN_1147                               = 0x47B,    // achievements system

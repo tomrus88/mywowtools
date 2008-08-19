@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace UpdateFields
 {
@@ -45,6 +46,10 @@ namespace UpdateFields
     public enum UpdateFlags
     {
         /// <summary>
+        /// No flag set.
+        /// </summary>
+        UPDATEFLAG_NONE = 0x00,
+        /// <summary>
         /// Update flag for self.
         /// </summary>
         UPDATEFLAG_SELFTARGET = 0x01,
@@ -53,9 +58,9 @@ namespace UpdateFields
         /// </summary>
         UPDATEFLAG_TRANSPORT = 0x02,
         /// <summary>
-        /// Update flag with full guid.
+        /// Update flag with target guid.
         /// </summary>
-        UPDATEFLAG_FULLGUID = 0x04,
+        UPDATEFLAG_TARGET_GUID = 0x04,
         /// <summary>
         /// Update flag unknown...
         /// </summary>
@@ -116,15 +121,7 @@ namespace UpdateFields
         /// <summary>
         /// Player corpse (not used for units?).
         /// </summary>
-        TYPEID_CORPSE = 7,
-        /// <summary>
-        /// It really exist?
-        /// </summary>
-        TYPEID_AIGROUP = 8,
-        /// <summary>
-        /// It really exist?
-        /// </summary>
-        TYPEID_AREATRIGGER = 9,
+        TYPEID_CORPSE = 7
     }
     #endregion
 
@@ -148,42 +145,51 @@ namespace UpdateFields
     }
     #endregion
 
+    enum FieldType
+    {
+        FIELD_TYPE_NONE = 0,
+        FIELD_TYPE_END = 1,
+        FIELD_TYPE_ITEM = 2,
+        FIELD_TYPE_UNIT = 3,
+        FIELD_TYPE_GO = 4,
+        FIELD_TYPE_DO = 5,
+        FIELD_TYPE_CORPSE = 6
+    };
+
     public class UpdateFieldsLoader
     {
         /// <summary>
         /// Object update fields end.
         /// </summary>
-        public static uint OBJECT_END = 6;
+        public static uint OBJECT_END;
         /// <summary>
         /// Item update fields end.
         /// </summary>
-        public static uint ITEM_END = 64; // 2.4.3 - 60
+        public static uint ITEM_END;
         /// <summary>
         /// Container update fields end.
         /// </summary>
-        public static uint CONTAINER_END = 138; // 2.4.3 - 134
+        public static uint CONTAINER_END;
         /// <summary>
         /// Unit update fields end.
         /// </summary>
-        public static uint UNIT_END = 236; // 2.4.3 - 234
+        public static uint UNIT_END;
         /// <summary>
         /// Player update fields end.
         /// </summary>
-        public static uint PLAYER_END = 1808; // 2.4.3 - 1592
+        public static uint PLAYER_END;
         /// <summary>
         /// Game object update fields end.
         /// </summary>
-        public static uint GO_END = 24; // 2.4.3 - 26
+        public static uint GO_END;
         /// <summary>
         /// Dynamic object fields end.
         /// </summary>
-        public static uint DO_END = 16;
+        public static uint DO_END;
         /// <summary>
         /// Corpse fields end.
         /// </summary>
-        public static uint CORPSE_END = 40;
-
-        static byte type = 0;
+        public static uint CORPSE_END;
 
         public static Dictionary<int, UpdateField> item_uf = new Dictionary<int, UpdateField>(); // item + container
         public static Dictionary<int, UpdateField> unit_uf = new Dictionary<int, UpdateField>(); // unit + player
@@ -213,11 +219,29 @@ namespace UpdateFields
             }
         }
 
-        public static void LoadUpdateFields()
+        public static void LoadUpdateFields(uint build)
         {
-            StreamReader sr = new StreamReader("updatefields_301.dat");
+            ClearUpdateFields();
+
+            string file = String.Format(Application.StartupPath + "\\" + "updatefields\\{0}.dat", build.ToString("D4"));
+            FieldType type = FieldType.FIELD_TYPE_NONE;
+            StreamReader sr = new StreamReader(file);
             while (sr.Peek() >= 0)
             {
+                if (type == FieldType.FIELD_TYPE_END)
+                {
+                    OBJECT_END = Convert.ToUInt32(sr.ReadLine());
+                    ITEM_END = Convert.ToUInt32(sr.ReadLine());
+                    CONTAINER_END = Convert.ToUInt32(sr.ReadLine());
+                    UNIT_END = Convert.ToUInt32(sr.ReadLine());
+                    PLAYER_END = Convert.ToUInt32(sr.ReadLine());
+                    GO_END = Convert.ToUInt32(sr.ReadLine());
+                    DO_END = Convert.ToUInt32(sr.ReadLine());
+                    CORPSE_END = Convert.ToUInt32(sr.ReadLine());
+                    type = FieldType.FIELD_TYPE_NONE;
+                    continue;
+                }
+
                 string curline = sr.ReadLine();
 
                 if (curline.StartsWith("#") || curline.StartsWith("/")) // skip commentary lines
@@ -228,14 +252,18 @@ namespace UpdateFields
 
                 if (curline.StartsWith(":"))    // label lines
                 {
+                    if (curline.Contains("ends"))
+                        type = FieldType.FIELD_TYPE_END;
+                    if (curline.Contains("item"))
+                        type = FieldType.FIELD_TYPE_ITEM;
                     if (curline.Contains("unit+player"))
-                        type = 1;
+                        type = FieldType.FIELD_TYPE_UNIT;
                     else if (curline.Contains("gameobject"))
-                        type = 2;
+                        type = FieldType.FIELD_TYPE_GO;
                     else if (curline.Contains("dynamicobject"))
-                        type = 3;
+                        type =FieldType.FIELD_TYPE_DO;
                     else if (curline.Contains("corpse"))
-                        type = 4;
+                        type = FieldType.FIELD_TYPE_CORPSE;
 
                     continue;
                 }
@@ -254,25 +282,36 @@ namespace UpdateFields
                 UpdateField uf = new UpdateField(id, name, type1, format, 0);
                 switch (type)
                 {
-                    case 0:
+                    case FieldType.FIELD_TYPE_END:
+                        break;
+                    case FieldType.FIELD_TYPE_ITEM:
                         item_uf.Add(id, uf);
                         break;
-                    case 1:
+                    case FieldType.FIELD_TYPE_UNIT:
                         unit_uf.Add(id, uf);
                         break;
-                    case 2:
+                    case FieldType.FIELD_TYPE_GO:
                         go_uf.Add(id, uf);
                         break;
-                    case 3:
+                    case FieldType.FIELD_TYPE_DO:
                         do_uf.Add(id, uf);
                         break;
-                    case 4:
+                    case FieldType.FIELD_TYPE_CORPSE:
                         corpse_uf.Add(id, uf);
                         break;
                 }
             }
 
             CheckIntegrity();
+        }
+
+        public static void ClearUpdateFields()
+        {
+            item_uf.Clear();
+            unit_uf.Clear();
+            go_uf.Clear();
+            do_uf.Clear();
+            corpse_uf.Clear();
         }
 
         /// <summary>

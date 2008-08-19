@@ -30,7 +30,6 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
-            UpdateFields.UpdateFieldsLoader.LoadUpdateFields();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -107,9 +106,13 @@ namespace UpdatePacketParser
             listView1.Items.Clear();
             m_parser.PrintObjectInfo(listBox1.SelectedIndex, listView1);
 
-            // process updates also
+            // process updates
             listView2.Items.Clear();
             m_parser.PrintObjectUpdatesInfo(listBox1.SelectedIndex, listView2);
+
+            // process movement info
+            richTextBox1.Clear();
+            m_parser.PrintObjectMovementInfo(listBox1.SelectedIndex, richTextBox1);
         }
     }
 }

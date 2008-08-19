@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UpdateFields;
+using WoWReader;
 
 namespace WoWObjects
 {
@@ -19,8 +20,121 @@ namespace WoWObjects
         }
     };
 
+    public struct MovementInfo
+    {
+        public UpdateFlags m_updateFlags;
+
+        // Living
+        public MovementFlags m_movementFlags;
+        public ushort m_unknown1;
+        public uint m_timeStamp;
+
+        // Position
+        public Coords4 m_position;
+
+        // Transport
+        public TransportInfo m_transportInfo;
+
+        // Swimming
+        public float m_swimPitch;
+
+        // Fall time
+        public uint m_fallTime;
+
+        // Jumping
+        public float m_jump_Unk1;
+        public float m_jump_sinAngle;
+        public float m_jump_cosAngle;
+        public float m_jump_xySpeed;
+
+        // Spline
+        public float m_unknown2;
+
+        public float[] m_speeds;
+
+        // Splines
+        public SplineInfo m_splineInfo;
+
+        // Other flags stuff
+        public uint m_lowGuid;
+        public uint m_highGuid;
+        public ulong m_fullGuid;
+        public uint m_transportTime;
+        public uint m_wotlkUnknown1;
+        public float m_wotlkUnknown2;
+
+        public MovementInfo(int i)
+        {
+            m_updateFlags = UpdateFlags.UPDATEFLAG_NONE;
+            m_movementFlags = MovementFlags.MOVEMENTFLAG_NONE;
+            m_unknown1 = 0;
+            m_timeStamp = 0;
+            m_position = new Coords4();
+            m_transportInfo = new TransportInfo(0);
+            m_swimPitch = 0;
+            m_fallTime = 0;
+            m_jump_Unk1 = 0;
+            m_jump_sinAngle = 0;
+            m_jump_cosAngle = 0;
+            m_jump_xySpeed = 0;
+            m_unknown2 = 0;
+            m_speeds = new float[9];
+            m_splineInfo = new SplineInfo(0);
+            m_lowGuid = 0;
+            m_highGuid = 0;
+            m_fullGuid = 0;
+            m_transportTime = 0;
+            m_wotlkUnknown1 = 0;
+            m_wotlkUnknown2 = 0;
+        }
+    };
+
+    public struct SplineInfo 
+    {
+        public SplineFlags m_splineFlags;
+        public Coords3 m_splinePoint;
+        public ulong m_splineGuid;
+        public float m_splineRotation;
+        public uint m_splineCurTime;
+        public uint m_splineFullTime;
+        public uint m_splineUnk1;
+        public uint m_splineCount;
+        public List<Coords3> m_splines;
+        public Coords3 m_splineEndPoint;
+
+        public SplineInfo(int i)
+        {
+            m_splineFlags = SplineFlags.NONE;
+            m_splinePoint = new Coords3();
+            m_splineGuid = 0;
+            m_splineRotation = 0;
+            m_splineCurTime = 0;
+            m_splineFullTime = 0;
+            m_splineUnk1 = 0;
+            m_splineCount = 0;
+            m_splines = new List<Coords3>();
+            m_splineEndPoint = new Coords3();
+        }
+    };
+
+    public struct TransportInfo 
+    {
+        public ulong m_transportGuid;
+        public Coords4 m_transportPos;
+        public uint m_transportTime;
+        public byte m_transportUnk;
+
+        public TransportInfo(int i)
+        {
+            m_transportGuid = 0;
+            m_transportPos = new Coords4();
+            m_transportTime = 0;
+            m_transportUnk = 0;
+        }
+    };
+
     [Flags]
-    enum MovementFlags
+    public enum MovementFlags
     {
         MOVEMENTFLAG_NONE = 0x00000000,
         MOVEMENTFLAG_FORWARD = 0x00000001,
@@ -52,12 +166,41 @@ namespace WoWObjects
     };
 
     [Flags]
-    enum SplineFlags
+    public enum SplineFlags : uint
     {
         NONE = 0x00000000,
+        UNK01 = 0x00000001,
+        UNK02 = 0x00000002,
+        UNK03 = 0x00000004,
+        UNK04 = 0x00000008,
+        UNK05 = 0x00000010,
+        UNK06 = 0x00000020,
+        UNK07 = 0x00000040,
+        UNK08 = 0x00000080,
+        UNK09 = 0x00000100,
+        UNK10 = 0x00000200,
+        UNK11 = 0x00000400,
+        UNK12 = 0x00000800,
+        UNK13 = 0x00001000,
+        UNK14 = 0x00002000,
+        UNK15 = 0x00004000,
+        UNK16 = 0x00008000,
         POINT = 0x00010000,
         TARGET = 0x00020000,
-        ORIENT = 0x00040000
+        ORIENT = 0x00040000,
+        UNK17 = 0x00080000,
+        UNK18 = 0x00100000,
+        UNK19 = 0x00200000,
+        UNK20 = 0x00400000,
+        UNK21 = 0x00800000,
+        UNK22 = 0x01000000,
+        UNK23 = 0x02000000,
+        UNK24 = 0x04000000,
+        UNK25 = 0x08000000,
+        UNK26 = 0x10000000,
+        UNK27 = 0x20000000,
+        UNK28 = 0x40000000,
+        UNK29 = 0x80000000,
     };
 
     /// <summary>
@@ -71,9 +214,7 @@ namespace WoWObjects
         bool m_new;
         BitArray m_updatemask;
         List<WoWObjectUpdate> m_updates = new List<WoWObjectUpdate>();
-
-        // position
-        float x, y, z, o;
+        MovementInfo m_movementInfo;
 
         public WoWObject(uint valuesCount, ObjectTypes typeId)
         {
@@ -132,12 +273,9 @@ namespace WoWObjects
 
         }
 
-        public void SetPosition(float X, float Y, float Z, float O)
+        public void SetPosition(MovementInfo mInfo)
         {
-            x = X;
-            y = Y;
-            z = Z;
-            o = O;
+            m_movementInfo = mInfo;
         }
 
         public bool IsNew
@@ -168,6 +306,11 @@ namespace WoWObjects
         {
             get { return m_updates; }
             set { m_updates = value; }
+        }
+
+        public MovementInfo MovementInfo
+        {
+            get { return m_movementInfo; }
         }
 
         public void AddUpdate(WoWObjectUpdate _update)
@@ -254,7 +397,7 @@ namespace WoWObjects
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("INSERT INTO `objects` VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '", GetGUIDHigh(), GetGUIDLow(), x, y, z, o, (int)m_typeId);
+            sb.AppendFormat("INSERT INTO `objects` VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '", GetGUIDHigh(), GetGUIDLow(), m_movementInfo.m_position.X, m_movementInfo.m_position.Y, m_movementInfo.m_position.Z, m_movementInfo.m_position.O, (int)m_typeId);
 
             for (ushort i = 0; i < m_valuesCount; i++)
             {

@@ -110,6 +110,16 @@ namespace WoWReader
         }
         #endregion
 
+        #region GenericReader_Remaining
+        /// <summary>
+        /// Get remaining bytes count.
+        /// </summary>
+        public long Remaining
+        {
+            get { return BaseStream.Length - BaseStream.Position; }
+        }
+        #endregion
+
         #region ReadPackedGuid
         /// <summary>
         ///  Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
