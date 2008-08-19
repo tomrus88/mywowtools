@@ -1,4 +1,4 @@
-#for version 2.3.3
+#for version 2.3.3.7799
 #id		name					type	format
 #types:
 #1 - uint32
@@ -6,6 +6,16 @@
 #3 - float
 #4 - uint64 (2 parts)
 #5 - bytes
+
+: ends
+6
+60
+134
+232
+1448
+26
+16
+28
 
 : item Item Fields
 0000	OBJECT_FIELD_GUID_LOW	4
