@@ -97,7 +97,7 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
-            m_parser = new Parser(filename);
+				m_parser = new Parser(new WowCorePacketReader(filename));
             m_parser.PrintObjects(listBox1);
         }
 
