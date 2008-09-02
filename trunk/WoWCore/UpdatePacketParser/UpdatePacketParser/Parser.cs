@@ -23,58 +23,31 @@ namespace UpdatePacketParser
             set { m_objects = value; }
         }
 
-        private WoWObject GetWoWObject(ulong guid)
-        {
-            if (m_objects.ContainsKey(guid))
-                return m_objects[guid];
-            else
-                return null;
-        }
+		  private WoWObject GetWoWObject(ulong guid) 
+		  {
+			  WoWObject obj;
+			  m_objects.TryGetValue(guid, out obj);
+			  return obj;
+		  }
 
-        public Parser(string filename)
-        {
-            GenericReader gr = new GenericReader(filename, Encoding.ASCII);
-            gr.ReadBytes(3);                    // PKT
-            gr.ReadBytes(2);                    // 0x02, 0x02
-            gr.ReadByte();                      // 0x06
-            ushort build = gr.ReadUInt16();     // build
-            gr.ReadBytes(4);                    // client locale
-            gr.ReadBytes(20);                   // packet key
-            gr.ReadBytes(64);                   // realm name
-
-            UpdateFieldsLoader.LoadUpdateFields(build);
-
-            while (gr.PeekChar() >= 0)
-                ParseHeader(gr);
-
-            gr.Close();
-        }
-
-        private void ParseHeader(GenericReader gr)
-        {
-            byte direction = gr.ReadByte();
-            uint unixtime = gr.ReadUInt32();
-            uint tickcount = gr.ReadUInt32();
-            uint size = gr.ReadUInt32();
-            byte[] data = gr.ReadBytes((int)size);
-
-            GenericReader gr2 = new GenericReader(new MemoryStream(data));
-
-            ushort opcode = (direction == 0xCC) ? (ushort)gr2.ReadUInt32() : gr2.ReadUInt16();
-
-            switch (opcode)
-            {
-                case 169:   // not compressed
-                    ParseRest(gr2);
-                    break;
-                case 502:   // compressed
-                    Decompress(ref gr2);
-                    ParseRest(gr2);
-                    break;
-                default:
-                    break;  // unknown
-            }
-        }
+		  public Parser(PacketReaderBase reader) {
+			  Packet packet;
+			  while((packet = reader.ReadPacket()) != null) {
+				  var gr = new GenericReader(new MemoryStream(packet.Data));
+				  switch(packet.Code) {
+				  case 169:
+					  ParseRest(gr);
+					  break;
+				  case 502:
+					  Decompress(ref gr);
+					  ParseRest(gr);
+					  break;
+				  default:
+					  break;
+				  }
+				  gr.Close();
+			  }
+		  }
 
         private void ParseRest(GenericReader gr)
         {
