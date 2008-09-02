@@ -151,7 +151,7 @@ namespace UpdatePacketParser
             if ((updateflags & UpdateFlags.UPDATEFLAG_LIVING) != 0)
             {
                 movementFlags = (MovementFlags)gr.ReadUInt32();
-                byte unk = gr.ReadByte();
+                ushort unk = gr.ReadUInt16();
                 uint time = gr.ReadUInt32();
             }
 
