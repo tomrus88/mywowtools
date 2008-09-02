@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WoWObjects;
+using System.IO;
 
 namespace UpdatePacketParser
 {
@@ -97,7 +98,16 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
-				m_parser = new Parser(new WowCorePacketReader(filename));
+				switch(Path.GetExtension(filename)) {
+				case ".bin":
+					m_parser = new Parser(new WowCorePacketReader(filename));
+					break;
+				case ".sqlite":
+					m_parser = new Parser(new SqLitePacketReader(filename));
+					break;
+				default:
+					break;
+				}
             m_parser.PrintObjects(listBox1);
         }
 

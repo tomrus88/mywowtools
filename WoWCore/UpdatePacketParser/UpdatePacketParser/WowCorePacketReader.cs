@@ -29,12 +29,11 @@ namespace UpdatePacketParser {
 			var direction = _reader.ReadByte();
 			var unixtime = _reader.ReadUInt32();
 			var tickcount = _reader.ReadUInt32();
-			var size = _reader.ReadInt32();
 
 			var packet = new Packet();
-			packet.Size = size;
+			packet.Size = _reader.ReadInt32() - (direction == 0xFF ? 2 : 4);
 			packet.Code = direction == 0xFF ? _reader.ReadInt16() : _reader.ReadInt32();
-			packet.Data = _reader.ReadBytes(size - (direction == 0xFF ? 2 : 4));
+			packet.Data = _reader.ReadBytes(packet.Size);
 			return packet;
 		}
 	}
