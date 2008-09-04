@@ -9,14 +9,16 @@ namespace CharacterConverter.Con {
 
 		public Program() {
 			_presenter = new ConverterPresenter(this);
+			_presenter.ShowLogo();
 		}
 
 		private string _host;
 		public string Host {
 			get {
-				if(_host == null) {
-					Console.Write("Enter DB host: ");
-					_host = Console.ReadLine();
+				Console.Write("Enter DB host [{0}]: ", _host);
+				var tmp = Console.ReadLine().Trim();
+				if(!string.IsNullOrEmpty(tmp)) {
+					_host = tmp;
 				}
 				return _host;
 			}
@@ -26,9 +28,10 @@ namespace CharacterConverter.Con {
 		private string _port;
 		public string Port {
 			get {
-				if(_port == null) {
-					Console.Write("Enter DB port: ");
-					_port = Console.ReadLine();
+				Console.Write("Enter DB port [{0}]: ", _port);
+				var tmp = Console.ReadLine().Trim();
+				if(!string.IsNullOrEmpty(tmp)) {
+					_port = tmp;
 				}
 				return _port;
 			}
@@ -38,9 +41,10 @@ namespace CharacterConverter.Con {
 		private string _base;
 		public string Base {
 			get {
-				if(_base == null) {
-					Console.Write("Enter DB name: ");
-					_base = Console.ReadLine();
+				Console.Write("Enter DB name [{0}]: ", _base);
+				var tmp = Console.ReadLine().Trim();
+				if(!string.IsNullOrEmpty(tmp)) {
+					_base = tmp;
 				}
 				return _base;
 			}
@@ -50,9 +54,10 @@ namespace CharacterConverter.Con {
 		private string _user;
 		public string User {
 			get {
-				if(_user == null) {
-					Console.Write("Enter DB user name: ");
-					_user = Console.ReadLine();
+				Console.Write("Enter DB user name [{0}]: ", _user);
+				var tmp = Console.ReadLine().Trim();
+				if(!string.IsNullOrEmpty(tmp)) {
+					_user = tmp;
 				}
 				return _user;
 			}
@@ -62,10 +67,8 @@ namespace CharacterConverter.Con {
 		private string _pass;
 		public string Pass {
 			get {
-				if(_pass == null) {
-					Console.Write("Enter DB password: ");
-					_pass = Console.ReadLine();
-				}
+				Console.Write("Enter DB password: ");
+				_pass = Console.ReadLine();
 				return _pass;
 			}
 			set { _pass = value; }
@@ -75,22 +78,23 @@ namespace CharacterConverter.Con {
 			_presenter = presenter;
 		}
 
+		public void AddLogLine(string value) {
+			Console.WriteLine(value);
+		}
+
 		private void Convert() {
 			_presenter.Convert();
 		}
 
 		static void Main(string[] args) {
-			Console.WriteLine("Characters convertor for MaNGoS");
-			Console.WriteLine("Client version 2.4.2->2.4.3");
-			Console.WriteLine("Written by TOM_RUS");
-
 			AppDomain currentDomain = AppDomain.CurrentDomain;
 			currentDomain.UnhandledException += new UnhandledExceptionEventHandler(TopLevelErrorHandler);
+
+			Console.Title = "Character Converter console";
 
 			Program program = new Program();
 			program.Convert();
 
-			Console.WriteLine("Done!");
 			Console.ReadKey();
 		}
 

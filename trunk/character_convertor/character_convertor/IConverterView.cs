@@ -12,5 +12,6 @@ namespace CharacterConverter {
 		string Pass { get; set; }
 
 		void SetPresenter(ConverterPresenter presenter);
+		void AddLogLine(string value);
 	}
 }
