@@ -33,13 +33,13 @@
 			  this.label3 = new System.Windows.Forms.Label();
 			  this.label4 = new System.Windows.Forms.Label();
 			  this.label5 = new System.Windows.Forms.Label();
-			  this.button1 = new System.Windows.Forms.Button();
-			  this.textBox1 = new System.Windows.Forms.TextBox();
-			  this.textBox2 = new System.Windows.Forms.TextBox();
-			  this.textBox3 = new System.Windows.Forms.TextBox();
-			  this.textBox4 = new System.Windows.Forms.TextBox();
-			  this.textBox5 = new System.Windows.Forms.TextBox();
-			  this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+			  this._btnConvert = new System.Windows.Forms.Button();
+			  this._tbHost = new System.Windows.Forms.TextBox();
+			  this._tbPort = new System.Windows.Forms.TextBox();
+			  this._tbBase = new System.Windows.Forms.TextBox();
+			  this._tbUser = new System.Windows.Forms.TextBox();
+			  this._tbPass = new System.Windows.Forms.TextBox();
+			  this._lbInfo = new System.Windows.Forms.Label();
 			  this.SuspendLayout();
 			  // 
 			  // label1
@@ -87,72 +87,81 @@
 			  this.label5.TabIndex = 4;
 			  this.label5.Text = "Password:";
 			  // 
-			  // button1
+			  // _btnConvert
 			  // 
-			  this.button1.Location = new System.Drawing.Point(4, 131);
-			  this.button1.Name = "button1";
-			  this.button1.Size = new System.Drawing.Size(159, 23);
-			  this.button1.TabIndex = 5;
-			  this.button1.Text = "Go!";
-			  this.button1.UseVisualStyleBackColor = true;
-			  this.button1.Click += new System.EventHandler(this.button1_Click);
+			  this._btnConvert.Location = new System.Drawing.Point(4, 131);
+			  this._btnConvert.Name = "_btnConvert";
+			  this._btnConvert.Size = new System.Drawing.Size(159, 23);
+			  this._btnConvert.TabIndex = 5;
+			  this._btnConvert.Text = "Go!";
+			  this._btnConvert.UseVisualStyleBackColor = true;
+			  this._btnConvert.Click += new System.EventHandler(this.BtnConvert_Click);
 			  // 
-			  // textBox1
+			  // _tbHost
 			  // 
-			  this.textBox1.Location = new System.Drawing.Point(63, 2);
-			  this.textBox1.Name = "textBox1";
-			  this.textBox1.Size = new System.Drawing.Size(100, 20);
-			  this.textBox1.TabIndex = 6;
-			  this.textBox1.Text = "localhost";
+			  this._tbHost.Location = new System.Drawing.Point(63, 2);
+			  this._tbHost.Name = "_tbHost";
+			  this._tbHost.Size = new System.Drawing.Size(100, 20);
+			  this._tbHost.TabIndex = 6;
 			  // 
-			  // textBox2
+			  // _tbPort
 			  // 
-			  this.textBox2.Location = new System.Drawing.Point(63, 28);
-			  this.textBox2.Name = "textBox2";
-			  this.textBox2.Size = new System.Drawing.Size(100, 20);
-			  this.textBox2.TabIndex = 7;
-			  this.textBox2.Text = "3306";
+			  this._tbPort.Location = new System.Drawing.Point(63, 28);
+			  this._tbPort.Name = "_tbPort";
+			  this._tbPort.Size = new System.Drawing.Size(100, 20);
+			  this._tbPort.TabIndex = 7;
 			  // 
-			  // textBox3
+			  // _tbBase
 			  // 
-			  this.textBox3.Location = new System.Drawing.Point(63, 54);
-			  this.textBox3.Name = "textBox3";
-			  this.textBox3.Size = new System.Drawing.Size(100, 20);
-			  this.textBox3.TabIndex = 8;
+			  this._tbBase.Location = new System.Drawing.Point(63, 54);
+			  this._tbBase.Name = "_tbBase";
+			  this._tbBase.Size = new System.Drawing.Size(100, 20);
+			  this._tbBase.TabIndex = 8;
 			  // 
-			  // textBox4
+			  // _tbUser
 			  // 
-			  this.textBox4.Location = new System.Drawing.Point(63, 79);
-			  this.textBox4.Name = "textBox4";
-			  this.textBox4.Size = new System.Drawing.Size(100, 20);
-			  this.textBox4.TabIndex = 9;
+			  this._tbUser.Location = new System.Drawing.Point(63, 79);
+			  this._tbUser.Name = "_tbUser";
+			  this._tbUser.Size = new System.Drawing.Size(100, 20);
+			  this._tbUser.TabIndex = 9;
 			  // 
-			  // textBox5
+			  // _tbPass
 			  // 
-			  this.textBox5.Location = new System.Drawing.Point(63, 105);
-			  this.textBox5.Name = "textBox5";
-			  this.textBox5.PasswordChar = '*';
-			  this.textBox5.Size = new System.Drawing.Size(100, 20);
-			  this.textBox5.TabIndex = 10;
+			  this._tbPass.Location = new System.Drawing.Point(63, 105);
+			  this._tbPass.Name = "_tbPass";
+			  this._tbPass.PasswordChar = '*';
+			  this._tbPass.Size = new System.Drawing.Size(100, 20);
+			  this._tbPass.TabIndex = 10;
+			  // 
+			  // _lbInfo
+			  // 
+			  this._lbInfo.AutoSize = true;
+			  this._lbInfo.Location = new System.Drawing.Point(169, 5);
+			  this._lbInfo.Name = "_lbInfo";
+			  this._lbInfo.Size = new System.Drawing.Size(0, 13);
+			  this._lbInfo.TabIndex = 11;
 			  // 
 			  // FrmMain
 			  // 
 			  this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			  this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			  this.ClientSize = new System.Drawing.Size(168, 154);
-			  this.Controls.Add(this.textBox5);
-			  this.Controls.Add(this.textBox4);
-			  this.Controls.Add(this.textBox3);
-			  this.Controls.Add(this.textBox2);
-			  this.Controls.Add(this.textBox1);
-			  this.Controls.Add(this.button1);
+			  this.ClientSize = new System.Drawing.Size(525, 154);
+			  this.Controls.Add(this._lbInfo);
+			  this.Controls.Add(this._tbPass);
+			  this.Controls.Add(this._tbUser);
+			  this.Controls.Add(this._tbBase);
+			  this.Controls.Add(this._tbPort);
+			  this.Controls.Add(this._tbHost);
+			  this.Controls.Add(this._btnConvert);
 			  this.Controls.Add(this.label5);
 			  this.Controls.Add(this.label4);
 			  this.Controls.Add(this.label3);
 			  this.Controls.Add(this.label2);
 			  this.Controls.Add(this.label1);
+			  this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			  this.MaximizeBox = false;
 			  this.Name = "FrmMain";
-			  this.Text = "Converter";
+			  this.Text = "Character Converter Gui";
 			  this.ResumeLayout(false);
 			  this.PerformLayout();
 
@@ -165,13 +174,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button _btnConvert;
+        private System.Windows.Forms.TextBox _tbHost;
+        private System.Windows.Forms.TextBox _tbPort;
+        private System.Windows.Forms.TextBox _tbBase;
+        private System.Windows.Forms.TextBox _tbUser;
+		  private System.Windows.Forms.TextBox _tbPass;
+		  private System.Windows.Forms.Label _lbInfo;
     }
 }
 
