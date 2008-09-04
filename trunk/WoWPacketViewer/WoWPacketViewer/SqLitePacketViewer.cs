@@ -23,12 +23,14 @@ namespace WoWPacketViewer {
 
 				while(reader.Read()) {
 					//worker.ReportProgress((int)((float)m_packets.Count / (float)rows * 100.0f));
+					try {
+						var direction = (Direction)reader.GetByte(0);
+						var opcode = (OpCodes)reader.GetInt16(1);
+						var data = (byte[])reader.GetValue(2);
 
-					var direction = (Direction)reader.GetByte(0);
-					var opcode = (OpCodes)reader.GetInt16(1);
-					var data = (byte[])reader.GetValue(2);
-
-					m_packets.Add(new Packet(direction, opcode, data));
+						m_packets.Add(new Packet(direction, opcode, data));
+					}
+					catch { }
 				}
 			}
 			return m_packets.Count;
