@@ -39,32 +39,43 @@ namespace SimpleEnumExtractor {
 
 				stream_string = tr.ReadToEnd();
 
-				var names = GetNames("CHAT_MSG_BATTLEGROUND_LEADER",
-					"CHAT_MSG_ADDON");
-				DumpEnumToFile("ChatMsg", names, -1);
-
-				names = GetNames("CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME",
-						"RESPONSE_SUCCESS");
-				DumpEnumToFile("ResponseCodes", names);
-
-				names = GetNames("VOICE_OFF", "YOU_CHANGED", "CHAT_{0}_NOTICE");
-				DumpEnumToFile("ChatNotify", names);
-
-				//names = GetNames("NUM_MSG_TYPES", "MSG_NULL_ACTION");
-				//DumpEnumToFile(names, "OpCodes");
-
-				names = GetNames("SPELL_FAILED_UNKNOWN", "SPELL_FAILED_AFFECTING_COMBAT");
-				DumpEnumToFile("SpellFailedReason", names);
-
-				//names = GetNames("ENCHANT_CONDITION_REQUIRES", "ENCHANT_CONDITION_EQUAL_VALUE");
-				//DumpEnumToFile("EnchantConditions", names);
+				ExtractEnum("ChatMsg", "CHAT_MSG_BATTLEGROUND_LEADER", "CHAT_MSG_ADDON", "{0}", -1);
+				ExtractEnum("ResponseCodes", "CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME",
+					"RESPONSE_SUCCESS");
+				ExtractEnum("ChatNotify", "VOICE_OFF", "YOU_CHANGED", "CHAT_{0}_NOTICE", 0);
+				ExtractEnum("OpCodes", "NUM_MSG_TYPES", "MSG_NULL_ACTION");
+				ExtractEnum("SpellFailedReason", "SPELL_FAILED_UNKNOWN",
+					"SPELL_FAILED_AFFECTING_COMBAT");
+				ExtractEnum("EnchantConditions", "ENCHANT_CONDITION_REQUIRES",
+					"ENCHANT_CONDITION_EQUAL_VALUE");
 
 				tr.Close();
 				gr.Close();
 				stream.Close();
 				Console.WriteLine("Done");
 			}
+			Console.Write("Press any key to exit...");
 			Console.ReadKey();
+		}
+
+		static void ExtractEnum(string name, string start, string end, string format, int index) {
+			try {
+				Console.Write("  Extracting {0,-61}", name);
+				DumpToFile(name, GetNames(start, end, format), index);
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine("done");
+			}
+			catch {
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("error");
+			}
+			finally {
+				Console.ResetColor();
+			}
+		}
+
+		static void ExtractEnum(string name, string start, string end) {
+			ExtractEnum(name, start, end, "{0}", 0);
 		}
 
 		static string[] GetNames(string start, string end, string format) {
@@ -98,7 +109,7 @@ namespace SimpleEnumExtractor {
 			}
 		}
 
-		static void DumpEnumToFile(string enumName, string[] names, int first) {
+		static void DumpToFile(string enumName, string[] names, int first) {
 			// TODO: Необходимо задавать провайдер из параметров командной строки
 			// по умолчанию брать Cpp провайдер
 			var @enum = new CodeTypeDeclaration(enumName) {
@@ -123,12 +134,12 @@ namespace SimpleEnumExtractor {
 			}
 		}
 
-		static void DumpEnumToFile(string enumName, string[] names) {
-			DumpEnumToFile(enumName, names, 0);
+		static void DumpToFile(string enumName, string[] names) {
+			DumpToFile(enumName, names, 0);
 		}
 
 		static int FindStartPos(string name) {
-			return stream_string.IndexOf(name);
+			return stream_string.IndexOf(name + '\0');
 		}
 
 		static int FindNextPos(GenericReader reader) {
