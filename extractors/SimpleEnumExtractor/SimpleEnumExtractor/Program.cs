@@ -43,11 +43,12 @@ namespace SimpleEnumExtractor {
 				ExtractEnum("ResponseCodes", "CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME",
 					"RESPONSE_SUCCESS");
 				ExtractEnum("ChatNotify", "VOICE_OFF", "YOU_CHANGED", "CHAT_{0}_NOTICE", 0);
-				ExtractEnum("OpCodes", "NUM_MSG_TYPES", "MSG_NULL_ACTION");
+				//ExtractEnum("OpCodes", "NUM_MSG_TYPES", "MSG_NULL_ACTION");
 				ExtractEnum("SpellFailedReason", "SPELL_FAILED_UNKNOWN",
 					"SPELL_FAILED_AFFECTING_COMBAT");
 				ExtractEnum("EnchantConditions", "ENCHANT_CONDITION_REQUIRES",
 					"ENCHANT_CONDITION_EQUAL_VALUE");
+				ExtractEnum("ItemModType", "ITEM_MOD_SPELL_POWER", "ITEM_MOD_MANA");
 
 				tr.Close();
 				gr.Close();
@@ -127,6 +128,7 @@ namespace SimpleEnumExtractor {
 			var codeProvider = CodeDomProvider.CreateProvider("Cpp");
 			var options = new CodeGeneratorOptions() {
 				BlankLinesBetweenMembers = false,
+                BracingStyle = "C",
 			};
 
 			using(var writer = new StreamWriter(enumName + "." + codeProvider.FileExtension)) {
