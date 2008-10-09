@@ -11,8 +11,9 @@ namespace WoWPacketViewer
 {
     public partial class SearchForm : Form
     {
-        public SearchForm()
+        public SearchForm(Form owner)
         {
+            this.Owner = owner;
             InitializeComponent();
         }
 

@@ -62,7 +62,7 @@ namespace WoWPacketViewer
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_searchForm == null || m_searchForm.IsDisposed)
-                m_searchForm = new SearchForm();
+                m_searchForm = new SearchForm(this);
 
             if (m_searchForm.Visible)
                 return;
@@ -102,12 +102,10 @@ namespace WoWPacketViewer
                         break;
                     }
 
-                    System.Collections.IEnumerator gg = j.SubItems.GetEnumerator();
                     bool exit = false;
-                    while (gg.MoveNext())
+                    foreach (ListViewItem.ListViewSubItem si in j.SubItems)
                     {
-                        ListViewItem.ListViewSubItem k = (ListViewItem.ListViewSubItem)gg.Current;
-                        if(k.Text.Contains(opcode))
+                        if (si.Text.Contains(opcode))
                         {
                             j.Selected = true;
                             j.EnsureVisible();
