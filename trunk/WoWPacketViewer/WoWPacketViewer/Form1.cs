@@ -62,12 +62,12 @@ namespace WoWPacketViewer
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_searchForm == null || m_searchForm.IsDisposed)
-                m_searchForm = new SearchForm(this);
+                m_searchForm = new SearchForm();
 
             if (m_searchForm.Visible)
                 return;
 
-            m_searchForm.Show();
+            m_searchForm.Show(this);
         }
 
         public void Search(string opcode, bool direction)
