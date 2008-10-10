@@ -91,8 +91,7 @@ namespace WoWPacketViewer
             }
             else
             {
-                // не пашет :(
-                for (int i = listView1.Items.Count - 1; i != 0; --i)
+                for (int i = selectedIndex - 1; i != 0; --i)
                 {
                     ListViewItem j = listView1.Items[i];
                     if (j.Text.Contains(opcode))
