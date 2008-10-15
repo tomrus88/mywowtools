@@ -68,7 +68,7 @@ namespace WoWPacketViewer
             foreach (Packet p in m_packetViewer.Packets)
             {
                 ListViewItem item;
-                if (p.Direction == Direction.CLIENT)
+                if (p.Direction == Direction.Client)
                     item = new ListViewItem(new string[] { build.ToString(), p.Opcode.ToString(), string.Empty, p.Data.Length.ToString() });
                 else
                     item = new ListViewItem(new string[] { build.ToString(), string.Empty, p.Opcode.ToString(), p.Data.Length.ToString() });
