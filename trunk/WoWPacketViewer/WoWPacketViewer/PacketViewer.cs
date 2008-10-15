@@ -22,7 +22,7 @@ namespace WoWPacketViewer
         {
 
             var length = pkt.Data.Length;
-            var dir = (pkt.Direction == Direction.CLIENT) ? "C->S" : "S->C";
+            var dir = (pkt.Direction == Direction.Client) ? "C->S" : "S->C";
 
             var result = new StringBuilder();
             result.AppendFormat("Packet {0}, {1} ({2}), len {3}", dir, pkt.Opcode, (ushort)pkt.Opcode, length);

@@ -16,12 +16,12 @@ namespace WoWPacketViewer {
 			gr.ReadBytes(64);   // realm name
 
 			while(gr.PeekChar() >= 0) {
-				var direction = gr.ReadByte() == 0xff ? Direction.SERVER : Direction.CLIENT;
+				var direction = gr.ReadByte() == 0xff ? Direction.Server : Direction.Client;
 				var unixtime = gr.ReadUInt32();
 				var tickcount = gr.ReadUInt32();
 				var size = gr.ReadUInt32();
-				var opcode = (direction == Direction.CLIENT) ? (OpCodes)gr.ReadUInt32() : (OpCodes)gr.ReadUInt16();
-				var data = gr.ReadBytes((int)size - ((direction == Direction.CLIENT) ? 4 : 2));
+				var opcode = (direction == Direction.Client) ? (OpCodes)gr.ReadUInt32() : (OpCodes)gr.ReadUInt16();
+				var data = gr.ReadBytes((int)size - ((direction == Direction.Client) ? 4 : 2));
 
 				m_packets.Add(new Packet(direction, opcode, data));
 			}
