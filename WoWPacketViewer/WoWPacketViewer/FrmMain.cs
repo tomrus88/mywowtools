@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace WoWPacketViewer
 {
     public partial class FrmMain : Form
     {
-        PacketViewerBase m_packetViewer;
-        FrmSearch m_searchForm;
+        private PacketViewerBase m_packetViewer;
+        private FrmSearch m_searchForm;
 
         public FrmMain()
         {
@@ -43,7 +44,35 @@ namespace WoWPacketViewer
                 }
                 m_packetViewer.LoadData(openFileDialog1.FileName);
                 toolStripStatusLabel1.Text = openFileDialog1.FileName;
-                listView1.Items.AddRange(m_packetViewer.ListPackets());
+                FillListView();
+            }
+        }
+
+        public void FillListView()
+        {
+            var pkt = (from packet in m_packetViewer.Packets
+                       where packet.Opcode == OpCodes.CMSG_AUTH_SESSION
+                       select packet).FirstOrDefault();
+
+            uint build;
+            try
+            {
+                build = BitConverter.ToUInt32(pkt.Data, 0);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                return;
+            }
+
+            foreach (Packet p in m_packetViewer.Packets)
+            {
+                ListViewItem item;
+                if (p.Direction == Direction.CLIENT)
+                    item = new ListViewItem(new string[] { build.ToString(), p.Opcode.ToString(), string.Empty, p.Data.Length.ToString() });
+                else
+                    item = new ListViewItem(new string[] { build.ToString(), string.Empty, p.Opcode.ToString(), p.Data.Length.ToString() });
+                listView1.Items.Add(item);
             }
         }
 
@@ -55,8 +84,9 @@ namespace WoWPacketViewer
             ListView.SelectedIndexCollection sic = listView1.SelectedIndices;
             if (sic.Count == 0)
                 return;
-            m_packetViewer.ShowHex(textBox1, sic[0]);
-            m_packetViewer.ShowParsed(textBox2, sic[0]);
+
+            textBox1.Text = m_packetViewer.HexLike(m_packetViewer.Packets[sic[0]]);
+            //textBox2.Text = m_packetViewer.ShowParsed(sic[0]);
         }
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,10 +151,10 @@ namespace WoWPacketViewer
 
         private void saveAsTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 StreamWriter stream = new StreamWriter(saveFileDialog1.OpenFile());
-                foreach (Packet p in PacketViewerBase.Packets)
+                foreach (Packet p in m_packetViewer.Packets)
                 {
                     stream.Write(m_packetViewer.HexLike(p));
                 }
