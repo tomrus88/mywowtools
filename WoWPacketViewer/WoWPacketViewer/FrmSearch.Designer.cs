@@ -1,6 +1,6 @@
 ﻿namespace WoWPacketViewer
 {
-    partial class SearchForm
+    partial class FrmSearch
     {
         /// <summary>
         /// Required designer variable.

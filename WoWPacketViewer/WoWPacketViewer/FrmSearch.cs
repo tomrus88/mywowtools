@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace WoWPacketViewer
 {
-    public partial class SearchForm : Form
+    public partial class FrmSearch : Form
     {
-        public SearchForm()
+        public FrmSearch()
         {
             InitializeComponent();
         }
@@ -23,7 +23,7 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ((Form1)Owner).Search(textBox1.Text, radioButton1.Checked ? true : false);
+            ((FrmMain)Owner).Search(textBox1.Text, radioButton1.Checked ? true : false);
         }
     }
 }

@@ -4,12 +4,12 @@ using System.IO;
 
 namespace WoWPacketViewer
 {
-    public partial class Form1 : Form
+    public partial class FrmMain : Form
     {
         PacketViewerBase m_packetViewer;
-        SearchForm m_searchForm;
+        FrmSearch m_searchForm;
 
-        public Form1()
+        public FrmMain()
         {
             InitializeComponent();
         }
@@ -62,7 +62,7 @@ namespace WoWPacketViewer
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_searchForm == null || m_searchForm.IsDisposed)
-                m_searchForm = new SearchForm();
+                m_searchForm = new FrmSearch();
 
             if (m_searchForm.Visible)
                 return;
