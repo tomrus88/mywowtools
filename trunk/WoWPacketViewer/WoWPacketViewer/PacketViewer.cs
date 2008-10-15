@@ -9,52 +9,14 @@ namespace WoWPacketViewer
 {
     public abstract class PacketViewerBase
     {
-        //TODO: сделать по аналогии с update парсером
-        protected static List<Packet> m_packets = new List<Packet>();
+        protected List<Packet> m_packets = new List<Packet>();
 
-        public static List<Packet> Packets
+        public List<Packet> Packets
         {
             get { return m_packets; }
         }
 
         public abstract int LoadData(string file);
-
-        public ListViewItem[] ListPackets()
-        {
-            var pkt = (from packet in m_packets
-                       where packet.Opcode == OpCodes.CMSG_AUTH_SESSION
-                       select packet).FirstOrDefault();
-
-            uint build;
-            try
-            {
-                build = BitConverter.ToUInt32(pkt.Data, 0);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-                return null;
-            }
-
-            var items = new List<ListViewItem>();
-            foreach (Packet p in m_packets)
-            {
-                ListViewItem item;
-                if (p.Direction == Direction.CLIENT)
-                    item = new ListViewItem(new string[] { build.ToString(), p.Opcode.ToString(), string.Empty, p.Data.Length.ToString() });
-                else
-                    item = new ListViewItem(new string[] { build.ToString(), string.Empty, p.Opcode.ToString(), p.Data.Length.ToString() });
-                items.Add(item);
-            }
-            return items.ToArray();
-        }
-
-        public void ShowHex(TextBox tb, int index)
-        {
-            Packet pkt = m_packets[index];
-
-            tb.Text = HexLike(pkt);
-        }
 
         public string HexLike(Packet pkt)
         {
@@ -102,11 +64,6 @@ namespace WoWPacketViewer
             result.AppendLine();
 
             return result.ToString();
-        }
-
-        public void ShowParsed(TextBox tb, int index)
-        {
-
         }
     }
 }
