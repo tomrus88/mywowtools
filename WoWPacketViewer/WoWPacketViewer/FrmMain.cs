@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace WoWPacketViewer
 {
     public partial class FrmMain : Form
     {
+        delegate void AddListViewItem(ListViewItem item);
         private PacketViewerBase m_packetViewer;
         private FrmSearch m_searchForm;
 
@@ -44,11 +46,23 @@ namespace WoWPacketViewer
                 }
                 m_packetViewer.LoadData(openFileDialog1.FileName);
                 toolStripStatusLabel1.Text = openFileDialog1.FileName;
-                FillListView();
+                backgroundWorker1.RunWorkerAsync(m_packetViewer.Packets.Count);
+                //FillListView();
             }
         }
 
-        public void FillListView()
+        private void AddPacket(ListViewItem item)
+        {
+            if (listView1.InvokeRequired)
+            {
+                AddListViewItem d = new AddListViewItem(AddPacket);
+                Invoke(d, new object[] { item });
+            }
+            else
+                listView1.Items.Add(item);
+        }
+
+        public void FillListView(BackgroundWorker worker)
         {
             var pkt = (from packet in m_packetViewer.Packets
                        where packet.Opcode == OpCodes.CMSG_AUTH_SESSION
@@ -65,6 +79,7 @@ namespace WoWPacketViewer
                 return;
             }
 
+            int i = 0;
             foreach (Packet p in m_packetViewer.Packets)
             {
                 ListViewItem item;
@@ -72,7 +87,9 @@ namespace WoWPacketViewer
                     item = new ListViewItem(new string[] { build.ToString(), p.Opcode.ToString(), string.Empty, p.Data.Length.ToString() });
                 else
                     item = new ListViewItem(new string[] { build.ToString(), string.Empty, p.Opcode.ToString(), p.Data.Length.ToString() });
-                listView1.Items.Add(item);
+                AddPacket(item);
+                ++i;
+                worker.ReportProgress(i / (m_packetViewer.Packets.Count / 100));
             }
         }
 
@@ -86,7 +103,7 @@ namespace WoWPacketViewer
                 return;
 
             textBox1.Text = m_packetViewer.HexLike(m_packetViewer.Packets[sic[0]]);
-            //textBox2.Text = m_packetViewer.ShowParsed(sic[0]);
+            textBox2.Text = m_packetViewer.ShowParsed(m_packetViewer.Packets[sic[0]]);
         }
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,6 +178,22 @@ namespace WoWPacketViewer
                 stream.Flush();
                 stream.Close();
             }
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            toolStripProgressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            FillListView(worker);
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            toolStripStatusLabel1.Text = "Done.";
         }
     }
 }
