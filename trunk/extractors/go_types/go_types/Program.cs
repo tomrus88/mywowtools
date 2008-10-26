@@ -23,13 +23,17 @@ namespace go_types
         string WOW_VERSION = String.Empty;
         string STREAM = String.Empty;
         //long GO_TYPE_INFO_START = 0x4F0A70;
-        long GO_TYPE_INFO_START = 0x4A9B60;
+        //long GO_TYPE_INFO_START = 0x4A9B60;
+        long GO_TYPE_INFO_START = 0x5BAB18; // 3.0.3.9095
         //long OFFSET = 0x401400;
-        long OFFSET = 0x401200;
+        //long OFFSET = 0x401200;
+        long OFFSET = 0x401000; // 3.0.3.9095
         //long OFFSET2 = 0x401800;
-        long OFFSET2 = 0x401400;
+        //long OFFSET2 = 0x401400;
+        long OFFSET2 = 0x401800; // 3.0.3.9095
         //long GO_DATA_INFO_START = 0x4EF9C8;
-        long GO_DATA_INFO_START = 0x4A8AB8; // 2.4.2.8125
+        //long GO_DATA_INFO_START = 0x4A8AB8; // 2.4.2.8125
+        long GO_DATA_INFO_START = 0x5B9748; // 3.0.3.9095
 
         GenericReader gr;
         List<GameObjectTypeInfo> m_GoTypes = new List<GameObjectTypeInfo>();
@@ -67,7 +71,7 @@ namespace go_types
 
             gr.BaseStream.Position = GO_DATA_INFO_START;
 
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i < 123; ++i)
             {
                 GameObjectDataNameInfo info = gr.ReadStruct<GameObjectDataNameInfo>();
                 m_GoDataNames.Add(info);
@@ -75,7 +79,7 @@ namespace go_types
 
             gr.BaseStream.Position = GO_TYPE_INFO_START;
 
-            for (int i = 0; i < 35; ++i)
+            for (int i = 0; i < 36; ++i)
             {
                 GameObjectTypeInfo info = gr.ReadStruct<GameObjectTypeInfo>();
                 m_GoTypes.Add(info);
@@ -91,7 +95,7 @@ namespace go_types
                     for (int j = 0; j < info.DataCount; ++j)
                     {
                         int dataid = gr.ReadInt32();
-                        m_GoData[info.Id].Add(dataid);
+                        m_GoData[i].Add(dataid);
                     }
 
                     gr.BaseStream.Position = pos;

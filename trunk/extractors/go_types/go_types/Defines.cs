@@ -9,7 +9,7 @@ namespace go_types
     [StructLayout(LayoutKind.Sequential)]
     struct GameObjectTypeInfo
     {
-        public int Id;
+        //public int Id;
         public uint NameOffset; //type name
         public uint DataCount;
         public uint DataListOffset;
