@@ -182,7 +182,8 @@ namespace WoWPacketViewer
 
         private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            toolStripProgressBar1.Value = e.ProgressPercentage;
+            if (e.ProgressPercentage <= 100)
+                toolStripProgressBar1.Value = e.ProgressPercentage;
         }
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
