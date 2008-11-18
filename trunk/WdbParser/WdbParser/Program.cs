@@ -163,33 +163,37 @@ namespace WdbParser
                                         InsertQuery += valval;
                                     break;
                                 }
-                            case "COUNT":
+                            case "STRUCT":
                                 {
                                     var valval = reader.ReadInt32();
                                     if (valname != null)
                                         InsertQuery += valval;
                                     InsertQuery += ",";
 
+                                    var maxcount = Convert.ToUInt32(elem.Attributes["maxcount"].Value);
+
                                     if (valval > 0)
                                     {
-                                        var structtype = elem.Attributes["structtype"].Value;
-                                        var types = structtype.Split(' ');
+                                        XmlNodeList structNodes = elem.GetElementsByTagName("structElement");
                                         for (int k = 0; k < valval; k++)
                                         {
-                                            for (int kk = 0; kk < types.Length; kk++)
+                                            foreach (XmlElement structElem in structNodes)
                                             {
-                                                bool last = (valval == 10);
-                                                ReadAndDumpByType(ref reader, types[kk].ToUpper(), valname, ref InsertQuery, last);
+                                                bool last = (valval == maxcount);
+                                                ReadAndDumpByType(ref reader, structElem.Attributes["type"].Value.ToUpper(), valname, ref InsertQuery, last);
                                             }
                                         }
                                     }
 
-                                    for (int p = 0; p < (10 - valval); p++)
+                                    if(maxcount > 0)
                                     {
-                                        if (p != 10 - valval - 1)
-                                            InsertQuery += "0,0,";
-                                        else
-                                            InsertQuery += "0,0";
+                                        for (int p = 0; p < (maxcount - valval); p++)
+                                        {
+                                            if (p != maxcount - valval - 1)
+                                                InsertQuery += "0,0,";
+                                            else
+                                                InsertQuery += "0,0";
+                                        }
                                     }
 
                                     break;

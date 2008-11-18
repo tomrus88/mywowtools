@@ -42,7 +42,7 @@ namespace dbc2sql
 
             if (definition == null)
             {
-                Console.WriteLine("Definition for file {0} not found!", fileName);
+                Console.WriteLine("Definition for file {0} not found! File name is case sensitive!", fileName);
                 return;
             }
 
