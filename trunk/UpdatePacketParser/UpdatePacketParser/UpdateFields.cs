@@ -76,11 +76,11 @@ namespace UpdateFields
         /// <summary>
         /// Update flag for world objects (players, units, go, do, corpses).
         /// </summary>
-        UPDATEFLAG_HASPOSITION = 0x40,
+        UPDATEFLAG_HAS_POSITION = 0x40,
         /// <summary>
         /// Unknown, added in WotLK Beta
         /// </summary>
-        UPDATEFLAG_UNKNOWN1 = 0x80
+        UPDATEFLAG_VEHICLE = 0x80
     }
     #endregion
 
@@ -124,6 +124,20 @@ namespace UpdateFields
         TYPEID_CORPSE = 7
     }
     #endregion
+
+    [Flags]
+    public enum ObjectTypeMask
+    {
+        TYPEMASK_NONE = 0x0000,
+        TYPEMASK_OBJECT = 0x0001,
+        TYPEMASK_ITEM = 0x0002,
+        TYPEMASK_CONTAINER = 0x0004,                       // TYPEMASK_ITEM | 0x0004
+        TYPEMASK_UNIT = 0x0008,
+        TYPEMASK_PLAYER = 0x0010,
+        TYPEMASK_GAMEOBJECT = 0x0020,
+        TYPEMASK_DYNAMICOBJECT = 0x0040,
+        TYPEMASK_CORPSE = 0x0080
+    };
 
     #region Updatefield struct
     public struct UpdateField
@@ -261,7 +275,7 @@ namespace UpdateFields
                     else if (curline.Contains("gameobject"))
                         type = FieldType.FIELD_TYPE_GO;
                     else if (curline.Contains("dynamicobject"))
-                        type =FieldType.FIELD_TYPE_DO;
+                        type = FieldType.FIELD_TYPE_DO;
                     else if (curline.Contains("corpse"))
                         type = FieldType.FIELD_TYPE_CORPSE;
 

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WoWObjects;
-using System.IO;
+using UpdateFields;
 
 namespace UpdatePacketParser
 {
-    public partial class Form1 : Form
+    public partial class FrmMain : Form
     {
         Parser m_parser;    // active parser
+        FilterForm m_filterForm;
 
-        public Form1()
+        public FrmMain()
         {
             InitializeComponent();
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhanledExceptionHandler);
@@ -98,31 +100,51 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
-				switch(Path.GetExtension(filename)) {
-				case ".bin":
-					m_parser = new Parser(new WowCorePacketReader(filename));
-					break;
-				case ".sqlite":
-					m_parser = new Parser(new SqLitePacketReader(filename));
-					break;
-				default:
-					break;
-				}
+            switch (Path.GetExtension(filename))
+            {
+                case ".bin":
+                    m_parser = new Parser(new WowCorePacketReader(filename));
+                    break;
+                case ".sqlite":
+                    m_parser = new Parser(new SqLitePacketReader(filename));
+                    break;
+                default:
+                    break;
+            }
             m_parser.PrintObjects(listBox1);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string[] str = listBox1.Items[listBox1.SelectedIndex].ToString().Split(' ');
+            ulong guid = ulong.Parse(str[0], System.Globalization.NumberStyles.AllowHexSpecifier);
+
             listView1.Items.Clear();
-            m_parser.PrintObjectInfo(listBox1.SelectedIndex, listView1);
+            m_parser.PrintObjectInfo(guid, listView1);
 
             // process updates
             listView2.Items.Clear();
-            m_parser.PrintObjectUpdatesInfo(listBox1.SelectedIndex, listView2);
+            m_parser.PrintObjectUpdatesInfo(guid, listView2);
 
             // process movement info
             richTextBox1.Clear();
-            m_parser.PrintObjectMovementInfo(listBox1.SelectedIndex, richTextBox1);
+            m_parser.PrintObjectMovementInfo(guid, richTextBox1);
+        }
+
+        private void filterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (m_filterForm == null || m_filterForm.IsDisposed)
+                m_filterForm = new FilterForm();
+
+            if (m_filterForm.Visible)
+                return;
+
+            m_filterForm.Show(this);
+        }
+
+        public void PrintObjectType(ObjectTypeMask mask, CustomFilterMask customMask)
+        {
+            m_parser.PrintObjectsType(listBox1, mask, customMask);
         }
     }
 }

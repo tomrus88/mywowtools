@@ -105,14 +105,14 @@ namespace WoWPacketViewer
                                 sb.AppendFormat("Charges: {0}", auraApplication.ToString("X2"));
                                 sb.AppendLine();
 
-                                if (!((af & AuraFlags.AURA_FLAG_08) != AuraFlags.AURA_FLAG_00))
+                                if (!((af & AuraFlags.AURA_FLAG_NOT_OWNER) != AuraFlags.AURA_FLAG_NONE))
                                 {
                                     ulong guid2 = gr.ReadPackedGuid();
                                     sb.AppendFormat("GUID2: {0}", guid2.ToString("X16"));
                                     sb.AppendLine();
                                 }
 
-                                if ((af & AuraFlags.AURA_FLAG_20) != AuraFlags.AURA_FLAG_00)
+                                if ((af & AuraFlags.AURA_FLAG_DURATION) != AuraFlags.AURA_FLAG_NONE)
                                 {
                                     uint durationFull = gr.ReadUInt32();
                                     sb.AppendFormat("Full duration: {0}", durationFull.ToString("X8"));
@@ -140,7 +140,7 @@ namespace WoWPacketViewer
                         sb.AppendFormat("Spells count: {0}", spellsCount);
                         sb.AppendLine();
 
-                        for(ushort i = 0; i < spellsCount; ++i)
+                        for (ushort i = 0; i < spellsCount; ++i)
                         {
                             ushort spellId = gr.ReadUInt16();
                             ushort spellSlot = gr.ReadUInt16();
@@ -153,7 +153,7 @@ namespace WoWPacketViewer
                         sb.AppendFormat("Cooldowns count: {0}", cooldownsCount);
                         sb.AppendLine();
 
-                        for(ushort i = 0; i < cooldownsCount; ++i)
+                        for (ushort i = 0; i < cooldownsCount; ++i)
                         {
                             ushort spellId = gr.ReadUInt16();
                             ushort itemId = gr.ReadUInt16();
@@ -232,7 +232,7 @@ namespace WoWPacketViewer
                         sb.AppendFormat("Monster GUID: 0x{0}", monsterGuid.ToString("X16"));
                         sb.AppendLine();
 
-                        if(pkt.Opcode == OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)
+                        if (pkt.Opcode == OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)
                         {
                             ulong transportGuid = gr.ReadPackedGuid();
                             sb.AppendFormat("Transport GUID: 0x{0}", transportGuid.ToString("X16"));
@@ -244,7 +244,7 @@ namespace WoWPacketViewer
                         }
 
                         Coords3 position = gr.ReadCoords3();
-                        sb.AppendFormat("Position: {0}", position.GetCoords());
+                        sb.AppendFormat("Dest Position: {0}", position.GetCoords());
                         sb.AppendLine();
 
                         uint ticksCount = gr.ReadUInt32();
@@ -288,7 +288,7 @@ namespace WoWPacketViewer
                             sb.AppendFormat("Movement Flags: 0x{0}", movementFlags.ToString("X8"));
                             sb.AppendLine();
 
-                            if((movementFlags & 0x400000) != 0)
+                            if ((movementFlags & 0x400000) != 0)
                             {
                                 byte unk_0x400000 = gr.ReadByte();
                                 uint unk_0x400000_ms_time = gr.ReadUInt32();
@@ -301,7 +301,7 @@ namespace WoWPacketViewer
                             sb.AppendFormat("Movement Time: 0x{0}", moveTime.ToString("X8"));
                             sb.AppendLine();
 
-                            if((movementFlags & 0x8) != 0)
+                            if ((movementFlags & 0x8) != 0)
                             {
                                 float unk_float_0x8 = gr.ReadSingle();
                                 uint unk_int_0x8 = gr.ReadUInt32();
@@ -322,10 +322,10 @@ namespace WoWPacketViewer
                             if (!((movementFlags & 0x80200) != 0))
                             {
                                 Coords3 startPos = gr.ReadCoords3();
-                                sb.AppendFormat("Compressed Points Start: {0}", startPos.GetCoords());
+                                sb.AppendFormat("Current position: {0}", startPos.GetCoords());
                                 sb.AppendLine();
 
-                                if(splinesCount > 1)
+                                if (splinesCount > 1)
                                 {
                                     for (uint i = 0; i < splinesCount - 1; ++i)
                                     {
@@ -337,7 +337,7 @@ namespace WoWPacketViewer
                                         float x = (float)((packedOffset & 0x7FF) << 21 >> 21) * 0.25f;
                                         float y = (float)((((packedOffset >> 11) & 0x7FF) << 21) >> 21) * 0.25f;
                                         float z = (float)((packedOffset >> 22 << 22) >> 22) * 0.25f;
-                                        sb.AppendFormat("Unpacked Point: {0}, {1}, {2}", startPos.X + x, startPos.Y + y, startPos.Z + z);
+                                        sb.AppendFormat("Path Point {0}: {1}, {2}, {3}", i, startPos.X + x, startPos.Y + y, startPos.Z + z);
                                         sb.AppendLine();
                                         #endregion
                                     }
@@ -351,7 +351,7 @@ namespace WoWPacketViewer
 
                                 if (splinesCount > 1)
                                 {
-                                    for(uint i = 0; i < splinesCount - 1; ++i)
+                                    for (uint i = 0; i < splinesCount - 1; ++i)
                                     {
                                         Coords3 spline = gr.ReadCoords3();
                                         sb.AppendFormat("Spline Point {0}: {1}", i, spline.GetCoords());
