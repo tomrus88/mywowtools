@@ -26,12 +26,12 @@ namespace uf_extractor2
         NONE = 0,
         PUBLIC = 1,
         PRIVATE = 2,
-        OWNER_ONLY = 4,
-        UNK1 = 8,
-        UNK2 = 16,
-        UNK3 = 32,
-        GROUP_ONLY = 64,
-        UNK4 = 128,
+        OWNER = 4,
+        UNUSED1 = 8,
+        ITEM_OWNER = 16,
+        PARTY_LEADER = 32,
+        PARTY_MEMBER = 64,
+        UNUSED2 = 128,
         DYNAMIC = 256
     };
 

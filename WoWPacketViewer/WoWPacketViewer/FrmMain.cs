@@ -9,6 +9,7 @@ namespace WoWPacketViewer
     public partial class FrmMain : Form
     {
         delegate void AddListViewItem(ListViewItem item);
+        delegate void ListViewUpdateControl(bool end);
         private PacketViewerBase m_packetViewer;
         private FrmSearch m_searchForm;
 
@@ -62,6 +63,22 @@ namespace WoWPacketViewer
                 listView1.Items.Add(item);
         }
 
+        private void UpdateControl(bool end)
+        {
+            if (listView1.InvokeRequired)
+            {
+                ListViewUpdateControl lvuc = new ListViewUpdateControl(UpdateControl);
+                Invoke(lvuc, new object[] { end });
+            }
+            else
+            {
+                if (end)
+                    listView1.EndUpdate();
+                else
+                    listView1.BeginUpdate();
+            }
+        }
+
         public void FillListView(BackgroundWorker worker)
         {
             var pkt = (from packet in m_packetViewer.Packets
@@ -80,6 +97,7 @@ namespace WoWPacketViewer
             }
 
             int i = 0;
+            UpdateControl(false);
             foreach (Packet p in m_packetViewer.Packets)
             {
                 ListViewItem item;
@@ -91,6 +109,7 @@ namespace WoWPacketViewer
                 ++i;
                 worker.ReportProgress(i / (m_packetViewer.Packets.Count / 100));
             }
+            UpdateControl(true);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

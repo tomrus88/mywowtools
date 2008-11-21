@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+
 using WoWReader;
 using UpdateFields;
 using WoWObjects;
@@ -23,36 +24,38 @@ namespace UpdatePacketParser
             set { m_objects = value; }
         }
 
-		  private WoWObject GetWoWObject(ulong guid) 
-		  {
-			  WoWObject obj;
-			  m_objects.TryGetValue(guid, out obj);
-			  return obj;
-		  }
+        private WoWObject GetWoWObject(ulong guid)
+        {
+            WoWObject obj;
+            m_objects.TryGetValue(guid, out obj);
+            return obj;
+        }
 
-		  public Parser(PacketReaderBase reader) {
-			  Packet packet;
-			  while((packet = reader.ReadPacket()) != null) {
-				  var gr = new GenericReader(new MemoryStream(packet.Data));
-				  switch(packet.Code) {
-				  case 169:
-					  ParseRest(gr);
-					  break;
-				  case 502:
-					  Decompress(ref gr);
-					  ParseRest(gr);
-					  break;
-				  default:
-					  break;
-				  }
-				  gr.Close();
-			  }
-		  }
+        public Parser(PacketReaderBase reader)
+        {
+            Packet packet;
+            while ((packet = reader.ReadPacket()) != null)
+            {
+                var gr = new GenericReader(new MemoryStream(packet.Data));
+                switch (packet.Code)
+                {
+                    case 169:
+                        ParseRest(gr);
+                        break;
+                    case 502:
+                        Decompress(ref gr);
+                        ParseRest(gr);
+                        break;
+                    default:
+                        break;
+                }
+                gr.Close();
+            }
+        }
 
         private void ParseRest(GenericReader gr)
         {
             uint objects_count = gr.ReadUInt32();
-            //byte hasTransport = gr.ReadByte();
 
             for (int i = 0; i < objects_count; i++)
             {
@@ -129,7 +132,7 @@ namespace UpdatePacketParser
             }
 
             // 0x40
-            if ((updateflags & UpdateFlags.UPDATEFLAG_HASPOSITION) != 0)
+            if ((updateflags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != 0)
             {
                 float x = gr.ReadSingle();
                 float y = gr.ReadSingle();
@@ -241,7 +244,7 @@ namespace UpdatePacketParser
             }
 
             // WotLK
-            if((updateflags & UpdateFlags.UPDATEFLAG_UNKNOWN1) != 0)
+            if ((updateflags & UpdateFlags.UPDATEFLAG_VEHICLE) != 0)
             {
                 uint unk1 = gr.ReadUInt32();
                 float unk2 = gr.ReadSingle();
@@ -271,7 +274,7 @@ namespace UpdatePacketParser
             }
 
             // 0x40
-            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_HASPOSITION) != 0)
+            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != 0)
             {
                 movementInfo.m_position = gr.ReadCoords4();
             }
@@ -284,7 +287,7 @@ namespace UpdatePacketParser
                     movementInfo.m_transportInfo.m_transportGuid = gr.ReadUInt64();
                     movementInfo.m_transportInfo.m_transportPos = gr.ReadCoords4();
                     movementInfo.m_transportInfo.m_transportTime = gr.ReadUInt32();
-                    movementInfo.m_transportInfo.m_transportUnk = gr.ReadByte();
+                    movementInfo.m_transportInfo.m_transportSeat = gr.ReadByte();
                 }
 
                 if (((movementInfo.m_movementFlags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != 0) || ((movementInfo.m_unknown1 & 0x20) != 0))
@@ -363,10 +366,10 @@ namespace UpdatePacketParser
                 movementInfo.m_transportTime = gr.ReadUInt32();
             }
 
-            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNKNOWN1) != 0)
+            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != 0)
             {
-                movementInfo.m_wotlkUnknown1 = gr.ReadUInt32();
-                movementInfo.m_wotlkUnknown2 = gr.ReadSingle();
+                movementInfo.m_vehicleId = gr.ReadUInt32();
+                movementInfo.m_facingAdjustement = gr.ReadSingle();
             }
 
             // values part
@@ -440,12 +443,45 @@ namespace UpdatePacketParser
 
         public void PrintObjects(ListBox listBox)
         {
+            listBox.Items.Clear();
+
             foreach (KeyValuePair<ulong, WoWObject> pair in m_objects)
             {
                 ulong guid = pair.Key;
                 ObjectTypes type = pair.Value.TypeId;
 
-                string final = String.Format("{0}   {1}", guid.ToString("X16"), type);
+                string final = String.Format("{0} {1}", guid.ToString("X16"), type);
+                listBox.Items.Add(final);
+            }
+        }
+
+        public void PrintObjectsType(ListBox listBox, ObjectTypeMask mask, CustomFilterMask customMask)
+        {
+            listBox.Items.Clear();
+
+            foreach (KeyValuePair<ulong, WoWObject> pair in m_objects)
+            {
+                if ((pair.Value.GetType() & mask) != ObjectTypeMask.TYPEMASK_NONE)
+                    continue;
+
+                if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
+                {
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) != 0xF130))
+                        continue;
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_PETS) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) != 0xF140))
+                        continue;
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_VEHICLES) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) != 0xF150))
+                        continue;
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) != 0xF120))
+                        continue;
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_MO_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) != 0x1FC0))
+                        continue;
+                }
+
+                ulong guid = pair.Key;
+                ObjectTypes type = pair.Value.TypeId;
+
+                string final = String.Format("{0} {1}", guid.ToString("X16"), type);
                 listBox.Items.Add(final);
             }
         }
@@ -453,13 +489,13 @@ namespace UpdatePacketParser
         private WoWObject GetObjectAtIndex(int index)
         {
             // TODO: handle possible exception in case invalid index
-            //KeyValuePair<ulong, WoWObject> pair = m_objects.ElementAt(index);
             return m_objects.ElementAt(index).Value;
         }
 
-        public void PrintObjectInfo(int index, ListView listView)
+        public void PrintObjectInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = GetObjectAtIndex(index);
+            //WoWObject obj = GetObjectAtIndex(index);
+            WoWObject obj = m_objects[guid];
             ObjectTypes type = obj.TypeId;
 
             for (int i = 0; i < obj.UpdateMask.Count; i++)
@@ -474,9 +510,10 @@ namespace UpdatePacketParser
             }
         }
 
-        public void PrintObjectUpdatesInfo(int index, ListView listView)
+        public void PrintObjectUpdatesInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = GetObjectAtIndex(index);
+            //WoWObject obj = GetObjectAtIndex(index);
+            WoWObject obj = m_objects[guid];
             ObjectTypes type = obj.TypeId;
             int c = 1;
 
@@ -500,22 +537,23 @@ namespace UpdatePacketParser
             }
         }
 
-        public void PrintObjectMovementInfo(int index, RichTextBox richTextBox)
+        public void PrintObjectMovementInfo(ulong guid, RichTextBox richTextBox)
         {
-            WoWObject obj = GetObjectAtIndex(index);
+            //WoWObject obj = GetObjectAtIndex(index);
+            WoWObject obj = m_objects[guid];
             MovementInfo mInfo = obj.MovementInfo;
             List<string> strings = new List<string>();
 
             strings.Add(String.Format("Update Flags: {0}", mInfo.m_updateFlags));
 
-            if((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
+            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Movement Flags: {0}", mInfo.m_movementFlags));
                 strings.Add(String.Format("Unknown Flags: {0}", mInfo.m_unknown1.ToString("X4")));
                 strings.Add(String.Format("Timestamp: {0}", mInfo.m_timeStamp.ToString("X8")));
             }
 
-            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_HASPOSITION) != UpdateFlags.UPDATEFLAG_NONE)
+            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Position: {0}", mInfo.m_position.GetCoordsAsString()));
             }
@@ -527,7 +565,7 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Transport GUID: {0}", mInfo.m_transportInfo.m_transportGuid.ToString("X16")));
                     strings.Add(String.Format("Transport POS: {0}", mInfo.m_transportInfo.m_transportPos.GetCoordsAsString()));
                     strings.Add(String.Format("Transport Time: {0}", mInfo.m_transportInfo.m_transportTime.ToString("X8")));
-                    strings.Add(String.Format("Transport Unk: {0}", mInfo.m_transportInfo.m_transportUnk.ToString("X2")));
+                    strings.Add(String.Format("Transport Seat: {0}", mInfo.m_transportInfo.m_transportSeat.ToString("X2")));
                 }
 
                 if (((mInfo.m_movementFlags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != MovementFlags.MOVEMENTFLAG_NONE) || ((mInfo.m_unknown1 & 0x20) != 0))
@@ -606,10 +644,10 @@ namespace UpdatePacketParser
                 strings.Add(String.Format("Transport Time: {0}", mInfo.m_transportTime.ToString("X8")));
             }
 
-            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNKNOWN1) != UpdateFlags.UPDATEFLAG_NONE)
+            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Wotlk Unk1: {0}", mInfo.m_wotlkUnknown1.ToString("X8")));
-                strings.Add(String.Format("Wotlk Unk2: {0}", mInfo.m_wotlkUnknown2));
+                strings.Add(String.Format("Vehicle Id: {0}", mInfo.m_vehicleId.ToString("X8")));
+                strings.Add(String.Format("Facing Adjustement: {0}", mInfo.m_facingAdjustement));
             }
 
             richTextBox.Lines = strings.ToArray();

@@ -404,13 +404,42 @@
 		<field_1 type="int" name="id"/>
 		<field_2 type="string" name="icon"/>
 	</SpellIcon>
-	<SpellMechanic>
+	<SpellItemEnchantmentCondition>
 		<index>
-			<primary>id</primary>
+			<primary>m_ID</primary>
 		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</SpellMechanic>
+		<field type="int" name="m_ID"/>
+		<field type="byte" name="m_lt_operandType1"/>
+		<field type="byte" name="m_lt_operandType2"/>
+		<field type="byte" name="m_lt_operandType3"/>
+		<field type="byte" name="m_lt_operandType4"/>
+		<field type="byte" name="m_lt_operandType5"/>
+		<field type="int" name="m_lt_operand1"/>
+		<field type="int" name="m_lt_operand2"/>
+		<field type="int" name="m_lt_operand3"/>
+		<field type="int" name="m_lt_operand4"/>
+		<field type="int" name="m_lt_operand5"/>
+		<field type="byte" name="m_operator1"/>
+		<field type="byte" name="m_operator2"/>
+		<field type="byte" name="m_operator3"/>
+		<field type="byte" name="m_operator4"/>
+		<field type="byte" name="m_operator5"/>
+		<field type="byte" name="m_rt_operandType1"/>
+		<field type="byte" name="m_rt_operandType2"/>
+		<field type="byte" name="m_rt_operandType3"/>
+		<field type="byte" name="m_rt_operandType4"/>
+		<field type="byte" name="m_rt_operandType5"/>
+		<field type="int" name="m_rt_operand1"/>
+		<field type="int" name="m_rt_operand2"/>
+		<field type="int" name="m_rt_operand3"/>
+		<field type="int" name="m_rt_operand4"/>
+		<field type="int" name="m_rt_operand5"/>
+		<field type="byte" name="m_logic1"/>
+		<field type="byte" name="m_logic2"/>
+		<field type="byte" name="m_logic3"/>
+		<field type="byte" name="m_logic4"/>
+		<field type="byte" name="m_logic5"/>
+	</SpellItemEnchantmentCondition>
 	<SpellRadius>
 		<index>
 			<primary>id</primary>

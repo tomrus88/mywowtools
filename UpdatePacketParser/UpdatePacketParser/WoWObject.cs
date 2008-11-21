@@ -60,8 +60,8 @@ namespace WoWObjects
         public uint m_highGuid;
         public ulong m_fullGuid;
         public uint m_transportTime;
-        public uint m_wotlkUnknown1;
-        public float m_wotlkUnknown2;
+        public uint m_vehicleId;
+        public float m_facingAdjustement;
 
         public MovementInfo(int i)
         {
@@ -84,8 +84,8 @@ namespace WoWObjects
             m_highGuid = 0;
             m_fullGuid = 0;
             m_transportTime = 0;
-            m_wotlkUnknown1 = 0;
-            m_wotlkUnknown2 = 0;
+            m_vehicleId = 0;
+            m_facingAdjustement = 0;
         }
     };
 
@@ -122,14 +122,14 @@ namespace WoWObjects
         public ulong m_transportGuid;
         public Coords4 m_transportPos;
         public uint m_transportTime;
-        public byte m_transportUnk;
+        public byte m_transportSeat;
 
         public TransportInfo(int i)
         {
             m_transportGuid = 0;
             m_transportPos = new Coords4();
             m_transportTime = 0;
-            m_transportUnk = 0;
+            m_transportSeat = 0;
         }
     };
 
@@ -343,6 +343,11 @@ namespace WoWObjects
         public uint GetGUIDHigh()
         {
             return GetUInt32Value(1);   // OBJECT_FIELD_GUID (high)
+        }
+
+        public new ObjectTypeMask GetType()
+        {
+            return (ObjectTypeMask)GetUInt32Value(2);   // OBJECT_FIELD_TYPE
         }
 
         public uint GetEntry()

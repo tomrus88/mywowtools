@@ -57,7 +57,7 @@ namespace dbc2sql
             {
                 GenericReader reader = m_reader.GetRowAsGenericReader(i);
 
-                string result = "INSERT INTO dbc_spell VALUES (";
+                string result = "INSERT INTO dbc_" + Path.GetFileNameWithoutExtension(fileName) + " VALUES (";
 
                 int flds = 0;
 
