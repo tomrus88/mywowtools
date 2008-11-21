@@ -80,9 +80,9 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(11, 59);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(50, 17);
+            this.checkBox3.Size = new System.Drawing.Size(69, 17);
             this.checkBox3.TabIndex = 3;
-            this.checkBox3.Text = "Units";
+            this.checkBox3.Text = "Units (all)";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox4
@@ -100,9 +100,9 @@
             this.checkBox5.AutoSize = true;
             this.checkBox5.Location = new System.Drawing.Point(11, 174);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(85, 17);
+            this.checkBox5.Size = new System.Drawing.Size(109, 17);
             this.checkBox5.TabIndex = 5;
-            this.checkBox5.Text = "GameObject";
+            this.checkBox5.Text = "GameObjects (all)";
             this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // checkBox6
@@ -110,9 +110,9 @@
             this.checkBox6.AutoSize = true;
             this.checkBox6.Location = new System.Drawing.Point(11, 266);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(98, 17);
+            this.checkBox6.Size = new System.Drawing.Size(106, 17);
             this.checkBox6.TabIndex = 6;
-            this.checkBox6.Text = "DynamicObject";
+            this.checkBox6.Text = "Dynamic Objects";
             this.checkBox6.UseVisualStyleBackColor = true;
             // 
             // checkBox7
@@ -120,9 +120,9 @@
             this.checkBox7.AutoSize = true;
             this.checkBox7.Location = new System.Drawing.Point(11, 289);
             this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(59, 17);
+            this.checkBox7.Size = new System.Drawing.Size(64, 17);
             this.checkBox7.TabIndex = 7;
-            this.checkBox7.Text = "Corpse";
+            this.checkBox7.Text = "Corpses";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // button2
@@ -140,9 +140,9 @@
             this.checkBox8.AutoSize = true;
             this.checkBox8.Location = new System.Drawing.Point(29, 220);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(71, 17);
+            this.checkBox8.Size = new System.Drawing.Size(76, 17);
             this.checkBox8.TabIndex = 9;
-            this.checkBox8.Text = "Transport";
+            this.checkBox8.Text = "Transports";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
             // checkBox9
@@ -170,9 +170,9 @@
             this.checkBox11.AutoSize = true;
             this.checkBox11.Location = new System.Drawing.Point(29, 243);
             this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(91, 17);
+            this.checkBox11.Size = new System.Drawing.Size(96, 17);
             this.checkBox11.TabIndex = 12;
-            this.checkBox11.Text = "MO Transport";
+            this.checkBox11.Text = "MO Transports";
             this.checkBox11.UseVisualStyleBackColor = true;
             // 
             // checkBox12
@@ -220,7 +220,7 @@
             this.MinimizeBox = false;
             this.Name = "FilterForm";
             this.ShowInTaskbar = false;
-            this.Text = "FilterForm";
+            this.Text = "Filter";
             this.ResumeLayout(false);
             this.PerformLayout();
 
