@@ -42,11 +42,12 @@
             this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(11, 289);
+            this.button1.Location = new System.Drawing.Point(11, 312);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 23);
             this.button1.TabIndex = 0;
@@ -107,7 +108,7 @@
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(11, 243);
+            this.checkBox6.Location = new System.Drawing.Point(11, 266);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(98, 17);
             this.checkBox6.TabIndex = 6;
@@ -117,7 +118,7 @@
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(11, 266);
+            this.checkBox7.Location = new System.Drawing.Point(11, 289);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(59, 17);
             this.checkBox7.TabIndex = 7;
@@ -126,7 +127,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(81, 289);
+            this.button2.Location = new System.Drawing.Point(96, 312);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(60, 23);
             this.button2.TabIndex = 8;
@@ -137,7 +138,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(29, 197);
+            this.checkBox8.Location = new System.Drawing.Point(29, 220);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(71, 17);
             this.checkBox8.TabIndex = 9;
@@ -167,7 +168,7 @@
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(29, 220);
+            this.checkBox11.Location = new System.Drawing.Point(29, 243);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(91, 17);
             this.checkBox11.TabIndex = 12;
@@ -184,11 +185,22 @@
             this.checkBox12.Text = "Units (generic)";
             this.checkBox12.UseVisualStyleBackColor = true;
             // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Location = new System.Drawing.Point(29, 197);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(134, 17);
+            this.checkBox13.TabIndex = 14;
+            this.checkBox13.Text = "GameObjects (generic)";
+            this.checkBox13.UseVisualStyleBackColor = true;
+            // 
             // FilterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(153, 326);
+            this.ClientSize = new System.Drawing.Size(168, 349);
+            this.Controls.Add(this.checkBox13);
             this.Controls.Add(this.checkBox12);
             this.Controls.Add(this.checkBox11);
             this.Controls.Add(this.checkBox10);
@@ -230,5 +242,6 @@
         private System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.CheckBox checkBox12;
+        private System.Windows.Forms.CheckBox checkBox13;
     }
 }

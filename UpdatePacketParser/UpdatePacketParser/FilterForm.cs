@@ -18,8 +18,9 @@ namespace UpdatePacketParser
         CUSTOM_FILTER_UNITS = 1,
         CUSTOM_FILTER_PETS = 2,
         CUSTOM_FILTER_VEHICLES = 4,
-        CUSTOM_FILTER_TRANSPORT = 8,
-        CUSTOM_FILTER_MO_TRANSPORT = 16
+        CUSTOM_FILTER_OBJECTS = 8,
+        CUSTOM_FILTER_TRANSPORT = 16,
+        CUSTOM_FILTER_MO_TRANSPORT = 32
     };
 
     public partial class FilterForm : Form
@@ -75,6 +76,9 @@ namespace UpdatePacketParser
 
             if (checkBox12.Checked)
                 customMask |= CustomFilterMask.CUSTOM_FILTER_UNITS;
+
+            if (checkBox13.Checked)
+                customMask |= CustomFilterMask.CUSTOM_FILTER_OBJECTS;
 
             ((FrmMain)Owner).PrintObjectType(mask, customMask);
         }
