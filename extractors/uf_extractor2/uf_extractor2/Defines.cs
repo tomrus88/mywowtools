@@ -29,7 +29,7 @@ namespace uf_extractor2
         OWNER = 4,
         UNUSED1 = 8,
         ITEM_OWNER = 16,
-        PARTY_LEADER = 32,
+        PARTY_LEADER = 32, // UNIT_OWNER may be?
         PARTY_MEMBER = 64,
         UNUSED2 = 128,
         DYNAMIC = 256

@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Config file, that describes the format of the wdb files
-  
-  A lot of the description concerning the columns was taken from:
-  http://www.sourcepeek.com/wiki/Main_Page
-
-  Changes to this file will affect the application!
-  !Beware!
-
-  possible types - internal mapping        - comment
-  
-  
-  smallInt      Short (2 byte signed int)
-  tinyint       Tiny (1 byte int)
-  integer       Integer (4 byte signed int)
-  uinteger      Unsigned Integer (4 byte unsigned int)
-  varChar       string, ends with NULL.
-  single        4 byte float, single precision
-  
--->
 <wdbDef>
-  
   <wdbId name="creaturecache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />    <!-- #1 [creature XX] -->
@@ -46,21 +25,6 @@
     <wdbElement minver="0" maxver="7359" name="Civilian" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
     <wdbElement minver="0" maxver="9999" name="RacialLeader" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
   </wdbId>
-  <!-- Appendix
-  
-  #9 CreatureType, Taken from: IRPG QDB Team Forum Index
-                   -> Working Areas, Tutorials & NEWS
-                   PostPosted: Wed Mar 09, 2005 1:17 am
-                   Post subject: Creatures Explanations
-                   "TheSelby"
-                   Creature Types:
-                   1 Beast   2 Dragonkin  3 Demon    4 Elemental  5 Giant
-                   6 Undead  7 Humanoid   8 Critter  9 Mechanical 10 Not Specified
-
-  #8 FlagType 0 Normal, 1 Elite, 2 Uncommon Elite, 3 Caption, 4 Uncommon
-  					
-  -->
-
   <wdbId name="itemcache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />    <!-- #1 [item XY] -->
@@ -184,177 +148,6 @@
     <wdbElement minver="0" maxver="9999" name="Duration" type="integer" />
     <wdbElement minver="0" maxver="9999" name="ItemLimitCategory" type="uinteger" />
   </wdbId>
-  <!-- Appendix
-  
-    #10 quality, Infos from: http://www.sourcepeek.com/wiki/Quality_Types
-       0  Poor
-       1  Common
-       2  Uncommon
-       3  Rare
-       4  Epic
-       5  Legendary
-       6  Artifact
-
-   #11 flags, Infos from: http://www.sourcepeek.com/wiki/Item_Types
-    Bit   Description       Notes
-    1     Unknown           No items have this mask that I know of
-    2     Conjured item     Mana stones, mage water etc
-    3     Openable item     Lockboxes, clams etc
-    4     Unknown           No items have this mask that I know of
-    5     Unknown           I can't figure this one out, contains items like Master
-                            Hunter's Rifle, Royal Seal of Alexis, Recipe: Thistle Tea
-    6     Totem             Totems, totems, totems!
-    7     Usable item       Items that have an effect when you use them
-    8     Unknown           Appears to only have the Torch of Retribution
-    9     Wand              These items would appear to do ranged magical damage
-   10     Wraps             These items can wrap other items (wrapping paper)
-   11     Producers         These items produce other items when right clicked.
-   12     Keys?             These items would appear to be keys, I think.
-   13     BG Items?         Most of these items are used in AV.
-                            ( Maybe not disenchantable...)
-   14     Charter           Guild charters
-   15     Notes             Appears to be the starting area notes?
-   16     Honor items       Items that require rank to wear
-
-
-  #14 inventorytype or inventorySlotID, Infos from: http://www.sourcepeek.com/wiki/Inventory_Slots
-    These inventory slot ID's are used to determine how an item may be equipped.
-      ID  Slot type
-      0   None
-      1   Head
-      2   Neck
-      3   Shoulders
-      4   Shirt
-      5   Vest
-      6   Waist
-      7   Legs
-      8   Feet
-      9   Wrist
-      10  Hands
-      11  Ring
-      12  Trinket
-      13  One hand
-      14  Shield
-      15  Bow
-      16  Back
-      17  Two hand
-      18  Bag
-      19  Tabbard
-      20  Robe
-      21  Main hand
-      22  Off hand
-      23  Held
-      24  Ammo
-      25  Thrown
-      26  Ranged
-
-
-  #15 classes, Infos from http://www.sourcepeek.com/wiki/Class_Types
-   Bit 	 Name
-   1 	   Warrior
-   2 	   Paladin
-   3 	   Hunter
-   4 	   Rogue
-   5 	   Priest
-   6 	   Shaman
-   7 	   Mage
-   8 	   Warlock
-   9 	   Druid
-
-
-  #16 races, Infos from http://www.sourcepeek.com/wiki/Race_Types
-     ID 	 Name
- 	   1     Human
- 	   2     Orc
- 	   3     Dwarf
- 	   4     Night Elf
- 	   5     Undead
- 	   6     Tauren
- 	   7     Gnome
- 	   8     Troll
- 	   9     Goblin
- 
- #23 PVPRank2, Infos from: http://www.sourcepeek.com/wiki/Unknown_PvP_Ranks
-    1 - Protector of Stormwind
-    2 - Overlord of Orgrimmar
-    3 - Thane of Ironforge
-    4 - High Sentinel of Darnassus
-    5 - Deathlord of the Undercity
-    6 - Chieftan of Thunderbluff
-    7 - Avenger of Gnomeregan
-    8 - Voodoo Boss of Senjin
- 
- 
-  #29 StatTypes, Info taken from http://www.sourcepeek.com/wiki/Stat_Types
-     ID  Name
-     1  Health
-     2  Appears to be nothing
-     3  Agility
-     4  Strength
-     5 Intellect
-     6  Spirit
-     7  Stamina
-     
-  
-  Damage Types, Infos taken from http://www.sourcepeek.com/wiki/Damage_Types
-     Value   Name
-     0       Physical
-     1       Holy    
-     2       Fire    
-     3       Nature  
-     4       Frost   
-     5       Shadow  
-     6       Arcane
-
-
-  Resistances.dbc, Infos taken from http://www.sourcepeek.com/wiki/Resistances.dbc
-     Value   Name
-     0       Physical
-     1       Holy    
-     2       Fire    
-     3       Nature  
-     4       Frost   
-     5       Shadow  
-     6       Arcane  
- 
-  #72, Infos from http://www.sourcepeek.com/wiki/Ammo_Types
-     ID     Name
-     0      None
-     1      Unknown
-     2      Arrows
-     3      Bullets
-     4      Thrown
-
-  
-  #74, SpellTriggerTypes, Infos from: http://www.sourcepeek.com/wiki/Spell_Trigger_Types
-     ID  Name
-     0  Use
-     1  Equip
-     2  Chance On Hit
-     
-  #104 Bind_Types, Infos from: http://www.sourcepeek.com/wiki/Bond_Types
-    ID  Name
-    1    Binds when picked up
-    2    Binds when equipped
-    3    Binds on use
-    4    Quest Item
-    5    Quest Item
-
-  #119, bagFamily, Info from http://www.sourcepeek.com/wiki/Special_Bag_Types
-     Also see ItemBagFamily.dbc
-     0     None
-     1     Arrow Bag
-     2     Bullet Bag
-     3     Soul Shard Bag
-     4     None
-     5     None
-     6     Herb Bag
-     7     Enchanting Bag
-     8     Engineering Bag
-     9     Key Bag (1.11)
-
-  -->
-
   <wdbId name="questcache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger"  key="yes" />     <!-- #1 [quest ID]-->
@@ -381,7 +174,6 @@
     <wdbElement minver="8089" maxver="9999" name="CharTitleId" type="uinteger" /> <!-- index of CharTitles.dbc -->
     <wdbElement minver="8905" maxver="9999" name="wdb_unk1" type="integer" />
     <wdbElement minver="8905" maxver="9999" name="wdb_unk2" type="integer" />
-
     <wdbElement minver="0" maxver="9999" name="RewItemId1" type="uinteger" />   <!-- #18 See itemcache.wdb -->
     <wdbElement minver="0" maxver="9999" name="RewItemCount1" type="uinteger" /><!-- #19 amount of items -->
     <wdbElement minver="0" maxver="9999" name="RewItemId2" type="uinteger" />   <!-- #20 See itemcache.wdb -->
@@ -402,17 +194,14 @@
     <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount5" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="RewChoiceItemId6" type="uinteger" /> <!-- #36 See itemcache.wdb -->
     <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount6" type="uinteger" />
-
     <wdbElement minver="5195" maxver="9999" name="PointMapId" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="PointX" type="single" />  <!-- #39 Unknown -->
     <wdbElement minver="0" maxver="9999" name="PointY" type="single" />  <!-- #40 Unknown -->
     <wdbElement minver="0" maxver="9999" name="PointOpt" type="integer" /> <!-- #38 Unknown -->
-  
     <wdbElement minver="0" maxver="9999" name="Title" type="varChar" /> <!-- #42 name, name of the quest -->
     <wdbElement minver="0" maxver="9999" name="Objectives" type="varChar" /> <!-- #43 desc, short description -->
     <wdbElement minver="0" maxver="9999" name="Details" type="varChar" /> <!-- #44 details -->
     <wdbElement minver="0" maxver="9999" name="EndText" type="varChar" /> <!-- #45 second_desc -->
-  
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId1" type="integer" />    <!-- #46 Kill this mob, "kill" in SCP, only set if value is != 0 -->
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount1" type="uinteger" /> <!-- #47 Kill wdb_ReqKillMobOrGOId1 Mobs of type wdb_ReqKillMobOrGOCount1 -->
     <wdbElement minver="0" maxver="9999" name="ReqItemId1" type="uinteger" />           <!-- #49 See itemcache.wdb, "deliver" in SCP, only set if value is != 0 -->
@@ -433,20 +222,11 @@
     <wdbElement minver="0" maxver="9999" name="ReqItemId4" type="uinteger" />          <!-- #60 -->
     <wdbElement minver="0" maxver="9999" name="ReqItemCount4" type="uinteger" />
     <wdbElement minver="8905" maxver="9999" name="ReqSourceId4" type="uinteger" />
-
     <wdbElement minver="0" maxver="9999" name="ObjectiveText1" type="varChar" /><!-- #60 If not killCreature1 or collectItem1 this is the objective if set -->
     <wdbElement minver="0" maxver="9999" name="ObjectiveText2" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
     <wdbElement minver="0" maxver="9999" name="ObjectiveText3" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
     <wdbElement minver="0" maxver="9999" name="ObjectiveText4" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
   </wdbId>
-
-  <!-- Appendix
-  #6 zone
-    see http://wow.allakhazam.com/dyn/mobs/byzone.html
-    see AreaTable.dbc if negative the value points to: QuestSort.dbc
-  
-  -->
-
   <wdbId name="npccache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="ID" type="uinteger" key="yes" />
@@ -532,7 +312,6 @@
     <wdbElement minver="0" maxver="9999" name="em7_4" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="em7_5" type="uinteger" />
   </wdbId>
-
   <wdbId name="itemnamecache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />
@@ -540,7 +319,6 @@
     <wdbElement minver="0" maxver="9999" name="name" type="varChar" />
     <wdbElement minver="7521" maxver="9999" name="unk1" type="uinteger" />
   </wdbId>
-
   <wdbId name="pagetextcache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />
@@ -548,14 +326,12 @@
     <wdbElement minver="0" maxver="9999" name="text" type="varChar" crlf="\n" />
     <wdbElement minver="0" maxver="9999" name="next_page" type="uinteger" />
   </wdbId>
-
   <wdbId name="itemtextcache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="id" type="uinteger" key="yes" />
     <wdbElement minver="0" maxver="9999" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="text" type="varChar" />
   </wdbId>
-
   <wdbId name="gameobjectcache">
     <skipBytes numBytes="20" />
     <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />      <!-- #1 [gameobj XY] -->
@@ -593,7 +369,6 @@
     <wdbElement minver="5595" maxver="9999" name="data21" type="uinteger" />
     <wdbElement minver="5595" maxver="9999" name="data22" type="uinteger" />
     <wdbElement minver="5595" maxver="9999" name="data23" type="uinteger" />
-	<wdbElement minver="8606" maxver="9999" name="size" type="single" />
+    <wdbElement minver="8606" maxver="9999" name="size" type="single" />
   </wdbId>
-
 </wdbDef>
