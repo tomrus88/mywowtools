@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace a9_parser
 {
@@ -19,11 +21,11 @@ namespace a9_parser
         {
             string coords = String.Empty;
 
-            coords += X.ToString().Replace(",", ".");
+            coords += X.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Y.ToString().Replace(",", ".");
+            coords += Y.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Z.ToString().Replace(",", ".");
+            coords += Z.ToString(CultureInfo.InvariantCulture);
 
             return coords;
         }
@@ -45,13 +47,13 @@ namespace a9_parser
         {
             string coords = String.Empty;
 
-            coords += X.ToString().Replace(",", ".");
+            coords += X.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Y.ToString().Replace(",", ".");
+            coords += Y.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Z.ToString().Replace(",", ".");
+            coords += Z.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += O.ToString().Replace(",", ".");
+            coords += O.ToString(CultureInfo.InvariantCulture);
 
             return coords;
         }
@@ -200,6 +202,23 @@ namespace a9_parser
             v.O = ReadSingle();
 
             return v;
+        }
+        #endregion
+        
+        #region ReadStruct
+        /// <summary>
+        /// Reads struct from the current stream and advances the current position if the stream by SizeOf(T) bytes.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="binReader"></param>
+        /// <returns></returns>
+        public unsafe T ReadStruct<T>() where T : struct
+        {
+            byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
+            GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+            T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return returnObject;
         }
         #endregion
     }
