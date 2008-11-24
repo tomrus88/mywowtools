@@ -89,7 +89,7 @@ namespace WoWObjects
         }
     };
 
-    public struct SplineInfo 
+    public struct SplineInfo
     {
         public SplineFlags m_splineFlags;
         public Coords3 m_splinePoint;
@@ -117,7 +117,7 @@ namespace WoWObjects
         }
     };
 
-    public struct TransportInfo 
+    public struct TransportInfo
     {
         public ulong m_transportGuid;
         public Coords4 m_transportPos;

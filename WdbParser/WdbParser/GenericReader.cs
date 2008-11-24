@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Globalization;
 
 namespace WdbParser
 {
@@ -21,11 +22,11 @@ namespace WdbParser
         {
             string coords = String.Empty;
 
-            coords += X.ToString().Replace(",", ".");
+            coords += X.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Y.ToString().Replace(",", ".");
+            coords += Y.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Z.ToString().Replace(",", ".");
+            coords += Z.ToString(CultureInfo.InvariantCulture);
 
             return coords;
         }
@@ -48,13 +49,13 @@ namespace WdbParser
         {
             string coords = String.Empty;
 
-            coords += X.ToString().Replace(",", ".");
+            coords += X.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Y.ToString().Replace(",", ".");
+            coords += Y.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += Z.ToString().Replace(",", ".");
+            coords += Z.ToString(CultureInfo.InvariantCulture);
             coords += " ";
-            coords += O.ToString().Replace(",", ".");
+            coords += O.ToString(CultureInfo.InvariantCulture);
 
             return coords;
         }

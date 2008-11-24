@@ -466,17 +466,18 @@ namespace UpdatePacketParser
 
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
                 {
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0xF130))
+                    uint highGUID = (pair.Value.GetGUIDHigh() >> 16);
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF130 || highGUID == 0xF530))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_PETS) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0xF140))
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_PETS) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF140 || highGUID == 0xF540))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_VEHICLES) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0xF150))
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_VEHICLES) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF150 || highGUID == 0xF550))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_OBJECTS) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0xF110))
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_OBJECTS) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF110 || highGUID == 0xF510))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0xF120))
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF120 || highGUID == 0xF520))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_MO_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && ((pair.Value.GetGUIDHigh() >> 16) == 0x1FC0))
+                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_MO_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0x1FC0))
                         continue;
                 }
 
