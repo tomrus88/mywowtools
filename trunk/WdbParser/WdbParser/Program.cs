@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Xml;
 using System.Linq;
+using System.Globalization;
 
 namespace WdbParser
 {
@@ -54,6 +55,7 @@ namespace WdbParser
                 ParseWdbFile(fileName, el);
             }
 
+            Console.WriteLine("Done!");
             Console.ReadKey();
         }
 
@@ -130,7 +132,7 @@ namespace WdbParser
                                 }
                             case "SINGLE":
                                 {
-                                    var valval = reader.ReadSingle().ToString().Replace(",", ".");
+                                    var valval = reader.ReadSingle().ToString("F", CultureInfo.InvariantCulture);
                                     if (valname != null)
                                         InsertQuery += valval;
                                     break;
@@ -138,6 +140,7 @@ namespace WdbParser
                             case "VARCHAR":
                                 {
                                     var valval = Regex.Replace(reader.ReadStringNull(), @"'", @"\'");
+                                    valval = Regex.Replace(valval, "\"", "\\\"");
                                     if (valname != null)
                                         InsertQuery += (quote + valval + quote);
                                     break;
@@ -172,13 +175,15 @@ namespace WdbParser
 
                                     var maxcount = Convert.ToUInt32(elem.Attributes["maxcount"].Value);
 
+                                    XmlNodeList structNodes = elem.GetElementsByTagName("structElement");
+
                                     if (valval > 0)
                                     {
-                                        XmlNodeList structNodes = elem.GetElementsByTagName("structElement");
                                         for (int k = 0; k < valval; k++)
                                         {
                                             foreach (XmlElement structElem in structNodes)
                                             {
+                                                // something wrong here...
                                                 bool last = (valval == maxcount);
                                                 ReadAndDumpByType(ref reader, structElem.Attributes["type"].Value.ToUpper(), valname, ref InsertQuery, last);
                                             }
@@ -187,13 +192,12 @@ namespace WdbParser
 
                                     if(maxcount > 0)
                                     {
-                                        for (int p = 0; p < (maxcount - valval); p++)
-                                        {
-                                            if (p != maxcount - valval - 1)
-                                                InsertQuery += "0,0,";
-                                            else
-                                                InsertQuery += "0,0";
-                                        }
+                                        int lim = (int)maxcount - valval;
+                                        for (int p = 0; p < lim; p++)
+                                            foreach (XmlElement structElem in structNodes)
+                                                InsertQuery += "0,";
+                                        // remove last ","
+                                        InsertQuery = InsertQuery.Remove(InsertQuery.Length - 1);
                                     }
 
                                     break;
@@ -263,7 +267,7 @@ namespace WdbParser
                     }
                 case "SINGLE":
                     {
-                        var valval = reader.ReadSingle().ToString().Replace(",", ".");
+                        var valval = reader.ReadSingle().ToString("F", CultureInfo.InvariantCulture);
                         if (valname != null)
                             InsertQuery += valval;
                         break;
@@ -271,6 +275,7 @@ namespace WdbParser
                 case "VARCHAR":
                     {
                         var valval = Regex.Replace(reader.ReadStringNull(), @"'", @"\'");
+                        valval = Regex.Replace(valval, "\"", "\\\"");
                         if (valname != null)
                             InsertQuery += (quote + valval + quote);
                         break;
@@ -305,6 +310,8 @@ namespace WdbParser
 
             if (!last)
                 InsertQuery += ",";
+            else
+                Console.WriteLine("test!");
         }
     }
 }
