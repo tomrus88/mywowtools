@@ -260,7 +260,7 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = "SQLite Files|*.sqlite|WoWBinary Files|*.bin";
+            this.openFileDialog1.Filter = "WoWBinary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
             // backgroundWorker1
             // 
