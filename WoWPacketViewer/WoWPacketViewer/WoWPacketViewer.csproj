@@ -97,6 +97,7 @@
     <Compile Include="FrmSearch.Designer.cs">
       <DependentUpon>FrmSearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="SniffitztPacketViewer.cs" />
     <Compile Include="SqLitePacketViewer.cs" />
     <Compile Include="WowCorePacketViewer.cs" />
   </ItemGroup>

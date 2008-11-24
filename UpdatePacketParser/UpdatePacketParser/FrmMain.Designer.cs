@@ -288,7 +288,7 @@
             // openFileDialog1
             // 
             this.openFileDialog1.DefaultExt = "*.bin";
-            this.openFileDialog1.Filter = "SQLite DB|*.sqlite|Binary Files|*.bin";
+            this.openFileDialog1.Filter = "Binary Files|*.bin|SQLite DB|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
             // contextMenuStrip3
             // 

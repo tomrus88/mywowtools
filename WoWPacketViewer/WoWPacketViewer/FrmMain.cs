@@ -42,6 +42,9 @@ namespace WoWPacketViewer
                     case ".sqlite":
                         m_packetViewer = new SqLitePacketViewer();
                         break;
+                    case ".xml":
+                        m_packetViewer = new SniffitztPacketViewer();
+                        break;
                     default:
                         break;
                 }

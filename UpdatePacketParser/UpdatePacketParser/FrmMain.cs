@@ -108,6 +108,9 @@ namespace UpdatePacketParser
                 case ".sqlite":
                     m_parser = new Parser(new SqLitePacketReader(filename));
                     break;
+                case ".xml":
+                    m_parser = new Parser(new SniffitztPacketReader(filename));
+                    break;
                 default:
                     break;
             }
