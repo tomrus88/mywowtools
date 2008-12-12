@@ -35,6 +35,7 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +90,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Location = new System.Drawing.Point(79, 32);
+            this.groupBox1.Location = new System.Drawing.Point(131, 32);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(107, 42);
             this.groupBox1.TabIndex = 6;
@@ -108,13 +109,24 @@
             this.radioButton2.Text = "Down";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // SearchForm
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 52);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(94, 17);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "Case sensitive";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // FrmSearch
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(331, 75);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -123,11 +135,12 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "SearchForm";
+            this.Name = "FrmSearch";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "SearchForm";
+            this.Text = "Find";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmSearch_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -144,5 +157,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
