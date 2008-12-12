@@ -72,6 +72,8 @@
     <Compile Include="Parsers\MonsterMoveParser.cs" />
     <Compile Include="Parsers\PetSpellsParser.cs" />
     <Compile Include="Parsers\PowerUpdateParser.cs" />
+    <Compile Include="Parsers\SpellGoParser.cs" />
+    <Compile Include="Parsers\SpellStartParser.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

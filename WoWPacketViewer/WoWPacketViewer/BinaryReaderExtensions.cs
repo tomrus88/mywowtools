@@ -4,88 +4,100 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace WoWPacketViewer {
-	public static class BinaryReaderExtensions {
-		/// <summary>  Reads the packed guid from the current stream and 
-		/// advances the current position of the stream by packed guid size.
-		/// </summary>
-		public static ulong ReadPackedGuid(this BinaryReader reader) {
-			var mask = reader.ReadByte();
+namespace WoWPacketViewer
+{
+    public static class BinaryReaderExtensions
+    {
+        /// <summary>  Reads the packed guid from the current stream and 
+        /// advances the current position of the stream by packed guid size.
+        /// </summary>
+        public static ulong ReadPackedGuid(this BinaryReader reader)
+        {
+            var mask = reader.ReadByte();
 
-			if(mask == 0) {
-				return 0;
-			}
+            if (mask == 0)
+            {
+                return 0;
+            }
 
-			ulong res = 0;
+            ulong res = 0;
 
-			var i = 0;
-			while(i < 9) {
-				if((mask & 1 << i) != 0) {
-					res += (ulong)reader.ReadByte() << (i * 8);
-				}
-				i++;
-			}
+            var i = 0;
+            while (i < 9)
+            {
+                if ((mask & 1 << i) != 0)
+                {
+                    res += (ulong)reader.ReadByte() << (i * 8);
+                }
+                i++;
+            }
 
-			return res;
-		}
+            return res;
+        }
 
-		/// <summary> Reads the NULL terminated string from 
-		/// the current stream and advances the current position of the stream by string length + 1.
-		/// <seealso cref="BinaryReader.ReadString"/>
-		/// </summary>
-		public static string ReadCString(this BinaryReader reader) {
-			return reader.ReadCString(Encoding.UTF8);
-		}
+        /// <summary> Reads the NULL terminated string from 
+        /// the current stream and advances the current position of the stream by string length + 1.
+        /// <seealso cref="BinaryReader.ReadString"/>
+        /// </summary>
+        public static string ReadCString(this BinaryReader reader)
+        {
+            return reader.ReadCString(Encoding.UTF8);
+        }
 
-		/// <summary> Reads the NULL terminated string from 
-		/// the current stream and advances the current position of the stream by string length + 1.
-		/// <seealso cref="BinaryReader.ReadString"/>
-		/// </summary>
-		public static string ReadCString(this BinaryReader reader, Encoding encoding) {
-			var bytes = new List<byte>();
-			byte b;
-			while((b = reader.ReadByte()) != 0) {
-				bytes.Add(b);
-			}
-			return encoding.GetString(bytes.ToArray());
-		}
+        /// <summary> Reads the NULL terminated string from 
+        /// the current stream and advances the current position of the stream by string length + 1.
+        /// <seealso cref="BinaryReader.ReadString"/>
+        /// </summary>
+        public static string ReadCString(this BinaryReader reader, Encoding encoding)
+        {
+            var bytes = new List<byte>();
+            byte b;
+            while ((b = reader.ReadByte()) != 0)
+            {
+                bytes.Add(b);
+            }
+            return encoding.GetString(bytes.ToArray());
+        }
 
-		/// <summary> Reads the object coordinates from 
-		/// the current stream and advances the current position of the stream by 12 bytes.
-		/// </summary>
-		public static Coords3 ReadCoords3(this BinaryReader reader) {
-			Coords3 v;
+        /// <summary> Reads the object coordinates from 
+        /// the current stream and advances the current position of the stream by 12 bytes.
+        /// </summary>
+        public static Coords3 ReadCoords3(this BinaryReader reader)
+        {
+            Coords3 v;
 
-			v.X = reader.ReadSingle();
-			v.Y = reader.ReadSingle();
-			v.Z = reader.ReadSingle();
+            v.X = reader.ReadSingle();
+            v.Y = reader.ReadSingle();
+            v.Z = reader.ReadSingle();
 
-			return v;
-		}
+            return v;
+        }
 
-		/// <summary> Reads the object coordinates and orientation from 
-		/// the current stream and advances the current position of the stream by 16 bytes.
-		/// </summary>
-		public static Coords4 ReadCoords4(this BinaryReader reader) {
-			Coords4 v;
+        /// <summary> Reads the object coordinates and orientation from 
+        /// the current stream and advances the current position of the stream by 16 bytes.
+        /// </summary>
+        public static Coords4 ReadCoords4(this BinaryReader reader)
+        {
+            Coords4 v;
 
-			v.X = reader.ReadSingle();
-			v.Y = reader.ReadSingle();
-			v.Z = reader.ReadSingle();
-			v.O = reader.ReadSingle();
+            v.X = reader.ReadSingle();
+            v.Y = reader.ReadSingle();
+            v.Z = reader.ReadSingle();
+            v.O = reader.ReadSingle();
 
-			return v;
-		}
+            return v;
+        }
 
-		/// <summary> Reads struct from the current stream and advances the 
-		/// current position if the stream by SizeOf(T) bytes.
-		/// </summary>
-		public static T ReadStruct<T>(this BinaryReader reader) where T : struct {
-			var rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
-			var handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
-			var returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-			handle.Free();
-			return returnObject;
-		}
-	}
+        /// <summary> Reads struct from the current stream and advances the 
+        /// current position if the stream by SizeOf(T) bytes.
+        /// </summary>
+        public static T ReadStruct<T>(this BinaryReader reader) where T : struct
+        {
+            var rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
+            var handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+            var returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return returnObject;
+        }
+    }
 }
