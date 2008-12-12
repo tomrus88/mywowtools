@@ -1,4 +1,4 @@
-﻿namespace WoWPacketViewer
+namespace WoWPacketViewer
 {
     public enum OpCodes
     {

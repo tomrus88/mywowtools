@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9E80DAFC-44D7-4C9E-8AE9-515A78B13232}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -52,18 +52,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coords3.cs" />
+    <Compile Include="Coords4.cs" />
     <Compile Include="Direction.cs" />
-    <Compile Include="Enums.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenericReader.cs" />
+    <Compile Include="BinaryReaderExtensions.cs" />
     <Compile Include="Opcodes.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketViewer.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="ParserAttribute.cs" />
+    <Compile Include="Parsers\AuraUpdateParser.cs" />
+    <Compile Include="Parsers\InitialSpellsParser.cs" />
+    <Compile Include="Parsers\MonsterMoveParser.cs" />
+    <Compile Include="Parsers\PetSpellsParser.cs" />
+    <Compile Include="Parsers\PowerUpdateParser.cs" />
+    <Compile Include="Parsers\UnknownPacketParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmMain.resx">
@@ -77,6 +86,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSearch.resx">
       <DependentUpon>FrmSearch.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -99,6 +109,7 @@
     </Compile>
     <Compile Include="SniffitztPacketViewer.cs" />
     <Compile Include="SqLitePacketViewer.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="WowCorePacketViewer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

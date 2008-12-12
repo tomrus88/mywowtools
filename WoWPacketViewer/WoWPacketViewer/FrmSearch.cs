@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System;
 using System.Windows.Forms;
 
 namespace WoWPacketViewer
@@ -23,7 +17,12 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ((FrmMain)Owner).Search(textBox1.Text, radioButton1.Checked ? true : false);
+            var frmMain = ((FrmMain)Owner);
+            var opcode = textBox1.Text;
+            if (!String.IsNullOrEmpty(opcode))
+            {
+                frmMain.Search(opcode, radioButton1.Checked);
+            }
         }
     }
 }
