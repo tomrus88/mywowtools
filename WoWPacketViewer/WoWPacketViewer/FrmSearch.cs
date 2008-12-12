@@ -17,11 +17,25 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var frmMain = ((FrmMain)Owner);
+            FindNext();
+        }
+
+        public void FindNext()
+        {
+            var frmMain = Owner as ISupportFind;
             var opcode = textBox1.Text;
-            if (!String.IsNullOrEmpty(opcode))
+            if (frmMain != null && !String.IsNullOrEmpty(opcode))
             {
-                frmMain.Search(opcode, radioButton1.Checked);
+                frmMain.Search(opcode, radioButton1.Checked, !checkBox1.Checked);
+            }
+        }
+
+        private void FrmSearch_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
             }
         }
     }

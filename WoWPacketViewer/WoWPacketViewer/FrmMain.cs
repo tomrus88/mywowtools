@@ -6,7 +6,12 @@ using System.Windows.Forms;
 
 namespace WoWPacketViewer
 {
-    public partial class FrmMain : Form
+    public interface ISupportFind
+    {
+        void Search(string text, bool searchUp, bool ignoreCase);
+    }
+
+    public partial class FrmMain : Form, ISupportFind
     {
         private delegate void AddListViewItem(ListViewItem item);
 
@@ -81,68 +86,71 @@ namespace WoWPacketViewer
             UpdateControl(true);
         }
 
-        public void Search(string text, bool searchUp)
+        public void Search(string text, bool searchUp, bool ignoreCase)
         {
-            var item = FindItem(text, searchUp);
-            if (item == null)
+            var item = FindItem(text, searchUp, ignoreCase);
+            if (item != null)
             {
-                return;
+                item.Selected = true;
+                item.EnsureVisible();
             }
-            item.Selected = true;
-            item.EnsureVisible();
+            else
+            {
+                MessageBox.Show(string.Format("Can't find:'{0}'", text), "Packet Viewer", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+            }
         }
 
-        private ListViewItem FindItem(string text, bool searchUp)
+        private ListViewItem FindItem(string text, bool searchUp, bool ignoreCase)
         {
-            if (!searchUp)
+            var comparisonType = ignoreCase
+                                     ? StringComparison.InvariantCultureIgnoreCase
+                                     : StringComparison.InvariantCulture;
+            if (searchUp)
+            {
+                for (var i = SelectedIndex - 1; i >= 0; --i)
+                {
+                    if (ContainsText(_list.Items[i], text, comparisonType))
+                    {
+                        return _list.Items[i];
+                    }
+                }
+            }
+            else
             {
                 for (var i = SelectedIndex + 1; i < _list.Items.Count; i++)
                 {
-                    var j = _list.Items[i];
-                    if (j.Text.Contains(text))
+                    if (ContainsText(_list.Items[i], text, comparisonType))
                     {
-                        return j;
-                    }
-
-                    foreach (ListViewItem.ListViewSubItem subItem in j.SubItems)
-                    {
-                        if (subItem.Text.Contains(text))
-                        {
-                            return j;
-                        }
-                    }
-                }
-            }
-            for (var i = SelectedIndex - 1; i != 0; --i)
-            {
-                var j = _list.Items[i];
-                if (j.Text.Contains(text))
-                {
-                    return j;
-                }
-
-                foreach (ListViewItem.ListViewSubItem subItem in j.SubItems)
-                {
-                    if (subItem.Text.Contains(text))
-                    {
-                        return j;
+                        return _list.Items[i];
                     }
                 }
             }
             return null;
         }
 
+        private static bool ContainsText(ListViewItem item, string text, StringComparison comparisonType)
+        {
+            if (item.Text.IndexOf(text, comparisonType) != -1)
+            {
+                return true;
+            }
+            foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
+            {
+                if (subItem.Text.IndexOf(text, comparisonType) != -1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private int SelectedIndex
         {
             get
             {
-                var selectedIndex = 0;
                 var sic = _list.SelectedIndices;
-                if (sic.Count > 0)
-                {
-                    selectedIndex = sic[0];
-                }
-                return selectedIndex;
+                return sic.Count > 0 ? sic[0] : -1;
             }
         }
 
@@ -151,41 +159,32 @@ namespace WoWPacketViewer
             textBox1.Clear();
             textBox2.Clear();
 
-            var sic = _list.SelectedIndices;
-            if (sic.Count != 0)
+            if (SelectedIndex != -1)
             {
-                textBox1.Text = m_packetViewer.Packets[sic[0]].HexLike();
-                textBox2.Text = m_packetViewer.ShowParsed(m_packetViewer.Packets[sic[0]]);
+                var packet = m_packetViewer.Packets[SelectedIndex];
+
+                textBox1.Text = packet.HexLike();
+                textBox2.Text = m_packetViewer.ShowParsed(packet);
             }
         }
 
         private void OpenMenu_Click(object sender, EventArgs e)
         {
-            var result = _openDialog.ShowDialog();
-            if (result == DialogResult.OK)
+            if (_openDialog.ShowDialog() != DialogResult.OK)
             {
-                textBox1.Clear();
-                textBox2.Clear();
-                _list.Items.Clear();
+                return;
+            }
+            textBox1.Clear();
+            textBox2.Clear();
+            _list.Items.Clear();
 
-                _statusLabel.Text = "Loading...";
-                var file = _openDialog.FileName;
-                switch (Path.GetExtension(file))
-                {
-                    case ".bin":
-                        m_packetViewer = new WowCorePacketViewer();
-                        break;
-                    case ".sqlite":
-                        m_packetViewer = new SqLitePacketViewer();
-                        break;
-                    case ".xml":
-                        m_packetViewer = new SniffitztPacketViewer();
-                        break;
-                    default:
-                        break;
-                }
-                m_packetViewer.LoadData(_openDialog.FileName);
-                _statusLabel.Text = _openDialog.FileName;
+            _statusLabel.Text = "Loading...";
+            var file = _openDialog.FileName;
+            m_packetViewer = PacketViewerBase.Create(Path.GetExtension(file));
+            if (m_packetViewer != null)
+            {
+                m_packetViewer.LoadData(file);
+                _statusLabel.Text = file;
                 _backgroundWorker.RunWorkerAsync(m_packetViewer.Packets.Count);
             }
         }
@@ -242,6 +241,22 @@ namespace WoWPacketViewer
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _statusLabel.Text = "Done.";
+        }
+
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F3)
+            {
+                if (m_searchForm == null || m_searchForm.IsDisposed)
+                {
+                    m_searchForm = new FrmSearch();
+                    m_searchForm.Show(this);
+                }
+                else
+                {
+                    m_searchForm.FindNext();
+                }
+            }
         }
     }
 }
