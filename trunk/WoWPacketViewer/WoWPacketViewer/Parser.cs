@@ -13,10 +13,10 @@ namespace WoWPacketViewer {
 		private static readonly Dictionary<int, Type> _parsers = new Dictionary<int, Type>();
 		private static void Init() {
 			LoadAssembly(Assembly.GetCallingAssembly());
-			if(Directory.Exists("parsers/")) {
-				foreach(var file in Directory.GetFiles("parsers/", "*.dll", SearchOption.AllDirectories)) {
+			if(Directory.Exists("parsers")) {
+				foreach(var file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories)) {
 					try {
-						var assembly = Assembly.LoadFile(file);
+						var assembly = Assembly.LoadFile(Path.GetFullPath(file));
 						LoadAssembly(assembly);
 					} catch { }
 				}

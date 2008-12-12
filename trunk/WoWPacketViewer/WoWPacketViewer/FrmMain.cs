@@ -76,7 +76,18 @@ namespace WoWPacketViewer {
 
 		private ListViewItem FindItem(string text, bool searchUp) {
 			if(!searchUp) {
-				return _list.FindItemWithText(text, true, SelectedIndex + 1);
+				for(var i = SelectedIndex + 1; i <_list.Items.Count; i++) {
+					var j = _list.Items[i];
+					if(j.Text.Contains(text)) {
+						return j;
+					}
+
+					foreach(ListViewItem.ListViewSubItem subItem in j.SubItems) {
+						if(subItem.Text.Contains(text)) {
+							return j;
+						}
+					}
+				}
 			}
 			for(var i = SelectedIndex - 1; i != 0; --i) {
 				var j = _list.Items[i];

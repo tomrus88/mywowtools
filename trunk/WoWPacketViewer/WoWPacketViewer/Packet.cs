@@ -16,7 +16,7 @@ namespace WoWPacketViewer {
 			Data = data;
 		}
 
-		public BinaryReader CreateReader() {
+		public virtual BinaryReader CreateReader() {
 			return new BinaryReader(new MemoryStream(Data));
 		}
 
