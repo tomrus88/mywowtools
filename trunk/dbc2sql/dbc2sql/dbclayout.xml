@@ -1,129 +1,129 @@
 ﻿<?xml version="1.0"?>
 <!-- $Id: dbclayout.xml 1 2008-11-01 21:39:18Z TOM_RUS $ -->
 <DBFilesClient>
-	<AreaPOI>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_3 type="int" name="icon"/>
-		<field_5 type="float" name="pos_x"/>
-		<field_6 type="float" name="pos_y"/>
-		<field_7 type="float" name="pos_z"/>
-		<field_8 type="int" name="map"/>
-		<field_10 type="int" name="area"/>
-		<field_11 type="string" name="name"/>
-	</AreaPOI>
-	<AreaTable>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="map"/>
-		<field_3 type="int" name="parent"/>
-		<field_12 type="string" name="name"/>
-		<field_21 type="int" name="territory"/>
-	</AreaTable>
-	<Faction>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="gain"/>
-		<field_4 type="int" name="type"/>
-		<field_19 type="int" name="parent"/>
-		<field_20 type="string" name="name"/>
-		<field_29 type="string" name="description"/>
-	</Faction>
-	<ItemDisplayInfo>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" index="primary" name="id"/>
-		<field_6 type="string" name="icon"/>
-	</ItemDisplayInfo>
-	<ItemSet>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-		<field_11 type="int" name="item_1"/>
-		<field_12 type="int" name="item_2"/>
-		<field_13 type="int" name="item_3"/>
-		<field_14 type="int" name="item_4"/>
-		<field_15 type="int" name="item_5"/>
-		<field_16 type="int" name="item_6"/>
-		<field_17 type="int" name="item_7"/>
-		<field_18 type="int" name="item_8"/>
-		<field_28 type="int" name="bonus_1"/>
-		<field_29 type="int" name="bonus_2"/>
-		<field_30 type="int" name="bonus_3"/>
-		<field_31 type="int" name="bonus_4"/>
-		<field_32 type="int" name="bonus_5"/>
-		<field_33 type="int" name="bonus_6"/>
-		<field_34 type="int" name="bonus_7"/>
-		<field_35 type="int" name="bonus_8"/>
-		<field_36 type="int" name="pieces_1"/>
-		<field_37 type="int" name="pieces_2"/>
-		<field_38 type="int" name="pieces_3"/>
-		<field_39 type="int" name="pieces_4"/>
-		<field_40 type="int" name="pieces_5"/>
-		<field_41 type="int" name="pieces_6"/>
-		<field_42 type="int" name="pieces_7"/>
-		<field_43 type="int" name="pieces_8"/>
-	</ItemSet>
-	<Languages>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</Languages>
-	<Map>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="iname"/>
-		<field_3 type="int" name="type"/>
-		<field_5 type="string" name="name"/>
-		<field_14 type="int" name="level_min"/>
-		<field_15 type="int" name="level_max"/>
-		<field_16 type="int" name="players_max"/>
-	</Map>
-	<QuestInfo>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</QuestInfo>
-	<QuestSort>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</QuestSort>
-	<SkillLine>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="category"/>
-		<field_4 type="string" name="name"/>
-		<field_13 type="string" name="description"/>
-		<field_22 type="int" name="ref_icon"/>
-	</SkillLine>
-	<Spell>
-		<index>
-			<primary>m_ID</primary>
-		</index>
-		<field type="int" name="m_ID"/>
-		<field type="int" name="m_category"/>
-		<field type="int" name="m_dispelType"/>
-		<field type="int" name="m_mechanic"/>
+  <AreaPOI>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_3 type="int" name="icon"/>
+    <field_5 type="float" name="pos_x"/>
+    <field_6 type="float" name="pos_y"/>
+    <field_7 type="float" name="pos_z"/>
+    <field_8 type="int" name="map"/>
+    <field_10 type="int" name="area"/>
+    <field_11 type="string" name="name"/>
+  </AreaPOI>
+  <AreaTable>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="map"/>
+    <field_3 type="int" name="parent"/>
+    <field_12 type="string" name="name"/>
+    <field_21 type="int" name="territory"/>
+  </AreaTable>
+  <Faction>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="gain"/>
+    <field_4 type="int" name="type"/>
+    <field_19 type="int" name="parent"/>
+    <field_20 type="string" name="name"/>
+    <field_29 type="string" name="description"/>
+  </Faction>
+  <ItemDisplayInfo>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" index="primary" name="id"/>
+    <field_6 type="string" name="icon"/>
+  </ItemDisplayInfo>
+  <ItemSet>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+    <field_11 type="int" name="item_1"/>
+    <field_12 type="int" name="item_2"/>
+    <field_13 type="int" name="item_3"/>
+    <field_14 type="int" name="item_4"/>
+    <field_15 type="int" name="item_5"/>
+    <field_16 type="int" name="item_6"/>
+    <field_17 type="int" name="item_7"/>
+    <field_18 type="int" name="item_8"/>
+    <field_28 type="int" name="bonus_1"/>
+    <field_29 type="int" name="bonus_2"/>
+    <field_30 type="int" name="bonus_3"/>
+    <field_31 type="int" name="bonus_4"/>
+    <field_32 type="int" name="bonus_5"/>
+    <field_33 type="int" name="bonus_6"/>
+    <field_34 type="int" name="bonus_7"/>
+    <field_35 type="int" name="bonus_8"/>
+    <field_36 type="int" name="pieces_1"/>
+    <field_37 type="int" name="pieces_2"/>
+    <field_38 type="int" name="pieces_3"/>
+    <field_39 type="int" name="pieces_4"/>
+    <field_40 type="int" name="pieces_5"/>
+    <field_41 type="int" name="pieces_6"/>
+    <field_42 type="int" name="pieces_7"/>
+    <field_43 type="int" name="pieces_8"/>
+  </ItemSet>
+  <Languages>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </Languages>
+  <Map>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="iname"/>
+    <field_3 type="int" name="type"/>
+    <field_5 type="string" name="name"/>
+    <field_14 type="int" name="level_min"/>
+    <field_15 type="int" name="level_max"/>
+    <field_16 type="int" name="players_max"/>
+  </Map>
+  <QuestInfo>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </QuestInfo>
+  <QuestSort>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </QuestSort>
+  <SkillLine>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="category"/>
+    <field_4 type="string" name="name"/>
+    <field_13 type="string" name="description"/>
+    <field_22 type="int" name="ref_icon"/>
+  </SkillLine>
+  <Spell>
+    <index>
+      <primary>m_ID</primary>
+    </index>
+    <field type="int" name="m_ID"/>
+    <field type="int" name="m_category"/>
+    <field type="int" name="m_dispelType"/>
+    <field type="int" name="m_mechanic"/>
     <field type="int" name="m_attributes"/>
     <field type="int" name="m_attributesEx"/>
     <field type="int" name="m_attributesExB"/>
@@ -131,8 +131,8 @@
     <field type="int" name="m_attributesExD"/>
     <field type="int" name="m_attributesExE"/>
     <field type="int" name="m_attributesExF"/>
-		<field type="int" name="m_shapeshiftMask"/>
-		<field type="int" name="m_shapeshiftExclude"/>
+    <field type="int" name="m_shapeshiftMask"/>
+    <field type="int" name="m_shapeshiftExclude"/>
     <field type="int" name="m_targets"/>
     <field type="int" name="m_targetCreatureType"/>
     <field type="int" name="m_requiresSpellFocus"/>
@@ -145,106 +145,106 @@
     <field type="int" name="m_targetAuraSpell"/>
     <field type="int" name="m_excludeCasterAuraSpell"/>
     <field type="int" name="m_excludeTargetAuraSpell"/>
-		<field type="int" name="m_castingTimeIndex"/>
-		<field type="int" name="m_recoveryTime"/>
-		<field type="int" name="m_categoryRecoveryTime"/>
-		<field type="int" name="m_interruptFlags"/>
+    <field type="int" name="m_castingTimeIndex"/>
+    <field type="int" name="m_recoveryTime"/>
+    <field type="int" name="m_categoryRecoveryTime"/>
+    <field type="int" name="m_interruptFlags"/>
     <field type="int" name="m_auraInterruptFlags"/>
     <field type="int" name="m_channelInterruptFlags"/>
-		<field type="int" name="m_procTypeMask"/>
-		<field type="int" name="m_procChance"/>
-		<field type="int" name="m_procCharges"/>
-		<field type="int" name="m_maxLevel"/>
-		<field type="int" name="m_baseLevel"/>
-		<field type="int" name="m_spellLevel"/>
-		<field type="int" name="m_durationIndex"/>
-		<field type="int" name="m_powerType"/>
-		<field type="int" name="m_manaCost"/>
-		<field type="int" name="m_manaCostPerLevel"/>
-		<field type="int" name="m_manaPerSecond"/>
-		<field type="int" name="m_manaPerSecondPerLeve"/>
-		<field type="int" name="m_rangeIndex"/>
-		<field type="float" name="m_speed"/>
+    <field type="int" name="m_procTypeMask"/>
+    <field type="int" name="m_procChance"/>
+    <field type="int" name="m_procCharges"/>
+    <field type="int" name="m_maxLevel"/>
+    <field type="int" name="m_baseLevel"/>
+    <field type="int" name="m_spellLevel"/>
+    <field type="int" name="m_durationIndex"/>
+    <field type="int" name="m_powerType"/>
+    <field type="int" name="m_manaCost"/>
+    <field type="int" name="m_manaCostPerLevel"/>
+    <field type="int" name="m_manaPerSecond"/>
+    <field type="int" name="m_manaPerSecondPerLeve"/>
+    <field type="int" name="m_rangeIndex"/>
+    <field type="float" name="m_speed"/>
     <field type="int" name="m_modalNextSpell"/>
-		<field type="int" name="m_cumulativeAura"/>
-		<field type="int" name="m_totem_1"/>
-		<field type="int" name="m_totem_2"/>
-		<field type="int" name="m_reagent_1"/>
-		<field type="int" name="m_reagent_2"/>
-		<field type="int" name="m_reagent_3"/>
-		<field type="int" name="m_reagent_4"/>
-		<field type="int" name="m_reagent_5"/>
-		<field type="int" name="m_reagent_6"/>
-		<field type="int" name="m_reagent_7"/>
-		<field type="int" name="m_reagent_8"/>
-		<field type="int" name="m_reagentCount_1"/>
-		<field type="int" name="m_reagentCount_2"/>
-		<field type="int" name="m_reagentCount_3"/>
-		<field type="int" name="m_reagentCount_4"/>
-		<field type="int" name="m_reagentCount_5"/>
-		<field type="int" name="m_reagentCount_6"/>
-		<field type="int" name="m_reagentCount_7"/>
-		<field type="int" name="m_reagentCount_8"/>
+    <field type="int" name="m_cumulativeAura"/>
+    <field type="int" name="m_totem_1"/>
+    <field type="int" name="m_totem_2"/>
+    <field type="int" name="m_reagent_1"/>
+    <field type="int" name="m_reagent_2"/>
+    <field type="int" name="m_reagent_3"/>
+    <field type="int" name="m_reagent_4"/>
+    <field type="int" name="m_reagent_5"/>
+    <field type="int" name="m_reagent_6"/>
+    <field type="int" name="m_reagent_7"/>
+    <field type="int" name="m_reagent_8"/>
+    <field type="int" name="m_reagentCount_1"/>
+    <field type="int" name="m_reagentCount_2"/>
+    <field type="int" name="m_reagentCount_3"/>
+    <field type="int" name="m_reagentCount_4"/>
+    <field type="int" name="m_reagentCount_5"/>
+    <field type="int" name="m_reagentCount_6"/>
+    <field type="int" name="m_reagentCount_7"/>
+    <field type="int" name="m_reagentCount_8"/>
     <field type="int" name="m_equippedItemClass"/>
     <field type="int" name="m_equippedItemSubclass"/>
     <field type="int" name="m_equippedItemInvTypes"/>
-		<field type="int" name="m_effect_1"/>
-		<field type="int" name="m_effect_2"/>
-		<field type="int" name="m_effect_3"/>
-		<field type="int" name="m_effectDieSides_1"/>
-		<field type="int" name="m_effectDieSides_2"/>
-		<field type="int" name="m_effectDieSides_3"/>
-		<field type="int" name="m_effectBaseDice_1"/>
-		<field type="int" name="m_effectBaseDice_2"/>
-		<field type="int" name="m_effectBaseDice_3"/>
-		<field type="float" name="m_effectDicePerLevel_1"/>
-		<field type="float" name="m_effectDicePerLevel_2"/>
-		<field type="float" name="m_effectDicePerLevel_3"/>
-		<field type="float" name="m_effectRealPointsPerLevel_1"/>
-		<field type="float" name="m_effectRealPointsPerLevel_2"/>
-		<field type="float" name="m_effectRealPointsPerLevel_3"/>
-		<field type="int" name="m_effectBasePoints_1"/>
-		<field type="int" name="m_effectBasePoints_2"/>
-		<field type="int" name="m_effectBasePoints_3"/>
-		<field type="int" name="m_effectMechanic_1"/>
-		<field type="int" name="m_effectMechanic_2"/>
-		<field type="int" name="m_effectMechanic_3"/>
-		<field type="int" name="m_implicitTargetA_1"/>
-		<field type="int" name="m_implicitTargetA_2"/>
-		<field type="int" name="m_implicitTargetA_3"/>
-		<field type="int" name="m_implicitTargetB_1"/>
-		<field type="int" name="m_implicitTargetB_2"/>
-		<field type="int" name="m_implicitTargetB_3"/>
-		<field type="int" name="m_effectRadiusIndex_1"/>
-		<field type="int" name="m_effectRadiusIndex_2"/>
-		<field type="int" name="m_effectRadiusIndex_3"/>
-		<field type="int" name="m_effectAura_1"/>
-		<field type="int" name="m_effectAura_2"/>
-		<field type="int" name="m_effectAura_3"/>
-		<field type="int" name="m_effectAuraPeriod_1"/>
-		<field type="int" name="m_effectAuraPeriod_2"/>
-		<field type="int" name="m_effectAuraPeriod_3"/>
-		<field type="float" name="m_effectAmplitude_1"/>
-		<field type="float" name="m_effectAmplitude_2"/>
-		<field type="float" name="m_effectAmplitude_3"/>
-		<field type="int" name="m_effectChainTargets_1"/>
-		<field type="int" name="m_effectChainTargets_2"/>
-		<field type="int" name="m_effectChainTargets_3"/>
-		<field type="int" name="m_effectItemType_1"/>
-		<field type="int" name="m_effectItemType_2"/>
-		<field type="int" name="m_effectItemType_3"/>
-		<field type="int" name="m_effectMiscValue_1"/>
-		<field type="int" name="m_effectMiscValue_2"/>
-		<field type="int" name="m_effectMiscValue_3"/>
+    <field type="int" name="m_effect_1"/>
+    <field type="int" name="m_effect_2"/>
+    <field type="int" name="m_effect_3"/>
+    <field type="int" name="m_effectDieSides_1"/>
+    <field type="int" name="m_effectDieSides_2"/>
+    <field type="int" name="m_effectDieSides_3"/>
+    <field type="int" name="m_effectBaseDice_1"/>
+    <field type="int" name="m_effectBaseDice_2"/>
+    <field type="int" name="m_effectBaseDice_3"/>
+    <field type="float" name="m_effectDicePerLevel_1"/>
+    <field type="float" name="m_effectDicePerLevel_2"/>
+    <field type="float" name="m_effectDicePerLevel_3"/>
+    <field type="float" name="m_effectRealPointsPerLevel_1"/>
+    <field type="float" name="m_effectRealPointsPerLevel_2"/>
+    <field type="float" name="m_effectRealPointsPerLevel_3"/>
+    <field type="int" name="m_effectBasePoints_1"/>
+    <field type="int" name="m_effectBasePoints_2"/>
+    <field type="int" name="m_effectBasePoints_3"/>
+    <field type="int" name="m_effectMechanic_1"/>
+    <field type="int" name="m_effectMechanic_2"/>
+    <field type="int" name="m_effectMechanic_3"/>
+    <field type="int" name="m_implicitTargetA_1"/>
+    <field type="int" name="m_implicitTargetA_2"/>
+    <field type="int" name="m_implicitTargetA_3"/>
+    <field type="int" name="m_implicitTargetB_1"/>
+    <field type="int" name="m_implicitTargetB_2"/>
+    <field type="int" name="m_implicitTargetB_3"/>
+    <field type="int" name="m_effectRadiusIndex_1"/>
+    <field type="int" name="m_effectRadiusIndex_2"/>
+    <field type="int" name="m_effectRadiusIndex_3"/>
+    <field type="int" name="m_effectAura_1"/>
+    <field type="int" name="m_effectAura_2"/>
+    <field type="int" name="m_effectAura_3"/>
+    <field type="int" name="m_effectAuraPeriod_1"/>
+    <field type="int" name="m_effectAuraPeriod_2"/>
+    <field type="int" name="m_effectAuraPeriod_3"/>
+    <field type="float" name="m_effectAmplitude_1"/>
+    <field type="float" name="m_effectAmplitude_2"/>
+    <field type="float" name="m_effectAmplitude_3"/>
+    <field type="int" name="m_effectChainTargets_1"/>
+    <field type="int" name="m_effectChainTargets_2"/>
+    <field type="int" name="m_effectChainTargets_3"/>
+    <field type="int" name="m_effectItemType_1"/>
+    <field type="int" name="m_effectItemType_2"/>
+    <field type="int" name="m_effectItemType_3"/>
+    <field type="int" name="m_effectMiscValue_1"/>
+    <field type="int" name="m_effectMiscValue_2"/>
+    <field type="int" name="m_effectMiscValue_3"/>
     <field type="int" name="m_effectMiscValueB_1"/>
     <field type="int" name="m_effectMiscValueB_2"/>
     <field type="int" name="m_effectMiscValueB_3"/>
-		<field type="int" name="m_effectTriggerSpell_1"/>
-		<field type="int" name="m_effectTriggerSpell_2"/>
-		<field type="int" name="m_effectTriggerSpell_3"/>
-		<field type="float" name="m_effectPointsPerCombo_1"/>
-		<field type="float" name="m_effectPointsPerCombo_2"/>
-		<field type="float" name="m_effectPointsPerCombo_3"/>
+    <field type="int" name="m_effectTriggerSpell_1"/>
+    <field type="int" name="m_effectTriggerSpell_2"/>
+    <field type="int" name="m_effectTriggerSpell_3"/>
+    <field type="float" name="m_effectPointsPerCombo_1"/>
+    <field type="float" name="m_effectPointsPerCombo_2"/>
+    <field type="float" name="m_effectPointsPerCombo_3"/>
     <field type="int" name="m_effectSpellClassMaskA_1"/>
     <field type="int" name="m_effectSpellClassMaskA_2"/>
     <field type="int" name="m_effectSpellClassMaskA_3"/>
@@ -254,12 +254,12 @@
     <field type="int" name="m_effectSpellClassMaskC_1"/>
     <field type="int" name="m_effectSpellClassMaskC_2"/>
     <field type="int" name="m_effectSpellClassMaskC_3"/>
-		<field type="uint" name="m_spellVisualID_1"/>
-		<field type="uint" name="m_spellVisualID_2"/>
+    <field type="uint" name="m_spellVisualID_1"/>
+    <field type="uint" name="m_spellVisualID_2"/>
     <field type="int" name="m_spellIconID"/>
     <field type="int" name="m_activeIconID"/>
     <field type="int" name="m_spellPriority"/>
-		<field type="string" name="m_name_lang_1"/>
+    <field type="string" name="m_name_lang_1"/>
     <field type="string" name="m_name_lang_2"/>
     <field type="string" name="m_name_lang_3"/>
     <field type="string" name="m_name_lang_4"/>
@@ -276,7 +276,7 @@
     <field type="string" name="m_name_lang_15"/>
     <field type="string" name="m_name_lang_16"/>
     <field type="int" name="m_name_lang_flags"/>
-		<field type="string" name="m_nameSubtext_lang_1"/>
+    <field type="string" name="m_nameSubtext_lang_1"/>
     <field type="string" name="m_nameSubtext_lang_2"/>
     <field type="string" name="m_nameSubtext_lang_3"/>
     <field type="string" name="m_nameSubtext_lang_4"/>
@@ -327,7 +327,7 @@
     <field type="string" name="m_auraDescription_lang_15"/>
     <field type="string" name="m_auraDescription_lang_16"/>
     <field type="int" name="m_auraDescription_lang_flags"/>
-		<field type="int" name="m_manaCostPct"/>
+    <field type="int" name="m_manaCostPct"/>
     <field type="int" name="m_startRecoveryCategory"/>
     <field type="int" name="m_startRecoveryTime"/>
     <field type="int" name="m_maxTargetLevel"/>
@@ -335,13 +335,13 @@
     <field type="uint" name="m_spellClassMask_1"/>
     <field type="uint" name="m_spellClassMask_2"/>
     <field type="uint" name="m_spellClassMask_3"/>
-		<field type="int" name="m_maxTargets"/>
-		<field type="int" name="m_defenseType"/>
-		<field type="int" name="m_preventionType"/>
-		<field type="int" name="m_stanceBarOrder"/>
-		<field type="float" name="m_effectChainAmplitude_1"/>
-		<field type="float" name="m_effectChainAmplitude_2"/>
-		<field type="float" name="m_effectChainAmplitude_3"/>
+    <field type="int" name="m_maxTargets"/>
+    <field type="int" name="m_defenseType"/>
+    <field type="int" name="m_preventionType"/>
+    <field type="int" name="m_stanceBarOrder"/>
+    <field type="float" name="m_effectChainAmplitude_1"/>
+    <field type="float" name="m_effectChainAmplitude_2"/>
+    <field type="float" name="m_effectChainAmplitude_3"/>
     <field type="int" name="m_minFactionID"/>
     <field type="int" name="m_minReputation"/>
     <field type="int" name="m_requiredAuraVision"/>
@@ -351,150 +351,150 @@
     <field type="int" name="m_schoolMask"/>
     <field type="int" name="m_runeCostID"/>
     <field type="int" name="m_spellMissileID"/>
-	</Spell>
-	<SpellAuraNames>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_3 type="string" name="name"/>
-		<field_4 type="string" name="description"/>
-	</SpellAuraNames>
-	<SpellCastTimes>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="ms_max"/>
-		<field_3 type="int" name="ms_mod"/>
-		<field_4 type="int" name="ms_min"/>
-	</SpellCastTimes>
-	<SpellDispelType>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</SpellDispelType>
-	<SpellDuration>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="ms_base"/>
-	</SpellDuration>
-	<SpellEffectNames>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</SpellEffectNames>
-	<SpellFocusObject>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="name"/>
-	</SpellFocusObject>
-	<SpellIcon>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="string" name="icon"/>
-	</SpellIcon>
-	<SpellItemEnchantmentCondition>
-		<index>
-			<primary>m_ID</primary>
-		</index>
-		<field type="int" name="m_ID"/>
-		<field type="byte" name="m_lt_operandType1"/>
-		<field type="byte" name="m_lt_operandType2"/>
-		<field type="byte" name="m_lt_operandType3"/>
-		<field type="byte" name="m_lt_operandType4"/>
-		<field type="byte" name="m_lt_operandType5"/>
-		<field type="int" name="m_lt_operand1"/>
-		<field type="int" name="m_lt_operand2"/>
-		<field type="int" name="m_lt_operand3"/>
-		<field type="int" name="m_lt_operand4"/>
-		<field type="int" name="m_lt_operand5"/>
-		<field type="byte" name="m_operator1"/>
-		<field type="byte" name="m_operator2"/>
-		<field type="byte" name="m_operator3"/>
-		<field type="byte" name="m_operator4"/>
-		<field type="byte" name="m_operator5"/>
-		<field type="byte" name="m_rt_operandType1"/>
-		<field type="byte" name="m_rt_operandType2"/>
-		<field type="byte" name="m_rt_operandType3"/>
-		<field type="byte" name="m_rt_operandType4"/>
-		<field type="byte" name="m_rt_operandType5"/>
-		<field type="int" name="m_rt_operand1"/>
-		<field type="int" name="m_rt_operand2"/>
-		<field type="int" name="m_rt_operand3"/>
-		<field type="int" name="m_rt_operand4"/>
-		<field type="int" name="m_rt_operand5"/>
-		<field type="byte" name="m_logic1"/>
-		<field type="byte" name="m_logic2"/>
-		<field type="byte" name="m_logic3"/>
-		<field type="byte" name="m_logic4"/>
-		<field type="byte" name="m_logic5"/>
-	</SpellItemEnchantmentCondition>
-	<SpellRadius>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="float" name="yards"/>
-	</SpellRadius>
-	<SpellRange>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="float" name="yards_min"/>
-		<field_3 type="float" name="yards_max"/>
-		<field_5 type="string" name="description"/>
-		<field_14 type="string" name="name"/>
-	</SpellRange>
-	<SpellShapeshiftForm>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_3 type="string" name="name"/>
-	</SpellShapeshiftForm>
-	<WorldMapArea>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="map"/>
-		<field_3 type="int" name="area"/>
-		<field_4 type="string" name="name"/>
-		<field_5 type="float" name="y_min"/>
-		<field_6 type="float" name="y_max"/>
-		<field_7 type="float" name="x_min"/>
-		<field_8 type="float" name="x_max"/>
-	</WorldMapArea>
-	<WorldMapContinent>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="area"/>
-	</WorldMapContinent>
-	<WorldMapOverlay>
-		<index>
-			<primary>id</primary>
-		</index>
-		<field_1 type="int" name="id"/>
-		<field_2 type="int" name="zone"/>
-		<field_3 type="int" name="area"/>
-		<field_9 type="string" name="name"/>
-		<field_10 type="int" name="width"/>
-		<field_11 type="int" name="height"/>
-		<field_12 type="int" name="pos_x"/>
-		<field_13 type="int" name="pos_y"/>
-	</WorldMapOverlay>
+  </Spell>
+  <SpellAuraNames>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_3 type="string" name="name"/>
+    <field_4 type="string" name="description"/>
+  </SpellAuraNames>
+  <SpellCastTimes>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="ms_max"/>
+    <field_3 type="int" name="ms_mod"/>
+    <field_4 type="int" name="ms_min"/>
+  </SpellCastTimes>
+  <SpellDispelType>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </SpellDispelType>
+  <SpellDuration>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="ms_base"/>
+  </SpellDuration>
+  <SpellEffectNames>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </SpellEffectNames>
+  <SpellFocusObject>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="name"/>
+  </SpellFocusObject>
+  <SpellIcon>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="string" name="icon"/>
+  </SpellIcon>
+  <SpellItemEnchantmentCondition>
+    <index>
+      <primary>m_ID</primary>
+    </index>
+    <field type="int" name="m_ID"/>
+    <field type="byte" name="m_lt_operandType1"/>
+    <field type="byte" name="m_lt_operandType2"/>
+    <field type="byte" name="m_lt_operandType3"/>
+    <field type="byte" name="m_lt_operandType4"/>
+    <field type="byte" name="m_lt_operandType5"/>
+    <field type="int" name="m_lt_operand1"/>
+    <field type="int" name="m_lt_operand2"/>
+    <field type="int" name="m_lt_operand3"/>
+    <field type="int" name="m_lt_operand4"/>
+    <field type="int" name="m_lt_operand5"/>
+    <field type="byte" name="m_operator1"/>
+    <field type="byte" name="m_operator2"/>
+    <field type="byte" name="m_operator3"/>
+    <field type="byte" name="m_operator4"/>
+    <field type="byte" name="m_operator5"/>
+    <field type="byte" name="m_rt_operandType1"/>
+    <field type="byte" name="m_rt_operandType2"/>
+    <field type="byte" name="m_rt_operandType3"/>
+    <field type="byte" name="m_rt_operandType4"/>
+    <field type="byte" name="m_rt_operandType5"/>
+    <field type="int" name="m_rt_operand1"/>
+    <field type="int" name="m_rt_operand2"/>
+    <field type="int" name="m_rt_operand3"/>
+    <field type="int" name="m_rt_operand4"/>
+    <field type="int" name="m_rt_operand5"/>
+    <field type="byte" name="m_logic1"/>
+    <field type="byte" name="m_logic2"/>
+    <field type="byte" name="m_logic3"/>
+    <field type="byte" name="m_logic4"/>
+    <field type="byte" name="m_logic5"/>
+  </SpellItemEnchantmentCondition>
+  <SpellRadius>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="float" name="yards"/>
+  </SpellRadius>
+  <SpellRange>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="float" name="yards_min"/>
+    <field_3 type="float" name="yards_max"/>
+    <field_5 type="string" name="description"/>
+    <field_14 type="string" name="name"/>
+  </SpellRange>
+  <SpellShapeshiftForm>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_3 type="string" name="name"/>
+  </SpellShapeshiftForm>
+  <WorldMapArea>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="map"/>
+    <field_3 type="int" name="area"/>
+    <field_4 type="string" name="name"/>
+    <field_5 type="float" name="y_min"/>
+    <field_6 type="float" name="y_max"/>
+    <field_7 type="float" name="x_min"/>
+    <field_8 type="float" name="x_max"/>
+  </WorldMapArea>
+  <WorldMapContinent>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="area"/>
+  </WorldMapContinent>
+  <WorldMapOverlay>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field_1 type="int" name="id"/>
+    <field_2 type="int" name="zone"/>
+    <field_3 type="int" name="area"/>
+    <field_9 type="string" name="name"/>
+    <field_10 type="int" name="width"/>
+    <field_11 type="int" name="height"/>
+    <field_12 type="int" name="pos_x"/>
+    <field_13 type="int" name="pos_y"/>
+  </WorldMapOverlay>
 </DBFilesClient>

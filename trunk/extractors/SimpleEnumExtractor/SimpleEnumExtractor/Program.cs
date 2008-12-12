@@ -43,7 +43,7 @@ namespace SimpleEnumExtractor {
 				ExtractEnum("ResponseCodes", "CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME",
 					"RESPONSE_SUCCESS");
 				ExtractEnum("ChatNotify", "VOICE_OFF", "YOU_CHANGED", "CHAT_{0}_NOTICE", 0);
-				//ExtractEnum("OpCodes", "NUM_MSG_TYPES", "MSG_NULL_ACTION");
+				ExtractEnum("OpCodes", "NUM_MSG_TYPES", "MSG_NULL_ACTION");
 				ExtractEnum("SpellFailedReason", "SPELL_FAILED_UNKNOWN",
 					"SPELL_FAILED_AFFECTING_COMBAT");
 				ExtractEnum("EnchantConditions", "ENCHANT_CONDITION_REQUIRES",
