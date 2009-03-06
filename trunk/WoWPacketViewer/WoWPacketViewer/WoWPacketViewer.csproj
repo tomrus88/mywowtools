@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9E80DAFC-44D7-4C9E-8AE9-515A78B13232}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -68,6 +68,7 @@
     <Compile Include="Parser.cs" />
     <Compile Include="ParserAttribute.cs" />
     <Compile Include="Parsers\AuraUpdateParser.cs" />
+    <Compile Include="Parsers\EquipmentSetsParser.cs" />
     <Compile Include="Parsers\InitialSpellsParser.cs" />
     <Compile Include="Parsers\MonsterMoveParser.cs" />
     <Compile Include="Parsers\PetSpellsParser.cs" />

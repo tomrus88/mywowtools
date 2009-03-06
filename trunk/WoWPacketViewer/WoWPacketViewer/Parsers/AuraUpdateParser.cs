@@ -30,48 +30,42 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var sb = new StringBuilder();
-            sb.AppendFormat("GUID: {0:X16}", gr.ReadPackedGuid()).AppendLine();
-
-            sb.AppendLine();
+            AppendFormatLine("GUID: {0:X16}", gr.ReadPackedGuid());
 
             while (gr.BaseStream.Position < gr.BaseStream.Length)
             {
-                sb.AppendFormat("Slot: {0:X2}", gr.ReadByte()).AppendLine();
+                AppendFormatLine("Slot: {0:X2}", gr.ReadByte());
 
                 var spellId = gr.ReadUInt32();
-                sb.AppendFormat("Spell: {0:X8}", spellId).AppendLine();
+                AppendFormatLine("Spell: {0:X8}", spellId);
 
                 if (spellId > 0)
                 {
                     var af = (AuraFlags)gr.ReadByte();
-                    sb.AppendFormat("Flags: {0}", af).AppendLine();
+                    AppendFormatLine("Flags: {0}", af);
 
-                    sb.AppendFormat("Level: {0:X2}", gr.ReadByte()).AppendLine();
+                    AppendFormatLine("Level: {0:X2}", gr.ReadByte());
 
-                    sb.AppendFormat("Charges: {0:X2}", gr.ReadByte()).AppendLine();
+                    AppendFormatLine("Charges: {0:X2}", gr.ReadByte());
 
                     if (!((af & AuraFlags.NotOwner) != AuraFlags.None))
                     {
-                        sb.AppendFormat("GUID2: {0:X16}", gr.ReadPackedGuid()).AppendLine();
+                        AppendFormatLine("GUID2: {0:X16}", gr.ReadPackedGuid());
                     }
 
                     if ((af & AuraFlags.Duration) != AuraFlags.None)
                     {
-                        sb.AppendFormat("Full duration: {0:X8}", gr.ReadUInt32()).AppendLine();
+                        AppendFormatLine("Full duration: {0:X8}", gr.ReadUInt32());
 
-                        sb.AppendFormat("Rem. duration: {0:X8}", gr.ReadUInt32()).AppendLine();
+                        AppendFormatLine("Rem. duration: {0:X8}", gr.ReadUInt32());
                     }
                 }
-                sb.AppendLine();
+                AppendLine();
             }
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            CheckPacket(gr);
 
-            return sb.ToString();
+            return GetParsedString();
         }
     }
 }

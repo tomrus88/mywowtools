@@ -15,42 +15,36 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var sb = new StringBuilder();
-
-            sb.AppendFormat("Unk: {0}", gr.ReadByte()).AppendLine();
+            AppendFormatLine("Unk: {0}", gr.ReadByte());
 
             var spellsCount = gr.ReadUInt16();
-            sb.AppendFormat("Spells count: {0}", spellsCount).AppendLine();
+            AppendFormatLine("Spells count: {0}", spellsCount);
 
             for (ushort i = 0; i < spellsCount; ++i)
             {
-                var spellId = gr.ReadUInt16();
+                var spellId = gr.ReadUInt32();
                 var spellSlot = gr.ReadUInt16();
 
-                sb.AppendFormat("Spell: id {0}, slot {1}", spellId, spellSlot).AppendLine();
+                AppendFormatLine("Spell: id {0}, slot {1}", spellId, spellSlot);
             }
 
             var cooldownsCount = gr.ReadUInt16();
-            sb.AppendFormat("Cooldowns count: {0}", cooldownsCount).AppendLine();
+            AppendFormatLine("Cooldowns count: {0}", cooldownsCount);
 
             for (ushort i = 0; i < cooldownsCount; ++i)
             {
-                var spellId = gr.ReadUInt16();
+                var spellId = gr.ReadUInt32();
                 var itemId = gr.ReadUInt16();
                 var category = gr.ReadUInt16();
                 var coolDown1 = gr.ReadUInt32();
                 var coolDown2 = gr.ReadUInt32();
 
-                sb.AppendFormat("Cooldown: spell {0}, item {1}, cat {2}, time1 {3}, time2 {4}", spellId, itemId, category, coolDown1,
-                                     coolDown2).AppendLine();
+                AppendFormatLine("Cooldown: spell {0}, item {1}, cat {2}, time1 {3}, time2 {4}", spellId, itemId, category, coolDown1, coolDown2);
             }
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            CheckPacket(gr);
 
-            return sb.ToString();
+            return GetParsedString();
         }
     }
 }
