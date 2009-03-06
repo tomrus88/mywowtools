@@ -232,8 +232,9 @@ namespace UpdatePacketParser
                 if ((updateflags & UpdateFlags.UPDATEFLAG_UNK1) != 0)
                 {
                     gr.ReadPackedGuid();
+                    gr.ReadCoords3();
                     gr.ReadCoords4();
-                    gr.ReadCoords4();
+                    gr.ReadSingle();
                 }
                 else
                 {
@@ -386,8 +387,9 @@ namespace UpdatePacketParser
                 if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK1) != 0)
                 {
                     movementInfo.m_0x100_guid = gr.ReadPackedGuid();
-                    movementInfo.m_0x100_pos = gr.ReadCoords4();
-                    movementInfo.m_0x100_offs = gr.ReadCoords4();
+                    movementInfo.m_0x100_pos = gr.ReadCoords3();
+                    movementInfo.m_0x100_pos2 = gr.ReadCoords4();
+                    movementInfo.m_0x100_unkf = gr.ReadSingle();
                 }
                 else
                 {
@@ -649,7 +651,7 @@ namespace UpdatePacketParser
 
                     if ((mInfo.m_splineInfo.m_splineFlags & SplineFlags.POINT) != SplineFlags.NONE)
                     {
-                        strings.Add(String.Format("Spline Point: {0}", mInfo.m_splineInfo.m_splinePoint.GetCoords()));
+                        strings.Add(String.Format("Spline Point: {0}", mInfo.m_splineInfo.m_splinePoint.GetCoordsAsString()));
                     }
 
                     if ((mInfo.m_splineInfo.m_splineFlags & SplineFlags.TARGET) != SplineFlags.NONE)
@@ -679,12 +681,12 @@ namespace UpdatePacketParser
 
                     for (uint i = 0; i < mInfo.m_splineInfo.m_splineCount; ++i)
                     {
-                        strings.Add(String.Format("Splines_{0}: {1}", i, mInfo.m_splineInfo.m_splines[(int)i].GetCoords()));
+                        strings.Add(String.Format("Splines_{0}: {1}", i, mInfo.m_splineInfo.m_splines[(int)i].GetCoordsAsString()));
                     }
 
                     strings.Add(String.Format("Spline byte3: {0}", mInfo.m_splineInfo.m_unk3.ToString("X2")));
 
-                    strings.Add(String.Format("Spline End Point: {0}", mInfo.m_splineInfo.m_splineEndPoint.GetCoords()));
+                    strings.Add(String.Format("Spline End Point: {0}", mInfo.m_splineInfo.m_splineEndPoint.GetCoordsAsString()));
                 }
             }
             else
@@ -693,7 +695,8 @@ namespace UpdatePacketParser
                 {
                     strings.Add(String.Format("GUID 0x100: {0}", mInfo.m_0x100_guid.ToString("X16")));
                     strings.Add(String.Format("Position 0x100: {0}", mInfo.m_0x100_pos.GetCoordsAsString()));
-                    strings.Add(String.Format("Offset 0x100: {0}", mInfo.m_0x100_offs.GetCoordsAsString()));
+                    strings.Add(String.Format("Position2 0x100: {0}", mInfo.m_0x100_pos2.GetCoordsAsString()));
+                    strings.Add(String.Format("Unkf 0x100: {0}", mInfo.m_0x100_unkf));
                 }
                 else
                 {

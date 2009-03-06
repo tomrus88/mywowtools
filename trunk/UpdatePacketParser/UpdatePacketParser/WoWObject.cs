@@ -66,8 +66,9 @@ namespace WoWObjects
 
         // 0x100
         public ulong m_0x100_guid;
-        public Coords4 m_0x100_pos;
-        public Coords4 m_0x100_offs;
+        public Coords3 m_0x100_pos;
+        public Coords4 m_0x100_pos2;
+        public float m_0x100_unkf;
 
         public MovementInfo(int i)
         {
@@ -93,8 +94,9 @@ namespace WoWObjects
             m_vehicleId = 0;
             m_facingAdjustement = 0;
             m_0x100_guid = 0;
-            m_0x100_pos = new Coords4();
-            m_0x100_offs = new Coords4();
+            m_0x100_pos = new Coords3();
+            m_0x100_pos2 = new Coords4();
+            m_0x100_unkf = 0;
             m_0x200_guid = 0;
         }
     };
