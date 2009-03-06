@@ -43,7 +43,7 @@ namespace UpdateFields
     /// WoW Update Flags
     /// </summary>
     [Flags]
-    public enum UpdateFlags
+    public enum UpdateFlags : ushort
     {
         /// <summary>
         /// No flag set.
@@ -80,7 +80,15 @@ namespace UpdateFields
         /// <summary>
         /// Unknown, added in WotLK Beta
         /// </summary>
-        UPDATEFLAG_VEHICLE = 0x80
+        UPDATEFLAG_VEHICLE = 0x80,
+        /// <summary>
+        /// Unknown, added in 3.1
+        /// </summary>
+        UPDATEFLAG_UNK1 = 0x100,
+        /// <summary>
+        /// Unknown, added in 3.1
+        /// </summary>
+        UPDATEFLAG_UNK2 = 0x200,
     }
     #endregion
 

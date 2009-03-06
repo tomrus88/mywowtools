@@ -2,12 +2,55 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+
 using WoWPacketViewer.Parsers;
 
 namespace WoWPacketViewer
 {
     public abstract class Parser
     {
+        private static StringBuilder _stringBuilder = new StringBuilder();
+
+        public static void Append(string str)
+        {
+            _stringBuilder.Append(str);
+        }
+
+        public static void AppendLine()
+        {
+            _stringBuilder.AppendLine();
+        }
+
+        public static void AppendLine(string str)
+        {
+            _stringBuilder.AppendLine(str);
+        }
+
+        public static void AppendFormat(string format, params object[] args)
+        {
+            _stringBuilder.AppendFormat(format, args);
+        }
+
+        public static void AppendFormatLine(string format, params object[] args)
+        {
+            _stringBuilder.AppendFormat(format, args).AppendLine();
+        }
+
+        public static string GetParsedString()
+        {
+            string ret = _stringBuilder.ToString();
+            _stringBuilder.Remove(0, _stringBuilder.Length);
+            return ret;
+        }
+
+        public static void CheckPacket(BinaryReader gr)
+        {
+            if (gr.BaseStream.Position != gr.BaseStream.Length)
+                MessageBox.Show("Packet structure changed!");
+        }
+
         static Parser()
         {
             Init();

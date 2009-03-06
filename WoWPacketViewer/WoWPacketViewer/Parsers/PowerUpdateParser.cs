@@ -22,17 +22,14 @@ namespace WoWPacketViewer.Parsers
         public override string Parse()
         {
             var gr = Packet.CreateReader();
-            var sb = new StringBuilder();
-            sb.AppendFormat("GUID: 0x{0:X16}", gr.ReadPackedGuid()).AppendLine();
-            sb.AppendFormat("Type: {0}", (ManaType)gr.ReadByte()).AppendLine();
-            sb.AppendFormat("Value: {0}", gr.ReadUInt32());
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            AppendFormatLine("GUID: 0x{0:X16}", gr.ReadPackedGuid());
+            AppendFormatLine("Type: {0}", (ManaType)gr.ReadByte());
+            AppendFormatLine("Value: {0}", gr.ReadUInt32());
 
-            return sb.ToString();
+            CheckPacket(gr);
+
+            return GetParsedString();
         }
     }
 }

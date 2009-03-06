@@ -90,29 +90,27 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var sb = new StringBuilder();
-
-            sb.AppendFormat("Caster: 0x{0:X16}", gr.ReadPackedGuid()).AppendLine();
-            sb.AppendFormat("Target: 0x{0:X16}", gr.ReadPackedGuid()).AppendLine();
-            sb.AppendFormat("Pending Cast: {0}", gr.ReadByte()).AppendLine();
-            sb.AppendFormat("Spell Id: {0}", gr.ReadUInt32()).AppendLine();
+            AppendFormatLine("Caster: 0x{0:X16}", gr.ReadPackedGuid());
+            AppendFormatLine("Target: 0x{0:X16}", gr.ReadPackedGuid());
+            AppendFormatLine("Pending Cast: {0}", gr.ReadByte());
+            AppendFormatLine("Spell Id: {0}", gr.ReadUInt32());
             CastFlags cf = (CastFlags)gr.ReadUInt32();
-            sb.AppendFormat("Cast Flags: {0}", cf).AppendLine();
-            sb.AppendFormat("Timer: {0}", gr.ReadUInt32()).AppendLine();
+            AppendFormatLine("Cast Flags: {0}", cf);
+            AppendFormatLine("Timer: {0}", gr.ReadUInt32());
 
-            ReadTargets(gr, sb);
+            ReadTargets(gr);
 
             if ((cf & CastFlags.CAST_FLAG_12) != CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("PredictedPower: {0}", gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("PredictedPower: {0}", gr.ReadUInt32());
             }
 
             if ((cf & CastFlags.CAST_FLAG_22) != CastFlags.CAST_FLAG_00)
             {
                 var v1 = gr.ReadByte();
-                sb.AppendFormat("RuneState Before: {0}", (CooldownMask)v1).AppendLine();
+                AppendFormatLine("RuneState Before: {0}", (CooldownMask)v1);
                 var v2 = gr.ReadByte();
-                sb.AppendFormat("RuneState Now: {0}", (CooldownMask)v2).AppendLine();
+                AppendFormatLine("RuneState Now: {0}", (CooldownMask)v2);
 
                 for (int i = 0; i < 6; ++i)
                 {
@@ -123,7 +121,7 @@ namespace WoWPacketViewer.Parsers
                         if (!((v3 & v2) != 0))
                         {
                             var v4 = gr.ReadByte();
-                            sb.AppendFormat("Cooldown for {0} is {1}", (CooldownMask)v3, v4).AppendLine();
+                            AppendFormatLine("Cooldown for {0} is {1}", (CooldownMask)v3, v4);
                         }
                     }
                 }
@@ -131,21 +129,18 @@ namespace WoWPacketViewer.Parsers
 
             if ((cf & CastFlags.CAST_FLAG_06) != CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            CheckPacket(gr);
 
-            return sb.ToString();
+            return GetParsedString();
         }
 
-        public static TargetFlags ReadTargets(BinaryReader br, StringBuilder sb)
+        public static TargetFlags ReadTargets(BinaryReader br)
         {
             TargetFlags tf = (TargetFlags)br.ReadUInt32();
-            sb.AppendFormat("TargetFlags: {0}", tf).AppendLine();
+            AppendFormatLine("TargetFlags: {0}", tf);
 
             if ((tf & (TargetFlags.TARGET_FLAG_UNIT |
                 TargetFlags.TARGET_FLAG_PVP_CORPSE |
@@ -154,28 +149,29 @@ namespace WoWPacketViewer.Parsers
                 TargetFlags.TARGET_FLAG_CORPSE |
                 TargetFlags.TARGET_FLAG_UNK2)) != TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("ObjectTarget: 0x{0:X16}", br.ReadPackedGuid()).AppendLine();
+                AppendFormatLine("ObjectTarget: 0x{0:X16}", br.ReadPackedGuid());
             }
 
             if ((tf & (TargetFlags.TARGET_FLAG_ITEM |
                 TargetFlags.TARGET_FLAG_TRADE_ITEM)) != TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("ItemTarget: 0x{0:X16}", br.ReadPackedGuid()).AppendLine();
+                AppendFormatLine("ItemTarget: 0x{0:X16}", br.ReadPackedGuid());
             }
 
             if ((tf & TargetFlags.TARGET_FLAG_SOURCE_LOCATION) != TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("SrcTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle()).AppendLine();
+                AppendFormatLine("SrcTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
             }
 
             if ((tf & TargetFlags.TARGET_FLAG_DEST_LOCATION) != TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("DstTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle()).AppendLine();
+                AppendFormatLine("DstTargetGuid: {0}", br.ReadPackedGuid().ToString("X16"));
+                AppendFormatLine("DstTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
             }
 
             if ((tf & TargetFlags.TARGET_FLAG_STRING) != TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("StringTarget: {0}", br.ReadCString()).AppendLine();
+                AppendFormatLine("StringTarget: {0}", br.ReadCString());
             }
 
             return tf;

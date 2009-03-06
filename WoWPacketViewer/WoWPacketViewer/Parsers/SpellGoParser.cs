@@ -16,31 +16,29 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var sb = new StringBuilder();
-
-            sb.AppendFormat("Caster: 0x{0:X16}", gr.ReadPackedGuid()).AppendLine();
-            sb.AppendFormat("Target: 0x{0:X16}", gr.ReadPackedGuid()).AppendLine();
-            sb.AppendFormat("Pending Cast: {0}", gr.ReadByte()).AppendLine();
-            sb.AppendFormat("Spell Id: {0}", gr.ReadUInt32()).AppendLine();
+            AppendFormatLine("Caster: 0x{0:X16}", gr.ReadPackedGuid());
+            AppendFormatLine("Target: 0x{0:X16}", gr.ReadPackedGuid());
+            AppendFormatLine("Pending Cast: {0}", gr.ReadByte());
+            AppendFormatLine("Spell Id: {0}", gr.ReadUInt32());
             SpellStartParser.CastFlags cf = (SpellStartParser.CastFlags)gr.ReadUInt32();
-            sb.AppendFormat("Cast Flags: {0}", cf).AppendLine();
-            sb.AppendFormat("TicksCount: {0}", gr.ReadUInt32()).AppendLine();
+            AppendFormatLine("Cast Flags: {0}", cf);
+            AppendFormatLine("TicksCount: {0}", gr.ReadUInt32());
 
-            readSpellGoTargets(gr, sb);
+            readSpellGoTargets(gr);
 
-            SpellStartParser.TargetFlags tf = SpellStartParser.ReadTargets(gr, sb);
+            SpellStartParser.TargetFlags tf = SpellStartParser.ReadTargets(gr);
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_12) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("PredictedPower: {0}", gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("PredictedPower: {0}", gr.ReadUInt32());
             }
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_22) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
                 var v1 = gr.ReadByte();
-                sb.AppendFormat("Cooldowns Before: {0}", (SpellStartParser.CooldownMask)v1).AppendLine();
+                AppendFormatLine("Cooldowns Before: {0}", (SpellStartParser.CooldownMask)v1);
                 var v2 = gr.ReadByte();
-                sb.AppendFormat("Cooldowns Now: {0}", (SpellStartParser.CooldownMask)v2).AppendLine();
+                AppendFormatLine("Cooldowns Now: {0}", (SpellStartParser.CooldownMask)v2);
 
                 for (int i = 0; i < 6; ++i)
                 {
@@ -51,7 +49,7 @@ namespace WoWPacketViewer.Parsers
                         if (!((v3 & v2) != 0))
                         {
                             var v4 = gr.ReadByte();
-                            sb.AppendFormat("Cooldown for {0} is {1}", (SpellStartParser.CooldownMask)v3, v4).AppendLine();
+                            AppendFormatLine("Cooldown for {0} is {1}", (SpellStartParser.CooldownMask)v3, v4);
                         }
                     }
                 }
@@ -59,51 +57,48 @@ namespace WoWPacketViewer.Parsers
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_18) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("0x20000: Unk float {0}, unk int {1}", gr.ReadSingle(), gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("0x20000: Unk float {0}, unk int {1}", gr.ReadSingle(), gr.ReadUInt32());
             }
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_06) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_20) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
-                sb.AppendFormat("cast flags & 0x80000: Unk int {0}, uint int {1}", gr.ReadUInt32(), gr.ReadUInt32()).AppendLine();
+                AppendFormatLine("cast flags & 0x80000: Unk int {0}, uint int {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }
 
             if ((tf & SpellStartParser.TargetFlags.TARGET_FLAG_DEST_LOCATION) != SpellStartParser.TargetFlags.TARGET_FLAG_SELF)
             {
-                sb.AppendFormat("targetFlags & 0x40: byte {0}", gr.ReadByte()).AppendLine();
+                AppendFormatLine("targetFlags & 0x40: byte {0}", gr.ReadByte());
             }
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            CheckPacket(gr);
 
-            return sb.ToString();
+            return GetParsedString();
         }
 
-        public static void readSpellGoTargets(BinaryReader br, StringBuilder sb)
+        public static void readSpellGoTargets(BinaryReader br)
         {
             byte hitCount = br.ReadByte();
 
             for (byte i = 0; i < hitCount; ++i)
             {
-                sb.AppendFormat("GO Hit Target {0}: 0x{0:X16}", i, br.ReadUInt64()).AppendLine();
+                AppendFormatLine("GO Hit Target {0}: 0x{0:X16}", i, br.ReadUInt64());
             }
 
             byte missCount = br.ReadByte();
 
             for (byte i = 0; i < missCount; ++i)
             {
-                sb.AppendFormat("GO Miss Target {0}: 0x{0:X16}", i, br.ReadUInt64()).AppendLine();
+                AppendFormatLine("GO Miss Target {0}: 0x{0:X16}", i, br.ReadUInt64());
                 byte missReason = br.ReadByte();
-                sb.AppendFormat("GO Miss Reason {0}: {1}", i, missReason).AppendLine();
+                AppendFormatLine("GO Miss Reason {0}: {1}", i, missReason);
                 if (missReason == 11) // reflect
                 {
-                    sb.AppendFormat("GO Reflect Reason {0}: {1}", i, br.ReadByte()).AppendLine();
+                    AppendFormatLine("GO Reflect Reason {0}: {1}", i, br.ReadByte());
                 }
             }
         }

@@ -15,54 +15,49 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var sb = new StringBuilder();
-            sb.AppendFormat("GUID: {0:X16}", gr.ReadUInt64()).AppendLine();
+            AppendFormatLine("GUID: {0:X16}", gr.ReadUInt64());
 
-            sb.AppendFormat("Pet family: {0}", gr.ReadUInt32()).AppendLine();
+            AppendFormatLine("Pet family: {0}", gr.ReadUInt32());
 
             var unk1 = gr.ReadUInt32();
             var unk2 = gr.ReadUInt32();
-            sb.AppendFormat("Unk1: {0}, Unk2: {1:X8}", unk1, unk2).AppendLine();
+            AppendFormatLine("Unk1: {0}, Unk2: {1:X8}", unk1, unk2);
 
             for (ushort i = 0; i < 10; ++i)
             {
                 var spellOrAction = gr.ReadUInt16();
                 var type = gr.ReadUInt16();
 
-                sb.AppendFormat("SpellOrAction: id {0}, type {1:X4}", spellOrAction, type).AppendLine();
+                AppendFormatLine("SpellOrAction: id {0}, type {1:X4}", spellOrAction, type);
             }
 
             var spellsCount = gr.ReadByte();
-            sb.AppendFormat("Spells count: {0}", spellsCount).AppendLine();
+            AppendFormatLine("Spells count: {0}", spellsCount);
 
             for (ushort i = 0; i < spellsCount; ++i)
             {
                 var spellId = gr.ReadUInt16();
                 var active = gr.ReadUInt16();
 
-                sb.AppendFormat("Spell {0}, active {1:X4}", spellId, active).AppendLine();
+                AppendFormatLine("Spell {0}, active {1:X4}", spellId, active);
             }
 
             var cooldownsCount = gr.ReadByte();
-            sb.AppendFormat("Cooldowns count: {0}", cooldownsCount).AppendLine();
+            AppendFormatLine("Cooldowns count: {0}", cooldownsCount);
 
             for (byte i = 0; i < cooldownsCount; ++i)
             {
-                var spell = gr.ReadUInt16();
+                var spell = gr.ReadUInt32();
                 var category = gr.ReadUInt16();
                 var cooldown = gr.ReadUInt32();
                 var categoryCooldown = gr.ReadUInt32();
 
-                sb.AppendFormat("Cooldown: spell {0}, category {1}, cooldown {2}, categoryCooldown {3}", spell, category, cooldown,
-                                            categoryCooldown).AppendLine();
+                AppendFormatLine("Cooldown: spell {0}, category {1}, cooldown {2}, categoryCooldown {3}", spell, category, cooldown, categoryCooldown);
             }
 
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
-            {
-                throw new Exception("Packet structure changed!");
-            }
+            CheckPacket(gr);
 
-            return sb.ToString();
+            return GetParsedString();
         }
     }
 }

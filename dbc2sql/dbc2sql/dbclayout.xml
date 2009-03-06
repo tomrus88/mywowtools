@@ -5,116 +5,116 @@
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_3 type="int" name="icon"/>
-    <field_5 type="float" name="pos_x"/>
-    <field_6 type="float" name="pos_y"/>
-    <field_7 type="float" name="pos_z"/>
-    <field_8 type="int" name="map"/>
-    <field_10 type="int" name="area"/>
-    <field_11 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="int" name="icon"/>
+    <field type="float" name="pos_x"/>
+    <field type="float" name="pos_y"/>
+    <field type="float" name="pos_z"/>
+    <field type="int" name="map"/>
+    <field type="int" name="area"/>
+    <field type="string" name="name"/>
   </AreaPOI>
   <AreaTable>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="map"/>
-    <field_3 type="int" name="parent"/>
-    <field_12 type="string" name="name"/>
-    <field_21 type="int" name="territory"/>
+    <field type="int" name="id"/>
+    <field type="int" name="map"/>
+    <field type="int" name="parent"/>
+    <field type="string" name="name"/>
+    <field type="int" name="territory"/>
   </AreaTable>
   <Faction>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="gain"/>
-    <field_4 type="int" name="type"/>
-    <field_19 type="int" name="parent"/>
-    <field_20 type="string" name="name"/>
-    <field_29 type="string" name="description"/>
+    <field type="int" name="id"/>
+    <field type="int" name="gain"/>
+    <field type="int" name="type"/>
+    <field type="int" name="parent"/>
+    <field type="string" name="name"/>
+    <field type="string" name="description"/>
   </Faction>
   <ItemDisplayInfo>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" index="primary" name="id"/>
-    <field_6 type="string" name="icon"/>
+    <field type="int" index="primary" name="id"/>
+    <field type="string" name="icon"/>
   </ItemDisplayInfo>
   <ItemSet>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
-    <field_11 type="int" name="item_1"/>
-    <field_12 type="int" name="item_2"/>
-    <field_13 type="int" name="item_3"/>
-    <field_14 type="int" name="item_4"/>
-    <field_15 type="int" name="item_5"/>
-    <field_16 type="int" name="item_6"/>
-    <field_17 type="int" name="item_7"/>
-    <field_18 type="int" name="item_8"/>
-    <field_28 type="int" name="bonus_1"/>
-    <field_29 type="int" name="bonus_2"/>
-    <field_30 type="int" name="bonus_3"/>
-    <field_31 type="int" name="bonus_4"/>
-    <field_32 type="int" name="bonus_5"/>
-    <field_33 type="int" name="bonus_6"/>
-    <field_34 type="int" name="bonus_7"/>
-    <field_35 type="int" name="bonus_8"/>
-    <field_36 type="int" name="pieces_1"/>
-    <field_37 type="int" name="pieces_2"/>
-    <field_38 type="int" name="pieces_3"/>
-    <field_39 type="int" name="pieces_4"/>
-    <field_40 type="int" name="pieces_5"/>
-    <field_41 type="int" name="pieces_6"/>
-    <field_42 type="int" name="pieces_7"/>
-    <field_43 type="int" name="pieces_8"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
+    <field type="int" name="item_1"/>
+    <field type="int" name="item_2"/>
+    <field type="int" name="item_3"/>
+    <field type="int" name="item_4"/>
+    <field type="int" name="item_5"/>
+    <field type="int" name="item_6"/>
+    <field type="int" name="item_7"/>
+    <field type="int" name="item_8"/>
+    <field type="int" name="bonus_1"/>
+    <field type="int" name="bonus_2"/>
+    <field type="int" name="bonus_3"/>
+    <field type="int" name="bonus_4"/>
+    <field type="int" name="bonus_5"/>
+    <field type="int" name="bonus_6"/>
+    <field type="int" name="bonus_7"/>
+    <field type="int" name="bonus_8"/>
+    <field type="int" name="pieces_1"/>
+    <field type="int" name="pieces_2"/>
+    <field type="int" name="pieces_3"/>
+    <field type="int" name="pieces_4"/>
+    <field type="int" name="pieces_5"/>
+    <field type="int" name="pieces_6"/>
+    <field type="int" name="pieces_7"/>
+    <field type="int" name="pieces_8"/>
   </ItemSet>
   <Languages>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </Languages>
   <Map>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="iname"/>
-    <field_3 type="int" name="type"/>
-    <field_5 type="string" name="name"/>
-    <field_14 type="int" name="level_min"/>
-    <field_15 type="int" name="level_max"/>
-    <field_16 type="int" name="players_max"/>
+    <field type="int" name="id"/>
+    <field type="string" name="iname"/>
+    <field type="int" name="type"/>
+    <field type="string" name="name"/>
+    <field type="int" name="level_min"/>
+    <field type="int" name="level_max"/>
+    <field type="int" name="players_max"/>
   </Map>
   <QuestInfo>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </QuestInfo>
   <QuestSort>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </QuestSort>
   <SkillLine>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="category"/>
-    <field_4 type="string" name="name"/>
-    <field_13 type="string" name="description"/>
-    <field_22 type="int" name="ref_icon"/>
+    <field type="int" name="id"/>
+    <field type="int" name="category"/>
+    <field type="string" name="name"/>
+    <field type="string" name="description"/>
+    <field type="int" name="ref_icon"/>
   </SkillLine>
   <Spell>
     <index>
@@ -351,58 +351,59 @@
     <field type="int" name="m_schoolMask"/>
     <field type="int" name="m_runeCostID"/>
     <field type="int" name="m_spellMissileID"/>
+    <field type="int" name="m_powerDisplayID"/>
   </Spell>
   <SpellAuraNames>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_3 type="string" name="name"/>
-    <field_4 type="string" name="description"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
+    <field type="string" name="description"/>
   </SpellAuraNames>
   <SpellCastTimes>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="ms_max"/>
-    <field_3 type="int" name="ms_mod"/>
-    <field_4 type="int" name="ms_min"/>
+    <field type="int" name="id"/>
+    <field type="int" name="ms_max"/>
+    <field type="int" name="ms_mod"/>
+    <field type="int" name="ms_min"/>
   </SpellCastTimes>
   <SpellDispelType>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </SpellDispelType>
   <SpellDuration>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="ms_base"/>
+    <field type="int" name="id"/>
+    <field type="int" name="ms_base"/>
   </SpellDuration>
   <SpellEffectNames>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </SpellEffectNames>
   <SpellFocusObject>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </SpellFocusObject>
   <SpellIcon>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="string" name="icon"/>
+    <field type="int" name="id"/>
+    <field type="string" name="icon"/>
   </SpellIcon>
   <SpellItemEnchantmentCondition>
     <index>
@@ -444,57 +445,57 @@
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="float" name="yards"/>
+    <field type="int" name="id"/>
+    <field type="float" name="yards"/>
   </SpellRadius>
   <SpellRange>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="float" name="yards_min"/>
-    <field_3 type="float" name="yards_max"/>
-    <field_5 type="string" name="description"/>
-    <field_14 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="float" name="yards_min"/>
+    <field type="float" name="yards_max"/>
+    <field type="string" name="description"/>
+    <field type="string" name="name"/>
   </SpellRange>
   <SpellShapeshiftForm>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_3 type="string" name="name"/>
+    <field type="int" name="id"/>
+    <field type="string" name="name"/>
   </SpellShapeshiftForm>
   <WorldMapArea>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="map"/>
-    <field_3 type="int" name="area"/>
-    <field_4 type="string" name="name"/>
-    <field_5 type="float" name="y_min"/>
-    <field_6 type="float" name="y_max"/>
-    <field_7 type="float" name="x_min"/>
-    <field_8 type="float" name="x_max"/>
+    <field type="int" name="id"/>
+    <field type="int" name="map"/>
+    <field type="int" name="area"/>
+    <field type="string" name="name"/>
+    <field type="float" name="y_min"/>
+    <field type="float" name="y_max"/>
+    <field type="float" name="x_min"/>
+    <field type="float" name="x_max"/>
   </WorldMapArea>
   <WorldMapContinent>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="area"/>
+    <field type="int" name="id"/>
+    <field type="int" name="area"/>
   </WorldMapContinent>
   <WorldMapOverlay>
     <index>
       <primary>id</primary>
     </index>
-    <field_1 type="int" name="id"/>
-    <field_2 type="int" name="zone"/>
-    <field_3 type="int" name="area"/>
-    <field_9 type="string" name="name"/>
-    <field_10 type="int" name="width"/>
-    <field_11 type="int" name="height"/>
-    <field_12 type="int" name="pos_x"/>
-    <field_13 type="int" name="pos_y"/>
+    <field type="int" name="id"/>
+    <field type="int" name="zone"/>
+    <field type="int" name="area"/>
+    <field type="string" name="name"/>
+    <field type="int" name="width"/>
+    <field type="int" name="height"/>
+    <field type="int" name="pos_x"/>
+    <field type="int" name="pos_y"/>
   </WorldMapOverlay>
 </DBFilesClient>
