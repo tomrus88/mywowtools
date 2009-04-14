@@ -17,7 +17,7 @@ namespace WoWReader
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public string GetCoordsAsString()
+        public override string ToString()
         {
             string coords = String.Empty;
 
@@ -43,7 +43,7 @@ namespace WoWReader
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public string GetCoordsAsString()
+        public override string ToString()
         {
             string coords = String.Empty;
 
