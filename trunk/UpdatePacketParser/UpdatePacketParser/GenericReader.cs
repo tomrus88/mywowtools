@@ -17,17 +17,9 @@ namespace WoWReader
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public override string ToString()
-        {
-            string coords = String.Empty;
-
-            coords += X.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Y.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Z.ToString(CultureInfo.InvariantCulture);
-
-            return coords;
+		  public override string ToString() 
+		  {
+        	    return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", X, Y, Z);
         }
     }
     #endregion
@@ -45,18 +37,8 @@ namespace WoWReader
         /// </summary>
         public override string ToString()
         {
-            string coords = String.Empty;
-
-            coords += X.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Y.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Z.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += O.ToString(CultureInfo.InvariantCulture);
-
-            return coords;
-        }
+        	   return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", X, Y, Z, O);
+		  }
     }
     #endregion
 
