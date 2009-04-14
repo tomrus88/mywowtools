@@ -510,7 +510,7 @@ namespace UpdatePacketParser
                 ulong guid = pair.Key;
                 ObjectTypes type = pair.Value.TypeId;
 
-                string final = String.Format("{0} {1}", guid.ToString("X16"), type);
+                string final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
@@ -544,7 +544,7 @@ namespace UpdatePacketParser
                 ulong guid = pair.Key;
                 ObjectTypes type = pair.Value.TypeId;
 
-                string final = String.Format("{0} {1}", guid.ToString("X16"), type);
+                string final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
@@ -609,17 +609,17 @@ namespace UpdatePacketParser
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Movement Flags: {0}", mInfo.m_movementFlags));
-                strings.Add(String.Format("Unknown Flags: {0}", mInfo.m_unknown1.ToString("X4")));
-                strings.Add(String.Format("Timestamp: {0}", mInfo.m_timeStamp.ToString("X8")));
+                strings.Add(String.Format("Unknown Flags: {0:X4}", mInfo.m_unknown1));
+                strings.Add(String.Format("Timestamp: {0:X8}", mInfo.m_timeStamp));
 
                 strings.Add(String.Format("Position: {0}", mInfo.m_position));
 
                 if ((mInfo.m_movementFlags & MovementFlags.MOVEMENTFLAG_ONTRANSPORT) != MovementFlags.MOVEMENTFLAG_NONE)
                 {
-                    strings.Add(String.Format("Transport GUID: {0}", mInfo.m_transportInfo.m_transportGuid.ToString("X16")));
+                    strings.Add(String.Format("Transport GUID: {0:X16}", mInfo.m_transportInfo.m_transportGuid));
                     strings.Add(String.Format("Transport POS: {0}", mInfo.m_transportInfo.m_transportPos));
-                    strings.Add(String.Format("Transport Time: {0}", mInfo.m_transportInfo.m_transportTime.ToString("X8")));
-                    strings.Add(String.Format("Transport Seat: {0}", mInfo.m_transportInfo.m_transportSeat.ToString("X2")));
+                    strings.Add(String.Format("Transport Time: {0:X8}", mInfo.m_transportInfo.m_transportTime));
+                    strings.Add(String.Format("Transport Seat: {0:X2}", mInfo.m_transportInfo.m_transportSeat));
                 }
 
                 if (((mInfo.m_movementFlags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != MovementFlags.MOVEMENTFLAG_NONE) || ((mInfo.m_unknown1 & 0x20) != 0))
@@ -627,7 +627,7 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Swimming Pitch: {0}", mInfo.m_swimPitch));
                 }
 
-                strings.Add(String.Format("Fall Time: {0}", mInfo.m_fallTime.ToString("X8")));
+                strings.Add(String.Format("Fall Time: {0:X8}", mInfo.m_fallTime));
 
                 if ((mInfo.m_movementFlags & MovementFlags.MOVEMENTFLAG_JUMPING) != MovementFlags.MOVEMENTFLAG_NONE)
                 {
@@ -656,7 +656,7 @@ namespace UpdatePacketParser
 
                     if ((mInfo.m_splineInfo.m_splineFlags & SplineFlags.TARGET) != SplineFlags.NONE)
                     {
-                        strings.Add(String.Format("Spline GUID: {0}", mInfo.m_splineInfo.m_splineGuid.ToString("X16")));
+                        strings.Add(String.Format("Spline GUID: {0:X16}", mInfo.m_splineInfo.m_splineGuid));
                     }
 
                     if ((mInfo.m_splineInfo.m_splineFlags & SplineFlags.ORIENT) != SplineFlags.NONE)
@@ -664,27 +664,27 @@ namespace UpdatePacketParser
                         strings.Add(String.Format("Spline Orient: {0}", mInfo.m_splineInfo.m_splineRotation));
                     }
 
-                    strings.Add(String.Format("Spline byte1: {0}", mInfo.m_splineInfo.m_unk1.ToString("X2")));
-                    strings.Add(String.Format("Spline byte2: {0}", mInfo.m_splineInfo.m_unk2.ToString("X2")));
+                    strings.Add(String.Format("Spline byte1: {0:X2}", mInfo.m_splineInfo.m_unk1));
+                    strings.Add(String.Format("Spline byte2: {0:X2}", mInfo.m_splineInfo.m_unk2));
 
-                    strings.Add(String.Format("Spline CurrTime: {0}", mInfo.m_splineInfo.m_splineCurTime.ToString("X8")));
-                    strings.Add(String.Format("Spline FullTime: {0}", mInfo.m_splineInfo.m_splineFullTime.ToString("X8")));
-                    strings.Add(String.Format("Spline Unk: {0}", mInfo.m_splineInfo.m_splineUnk1.ToString("X8")));
+                    strings.Add(String.Format("Spline CurrTime: {0:X8}", mInfo.m_splineInfo.m_splineCurTime));
+                    strings.Add(String.Format("Spline FullTime: {0:X8}", mInfo.m_splineInfo.m_splineFullTime));
+                    strings.Add(String.Format("Spline Unk: {0:X8}", mInfo.m_splineInfo.m_splineUnk1));
 
                     strings.Add(String.Format("Spline float1: {0}", mInfo.m_splineInfo.m_uf1));
                     strings.Add(String.Format("Spline float2: {0}", mInfo.m_splineInfo.m_uf2));
                     strings.Add(String.Format("Spline float3: {0}", mInfo.m_splineInfo.m_uf3));
 
-                    strings.Add(String.Format("Spline uint1: {0}", mInfo.m_splineInfo.m_ui1.ToString("X8")));
+                    strings.Add(String.Format("Spline uint1: {0:X8}", mInfo.m_splineInfo.m_ui1));
 
-                    strings.Add(String.Format("Spline Count: {0}", mInfo.m_splineInfo.m_splineCount.ToString("X8")));
+                    strings.Add(String.Format("Spline Count: {0:X8}", mInfo.m_splineInfo.m_splineCount));
 
                     for (uint i = 0; i < mInfo.m_splineInfo.m_splineCount; ++i)
                     {
                         strings.Add(String.Format("Splines_{0}: {1}", i, mInfo.m_splineInfo.m_splines[(int)i]));
                     }
 
-                    strings.Add(String.Format("Spline byte3: {0}", mInfo.m_splineInfo.m_unk3.ToString("X2")));
+                    strings.Add(String.Format("Spline byte3: {0:X2}", mInfo.m_splineInfo.m_unk3));
 
                     strings.Add(String.Format("Spline End Point: {0}", mInfo.m_splineInfo.m_splineEndPoint));
                 }
@@ -693,7 +693,7 @@ namespace UpdatePacketParser
             {
                 if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK1) != UpdateFlags.UPDATEFLAG_NONE)
                 {
-                    strings.Add(String.Format("GUID 0x100: {0}", mInfo.m_0x100_guid.ToString("X16")));
+                    strings.Add(String.Format("GUID 0x100: {0:X16}", mInfo.m_0x100_guid));
                     strings.Add(String.Format("Position 0x100: {0}", mInfo.m_0x100_pos));
                     strings.Add(String.Format("Position2 0x100: {0}", mInfo.m_0x100_pos2));
                     strings.Add(String.Format("Unkf 0x100: {0}", mInfo.m_0x100_unkf));
@@ -709,33 +709,33 @@ namespace UpdatePacketParser
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_LOWGUID) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Low GUID: {0}", mInfo.m_lowGuid.ToString("X8")));
+                strings.Add(String.Format("Low GUID: {0:X8}", mInfo.m_lowGuid));
             }
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_HIGHGUID) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("High GUID: {0}", mInfo.m_highGuid.ToString("X8")));
+                strings.Add(String.Format("High GUID: {0:X8}", mInfo.m_highGuid));
             }
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_TARGET_GUID) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Target GUID: {0}", mInfo.m_fullGuid.ToString("X16")));
+                strings.Add(String.Format("Target GUID: {0:X16}", mInfo.m_fullGuid));
             }
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_TRANSPORT) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Transport Time: {0}", mInfo.m_transportTime.ToString("X8")));
+                strings.Add(String.Format("Transport Time: {0:X8}", mInfo.m_transportTime));
             }
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Vehicle Id: {0}", mInfo.m_vehicleId.ToString("X8")));
+                strings.Add(String.Format("Vehicle Id: {0:X8}", mInfo.m_vehicleId));
                 strings.Add(String.Format("Facing Adjustement: {0}", mInfo.m_facingAdjustement));
             }
 
             if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK2) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("0x200 guid: {0}", mInfo.m_0x200_guid.ToString("X16")));
+                strings.Add(String.Format("0x200 guid: {0:X16}", mInfo.m_0x200_guid));
             }
 
             richTextBox.Lines = strings.ToArray();

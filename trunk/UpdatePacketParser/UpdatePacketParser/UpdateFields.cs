@@ -245,7 +245,7 @@ namespace UpdateFields
         {
             ClearUpdateFields();
 
-            string file = String.Format(Application.StartupPath + "\\" + "updatefields\\{0}.dat", build.ToString("D4"));
+            string file = String.Format(Application.StartupPath + "\\" + "updatefields\\{0:D4}.dat", build);
             FieldType type = FieldType.FIELD_TYPE_NONE;
             StreamReader sr = new StreamReader(file);
             while (sr.Peek() >= 0)
