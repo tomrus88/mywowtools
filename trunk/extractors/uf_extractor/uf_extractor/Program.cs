@@ -208,22 +208,21 @@ namespace uf_extractor
 
             string old_s = String.Empty;
             string s = String.Empty;
-            uint p1, p2, p3, p4, p5;
 
-            gr.BaseStream.Position = start_ofs;
+        	gr.BaseStream.Position = start_ofs;
 
             do
             {
-                p1 = gr.ReadUInt32();
+                uint p1 = gr.ReadUInt32();
 
                 if (p1 < 0x9999)
                 {
                     p1 = gr.ReadUInt32();
                 }
-                p2 = gr.ReadUInt32();
-                p3 = gr.ReadUInt32();
-                p4 = gr.ReadUInt32();
-                p5 = gr.ReadUInt32();
+                uint p2 = gr.ReadUInt32();
+                uint p3 = gr.ReadUInt32();
+                uint p4 = gr.ReadUInt32();
+                uint p5 = gr.ReadUInt32();
 
                 str_ofs = p1 - str_ofs_delta;
 
