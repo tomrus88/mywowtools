@@ -48,7 +48,10 @@ namespace WoWPacketViewer
         public static void CheckPacket(BinaryReader gr)
         {
             if (gr.BaseStream.Position != gr.BaseStream.Length)
-                MessageBox.Show("Packet structure changed!");
+            {
+                string msg = String.Format("Packet size changed, should be {0} instead of {1}", gr.BaseStream.Position, gr.BaseStream.Length);
+                MessageBox.Show(msg);
+            }
         }
 
         static Parser()

@@ -31,7 +31,7 @@ namespace WoWPacketViewer
                         var opcode = (OpCodes)reader.GetInt16(1);
                         var data = (byte[])reader.GetValue(2);
 
-                        m_packets.Add(new Packet(direction, opcode, data));
+                        m_packets.Add(new Packet(direction, opcode, data, 0, 0));
                     }
                     catch { }
                 }

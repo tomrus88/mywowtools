@@ -86,9 +86,10 @@ namespace WdbParser
             byte[] locale = reader.ReadBytes(4);
             uint unk1 = reader.ReadUInt32();
             uint unk2 = reader.ReadUInt32();
+            uint unk3 = reader.ReadUInt32();
 
             Console.WriteLine("Signature: {0}, build {1}, locale {2}", Encoding.ASCII.GetString(sig.Reverse().ToArray()), build, Encoding.ASCII.GetString(locale.Reverse().ToArray()));
-            Console.WriteLine("unk1 {0}, unk2 {1}", unk1, unk2);
+            Console.WriteLine("unk1 {0}, unk2 {1}, unk3 {2}", unk1, unk2, unk3);
 
             /*while (reader.BaseStream.Position != reader.BaseStream.Length)
             {

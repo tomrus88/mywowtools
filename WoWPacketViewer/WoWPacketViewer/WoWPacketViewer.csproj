@@ -35,7 +35,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -70,6 +73,8 @@
     <Compile Include="Parsers\AuraUpdateParser.cs" />
     <Compile Include="Parsers\EquipmentSetsParser.cs" />
     <Compile Include="Parsers\InitialSpellsParser.cs" />
+    <Compile Include="Parsers\InspectParser.cs" />
+    <Compile Include="Parsers\LFGParser.cs" />
     <Compile Include="Parsers\MonsterMoveParser.cs" />
     <Compile Include="Parsers\PetSpellsParser.cs" />
     <Compile Include="Parsers\PowerUpdateParser.cs" />

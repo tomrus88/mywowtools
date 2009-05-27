@@ -17,7 +17,7 @@ namespace WoWPacketViewer
                                           ? Direction.Server
                                           : Direction.Client;
                 var opcode = (OpCodes)(uint)packet.Attribute("opcode");
-                m_packets.Add(new Packet(direction, opcode, Utility.HexStringToBinary(packet.Value)));
+                m_packets.Add(new Packet(direction, opcode, Utility.HexStringToBinary(packet.Value), 0, 0));
             }
             return m_packets.Count;
         }

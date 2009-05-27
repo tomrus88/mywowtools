@@ -25,19 +25,22 @@ namespace go_types
         //long GO_TYPE_INFO_START = 0x4F0A70;
         //long GO_TYPE_INFO_START = 0x4A9B60;
         //long GO_TYPE_INFO_START = 0x5BAB18; // 3.0.3.9095
-        long GO_TYPE_INFO_START = 0x56EF18; // 3.0.3.9183
+        //long GO_TYPE_INFO_START = 0x56EF18; // 3.0.3.9183
+        long GO_TYPE_INFO_START = 0x5DF1F0; // 3.1.2.9855
         //long OFFSET = 0x401400;
         //long OFFSET = 0x401200;
         //long OFFSET = 0x401000; // 3.0.3.9095
-        long OFFSET = 0x401A00; // 3.0.3.9183 string offset
+        //long OFFSET = 0x401A00; // 3.0.3.9183 string offset
+        long OFFSET = 0x401400; // 3.1.2.9855 string offset
         //long OFFSET2 = 0x401800;
-        long OFFSET2 = 0x402000; // 3.0.3.9183 data offset
-        //long OFFSET2 = 0x401400;
+        //long OFFSET2 = 0x402000; // 3.0.3.9183 data offset
+        long OFFSET2 = 0x401400;
         //long OFFSET2 = 0x401800; // 3.0.3.9095
         //long GO_DATA_INFO_START = 0x4EF9C8;
         //long GO_DATA_INFO_START = 0x4A8AB8; // 2.4.2.8125
         //long GO_DATA_INFO_START = 0x5B9748; // 3.0.3.9095
-        long GO_DATA_INFO_START = 0x56DB48; // 3.0.3.9183
+        //long GO_DATA_INFO_START = 0x56DB48; // 3.0.3.9183
+        long GO_DATA_INFO_START = 0x5DDE60; // 3.1.2.9855
 
         GenericReader gr;
         List<GameObjectTypeInfo> m_GoTypes = new List<GameObjectTypeInfo>();
@@ -75,7 +78,7 @@ namespace go_types
 
             gr.BaseStream.Position = GO_DATA_INFO_START;
 
-            for (int i = 0; i < 123; ++i)
+            for (int i = 0; i < 128; ++i)
             {
                 GameObjectDataNameInfo info = gr.ReadStruct<GameObjectDataNameInfo>();
                 m_GoDataNames.Add(info);
@@ -126,7 +129,8 @@ namespace go_types
 
                 for (int j = 0; j < m_GoTypes[i].DataCount; ++j)
                 {
-                    gr.BaseStream.Position = m_GoDataNames[m_GoData[i][j]].NameOffset - OFFSET;
+                    int idx = m_GoData[i][j];
+                    gr.BaseStream.Position = m_GoDataNames[idx].NameOffset - OFFSET;
                     string dataname = gr.ReadStringNull();
                     sw.WriteLine("    //" + dataname);
                 }

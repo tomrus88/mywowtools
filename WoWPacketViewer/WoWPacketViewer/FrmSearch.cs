@@ -36,6 +36,7 @@ namespace WoWPacketViewer
             {
                 e.Cancel = true;
                 Hide();
+                Owner.Activate();
             }
         }
     }

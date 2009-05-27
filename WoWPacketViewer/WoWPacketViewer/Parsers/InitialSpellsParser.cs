@@ -20,7 +20,7 @@ namespace WoWPacketViewer.Parsers
             var spellsCount = gr.ReadUInt16();
             AppendFormatLine("Spells count: {0}", spellsCount);
 
-            for (ushort i = 0; i < spellsCount; ++i)
+            for (var i = 0; i < spellsCount; ++i)
             {
                 var spellId = gr.ReadUInt32();
                 var spellSlot = gr.ReadUInt16();
@@ -31,7 +31,7 @@ namespace WoWPacketViewer.Parsers
             var cooldownsCount = gr.ReadUInt16();
             AppendFormatLine("Cooldowns count: {0}", cooldownsCount);
 
-            for (ushort i = 0; i < cooldownsCount; ++i)
+            for (var i = 0; i < cooldownsCount; ++i)
             {
                 var spellId = gr.ReadUInt32();
                 var itemId = gr.ReadUInt16();

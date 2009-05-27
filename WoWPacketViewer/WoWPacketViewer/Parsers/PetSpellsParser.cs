@@ -15,44 +15,48 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            AppendFormatLine("GUID: {0:X16}", gr.ReadUInt64());
+            var petGUID = gr.ReadUInt64();
+            AppendFormatLine("GUID: {0:X16}", petGUID);
 
-            AppendFormatLine("Pet family: {0}", gr.ReadUInt32());
-
-            var unk1 = gr.ReadUInt32();
-            var unk2 = gr.ReadUInt32();
-            AppendFormatLine("Unk1: {0}, Unk2: {1:X8}", unk1, unk2);
-
-            for (ushort i = 0; i < 10; ++i)
+            if(petGUID != 0)
             {
-                var spellOrAction = gr.ReadUInt16();
-                var type = gr.ReadUInt16();
+                AppendFormatLine("Pet family: {0}", gr.ReadUInt16());
 
-                AppendFormatLine("SpellOrAction: id {0}, type {1:X4}", spellOrAction, type);
-            }
+                var unk1 = gr.ReadUInt32();
+                var unk2 = gr.ReadUInt32();
+                AppendFormatLine("Unk1: {0}, Unk2: {1:X8}", unk1, unk2);
 
-            var spellsCount = gr.ReadByte();
-            AppendFormatLine("Spells count: {0}", spellsCount);
+                for (var i = 0; i < 10; ++i)
+                {
+                    var spellOrAction = gr.ReadUInt16();
+                    var type = gr.ReadUInt16();
 
-            for (ushort i = 0; i < spellsCount; ++i)
-            {
-                var spellId = gr.ReadUInt16();
-                var active = gr.ReadUInt16();
+                    AppendFormatLine("SpellOrAction: id {0}, type {1:X4}", spellOrAction, type);
+                }
 
-                AppendFormatLine("Spell {0}, active {1:X4}", spellId, active);
-            }
+                var spellsCount = gr.ReadByte();
+                AppendFormatLine("Spells count: {0}", spellsCount);
 
-            var cooldownsCount = gr.ReadByte();
-            AppendFormatLine("Cooldowns count: {0}", cooldownsCount);
+                for (var i = 0; i < spellsCount; ++i)
+                {
+                    var spellId = gr.ReadUInt16();
+                    var active = gr.ReadUInt16();
 
-            for (byte i = 0; i < cooldownsCount; ++i)
-            {
-                var spell = gr.ReadUInt32();
-                var category = gr.ReadUInt16();
-                var cooldown = gr.ReadUInt32();
-                var categoryCooldown = gr.ReadUInt32();
+                    AppendFormatLine("Spell {0}, active {1:X4}", spellId, active);
+                }
 
-                AppendFormatLine("Cooldown: spell {0}, category {1}, cooldown {2}, categoryCooldown {3}", spell, category, cooldown, categoryCooldown);
+                var cooldownsCount = gr.ReadByte();
+                AppendFormatLine("Cooldowns count: {0}", cooldownsCount);
+
+                for (var i = 0; i < cooldownsCount; ++i)
+                {
+                    var spell = gr.ReadUInt32();
+                    var category = gr.ReadUInt16();
+                    var cooldown = gr.ReadUInt32();
+                    var categoryCooldown = gr.ReadUInt32();
+
+                    AppendFormatLine("Cooldown: spell {0}, category {1}, cooldown {2}, categoryCooldown {3}", spell, category, cooldown, categoryCooldown);
+                }
             }
 
             CheckPacket(gr);

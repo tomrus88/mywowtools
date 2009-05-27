@@ -78,8 +78,8 @@ namespace WoWPacketViewer
             foreach (var p in m_packetViewer.Packets)
             {
                 AddPacket(p.Direction == Direction.Client
-                                ? new ListViewItem(new[] { build.ToString(), p.Code.ToString(), string.Empty, p.Data.Length.ToString() })
-                                : new ListViewItem(new[] { build.ToString(), string.Empty, p.Code.ToString(), p.Data.Length.ToString() }));
+                                ? new ListViewItem(new[] { p.UnixTime.ToString("X8"), p.TicksCount.ToString("X8"), p.Code.ToString(), string.Empty, p.Data.Length.ToString() })
+                                : new ListViewItem(new[] { p.UnixTime.ToString("X8"), p.TicksCount.ToString("X8"), string.Empty, p.Code.ToString(), p.Data.Length.ToString() }));
                 ++i;
                 worker.ReportProgress((int)((i / (float)m_packetViewer.Packets.Count) * 100f));
             }
@@ -184,7 +184,7 @@ namespace WoWPacketViewer
             if (m_packetViewer != null)
             {
                 m_packetViewer.LoadData(file);
-                _statusLabel.Text = file;
+                //_statusLabel.Text = String.Format("Client Build: {0}", m_packetViewer.Build);
                 _backgroundWorker.RunWorkerAsync(m_packetViewer.Packets.Count);
             }
         }
@@ -240,7 +240,7 @@ namespace WoWPacketViewer
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _statusLabel.Text = "Done.";
+            _statusLabel.Text = String.Format("Done. Client Build: {0}", m_packetViewer.Build);
         }
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
