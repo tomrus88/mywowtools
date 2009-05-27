@@ -84,11 +84,11 @@ namespace UpdateFields
         /// <summary>
         /// Unknown, added in 3.1
         /// </summary>
-        UPDATEFLAG_UNK1 = 0x100,
+        UPDATEFLAG_GO_POSITION = 0x100,
         /// <summary>
         /// Unknown, added in 3.1
         /// </summary>
-        UPDATEFLAG_UNK2 = 0x200,
+        UPDATEFLAG_GO_ROTATION = 0x200,
     }
     #endregion
 

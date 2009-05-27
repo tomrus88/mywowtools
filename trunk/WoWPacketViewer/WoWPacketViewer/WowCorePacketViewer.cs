@@ -12,7 +12,7 @@ namespace WoWPacketViewer
             gr.ReadBytes(3); // PKT
             gr.ReadBytes(2); // 0x02, 0x02
             gr.ReadByte();      // 0x06
-            gr.ReadUInt16(); // build
+            Build = gr.ReadUInt16(); // build
             gr.ReadBytes(4);    // client locale
             gr.ReadBytes(20); // packet key
             gr.ReadBytes(64);   // realm name
@@ -28,7 +28,7 @@ namespace WoWPacketViewer
                                                 - ((direction == Direction.Client) ? 4 : 2)
                      );
 
-                m_packets.Add(new Packet(direction, opcode, data));
+                m_packets.Add(new Packet(direction, opcode, data, unixtime, tickcount));
             }
 
             gr.Close();

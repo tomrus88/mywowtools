@@ -20,10 +20,15 @@
     <wdbElement minver="7272" maxver="9999" name="modelid2" type="uinteger" />
     <wdbElement minver="7272" maxver="9999" name="modelid3" type="uinteger" />
     <wdbElement minver="7272" maxver="9999" name="modelid4" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk14" type="uinteger" />
     <wdbElement minver="6299" maxver="9999" name="wdb_Unk15" type="single" />        <!-- #15 unk15 UNKNOWN -->
     <wdbElement minver="6299" maxver="9999" name="wdb_Unk16" type="single" />        <!-- #16 unk16 UNKNOWN -->
-    <wdbElement minver="0" maxver="7359" name="Civilian" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
     <wdbElement minver="0" maxver="9999" name="RacialLeader" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_1" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_2" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_3" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_4" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="wdb_Unk18" type="uinteger" />
   </wdbId>
   <wdbId name="itemcache">
     <skipBytes numBytes="20" />
@@ -68,15 +73,6 @@
     <wdbElement minver="0" maxver="9999" name="dmg_min2" type="single" />      <!-- damage; consists of wdb_MinDamage2 wdb_MaxDamage12 wdb_DamageType2 -->
     <wdbElement minver="0" maxver="9999" name="dmg_max2" type="single" />      <!-- #53 -->
     <wdbElement minver="0" maxver="9999" name="dmg_type2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="dmg_min3" type="single" />      <!-- damage; consists of wdb_MinDamage3 wdb_MaxDamage3 wdb_DamageType3 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_max3" type="single" />      <!-- #56 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_type3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="dmg_min4" type="single" />      <!-- damage; consists of wdb_MinDamage4 wdb_MaxDamage4 wdb_DamageType4 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_max4" type="single" />      <!-- #59 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_type4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="dmg_min5" type="single" />      <!-- damage; consists of wdb_MinDamage5 wdb_MaxDamage5 wdb_DamageType5 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_max5" type="single" />
-    <wdbElement minver="0" maxver="9999" name="dmg_type5" type="uinteger" />      <!-- #63 -->
     <wdbElement minver="0" maxver="9999" name="armor" type="uinteger" />          <!-- #64 physical armor -->
     <wdbElement minver="0" maxver="9999" name="holy_res" type="uinteger" />       <!-- #65 -->
     <wdbElement minver="0" maxver="9999" name="fire_res" type="uinteger" />       <!-- #66 -->
@@ -147,6 +143,7 @@
     <wdbElement minver="0" maxver="9999" name="ArmorDamageModifier" type="single" />
     <wdbElement minver="0" maxver="9999" name="Duration" type="integer" />
     <wdbElement minver="0" maxver="9999" name="ItemLimitCategory" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="HolidayID" type="uinteger" />
   </wdbId>
   <wdbId name="questcache">
     <skipBytes numBytes="20" />
@@ -204,23 +201,25 @@
     <wdbElement minver="0" maxver="9999" name="EndText" type="varChar" /> <!-- #45 second_desc -->
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId1" type="integer" />    <!-- #46 Kill this mob, "kill" in SCP, only set if value is != 0 -->
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount1" type="uinteger" /> <!-- #47 Kill wdb_ReqKillMobOrGOId1 Mobs of type wdb_ReqKillMobOrGOCount1 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemId1" type="uinteger" />           <!-- #49 See itemcache.wdb, "deliver" in SCP, only set if value is != 0 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount1" type="uinteger" />        <!-- #49 Bring wdb_ReqItemCount1 items of type wdb_ReqItemId1 -->
     <wdbElement minver="8905" maxver="9999" name="ReqSourceId1" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId2" type="integer" />   <!-- #50 -->
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount2" type="uinteger" /><!-- #51 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemId2" type="uinteger" />          <!-- #52 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount2" type="uinteger" />       <!-- #53 -->
     <wdbElement minver="8905" maxver="9999" name="ReqSourceId2" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId3" type="integer" />
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount3" type="uinteger" /><!-- #55 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemId3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount3" type="uinteger" />
     <wdbElement minver="8905" maxver="9999" name="ReqSourceId3" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId4" type="integer" />
     <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount4" type="uinteger" /><!-- #59 -->
+    <wdbElement minver="0" maxver="9999" name="ReqItemId1" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemCount1" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemId2" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemCount2" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemId3" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemCount3" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="ReqItemId4" type="uinteger" />          <!-- #60 -->
     <wdbElement minver="0" maxver="9999" name="ReqItemCount4" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemId5" type="uinteger" />
+    <wdbElement minver="0" maxver="9999" name="ReqItemCount5" type="uinteger" />
     <wdbElement minver="8905" maxver="9999" name="ReqSourceId4" type="uinteger" />
     <wdbElement minver="0" maxver="9999" name="ObjectiveText1" type="varChar" /><!-- #60 If not killCreature1 or collectItem1 this is the objective if set -->
     <wdbElement minver="0" maxver="9999" name="ObjectiveText2" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
@@ -370,5 +369,9 @@
     <wdbElement minver="5595" maxver="9999" name="data22" type="uinteger" />
     <wdbElement minver="5595" maxver="9999" name="data23" type="uinteger" />
     <wdbElement minver="8606" maxver="9999" name="size" type="single" />
+    <wdbElement minver="5595" maxver="9999" name="unk1_1" type="uinteger" />
+    <wdbElement minver="5595" maxver="9999" name="unk1_2" type="uinteger" />
+    <wdbElement minver="5595" maxver="9999" name="unk1_3" type="uinteger" />
+    <wdbElement minver="5595" maxver="9999" name="unk1_4" type="uinteger" />
   </wdbId>
 </wdbDef>

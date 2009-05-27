@@ -20,13 +20,13 @@ namespace WoWPacketViewer.Parsers
             AppendFormatLine("Target: 0x{0:X16}", gr.ReadPackedGuid());
             AppendFormatLine("Pending Cast: {0}", gr.ReadByte());
             AppendFormatLine("Spell Id: {0}", gr.ReadUInt32());
-            SpellStartParser.CastFlags cf = (SpellStartParser.CastFlags)gr.ReadUInt32();
+            var cf = (SpellStartParser.CastFlags)gr.ReadUInt32();
             AppendFormatLine("Cast Flags: {0}", cf);
             AppendFormatLine("TicksCount: {0}", gr.ReadUInt32());
 
             readSpellGoTargets(gr);
 
-            SpellStartParser.TargetFlags tf = SpellStartParser.ReadTargets(gr);
+            var tf = SpellStartParser.ReadTargets(gr);
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_12) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
@@ -40,7 +40,7 @@ namespace WoWPacketViewer.Parsers
                 var v2 = gr.ReadByte();
                 AppendFormatLine("Cooldowns Now: {0}", (SpellStartParser.CooldownMask)v2);
 
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
                     var v3 = (i << i);
 
@@ -82,19 +82,19 @@ namespace WoWPacketViewer.Parsers
 
         public static void readSpellGoTargets(BinaryReader br)
         {
-            byte hitCount = br.ReadByte();
+            var hitCount = br.ReadByte();
 
-            for (byte i = 0; i < hitCount; ++i)
+            for (var i = 0; i < hitCount; ++i)
             {
                 AppendFormatLine("GO Hit Target {0}: 0x{0:X16}", i, br.ReadUInt64());
             }
 
-            byte missCount = br.ReadByte();
+            var missCount = br.ReadByte();
 
-            for (byte i = 0; i < missCount; ++i)
+            for (var i = 0; i < missCount; ++i)
             {
                 AppendFormatLine("GO Miss Target {0}: 0x{0:X16}", i, br.ReadUInt64());
-                byte missReason = br.ReadByte();
+                var missReason = br.ReadByte();
                 AppendFormatLine("GO Miss Reason {0}: {1}", i, missReason);
                 if (missReason == 11) // reflect
                 {

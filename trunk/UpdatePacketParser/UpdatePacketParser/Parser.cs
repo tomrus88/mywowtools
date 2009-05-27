@@ -41,16 +41,27 @@ namespace UpdatePacketParser
                 {
                     case 169:
                         ParseRest(gr);
+                        CheckPacket(gr);
                         break;
                     case 502:
                         Decompress(ref gr);
                         ParseRest(gr);
+                        CheckPacket(gr);
                         break;
                     default:
                         break;
                 }
+
+
                 gr.Close();
             }
+        }
+
+        private void CheckPacket(GenericReader gr)
+        {
+            if (gr.BaseStream.Position != gr.BaseStream.Length)
+                MessageBox.Show(String.Format("Packet parsing error, diff {0}", gr.BaseStream.Length - gr.BaseStream.Position));
+
         }
 
         private void ParseRest(GenericReader gr)
@@ -178,7 +189,7 @@ namespace UpdatePacketParser
 
                 if ((movementFlags & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
                 {
-                    SplineFlags sf = (SplineFlags)gr.ReadUInt16();
+                    SplineFlags sf = (SplineFlags)gr.ReadUInt32();
 
                     if ((sf & SplineFlags.POINT) != 0)
                     {
@@ -197,8 +208,8 @@ namespace UpdatePacketParser
                         float o2 = gr.ReadSingle();
                     }
 
-                    byte b1 = gr.ReadByte();
-                    byte b2 = gr.ReadByte();
+                    //byte b1 = gr.ReadByte();
+                    //byte b2 = gr.ReadByte();
 
                     uint cur_time = gr.ReadUInt32();
                     uint full_time = gr.ReadUInt32();
@@ -208,7 +219,7 @@ namespace UpdatePacketParser
                     float u2 = gr.ReadSingle();
                     float u3 = gr.ReadSingle();
 
-                    gr.ReadUInt32();
+                    uint u4 = gr.ReadUInt32();
 
                     uint count = gr.ReadUInt32();
 
@@ -229,7 +240,7 @@ namespace UpdatePacketParser
             else
             {
                 // 0x100
-                if ((updateflags & UpdateFlags.UPDATEFLAG_UNK1) != 0)
+                if ((updateflags & UpdateFlags.UPDATEFLAG_GO_POSITION) != 0)
                 {
                     gr.ReadPackedGuid();
                     gr.ReadCoords3();
@@ -277,7 +288,7 @@ namespace UpdatePacketParser
             }
 
             // 3.1
-            if ((updateflags & UpdateFlags.UPDATEFLAG_UNK2) != 0)
+            if ((updateflags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != 0)
             {
                 ulong unk1 = gr.ReadUInt64();
             }
@@ -339,7 +350,7 @@ namespace UpdatePacketParser
 
                 if ((movementInfo.m_movementFlags & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
                 {
-                    movementInfo.m_splineInfo.m_splineFlags = (SplineFlags)gr.ReadUInt16();
+                    movementInfo.m_splineInfo.m_splineFlags = (SplineFlags)gr.ReadUInt32();
 
                     if ((movementInfo.m_splineInfo.m_splineFlags & SplineFlags.POINT) != 0)
                     {
@@ -356,8 +367,8 @@ namespace UpdatePacketParser
                         movementInfo.m_splineInfo.m_splineRotation = gr.ReadSingle();
                     }
 
-                    movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
-                    movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
+                    //movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
+                    //movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
 
                     movementInfo.m_splineInfo.m_splineCurTime = gr.ReadUInt32();
                     movementInfo.m_splineInfo.m_splineFullTime = gr.ReadUInt32();
@@ -384,7 +395,7 @@ namespace UpdatePacketParser
             else
             {
                 // 0x100
-                if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK1) != 0)
+                if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_GO_POSITION) != 0)
                 {
                     movementInfo.m_0x100_guid = gr.ReadPackedGuid();
                     movementInfo.m_0x100_pos = gr.ReadCoords3();
@@ -427,7 +438,7 @@ namespace UpdatePacketParser
                 movementInfo.m_facingAdjustement = gr.ReadSingle();
             }
 
-            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK2) != 0)
+            if ((movementInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != 0)
             {
                 movementInfo.m_0x200_guid = gr.ReadUInt64();
             }
@@ -664,8 +675,8 @@ namespace UpdatePacketParser
                         strings.Add(String.Format("Spline Orient: {0}", mInfo.m_splineInfo.m_splineRotation));
                     }
 
-                    strings.Add(String.Format("Spline byte1: {0:X2}", mInfo.m_splineInfo.m_unk1));
-                    strings.Add(String.Format("Spline byte2: {0:X2}", mInfo.m_splineInfo.m_unk2));
+                    //strings.Add(String.Format("Spline byte1: {0}", mInfo.m_splineInfo.m_unk1.ToString("X2")));
+                    //strings.Add(String.Format("Spline byte2: {0}", mInfo.m_splineInfo.m_unk2.ToString("X2")));
 
                     strings.Add(String.Format("Spline CurrTime: {0:X8}", mInfo.m_splineInfo.m_splineCurTime));
                     strings.Add(String.Format("Spline FullTime: {0:X8}", mInfo.m_splineInfo.m_splineFullTime));
@@ -691,7 +702,7 @@ namespace UpdatePacketParser
             }
             else
             {
-                if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK1) != UpdateFlags.UPDATEFLAG_NONE)
+                if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_GO_POSITION) != UpdateFlags.UPDATEFLAG_NONE)
                 {
                     strings.Add(String.Format("GUID 0x100: {0:X16}", mInfo.m_0x100_guid));
                     strings.Add(String.Format("Position 0x100: {0}", mInfo.m_0x100_pos));
@@ -733,9 +744,9 @@ namespace UpdatePacketParser
                 strings.Add(String.Format("Facing Adjustement: {0}", mInfo.m_facingAdjustement));
             }
 
-            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_UNK2) != UpdateFlags.UPDATEFLAG_NONE)
+            if ((mInfo.m_updateFlags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("0x200 guid: {0:X16}", mInfo.m_0x200_guid));
+                strings.Add(String.Format("GO rotation: {0}", mInfo.m_0x200_guid.ToString("X16")));
             }
 
             richTextBox.Lines = strings.ToArray();

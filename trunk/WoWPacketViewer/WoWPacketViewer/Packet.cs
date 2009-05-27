@@ -12,11 +12,17 @@ namespace WoWPacketViewer
 
         public byte[] Data { get; private set; }
 
-        public Packet(Direction direction, OpCodes opcode, byte[] data)
+        public uint UnixTime { get; private set; }
+
+        public uint TicksCount { get; private set; }
+
+        public Packet(Direction direction, OpCodes opcode, byte[] data, uint unixtime, uint tickscount)
         {
             Direction = direction;
             Code = opcode;
             Data = data;
+            UnixTime = unixtime;
+            TicksCount = tickscount;
         }
 
         public virtual BinaryReader CreateReader()

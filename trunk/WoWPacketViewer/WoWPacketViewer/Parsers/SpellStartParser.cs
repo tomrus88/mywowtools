@@ -94,7 +94,7 @@ namespace WoWPacketViewer.Parsers
             AppendFormatLine("Target: 0x{0:X16}", gr.ReadPackedGuid());
             AppendFormatLine("Pending Cast: {0}", gr.ReadByte());
             AppendFormatLine("Spell Id: {0}", gr.ReadUInt32());
-            CastFlags cf = (CastFlags)gr.ReadUInt32();
+            var cf = (CastFlags)gr.ReadUInt32();
             AppendFormatLine("Cast Flags: {0}", cf);
             AppendFormatLine("Timer: {0}", gr.ReadUInt32());
 
@@ -112,7 +112,7 @@ namespace WoWPacketViewer.Parsers
                 var v2 = gr.ReadByte();
                 AppendFormatLine("RuneState Now: {0}", (CooldownMask)v2);
 
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
                     var v3 = (i << i);
 
@@ -139,7 +139,7 @@ namespace WoWPacketViewer.Parsers
 
         public static TargetFlags ReadTargets(BinaryReader br)
         {
-            TargetFlags tf = (TargetFlags)br.ReadUInt32();
+            var tf = (TargetFlags)br.ReadUInt32();
             AppendFormatLine("TargetFlags: {0}", tf);
 
             if ((tf & (TargetFlags.TARGET_FLAG_UNIT |

@@ -12,6 +12,14 @@ namespace WoWPacketViewer
             get { return m_packets; }
         }
 
+        protected uint m_build;
+
+        public uint Build
+        {
+            get { return m_build; }
+            set { m_build = value; }
+        }
+ 
         public abstract int LoadData(string file);
 
         public string ShowParsed(Packet pkt)

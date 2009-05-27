@@ -50,6 +50,7 @@
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -68,6 +69,7 @@
             this._list.BackColor = System.Drawing.SystemColors.WindowText;
             this._list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
+            this.columnHeader5,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
@@ -79,7 +81,7 @@
             this._list.Location = new System.Drawing.Point(3, 3);
             this._list.MultiSelect = false;
             this._list.Name = "_list";
-            this._list.Size = new System.Drawing.Size(872, 195);
+            this._list.Size = new System.Drawing.Size(884, 196);
             this._list.TabIndex = 0;
             this._list.UseCompatibleStateImageBehavior = false;
             this._list.View = System.Windows.Forms.View.Details;
@@ -87,21 +89,22 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Build";
-            this.columnHeader1.Width = 65;
+            this.columnHeader1.Text = "Time";
+            this.columnHeader1.Width = 70;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Client Opcode";
-            this.columnHeader2.Width = 350;
+            this.columnHeader2.Width = 320;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Server Opcode";
-            this.columnHeader3.Width = 350;
+            this.columnHeader3.Width = 320;
             // 
             // columnHeader4
             // 
+            this.columnHeader4.DisplayIndex = 4;
             this.columnHeader4.Text = "Packet Size";
             this.columnHeader4.Width = 100;
             // 
@@ -118,7 +121,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(481, 169);
+            this.textBox1.Size = new System.Drawing.Size(458, 170);
             this.textBox1.TabIndex = 1;
             // 
             // textBox2
@@ -134,7 +137,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(381, 169);
+            this.textBox2.Size = new System.Drawing.Size(416, 170);
             this.textBox2.TabIndex = 2;
             // 
             // menuStrip1
@@ -144,7 +147,7 @@
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(878, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(890, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -155,14 +158,14 @@
             this.saveAsTextToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenMenu_Click);
             // 
@@ -170,7 +173,7 @@
             // 
             this.saveAsTextToolStripMenuItem.Name = "saveAsTextToolStripMenuItem";
             this.saveAsTextToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveAsTextToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.saveAsTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.saveAsTextToolStripMenuItem.Text = "&Save As Text...";
             this.saveAsTextToolStripMenuItem.Click += new System.EventHandler(this.SaveMenu_Click);
             // 
@@ -178,7 +181,7 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitMenu_Click);
             // 
@@ -187,7 +190,7 @@
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // findToolStripMenuItem
@@ -195,7 +198,7 @@
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             this.findToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.findToolStripMenuItem.Text = "Find...";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.FindMenu_Click);
             // 
@@ -204,9 +207,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._statusLabel,
             this._progressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 406);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 408);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(878, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(890, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -214,7 +217,7 @@
             // 
             this._statusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this._statusLabel.Name = "_statusLabel";
-            this._statusLabel.Size = new System.Drawing.Size(39, 17);
+            this._statusLabel.Size = new System.Drawing.Size(38, 17);
             this._statusLabel.Text = "Ready";
             // 
             // _progressBar
@@ -240,8 +243,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(878, 376);
-            this.splitContainer1.SplitterDistance = 197;
+            this.splitContainer1.Size = new System.Drawing.Size(890, 378);
+            this.splitContainer1.SplitterDistance = 198;
             this.splitContainer1.TabIndex = 5;
             // 
             // splitContainer2
@@ -259,8 +262,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.textBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(878, 172);
-            this.splitContainer2.SplitterDistance = 487;
+            this.splitContainer2.Size = new System.Drawing.Size(890, 173);
+            this.splitContainer2.SplitterDistance = 464;
             this.splitContainer2.TabIndex = 3;
             // 
             // _openDialog
@@ -274,11 +277,16 @@
             this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             this._backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Ticks";
+            this.columnHeader5.Width = 70;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(878, 428);
+            this.ClientSize = new System.Drawing.Size(890, 430);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -328,5 +336,6 @@
         private System.Windows.Forms.SaveFileDialog _saveDialog;
         public System.Windows.Forms.ListView _list;
         private System.ComponentModel.BackgroundWorker _backgroundWorker;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
