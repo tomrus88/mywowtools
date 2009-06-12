@@ -191,6 +191,12 @@ namespace WoWPacketViewer
 
         private void SaveMenu_Click(object sender, EventArgs e)
         {
+            if (m_packetViewer == null)
+            {
+                MessageBox.Show("You should load something first!");
+                return;
+            }
+
             if (_saveDialog.ShowDialog() == DialogResult.OK)
             {
                 using (var stream = new StreamWriter(_saveDialog.OpenFile()))
@@ -255,6 +261,29 @@ namespace WoWPacketViewer
                 else
                 {
                     m_searchForm.FindNext();
+                }
+            }
+        }
+
+        private void saveAsParsedTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (m_packetViewer == null)
+            {
+                MessageBox.Show("You should load something first!");
+                return;
+            }
+
+            if (_saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (var stream = new StreamWriter(_saveDialog.OpenFile()))
+                {
+                    foreach (var p in m_packetViewer.Packets)
+                    {
+                        string parsed = Parser.CreateParser(p).Parse();
+                        if(String.IsNullOrEmpty(parsed))
+                            continue;
+                        stream.Write(parsed);
+                    }
                 }
             }
         }

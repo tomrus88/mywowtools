@@ -42,7 +42,7 @@ namespace WoWPacketViewer.Parsers
 
                 for (var i = 0; i < 6; ++i)
                 {
-                    var v3 = (i << i);
+                    var v3 = (1 << i);
 
                     if ((v3 & v1) != 0)
                     {

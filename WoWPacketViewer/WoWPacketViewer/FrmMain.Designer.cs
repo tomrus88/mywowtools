@@ -30,6 +30,7 @@
         {
             this._list = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
@@ -50,7 +51,7 @@
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.saveAsParsedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -92,6 +93,11 @@
             this.columnHeader1.Text = "Time";
             this.columnHeader1.Width = 70;
             // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Ticks";
+            this.columnHeader5.Width = 70;
+            // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Client Opcode";
@@ -104,7 +110,6 @@
             // 
             // columnHeader4
             // 
-            this.columnHeader4.DisplayIndex = 4;
             this.columnHeader4.Text = "Packet Size";
             this.columnHeader4.Width = 100;
             // 
@@ -156,6 +161,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveAsTextToolStripMenuItem,
+            this.saveAsParsedTextToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
@@ -277,10 +283,12 @@
             this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             this._backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             // 
-            // columnHeader5
+            // saveAsParsedTextToolStripMenuItem
             // 
-            this.columnHeader5.Text = "Ticks";
-            this.columnHeader5.Width = 70;
+            this.saveAsParsedTextToolStripMenuItem.Name = "saveAsParsedTextToolStripMenuItem";
+            this.saveAsParsedTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.saveAsParsedTextToolStripMenuItem.Text = "Save As Parsed Text...";
+            this.saveAsParsedTextToolStripMenuItem.Click += new System.EventHandler(this.saveAsParsedTextToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -337,5 +345,6 @@
         public System.Windows.Forms.ListView _list;
         private System.ComponentModel.BackgroundWorker _backgroundWorker;
         private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ToolStripMenuItem saveAsParsedTextToolStripMenuItem;
     }
 }

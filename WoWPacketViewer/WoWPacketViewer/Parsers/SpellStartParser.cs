@@ -145,7 +145,6 @@ namespace WoWPacketViewer.Parsers
             if ((tf & (TargetFlags.TARGET_FLAG_UNIT |
                 TargetFlags.TARGET_FLAG_PVP_CORPSE |
                 TargetFlags.TARGET_FLAG_OBJECT |
-                TargetFlags.TARGET_FLAG_OBJECT_UNK |
                 TargetFlags.TARGET_FLAG_CORPSE |
                 TargetFlags.TARGET_FLAG_UNK2)) != TargetFlags.TARGET_FLAG_SELF)
             {
