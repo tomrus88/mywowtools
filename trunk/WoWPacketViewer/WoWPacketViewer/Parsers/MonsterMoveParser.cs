@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows.Forms;
 
 namespace WoWPacketViewer.Parsers
 {
@@ -125,6 +126,19 @@ namespace WoWPacketViewer.Parsers
                             AppendFormatLine("Path Point {0}: {1}, {2}, {3}", i, startPos.X + x, startPos.Y + y, startPos.Z + z);
 
                             #endregion
+
+                            /*#region PackingTest
+
+                            var packed = 0;
+                            packed |= (int) (x/0.25f) & 0x7FF;
+                            packed |= ((int) (y/0.25f) & 0x7FF) << 11;
+                            packed |= ((int) (z/0.25f) & 0x3FF) << 22;
+                            AppendFormatLine("Test packing 0x{0:X8}", packed);
+
+                            if(packedOffset != packed)
+                                MessageBox.Show("Not equal!");
+
+                            #endregion*/
                         }
                     }
                 }

@@ -45,11 +45,11 @@ namespace WoWPacketViewer
             return ret;
         }
 
-        public static void CheckPacket(BinaryReader gr)
+        public void CheckPacket(BinaryReader gr)
         {
             if (gr.BaseStream.Position != gr.BaseStream.Length)
             {
-                string msg = String.Format("Packet size changed, should be {0} instead of {1}", gr.BaseStream.Position, gr.BaseStream.Length);
+                string msg = String.Format("{0}: Packet size changed, should be {1} instead of {2}", Packet.Code, gr.BaseStream.Position, gr.BaseStream.Length);
                 MessageBox.Show(msg);
             }
         }
@@ -92,7 +92,7 @@ namespace WoWPacketViewer
             }
         }
 
-        private static Parser _uncknownParser = new UnknownPacketParser();
+        private static Parser _unknownParser = new UnknownPacketParser();
 
         public static Parser CreateParser(Packet packet)
         {
@@ -101,7 +101,7 @@ namespace WoWPacketViewer
             {
                 return (Parser)Activator.CreateInstance(type, packet);
             }
-            return _uncknownParser;
+            return _unknownParser;
         }
 
         protected Packet Packet { get; private set; }
