@@ -7,6 +7,7 @@ CREATE TABLE `itemcache` (
   `displayid` mediumint(8) unsigned NOT NULL default '0',
   `Quality` tinyint(3) unsigned NOT NULL default '0',
   `Flags` int(10) unsigned NOT NULL default '0',
+  `Faction` mediumint(8) unsigned NOT NULL default '0',
   `BuyPrice` int(10) unsigned NOT NULL default '0',
   `SellPrice` int(10) unsigned NOT NULL default '0',
   `InventoryType` tinyint(3) unsigned NOT NULL default '0',
