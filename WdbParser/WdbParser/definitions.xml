@@ -2,376 +2,381 @@
 <wdbDef>
   <wdbId name="creaturecache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />    <!-- #1 [creature XX] -->
-    <wdbElement minver="0" maxver="9999" type="uinteger" />                           <!-- #2 Defines the length of the record -->
-    <wdbElement minver="0" maxver="9999" name="name" type="varChar" />               <!-- #3 name -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #4 name2 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #5 name3 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #6 name4 -->
-    <wdbElement minver="0" maxver="9999" name="subname" type="varChar" />            <!-- #7 guild -->
-    <wdbElement minver="7521" maxver="9999" name="IconName" type="varChar" />
-    <wdbElement minver="0" maxver="9999" name="flag1" type="uinteger" />           <!-- #8 unk8 UNKNOWN -->
-    <wdbElement minver="0" maxver="9999" name="type" type="uinteger" />               <!-- #9 See CreatureType.dbc, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="family" type="integer" />             <!-- #10 See CreatureFamily.dbc -->
-    <wdbElement minver="0" maxver="9999" name="rank" type="uinteger" />              <!-- #11 flagType, see Appendix -->
-    <wdbElement minver="0" maxver="8622" name="wdb_Unk12" type="uinteger" />          <!-- #12 unk12 UNKNOWN -->
-    <wdbElement minver="0" maxver="9999" name="wdb_SpellDataID" type="uinteger" />    <!-- #13 See CreatureSpellData.dbc, New since 1.60 -->
-    <wdbElement minver="0" maxver="9999" name="modelid" type="uinteger" />            <!-- #14 model, see CreatureDisplayInfo.dbc -->
-    <wdbElement minver="7272" maxver="9999" name="modelid2" type="uinteger" />
-    <wdbElement minver="7272" maxver="9999" name="modelid3" type="uinteger" />
-    <wdbElement minver="7272" maxver="9999" name="modelid4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk14" type="uinteger" />
-    <wdbElement minver="6299" maxver="9999" name="wdb_Unk15" type="single" />        <!-- #15 unk15 UNKNOWN -->
-    <wdbElement minver="6299" maxver="9999" name="wdb_Unk16" type="single" />        <!-- #16 unk16 UNKNOWN -->
-    <wdbElement minver="0" maxver="9999" name="RacialLeader" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk17_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="wdb_Unk18" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger" key="yes" />    <!-- #1 [creature XX] -->
+    <wdbElement minver="0" maxver="19999" type="uinteger" />                           <!-- #2 Defines the length of the record -->
+    <wdbElement minver="0" maxver="19999" name="name" type="varChar" />               <!-- #3 name -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #4 name2 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #5 name3 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #6 name4 -->
+    <wdbElement minver="0" maxver="19999" name="subname" type="varChar" />            <!-- #7 guild -->
+    <wdbElement minver="7521" maxver="19999" name="IconName" type="varChar" />
+    <wdbElement minver="0" maxver="19999" name="flag1" type="uinteger" />           <!-- #8 unk8 UNKNOWN -->
+    <wdbElement minver="0" maxver="19999" name="type" type="uinteger" />               <!-- #9 See CreatureType.dbc, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="family" type="integer" />             <!-- #10 See CreatureFamily.dbc -->
+    <wdbElement minver="0" maxver="19999" name="rank" type="uinteger" />              <!-- #11 flagType, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="wdb_SpellDataID" type="uinteger" />    <!-- #13 See CreatureSpellData.dbc, New since 1.60 -->
+    <wdbElement minver="0" maxver="19999" name="modelid" type="uinteger" />            <!-- #14 model, see CreatureDisplayInfo.dbc -->
+    <wdbElement minver="7272" maxver="19999" name="modelid2" type="uinteger" />
+    <wdbElement minver="7272" maxver="19999" name="modelid3" type="uinteger" />
+    <wdbElement minver="7272" maxver="19999" name="modelid4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk14" type="uinteger" />
+    <wdbElement minver="6299" maxver="19999" name="wdb_Unk15" type="single" />        <!-- #15 unk15 UNKNOWN -->
+    <wdbElement minver="6299" maxver="19999" name="wdb_Unk16" type="single" />        <!-- #16 unk16 UNKNOWN -->
+    <wdbElement minver="0" maxver="19999" name="RacialLeader" type="tinyInt" />         <!-- #17 unk17 UNKNOWN -->
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk17_6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk18" type="uinteger" />
   </wdbId>
   <wdbId name="itemcache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />    <!-- #1 [item XY] -->
-    <wdbElement minver="0" maxver="9999" type="uinteger" />                           <!-- #2 Defines the length of the record -->
-    <wdbElement minver="0" maxver="9999" name="class" type="uinteger" />              <!-- #3 class, see ItemClass.dbc -->
-    <wdbElement minver="0" maxver="9999" name="subclass" type="uinteger" />           <!-- #4 class, see ItemSubClass.dbc -->
-    <wdbElement minver="0" maxver="9999" name="unk0" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="name" type="varChar" />               <!-- #5 name -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #6 name2 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #7 name3 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />              <!-- #8 name4 -->
-    <wdbElement minver="0" maxver="9999" name="displayid" type="uinteger" />      <!-- #9 See ItemDisplayInfo.dbc -->
-    <wdbElement minver="0" maxver="9999" name="Quality" type="uinteger" />        <!-- #10 quality, See Appendix -->
-    <wdbElement minver="0" maxver="9999" name="Flags" type="uinteger" />          <!-- #11 flags, hex encoded in items.scp, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="BuyPrice" type="uinteger" />       <!-- #12 buyprice, value in copper -->
-    <wdbElement minver="0" maxver="9999" name="SellPrice" type="uinteger" />      <!-- #13 sellprice, value in copper -->
-    <wdbElement minver="0" maxver="9999" name="InventoryType" type="uinteger" />  <!-- #14 inventorytype or inventorySlotID, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="AllowableClass" type="integer" />        <!-- #15 classes, hex encoded in items.scp, eg 32767 means classes=07FFF, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="AllowableRace" type="integer" />          <!-- #16 races, hex encoded in items.scp, BitMask, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="ItemLevel" type="uinteger" />      <!-- #17 item base level -->
-    <wdbElement minver="0" maxver="9999" name="RequiredLevel" type="uinteger" />  <!-- #18 reqlevel, player requires this level to use the item -->
-    <wdbElement minver="0" maxver="9999" name="RequiredSkill" type="uinteger" />  <!-- #19 skill, SkillLine.dbc - Required Skill to use -->
-    <wdbElement minver="0" maxver="9999" name="RequiredSkillRank" type="uinteger" />  <!-- #20 skillrank, Level of skill needed-->
-    <wdbElement minver="0" maxver="9999" name="requiredspell" type="uinteger" />    <!-- #21 Spell.dbc - Spell required to use the item -->
-    <wdbElement minver="0" maxver="9999" name="requiredhonorrank" type="uinteger" />  <!-- #22  User needs this PVP rank to use the item -->
-    <wdbElement minver="0" maxver="9999" name="RequiredCityRank" type="uinteger" />           <!-- #23 PVPRank2 - Unknown entry, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="RequiredReputationFaction" type="uinteger" />  <!-- #24 requiredFactionID, Required faction group to use -->
-    <wdbElement minver="0" maxver="9999" name="RequiredReputationRank" type="uinteger" /> <!-- #25 requiredFactionLevel  - Must have this level of faction -->
-    <wdbElement minver="0" maxver="9999" name="maxcount" type="uinteger" />       <!-- #27 stackable, max numbers of items in a stack (stackAmount) -->
-    <wdbElement minver="0" maxver="9999" name="stackable" type="uinteger" />      <!-- #28 Number of slots for a container-->
-    <wdbElement minver="0" maxver="9999" name="ContainerSlots" type="uinteger" /> <!-- #29 StatTypes, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="NumberofStats" type="struct" maxcount="10">
-      <structElement minver="0" maxver="9999" name="ItemModType" type="uinteger" />
-      <structElement minver="0" maxver="9999" name="ItemModValue" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger" key="yes" />    <!-- #1 [item XY] -->
+    <wdbElement minver="0" maxver="19999" type="uinteger" />                           <!-- #2 Defines the length of the record -->
+    <wdbElement minver="0" maxver="19999" name="class" type="uinteger" />              <!-- #3 class, see ItemClass.dbc -->
+    <wdbElement minver="0" maxver="19999" name="subclass" type="uinteger" />           <!-- #4 class, see ItemSubClass.dbc -->
+    <wdbElement minver="0" maxver="19999" name="unk0" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="name" type="varChar" />               <!-- #5 name -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #6 name2 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #7 name3 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />              <!-- #8 name4 -->
+    <wdbElement minver="0" maxver="19999" name="displayid" type="uinteger" />      <!-- #9 See ItemDisplayInfo.dbc -->
+    <wdbElement minver="0" maxver="19999" name="Quality" type="uinteger" />        <!-- #10 quality, See Appendix -->
+    <wdbElement minver="0" maxver="19999" name="Flags" type="uinteger" />          <!-- #11 flags, hex encoded in items.scp, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="Faction" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="BuyPrice" type="uinteger" />       <!-- #12 buyprice, value in copper -->
+    <wdbElement minver="0" maxver="19999" name="SellPrice" type="uinteger" />      <!-- #13 sellprice, value in copper -->
+    <wdbElement minver="0" maxver="19999" name="InventoryType" type="uinteger" />  <!-- #14 inventorytype or inventorySlotID, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="AllowableClass" type="integer" />        <!-- #15 classes, hex encoded in items.scp, eg 32767 means classes=07FFF, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="AllowableRace" type="integer" />          <!-- #16 races, hex encoded in items.scp, BitMask, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="ItemLevel" type="uinteger" />      <!-- #17 item base level -->
+    <wdbElement minver="0" maxver="19999" name="RequiredLevel" type="uinteger" />  <!-- #18 reqlevel, player requires this level to use the item -->
+    <wdbElement minver="0" maxver="19999" name="RequiredSkill" type="uinteger" />  <!-- #19 skill, SkillLine.dbc - Required Skill to use -->
+    <wdbElement minver="0" maxver="19999" name="RequiredSkillRank" type="uinteger" />  <!-- #20 skillrank, Level of skill needed-->
+    <wdbElement minver="0" maxver="19999" name="requiredspell" type="uinteger" />    <!-- #21 Spell.dbc - Spell required to use the item -->
+    <wdbElement minver="0" maxver="19999" name="requiredhonorrank" type="uinteger" />  <!-- #22  User needs this PVP rank to use the item -->
+    <wdbElement minver="0" maxver="19999" name="RequiredCityRank" type="uinteger" />           <!-- #23 PVPRank2 - Unknown entry, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="RequiredReputationFaction" type="uinteger" />  <!-- #24 requiredFactionID, Required faction group to use -->
+    <wdbElement minver="0" maxver="19999" name="RequiredReputationRank" type="uinteger" /> <!-- #25 requiredFactionLevel  - Must have this level of faction -->
+    <wdbElement minver="0" maxver="19999" name="maxcount" type="uinteger" />       <!-- #27 stackable, max numbers of items in a stack (stackAmount) -->
+    <wdbElement minver="0" maxver="19999" name="stackable" type="uinteger" />      <!-- #28 Number of slots for a container-->
+    <wdbElement minver="0" maxver="19999" name="ContainerSlots" type="uinteger" /> <!-- #29 StatTypes, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="NumberofStats" type="struct" maxcount="10">
+      <structElement minver="0" maxver="19999" name="ItemModType" type="uinteger" />
+      <structElement minver="0" maxver="19999" name="ItemModValue" type="integer" />
     </wdbElement>
-    <wdbElement minver="0" maxver="9999" name="ScalingStatDistribution" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ScalingStatValue" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="dmg_min1" type="single" />      <!-- damage; consists of wdb_MinDamage1 wdb_MaxDamage1 wdb_DamageType1 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_max1" type="single" />      <!-- used as "damage=wdb_MinDamage1 wdb_MaxDamage1 wdb_DamageType1" in SCP -->
-    <wdbElement minver="0" maxver="9999" name="dmg_type1" type="uinteger" />      <!-- See Appendix: Damage Types, Resistance.dbc -->
-    <wdbElement minver="0" maxver="9999" name="dmg_min2" type="single" />      <!-- damage; consists of wdb_MinDamage2 wdb_MaxDamage12 wdb_DamageType2 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_max2" type="single" />      <!-- #53 -->
-    <wdbElement minver="0" maxver="9999" name="dmg_type2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="armor" type="uinteger" />          <!-- #64 physical armor -->
-    <wdbElement minver="0" maxver="9999" name="holy_res" type="uinteger" />       <!-- #65 -->
-    <wdbElement minver="0" maxver="9999" name="fire_res" type="uinteger" />       <!-- #66 -->
-    <wdbElement minver="0" maxver="9999" name="nature_res" type="uinteger" />     <!-- #67 -->
-    <wdbElement minver="0" maxver="9999" name="frost_res" type="uinteger" />      <!-- #68 -->
-    <wdbElement minver="0" maxver="9999" name="shadow_res" type="uinteger" />     <!-- #69 -->
-    <wdbElement minver="0" maxver="9999" name="arcane_res" type="uinteger" />    <!-- #70 -->
-    <wdbElement minver="0" maxver="9999" name="delay" type="uinteger" />          <!-- #71 weapon speed in ms -->
-    <wdbElement minver="0" maxver="9999" name="AmmoType" type="uinteger" />       <!-- #72 AmmoType, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="RangedModRange" type="single" />
-    <wdbElement minver="0" maxver="9999" name="spellid_1" type="uinteger" />       <!-- #74 see Spell.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spelltrigger_1" type="uinteger" />  <!-- #75, SpellTriggerTypes, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="spellcharges_1" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcooldown_1" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcategory_1" type="uinteger" /> <!-- #78 see SpellCategory.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spellcategorycooldown_1" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellid_2" type="uinteger" />       <!-- #80 see Spell.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spelltrigger_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcharges_2" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcooldown_2" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcategory_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcategorycooldown_2" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellid_3" type="uinteger" />       <!-- #86 see Spell.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spelltrigger_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcharges_3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcooldown_3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcategory_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcategorycooldown_3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellid_4" type="uinteger" />        <!-- #92 see Spell.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spelltrigger_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcharges_4" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcooldown_4" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcategory_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcategorycooldown_4" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellid_5" type="uinteger" />       <!-- #98 see Spell.dbc -->
-    <wdbElement minver="0" maxver="9999" name="spelltrigger_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcharges_5" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcooldown_5" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="spellcategory_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="spellcategorycooldown_5" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="bonding" type="uinteger" />        <!-- #103 Bind_Types, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="description" type="varChar" />
-    <wdbElement minver="0" maxver="9999" name="PageText" type="uinteger" />       <!-- refers to pagetextcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="LanguageID" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="PageMaterial" type="uinteger" />   <!-- #107, see PageTextMaterial.dbc -->
-    <wdbElement minver="0" maxver="9999" name="startquest" type="uinteger" />     <!-- #108, Items starts a quest, see questcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="lockid" type="uinteger" />         <!-- #109, For locked items, this is the skill needed to pick it. -->
-    <wdbElement minver="0" maxver="9999" name="Material" type="integer" />       <!-- #110 see Materials.dbc -->
-    <wdbElement minver="0" maxver="9999" name="sheath" type="uinteger" />         <!-- #111, sheath -->
-    <wdbElement minver="0" maxver="9999" name="RandomProperty" type="uinteger" />          <!-- #112 -->
-    <wdbElement minver="0" maxver="9999" name="RandomSuffix" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="block" type="uinteger" />          <!-- #113 Adds blocking for shield -->
-    <wdbElement minver="0" maxver="9999" name="itemset" type="uinteger" />        <!-- #114 see ItemSet.dbc -->
-    <wdbElement minver="0" maxver="9999" name="MaxDurability" type="uinteger" />  <!-- #115 durability -->
-    <wdbElement minver="0" maxver="9999" name="area" type="uinteger" />     <!-- #116 see AreaTable.dbc -->
-    <wdbElement minver="0" maxver="9999" name="Map" type="integer" />      <!-- #117 see Map.dbc -->
-    <wdbElement minver="0" maxver="9999" name="BagFamily" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="TotemCategory" type="integer" /> <!-- iRefID_TotemCategory -->
-    <wdbElement minver="0" maxver="9999" name="socketColor_1" type="integer" /> <!-- #120 Color of Socket 1-->
-    <wdbElement minver="0" maxver="9999" name="socketContent_1" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="socketColor_2" type="integer" /> <!-- #120 Color of Socket 2-->
-    <wdbElement minver="0" maxver="9999" name="socketContent_2" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="socketColor_3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="socketContent_3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="socketBonus" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="GemProperties" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="RequiredDisenchantSkill" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="ArmorDamageModifier" type="single" />
-    <wdbElement minver="0" maxver="9999" name="Duration" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="ItemLimitCategory" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="HolidayID" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ScalingStatDistribution" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ScalingStatValue" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="dmg_min1" type="single" />      <!-- damage; consists of wdb_MinDamage1 wdb_MaxDamage1 wdb_DamageType1 -->
+    <wdbElement minver="0" maxver="19999" name="dmg_max1" type="single" />      <!-- used as "damage=wdb_MinDamage1 wdb_MaxDamage1 wdb_DamageType1" in SCP -->
+    <wdbElement minver="0" maxver="19999" name="dmg_type1" type="uinteger" />      <!-- See Appendix: Damage Types, Resistance.dbc -->
+    <wdbElement minver="0" maxver="19999" name="dmg_min2" type="single" />      <!-- damage; consists of wdb_MinDamage2 wdb_MaxDamage12 wdb_DamageType2 -->
+    <wdbElement minver="0" maxver="19999" name="dmg_max2" type="single" />      <!-- #53 -->
+    <wdbElement minver="0" maxver="19999" name="dmg_type2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="armor" type="uinteger" />          <!-- #64 physical armor -->
+    <wdbElement minver="0" maxver="19999" name="holy_res" type="uinteger" />       <!-- #65 -->
+    <wdbElement minver="0" maxver="19999" name="fire_res" type="uinteger" />       <!-- #66 -->
+    <wdbElement minver="0" maxver="19999" name="nature_res" type="uinteger" />     <!-- #67 -->
+    <wdbElement minver="0" maxver="19999" name="frost_res" type="uinteger" />      <!-- #68 -->
+    <wdbElement minver="0" maxver="19999" name="shadow_res" type="uinteger" />     <!-- #69 -->
+    <wdbElement minver="0" maxver="19999" name="arcane_res" type="uinteger" />    <!-- #70 -->
+    <wdbElement minver="0" maxver="19999" name="delay" type="uinteger" />          <!-- #71 weapon speed in ms -->
+    <wdbElement minver="0" maxver="19999" name="AmmoType" type="uinteger" />       <!-- #72 AmmoType, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="RangedModRange" type="single" />
+    <wdbElement minver="0" maxver="19999" name="spellid_1" type="uinteger" />       <!-- #74 see Spell.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spelltrigger_1" type="uinteger" />  <!-- #75, SpellTriggerTypes, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="spellcharges_1" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcooldown_1" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcategory_1" type="uinteger" /> <!-- #78 see SpellCategory.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spellcategorycooldown_1" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellid_2" type="uinteger" />       <!-- #80 see Spell.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spelltrigger_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcharges_2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcooldown_2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcategory_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcategorycooldown_2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellid_3" type="uinteger" />       <!-- #86 see Spell.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spelltrigger_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcharges_3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcooldown_3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcategory_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcategorycooldown_3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellid_4" type="uinteger" />        <!-- #92 see Spell.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spelltrigger_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcharges_4" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcooldown_4" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcategory_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcategorycooldown_4" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellid_5" type="uinteger" />       <!-- #98 see Spell.dbc -->
+    <wdbElement minver="0" maxver="19999" name="spelltrigger_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcharges_5" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcooldown_5" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="spellcategory_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="spellcategorycooldown_5" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="bonding" type="uinteger" />        <!-- #103 Bind_Types, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="description" type="varChar" />
+    <wdbElement minver="0" maxver="19999" name="PageText" type="uinteger" />       <!-- refers to pagetextcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="LanguageID" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="PageMaterial" type="uinteger" />   <!-- #107, see PageTextMaterial.dbc -->
+    <wdbElement minver="0" maxver="19999" name="startquest" type="uinteger" />     <!-- #108, Items starts a quest, see questcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="lockid" type="uinteger" />         <!-- #109, For locked items, this is the skill needed to pick it. -->
+    <wdbElement minver="0" maxver="19999" name="Material" type="integer" />       <!-- #110 see Materials.dbc -->
+    <wdbElement minver="0" maxver="19999" name="sheath" type="uinteger" />         <!-- #111, sheath -->
+    <wdbElement minver="0" maxver="19999" name="RandomProperty" type="uinteger" />          <!-- #112 -->
+    <wdbElement minver="0" maxver="19999" name="RandomSuffix" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="block" type="uinteger" />          <!-- #113 Adds blocking for shield -->
+    <wdbElement minver="0" maxver="19999" name="itemset" type="uinteger" />        <!-- #114 see ItemSet.dbc -->
+    <wdbElement minver="0" maxver="19999" name="MaxDurability" type="uinteger" />  <!-- #115 durability -->
+    <wdbElement minver="0" maxver="19999" name="area" type="uinteger" />     <!-- #116 see AreaTable.dbc -->
+    <wdbElement minver="0" maxver="19999" name="Map" type="integer" />      <!-- #117 see Map.dbc -->
+    <wdbElement minver="0" maxver="19999" name="BagFamily" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="TotemCategory" type="integer" /> <!-- iRefID_TotemCategory -->
+    <wdbElement minver="0" maxver="19999" name="socketColor_1" type="integer" /> <!-- #120 Color of Socket 1-->
+    <wdbElement minver="0" maxver="19999" name="socketContent_1" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="socketColor_2" type="integer" /> <!-- #120 Color of Socket 2-->
+    <wdbElement minver="0" maxver="19999" name="socketContent_2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="socketColor_3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="socketContent_3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="socketBonus" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="GemProperties" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RequiredDisenchantSkill" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="ArmorDamageModifier" type="single" />
+    <wdbElement minver="0" maxver="19999" name="Duration" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="ItemLimitCategory" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="HolidayID" type="uinteger" />
   </wdbId>
   <wdbId name="questcache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger"  key="yes" />     <!-- #1 [quest ID]-->
-    <wdbElement minver="0" maxver="9999" type="uinteger" /> <!-- #2 Defines the length of the record -->
-    <wdbElement minver="0" maxver="9999" type="uinteger" /> <!-- #3 Again the ID of the quest -->
-    <wdbElement minver="0" maxver="9999" name="Method" type="uinteger" /> <!-- #4 Accepted values: 0, 1 or 2 Possible theory for future dev: 0==cannot in quest log, 1==can in quest log session only(removed on log out), 2==can in quest log always (save to db) -->
-    <wdbElement minver="0" maxver="9999" name="QuestLevel" type="uinteger" /> <!-- #5 Max Level -->
-    <wdbElement minver="0" maxver="9999" name="ZoneOrSort" type="integer" />   <!-- type="uinteger" maxval="100000" #6 Zone, see Appendix -->
-    <wdbElement minver="0" maxver="9999" name="Type" type="uinteger" />     <!-- #7 infoID, see QuestInfo.dbc -->
-  	<wdbElement minver="6403" maxver="9999" name="SuggestedPlayers" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RepObjectiveFaction" type="uinteger" /> <!-- #8 faction - You must have a reputation with this faction -->
-    <wdbElement minver="0" maxver="9999" name="RepObjectiveValue" type="integer" />   <!-- #9 reputation - If != 0: Minimum reputation so the user can take the quest -->
-  	<wdbElement minver="0" maxver="9999" name="wdb_unused4" type="uinteger" /> <!-- a second set of repObjectiveFaction -->
-    <wdbElement minver="0" maxver="9999" name="wdb_unused5" type="integer" />  <!-- a second set of repObjectiveValue -->
-    <wdbElement minver="0" maxver="9999" name="NextQuestInChain" type="uinteger" maxval="100000" />  <!-- #12 next_quest, only set, if != 0  -->
-    <wdbElement minver="0" maxver="9999" name="RewOrReqMoney" type="integer" />     <!-- #13 value in copper, if quest is completed -->
-    <wdbElement minver="0" maxver="9999" name="RewMoneyMaxLevel" type="uinteger" /> 
-    <wdbElement minver="6180" maxver="6383" name="wdb_SubstitudeExp70" type="integer" /><!-- #14 value in copper, coins rewarded on lvl 60 instead of XP -->
-    <wdbElement minver="0" maxver="9999" name="RewSpell" type="uinteger" />    <!-- #15 Players learns spell, if quest is completed -->
-    <wdbElement minver="6299" maxver="9999" name="RewSpellCast" type="uinteger" />
-    <wdbElement minver="7521" maxver="9999" name="wdb_Unk6" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="SrcItemId" type="uinteger" /> <!-- #16 Item that starts the quest -->
-    <wdbElement minver="0" maxver="9999" name="QuestFlags" type="uinteger" /> <!-- #17 quest_flags   Only set, if value != 00 (hex)  -->
-    <wdbElement minver="8089" maxver="9999" name="CharTitleId" type="uinteger" /> <!-- index of CharTitles.dbc -->
-    <wdbElement minver="8905" maxver="9999" name="wdb_unk1" type="integer" />
-    <wdbElement minver="8905" maxver="9999" name="wdb_unk2" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="RewItemId1" type="uinteger" />   <!-- #18 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewItemCount1" type="uinteger" /><!-- #19 amount of items -->
-    <wdbElement minver="0" maxver="9999" name="RewItemId2" type="uinteger" />   <!-- #20 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewItemCount2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewItemId3" type="uinteger" />   <!-- #22 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewItemCount3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewItemId4" type="uinteger" />   <!-- #24 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewItemCount4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId1" type="uinteger" /> <!-- #26 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId5" type="uinteger" /> <!-- #34 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemId6" type="uinteger" /> <!-- #36 See itemcache.wdb -->
-    <wdbElement minver="0" maxver="9999" name="RewChoiceItemCount6" type="uinteger" />
-    <wdbElement minver="5195" maxver="9999" name="PointMapId" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="PointX" type="single" />  <!-- #39 Unknown -->
-    <wdbElement minver="0" maxver="9999" name="PointY" type="single" />  <!-- #40 Unknown -->
-    <wdbElement minver="0" maxver="9999" name="PointOpt" type="integer" /> <!-- #38 Unknown -->
-    <wdbElement minver="0" maxver="9999" name="Title" type="varChar" /> <!-- #42 name, name of the quest -->
-    <wdbElement minver="0" maxver="9999" name="Objectives" type="varChar" /> <!-- #43 desc, short description -->
-    <wdbElement minver="0" maxver="9999" name="Details" type="varChar" /> <!-- #44 details -->
-    <wdbElement minver="0" maxver="9999" name="EndText" type="varChar" /> <!-- #45 second_desc -->
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId1" type="integer" />    <!-- #46 Kill this mob, "kill" in SCP, only set if value is != 0 -->
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount1" type="uinteger" /> <!-- #47 Kill wdb_ReqKillMobOrGOId1 Mobs of type wdb_ReqKillMobOrGOCount1 -->
-    <wdbElement minver="8905" maxver="9999" name="ReqSourceId1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId2" type="integer" />   <!-- #50 -->
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount2" type="uinteger" /><!-- #51 -->
-    <wdbElement minver="8905" maxver="9999" name="ReqSourceId2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId3" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount3" type="uinteger" /><!-- #55 -->
-    <wdbElement minver="8905" maxver="9999" name="ReqSourceId3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOId4" type="integer" />
-    <wdbElement minver="0" maxver="9999" name="ReqCreatureOrGOCount4" type="uinteger" /><!-- #59 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemId1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemId2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemId3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemId4" type="uinteger" />          <!-- #60 -->
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemId5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ReqItemCount5" type="uinteger" />
-    <wdbElement minver="8905" maxver="9999" name="ReqSourceId4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="ObjectiveText1" type="varChar" /><!-- #60 If not killCreature1 or collectItem1 this is the objective if set -->
-    <wdbElement minver="0" maxver="9999" name="ObjectiveText2" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
-    <wdbElement minver="0" maxver="9999" name="ObjectiveText3" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
-    <wdbElement minver="0" maxver="9999" name="ObjectiveText4" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger"  key="yes" />     <!-- #1 [quest ID]-->
+    <wdbElement minver="0" maxver="19999" type="uinteger" /> <!-- #2 Defines the length of the record -->
+    <wdbElement minver="0" maxver="19999" type="uinteger" /> <!-- #3 Again the ID of the quest -->
+    <wdbElement minver="0" maxver="19999" name="Method" type="uinteger" /> <!-- #4 Accepted values: 0, 1 or 2 Possible theory for future dev: 0==cannot in quest log, 1==can in quest log session only(removed on log out), 2==can in quest log always (save to db) -->
+    <wdbElement minver="0" maxver="19999" name="QuestLevel" type="uinteger" /> <!-- #5 Max Level -->
+    <wdbElement minver="0" maxver="19999" name="ZoneOrSort" type="integer" />   <!-- type="uinteger" maxval="100000" #6 Zone, see Appendix -->
+    <wdbElement minver="0" maxver="19999" name="Type" type="uinteger" />     <!-- #7 infoID, see QuestInfo.dbc -->
+  	<wdbElement minver="6403" maxver="19999" name="SuggestedPlayers" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RepObjectiveFaction" type="uinteger" /> <!-- #8 faction - You must have a reputation with this faction -->
+    <wdbElement minver="0" maxver="19999" name="RepObjectiveValue" type="integer" />   <!-- #9 reputation - If != 0: Minimum reputation so the user can take the quest -->
+  	<wdbElement minver="0" maxver="19999" name="wdb_unused4" type="uinteger" /> <!-- a second set of repObjectiveFaction -->
+    <wdbElement minver="0" maxver="19999" name="wdb_unused5" type="integer" />  <!-- a second set of repObjectiveValue -->
+    <wdbElement minver="0" maxver="19999" name="NextQuestInChain" type="uinteger" maxval="100000" />  <!-- #12 next_quest, only set, if != 0  -->
+    <wdbElement minver="0" maxver="19999" name="RewOrReqMoney" type="integer" />     <!-- #13 value in copper, if quest is completed -->
+    <wdbElement minver="0" maxver="19999" name="RewMoneyMaxLevel" type="uinteger" /> 
+    <wdbElement minver="0" maxver="19999" name="RewSpell" type="uinteger" />    <!-- #15 Players learns spell, if quest is completed -->
+    <wdbElement minver="6299" maxver="19999" name="RewSpellCast" type="uinteger" />
+    <wdbElement minver="7521" maxver="19999" name="wdb_Unk6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="SrcItemId" type="uinteger" /> <!-- #16 Item that starts the quest -->
+    <wdbElement minver="0" maxver="19999" name="QuestFlags" type="uinteger" /> <!-- #17 quest_flags   Only set, if value != 00 (hex)  -->
+    <wdbElement minver="8089" maxver="19999" name="CharTitleId" type="uinteger" /> <!-- index of CharTitles.dbc -->
+    <wdbElement minver="8905" maxver="19999" name="wdb_unk1" type="integer" />
+    <wdbElement minver="8905" maxver="19999" name="wdb_unk2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RewItemId1" type="uinteger" />   <!-- #18 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewItemCount1" type="uinteger" /><!-- #19 amount of items -->
+    <wdbElement minver="0" maxver="19999" name="RewItemId2" type="uinteger" />   <!-- #20 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewItemCount2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewItemId3" type="uinteger" />   <!-- #22 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewItemCount3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewItemId4" type="uinteger" />   <!-- #24 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewItemCount4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId1" type="uinteger" /> <!-- #26 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId5" type="uinteger" /> <!-- #34 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemId6" type="uinteger" /> <!-- #36 See itemcache.wdb -->
+    <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount6" type="uinteger" />
+    <wdbElement minver="5195" maxver="19999" name="PointMapId" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="PointX" type="single" />  <!-- #39 Unknown -->
+    <wdbElement minver="0" maxver="19999" name="PointY" type="single" />  <!-- #40 Unknown -->
+    <wdbElement minver="0" maxver="19999" name="PointOpt" type="integer" /> <!-- #38 Unknown -->
+    <wdbElement minver="0" maxver="19999" name="Title" type="varChar" /> <!-- #42 name, name of the quest -->
+    <wdbElement minver="0" maxver="19999" name="Objectives" type="varChar" /> <!-- #43 desc, short description -->
+    <wdbElement minver="0" maxver="19999" name="Details" type="varChar" /> <!-- #44 details -->
+    <wdbElement minver="0" maxver="19999" name="EndText" type="varChar" /> <!-- #45 second_desc -->
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId1" type="integer" />    <!-- #46 Kill this mob, "kill" in SCP, only set if value is != 0 -->
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount1" type="uinteger" /> <!-- #47 Kill wdb_ReqKillMobOrGOId1 Mobs of type wdb_ReqKillMobOrGOCount1 -->
+    <wdbElement minver="8905" maxver="19999" name="ReqSourceId1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId2" type="integer" />   <!-- #50 -->
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount2" type="uinteger" /><!-- #51 -->
+    <wdbElement minver="8905" maxver="19999" name="ReqSourceId2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount3" type="uinteger" /><!-- #55 -->
+    <wdbElement minver="8905" maxver="19999" name="ReqSourceId3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId4" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount4" type="uinteger" /><!-- #59 -->
+    <wdbElement minver="8905" maxver="19999" name="ReqSourceId4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId4" type="uinteger" />          <!-- #60 -->
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemId6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqItemCount6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ObjectiveText1" type="varChar" /><!-- #60 If not killCreature1 or collectItem1 this is the objective if set -->
+    <wdbElement minver="0" maxver="19999" name="ObjectiveText2" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
+    <wdbElement minver="0" maxver="19999" name="ObjectiveText3" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
+    <wdbElement minver="0" maxver="19999" name="ObjectiveText4" type="varChar" /><!-- If not killCreature1 or collectItem1 this is the objective if set -->
   </wdbId>
   <wdbId name="npccache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="ID" type="uinteger" key="yes" />
-    <wdbElement minver="0" maxver="9999" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob0" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text0_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text0_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em0_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob1" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text1_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text1_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em1_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob2" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text2_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text2_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em2_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob3" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text3_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text3_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em3_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob4" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text4_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text4_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em4_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob5" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text5_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text5_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em5_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob6" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text6_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text6_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang6" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em6_5" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="prob7" type="single" />
-    <wdbElement minver="0" maxver="9999" name="text7_0" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="text7_1" type="varChar" crlf="$B" />
-    <wdbElement minver="0" maxver="9999" name="lang7" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_0" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_1" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_2" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_3" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_4" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="em7_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ID" type="uinteger" key="yes" />
+    <wdbElement minver="0" maxver="19999" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob0" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text0_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text0_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em0_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob1" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text1_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text1_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em1_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob2" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text2_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text2_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em2_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob3" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text3_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text3_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em3_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob4" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text4_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text4_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em4_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob5" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text5_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text5_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em5_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob6" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text6_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text6_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em6_5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="prob7" type="single" />
+    <wdbElement minver="0" maxver="19999" name="text7_0" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="text7_1" type="varChar" crlf="$B" />
+    <wdbElement minver="0" maxver="19999" name="lang7" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_0" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="em7_5" type="uinteger" />
   </wdbId>
   <wdbId name="itemnamecache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />
-    <wdbElement minver="0" maxver="9999" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="name" type="varChar" />
-    <wdbElement minver="7521" maxver="9999" name="unk1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger" key="yes" />
+    <wdbElement minver="0" maxver="19999" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="name" type="varChar" />
+    <wdbElement minver="7521" maxver="19999" name="unk1" type="uinteger" />
   </wdbId>
   <wdbId name="pagetextcache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />
-    <wdbElement minver="0" maxver="9999" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="text" type="varChar" crlf="\n" />
-    <wdbElement minver="0" maxver="9999" name="next_page" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger" key="yes" />
+    <wdbElement minver="0" maxver="19999" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="text" type="varChar" crlf="\n" />
+    <wdbElement minver="0" maxver="19999" name="next_page" type="uinteger" />
   </wdbId>
   <wdbId name="itemtextcache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="id" type="uinteger" key="yes" />
-    <wdbElement minver="0" maxver="9999" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="text" type="varChar" />
+    <wdbElement minver="0" maxver="19999" name="id" type="uinteger" key="yes" />
+    <wdbElement minver="0" maxver="19999" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="text" type="varChar" />
   </wdbId>
   <wdbId name="gameobjectcache">
     <skipBytes numBytes="20" />
-    <wdbElement minver="0" maxver="9999" name="entry" type="uinteger" key="yes" />      <!-- #1 [gameobj XY] -->
-    <wdbElement minver="0" maxver="9999" type="uinteger" />  <!-- #2 Defines the length of the record -->
-    <wdbElement minver="0" maxver="9999" name="type" type="uinteger" />    <!-- #3 type -->
-    <wdbElement minver="0" maxver="9999" name="displayId" type="uinteger" /> <!-- #4 model -->
-    <wdbElement minver="0" maxver="9999" name="name" type="varChar" />   <!-- #5 name -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />   <!-- #6 name2 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />   <!-- #7 name3 -->
-    <wdbElement minver="0" maxver="9999" type="varChar" />   <!-- #8 name4 -->
-    <wdbElement minver="6299" maxver="9999" name="wdb_Unk34" type="varChar" />
-    <wdbElement minver="5595" maxver="9999" name="castBarCaption" type="varChar" />
-    <wdbElement minver="6299" maxver="9999" name="wdb_Unk35" type="varChar" />
-    <wdbElement minver="0" maxver="9999" name="data0" type="uinteger" />    <!-- #9 data0 -->
-    <wdbElement minver="0" maxver="9999" name="data1" type="uinteger" />   <!-- #10 data1 -->
-    <wdbElement minver="0" maxver="9999" name="data2" type="uinteger" />   <!-- #11 data2 -->
-    <wdbElement minver="0" maxver="9999" name="data3" type="uinteger" />   <!-- #12 data3 -->
-    <wdbElement minver="0" maxver="9999" name="data4" type="uinteger" />   <!-- #13 data4 -->
-    <wdbElement minver="0" maxver="9999" name="data5" type="uinteger" />   <!-- #14 data5 -->
-    <wdbElement minver="0" maxver="9999" name="data6" type="uinteger" />   <!-- #15 data6 -->
-    <wdbElement minver="0" maxver="9999" name="data7" type="uinteger" />   <!-- #16 data7 -->
-    <wdbElement minver="0" maxver="9999" name="data8" type="uinteger" />   <!-- #17 data8 -->
-    <wdbElement minver="0" maxver="9999" name="data9" type="uinteger" />   <!-- #18 data9 -->
-    <wdbElement minver="0" maxver="9999" name="data10" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="data11" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="data12" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="data13" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="data14" type="uinteger" />
-    <wdbElement minver="0" maxver="9999" name="data15" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data16" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data17" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data18" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data19" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data20" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data21" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data22" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="data23" type="uinteger" />
-    <wdbElement minver="8606" maxver="9999" name="size" type="single" />
-    <wdbElement minver="5595" maxver="9999" name="unk1_1" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="unk1_2" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="unk1_3" type="uinteger" />
-    <wdbElement minver="5595" maxver="9999" name="unk1_4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="entry" type="uinteger" key="yes" />      <!-- #1 [gameobj XY] -->
+    <wdbElement minver="0" maxver="19999" type="uinteger" />  <!-- #2 Defines the length of the record -->
+    <wdbElement minver="0" maxver="19999" name="type" type="uinteger" />    <!-- #3 type -->
+    <wdbElement minver="0" maxver="19999" name="displayId" type="uinteger" /> <!-- #4 model -->
+    <wdbElement minver="0" maxver="19999" name="name" type="varChar" />   <!-- #5 name -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />   <!-- #6 name2 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />   <!-- #7 name3 -->
+    <wdbElement minver="0" maxver="19999" type="varChar" />   <!-- #8 name4 -->
+    <wdbElement minver="6299" maxver="19999" name="wdb_Unk34" type="varChar" />
+    <wdbElement minver="5595" maxver="19999" name="castBarCaption" type="varChar" />
+    <wdbElement minver="6299" maxver="19999" name="wdb_Unk35" type="varChar" />
+    <wdbElement minver="0" maxver="19999" name="data0" type="uinteger" />    <!-- #9 data0 -->
+    <wdbElement minver="0" maxver="19999" name="data1" type="uinteger" />   <!-- #10 data1 -->
+    <wdbElement minver="0" maxver="19999" name="data2" type="uinteger" />   <!-- #11 data2 -->
+    <wdbElement minver="0" maxver="19999" name="data3" type="uinteger" />   <!-- #12 data3 -->
+    <wdbElement minver="0" maxver="19999" name="data4" type="uinteger" />   <!-- #13 data4 -->
+    <wdbElement minver="0" maxver="19999" name="data5" type="uinteger" />   <!-- #14 data5 -->
+    <wdbElement minver="0" maxver="19999" name="data6" type="uinteger" />   <!-- #15 data6 -->
+    <wdbElement minver="0" maxver="19999" name="data7" type="uinteger" />   <!-- #16 data7 -->
+    <wdbElement minver="0" maxver="19999" name="data8" type="uinteger" />   <!-- #17 data8 -->
+    <wdbElement minver="0" maxver="19999" name="data9" type="uinteger" />   <!-- #18 data9 -->
+    <wdbElement minver="0" maxver="19999" name="data10" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="data11" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="data12" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="data13" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="data14" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="data15" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data16" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data17" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data18" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data19" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data20" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data21" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data22" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="data23" type="uinteger" />
+    <wdbElement minver="8606" maxver="19999" name="size" type="single" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_1" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_2" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_3" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_4" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_5" type="uinteger" />
+    <wdbElement minver="5595" maxver="19999" name="unk1_6" type="uinteger" />
   </wdbId>
 </wdbDef>
