@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using UpdateFields;
@@ -37,7 +31,7 @@ namespace UpdatePacketParser
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ObjectTypeMask mask = ObjectTypeMask.TYPEMASK_NONE;
+            var mask = ObjectTypeMask.TYPEMASK_NONE;
 
             if (checkBox1.Checked)
                 mask |= ObjectTypeMask.TYPEMASK_ITEM;
@@ -60,7 +54,7 @@ namespace UpdatePacketParser
             if (checkBox7.Checked)
                 mask |= ObjectTypeMask.TYPEMASK_CORPSE;
 
-            CustomFilterMask customMask = CustomFilterMask.CUSTOM_FILTER_NONE;
+            var customMask = CustomFilterMask.CUSTOM_FILTER_NONE;
 
             if (checkBox8.Checked)
                 customMask |= CustomFilterMask.CUSTOM_FILTER_TRANSPORT;

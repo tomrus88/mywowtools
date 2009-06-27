@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.Common;
-using System.IO;
-using WoWReader;
+using UpdateFields;
 
 namespace UpdatePacketParser
 {
     public class SqLitePacketReader : PacketReaderBase
     {
-        private static DbProviderFactory factory = System.Data.SQLite.SQLiteFactory.Instance;
-        // DbProviderFactories.GetFactory("System.Data.SQLite");
-        private DbDataReader _reader;
+        private static readonly DbProviderFactory factory = System.Data.SQLite.SQLiteFactory.Instance;
+        private readonly DbDataReader _reader;
 
         public SqLitePacketReader(string filename)
         {
@@ -26,6 +21,9 @@ namespace UpdatePacketParser
             command.Prepare();
 
             _reader = command.ExecuteReader();
+
+            //TODO: Добавить определение билда!
+            UpdateFieldsLoader.LoadUpdateFields(10026);
         }
 
         public override Packet ReadPacket()

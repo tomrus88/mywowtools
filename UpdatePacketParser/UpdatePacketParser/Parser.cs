@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 using WoWReader;
 using UpdateFields;
@@ -52,25 +50,23 @@ namespace UpdatePacketParser
                         break;
                 }
 
-
                 gr.Close();
             }
         }
 
-        private void CheckPacket(GenericReader gr)
+        private static void CheckPacket(BinaryReader gr)
         {
             if (gr.BaseStream.Position != gr.BaseStream.Length)
                 MessageBox.Show(String.Format("Packet parsing error, diff {0}", gr.BaseStream.Length - gr.BaseStream.Position));
-
         }
 
         private void ParseRest(GenericReader gr)
         {
-            uint objects_count = gr.ReadUInt32();
+            var objects_count = gr.ReadUInt32();
 
-            for (int i = 0; i < objects_count; i++)
+            for (var i = 0; i < objects_count; i++)
             {
-                UpdateTypes updateType = (UpdateTypes)gr.ReadByte();
+                var updateType = (UpdateTypes)gr.ReadByte();
                 switch (updateType)
                 {
                     case UpdateTypes.UPDATETYPE_VALUES:
@@ -98,21 +94,21 @@ namespace UpdatePacketParser
 
         private void ParseValues(GenericReader gr)
         {
-            ulong guid = gr.ReadPackedGuid();
-            byte blocks_count = gr.ReadByte();
-            int[] updatemask = new int[blocks_count];
-            for (int i = 0; i < updatemask.Length; ++i)
+            var guid = gr.ReadPackedGuid();
+            var blocks_count = gr.ReadByte();
+            var updatemask = new int[blocks_count];
+            for (var i = 0; i < updatemask.Length; ++i)
             {
                 updatemask[i] = gr.ReadInt32();
             }
 
-            BitArray mask = new BitArray(updatemask);
+            var mask = new BitArray(updatemask);
 
-            int masklen = mask.Count;
+            var masklen = mask.Count;
 
-            Dictionary<int, uint> values = new Dictionary<int, uint>();
+            var values = new Dictionary<int, uint>();
 
-            for (int i = 0; i < masklen; ++i)
+            for (var i = 0; i < masklen; ++i)
             {
                 if (mask[i])
                 {
@@ -120,121 +116,117 @@ namespace UpdatePacketParser
                 }
             }
 
-            WoWObject wowobj = GetWoWObject(guid);
+            var wowobj = GetWoWObject(guid);
             if (wowobj == null)
                 return;
 
-            WoWObjectUpdate update = new WoWObjectUpdate(mask, values);
+            var update = new WoWObjectUpdate(mask, values);
             wowobj.AddUpdate(update);
         }
 
-        private void ParseMovement(GenericReader gr)
+        private static void ParseMovement(GenericReader gr)
         {
-            ulong guid = gr.ReadPackedGuid();
-            UpdateFlags updateflags = (UpdateFlags)gr.ReadUInt16();
-            MovementFlags movementFlags = MovementFlags.MOVEMENTFLAG_NONE;
+            var guid = gr.ReadPackedGuid();
+            var updateflags = (UpdateFlags)gr.ReadUInt16();
 
             // 0x20
             if ((updateflags & UpdateFlags.UPDATEFLAG_LIVING) != 0)
             {
-                movementFlags = (MovementFlags)gr.ReadUInt32();
-                ushort unk1 = gr.ReadUInt16();
-                uint time1 = gr.ReadUInt32();
+                var movementFlags = (MovementFlags)gr.ReadUInt32();
+                var unk1 = gr.ReadUInt16();
+                var time1 = gr.ReadUInt32();
 
-                float x = gr.ReadSingle();
-                float y = gr.ReadSingle();
-                float z = gr.ReadSingle();
-                float o = gr.ReadSingle();
+                var x = gr.ReadSingle();
+                var y = gr.ReadSingle();
+                var z = gr.ReadSingle();
+                var o = gr.ReadSingle();
 
                 if ((movementFlags & MovementFlags.MOVEMENTFLAG_ONTRANSPORT) != 0)
                 {
-                    ulong t_guid = gr.ReadPackedGuid();
-                    float t_x = gr.ReadSingle();
-                    float t_y = gr.ReadSingle();
-                    float t_z = gr.ReadSingle();
-                    float t_o = gr.ReadSingle();
-                    uint t_time = gr.ReadUInt32();
-                    byte t_unk = gr.ReadByte();
+                    var t_guid = gr.ReadPackedGuid();
+                    var t_x = gr.ReadSingle();
+                    var t_y = gr.ReadSingle();
+                    var t_z = gr.ReadSingle();
+                    var t_o = gr.ReadSingle();
+                    var t_time = gr.ReadUInt32();
+                    var t_unk = gr.ReadByte();
                 }
 
                 if (((movementFlags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != 0) || ((unk1 & 0x20) != 0))
                 {
-                    float unk = gr.ReadSingle();
+                    var unk = gr.ReadSingle();
                 }
 
-                uint time2 = gr.ReadUInt32();
+                var time2 = gr.ReadUInt32();
 
                 if ((movementFlags & MovementFlags.MOVEMENTFLAG_JUMPING) != 0)
                 {
-                    float unk = gr.ReadSingle();
-                    float sin = gr.ReadSingle();
-                    float cos = gr.ReadSingle();
-                    float spd = gr.ReadSingle();
+                    var unk = gr.ReadSingle();
+                    var sin = gr.ReadSingle();
+                    var cos = gr.ReadSingle();
+                    var spd = gr.ReadSingle();
                 }
 
                 if ((movementFlags & MovementFlags.MOVEMENTFLAG_SPLINE) != 0)
                 {
-                    float unk = gr.ReadSingle();
+                    var unk = gr.ReadSingle();
                 }
 
-                float walk_speed = gr.ReadSingle();
-                float run_speed = gr.ReadSingle();
-                float swim_back = gr.ReadSingle();
-                float swin_speed = gr.ReadSingle();
-                float walk_back = gr.ReadSingle();
-                float fly_speed = gr.ReadSingle();
-                float fly_back = gr.ReadSingle();
-                float turn_speed = gr.ReadSingle();
-                float unk_speed = gr.ReadSingle();
+                var walk_speed = gr.ReadSingle();
+                var run_speed = gr.ReadSingle();
+                var swim_back = gr.ReadSingle();
+                var swin_speed = gr.ReadSingle();
+                var walk_back = gr.ReadSingle();
+                var fly_speed = gr.ReadSingle();
+                var fly_back = gr.ReadSingle();
+                var turn_speed = gr.ReadSingle();
+                var unk_speed = gr.ReadSingle();
 
                 if ((movementFlags & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
                 {
-                    SplineFlags sf = (SplineFlags)gr.ReadUInt32();
+                    var sf = (SplineFlags)gr.ReadUInt32();
 
                     if ((sf & SplineFlags.POINT) != 0)
                     {
-                        float x2 = gr.ReadSingle();
-                        float y2 = gr.ReadSingle();
-                        float z2 = gr.ReadSingle();
+                        var x2 = gr.ReadSingle();
+                        var y2 = gr.ReadSingle();
+                        var z2 = gr.ReadSingle();
                     }
 
                     if ((sf & SplineFlags.TARGET) != 0)
                     {
-                        ulong s_guid = gr.ReadUInt64();
+                        var s_guid = gr.ReadUInt64();
                     }
 
                     if ((sf & SplineFlags.ORIENT) != 0)
                     {
-                        float o2 = gr.ReadSingle();
+                        var o2 = gr.ReadSingle();
                     }
 
-                    //byte b1 = gr.ReadByte();
-                    //byte b2 = gr.ReadByte();
+                    var cur_time = gr.ReadUInt32();
+                    var full_time = gr.ReadUInt32();
+                    var unk = gr.ReadUInt32();
 
-                    uint cur_time = gr.ReadUInt32();
-                    uint full_time = gr.ReadUInt32();
-                    uint unk = gr.ReadUInt32();
+                    var u1 = gr.ReadSingle();
+                    var u2 = gr.ReadSingle();
+                    var u3 = gr.ReadSingle();
 
-                    float u1 = gr.ReadSingle();
-                    float u2 = gr.ReadSingle();
-                    float u3 = gr.ReadSingle();
+                    var u4 = gr.ReadUInt32();
 
-                    uint u4 = gr.ReadUInt32();
-
-                    uint count = gr.ReadUInt32();
+                    var count = gr.ReadUInt32();
 
                     for (uint i = 0; i < count; ++i)
                     {
-                        float x3 = gr.ReadSingle();
-                        float y3 = gr.ReadSingle();
-                        float z3 = gr.ReadSingle();
+                        var x3 = gr.ReadSingle();
+                        var y3 = gr.ReadSingle();
+                        var z3 = gr.ReadSingle();
                     }
 
-                    byte b3 = gr.ReadByte();  // added in 3.0.8
+                    var b3 = gr.ReadByte();  // added in 3.0.8
 
-                    float end_x = gr.ReadSingle();
-                    float end_y = gr.ReadSingle();
-                    float end_z = gr.ReadSingle();
+                    var end_x = gr.ReadSingle();
+                    var end_y = gr.ReadSingle();
+                    var end_z = gr.ReadSingle();
                 }
             }
             else
@@ -252,58 +244,58 @@ namespace UpdatePacketParser
                     // 0x40
                     if ((updateflags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != 0)
                     {
-                        float x = gr.ReadSingle();
-                        float y = gr.ReadSingle();
-                        float z = gr.ReadSingle();
-                        float o = gr.ReadSingle();
+                        var x = gr.ReadSingle();
+                        var y = gr.ReadSingle();
+                        var z = gr.ReadSingle();
+                        var o = gr.ReadSingle();
                     }
                 }
             }
 
             if ((updateflags & UpdateFlags.UPDATEFLAG_LOWGUID) != 0)
             {
-                uint l_guid = gr.ReadUInt32();
+                var l_guid = gr.ReadUInt32();
             }
 
             if ((updateflags & UpdateFlags.UPDATEFLAG_HIGHGUID) != 0)
             {
-                uint h_guid = gr.ReadUInt32();
+                var h_guid = gr.ReadUInt32();
             }
 
             if ((updateflags & UpdateFlags.UPDATEFLAG_TARGET_GUID) != 0)
             {
-                ulong f_guid = gr.ReadPackedGuid();
+                var f_guid = gr.ReadPackedGuid();
             }
 
             if ((updateflags & UpdateFlags.UPDATEFLAG_TRANSPORT) != 0)
             {
-                uint t_time = gr.ReadUInt32();
+                var t_time = gr.ReadUInt32();
             }
 
             // WotLK
             if ((updateflags & UpdateFlags.UPDATEFLAG_VEHICLE) != 0)
             {
-                uint unk1 = gr.ReadUInt32();
-                float unk2 = gr.ReadSingle();
+                var unk1 = gr.ReadUInt32();
+                var unk2 = gr.ReadSingle();
             }
 
             // 3.1
             if ((updateflags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != 0)
             {
-                ulong unk1 = gr.ReadUInt64();
+                var unk1 = gr.ReadUInt64();
             }
         }
 
         private void ParseCreateObjects(GenericReader gr)
         {
             // Variables
-            MovementInfo movementInfo = new MovementInfo(0);
+            var movementInfo = new MovementInfo(0);
 
             // Guid
-            ulong guid = gr.ReadPackedGuid();
+            var guid = gr.ReadPackedGuid();
 
             // Object Type
-            ObjectTypes objectTypeId = (ObjectTypes)gr.ReadByte();
+            var objectTypeId = (ObjectTypes)gr.ReadByte();
 
             // Update Flags
             movementInfo.m_updateFlags = (UpdateFlags)gr.ReadUInt16();
@@ -366,9 +358,6 @@ namespace UpdatePacketParser
                     {
                         movementInfo.m_splineInfo.m_splineRotation = gr.ReadSingle();
                     }
-
-                    //movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
-                    //movementInfo.m_splineInfo.m_unk1 = gr.ReadByte();
 
                     movementInfo.m_splineInfo.m_splineCurTime = gr.ReadUInt32();
                     movementInfo.m_splineInfo.m_splineFullTime = gr.ReadUInt32();
@@ -444,20 +433,20 @@ namespace UpdatePacketParser
             }
 
             // values part
-            byte blocks_count = gr.ReadByte();
-            int[] updatemask = new int[blocks_count];
-            for (int i = 0; i < updatemask.Length; ++i)
+            var blocks_count = gr.ReadByte();
+            var updatemask = new int[blocks_count];
+            for (var i = 0; i < updatemask.Length; ++i)
             {
                 updatemask[i] = gr.ReadInt32();
             }
 
-            BitArray mask = new BitArray(updatemask);
+            var mask = new BitArray(updatemask);
 
-            int masklen = mask.Count;
+            var masklen = mask.Count;
 
-            Dictionary<int, uint> values = new Dictionary<int, uint>();
+            var values = new Dictionary<int, uint>();
 
-            for (int i = 0; i < masklen; ++i)
+            for (var i = 0; i < masklen; ++i)
             {
                 if (mask[i])
                 {
@@ -465,30 +454,39 @@ namespace UpdatePacketParser
                 }
             }
 
-            if (!m_objects.ContainsKey(guid))
+            if (m_objects.ContainsKey(guid))
             {
-                WoWObject wowobj = new WoWObject(0, objectTypeId);
-                wowobj.UpdateMask = mask;
-                wowobj.Initialize(values);
-                wowobj.SetPosition(movementInfo);
-                m_objects.Add(guid, wowobj);
+                // add create as update for already added objects
+                var obj = GetWoWObject(guid);
+                if (obj == null)
+                    return;
+
+                var update = new WoWObjectUpdate(mask, values);
+                obj.AddUpdate(update);
+                return;
             }
+
+            var wowobj = new WoWObject(0, objectTypeId);
+            wowobj.UpdateMask = mask;
+            wowobj.Initialize(values);
+            wowobj.SetPosition(movementInfo);
+            m_objects.Add(guid, wowobj);
         }
 
-        private void ParseOORObjects(GenericReader gr)
+        private static void ParseOORObjects(GenericReader gr)
         {
-            uint count = gr.ReadUInt32();
-            ulong[] GUIDS = new ulong[count];
+            var count = gr.ReadUInt32();
+            var GUIDS = new ulong[count];
             for (uint i = 0; i < count; ++i)
             {
                 GUIDS[i] = gr.ReadPackedGuid();
             }
         }
 
-        private void ParseNearObjects(GenericReader gr)
+        private static void ParseNearObjects(GenericReader gr)
         {
-            uint count = gr.ReadUInt32();
-            ulong[] GUIDS = new ulong[count];
+            var count = gr.ReadUInt32();
+            var GUIDS = new ulong[count];
             for (uint i = 0; i < count; ++i)
             {
                 GUIDS[i] = gr.ReadPackedGuid();
@@ -497,17 +495,17 @@ namespace UpdatePacketParser
 
         public static void Decompress(ref GenericReader gr)
         {
-            int uncompressedLength = gr.ReadInt32();
-            byte[] input = gr.ReadBytes((int)gr.Remaining);
+            var uncompressedLength = gr.ReadInt32();
+            var input = gr.ReadBytes((int)gr.Remaining);
             gr.Close();
-            byte[] output = new byte[uncompressedLength];
+            var output = new byte[uncompressedLength];
             DecompressZLib(input, output);
             gr = new GenericReader(new MemoryStream(output));
         }
 
         public static void DecompressZLib(byte[] input, byte[] output)
         {
-            Inflater item = new Inflater();
+            var item = new Inflater();
             item.SetInput(input, 0, input.Length);
             item.Inflate(output, 0, output.Length);
         }
@@ -516,12 +514,12 @@ namespace UpdatePacketParser
         {
             listBox.Items.Clear();
 
-            foreach (KeyValuePair<ulong, WoWObject> pair in m_objects)
+            foreach (var pair in m_objects)
             {
-                ulong guid = pair.Key;
-                ObjectTypes type = pair.Value.TypeId;
+                var guid = pair.Key;
+                var type = pair.Value.TypeId;
 
-                string final = String.Format("{0:X16} {1}", guid, type);
+                var final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
@@ -530,14 +528,14 @@ namespace UpdatePacketParser
         {
             listBox.Items.Clear();
 
-            foreach (KeyValuePair<ulong, WoWObject> pair in m_objects)
+            foreach (var pair in m_objects)
             {
                 if ((pair.Value.GetType() & mask) != ObjectTypeMask.TYPEMASK_NONE)
                     continue;
 
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
                 {
-                    uint highGUID = (pair.Value.GetGUIDHigh() >> 16);
+                    var highGUID = (pair.Value.GetGUIDHigh() >> 16);
                     if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF130 || highGUID == 0xF530))
                         continue;
                     if ((customMask & CustomFilterMask.CUSTOM_FILTER_PETS) != CustomFilterMask.CUSTOM_FILTER_NONE && (highGUID == 0xF140 || highGUID == 0xF540))
@@ -552,10 +550,10 @@ namespace UpdatePacketParser
                         continue;
                 }
 
-                ulong guid = pair.Key;
-                ObjectTypes type = pair.Value.TypeId;
+                var guid = pair.Key;
+                var type = pair.Value.TypeId;
 
-                string final = String.Format("{0:X16} {1}", guid, type);
+                var final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
@@ -568,52 +566,52 @@ namespace UpdatePacketParser
 
         public void PrintObjectInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = m_objects[guid];
-            ObjectTypes type = obj.TypeId;
+            var obj = m_objects[guid];
+            var type = obj.TypeId;
 
-            for (int i = 0; i < obj.UpdateMask.Count; i++)
+            for (var i = 0; i < obj.UpdateMask.Count; i++)
             {
-                if (obj.UpdateMask[i])
-                {
-                    UpdateField uf = UpdateFieldsLoader.GetUpdateField(type, i);
-                    Object value = GetValueBaseOnType(obj.UInt32Values[i], uf.Type);
-                    ListViewItem item = new ListViewItem(new string[] { uf.Name, value.ToString() });
-                    listView.Items.Add(item);
-                }
+                if (!obj.UpdateMask[i])
+                    continue;
+
+                var uf = UpdateFieldsLoader.GetUpdateField(type, i);
+                var value = GetValueBaseOnType(obj.UInt32Values[i], uf.Type);
+                var item = new ListViewItem(new string[] { uf.Name, value.ToString() });
+                listView.Items.Add(item);
             }
         }
 
         public void PrintObjectUpdatesInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = m_objects[guid];
-            ObjectTypes type = obj.TypeId;
-            int c = 1;
+            var obj = m_objects[guid];
+            var type = obj.TypeId;
+            var c = 1;
 
-            foreach (WoWObjectUpdate update in obj.Updates)
+            foreach (var update in obj.Updates)
             {
-                string updatenum = String.Format("Update {0}:", c);
-                ListViewGroup group = new ListViewGroup(updatenum);
+                var updatenum = String.Format("Update {0}:", c);
+                var group = new ListViewGroup(updatenum);
                 listView.Groups.Add(group);
                 c++;
 
-                for (int i = 0; i < update.updatemask.Count; i++)
+                for (var i = 0; i < update.updatemask.Count; i++)
                 {
-                    if (update.updatemask[i])
-                    {
-                        UpdateField uf = UpdateFieldsLoader.GetUpdateField(type, i);
-                        Object value = GetValueBaseOnType(update.updatedata[i], uf.Type);
-                        ListViewItem item = new ListViewItem(new string[] { uf.Name, value.ToString() }, group);
-                        listView.Items.Add(item);
-                    }
+                    if (!update.updatemask[i])
+                        continue;
+
+                    var uf = UpdateFieldsLoader.GetUpdateField(type, i);
+                    var value = GetValueBaseOnType(update.updatedata[i], uf.Type);
+                    var item = new ListViewItem(new string[] { uf.Name, value.ToString() }, group);
+                    listView.Items.Add(item);
                 }
             }
         }
 
         public void PrintObjectMovementInfo(ulong guid, RichTextBox richTextBox)
         {
-            WoWObject obj = m_objects[guid];
-            MovementInfo mInfo = obj.MovementInfo;
-            List<string> strings = new List<string>();
+            var obj = m_objects[guid];
+            var mInfo = obj.MovementInfo;
+            var strings = new List<string>();
 
             strings.Add(String.Format("Update Flags: {0}", mInfo.m_updateFlags));
 
@@ -674,9 +672,6 @@ namespace UpdatePacketParser
                     {
                         strings.Add(String.Format("Spline Orient: {0}", mInfo.m_splineInfo.m_splineRotation));
                     }
-
-                    //strings.Add(String.Format("Spline byte1: {0}", mInfo.m_splineInfo.m_unk1.ToString("X2")));
-                    //strings.Add(String.Format("Spline byte2: {0}", mInfo.m_splineInfo.m_unk2.ToString("X2")));
 
                     strings.Add(String.Format("Spline CurrTime: {0:X8}", mInfo.m_splineInfo.m_splineCurTime));
                     strings.Add(String.Format("Spline FullTime: {0:X8}", mInfo.m_splineInfo.m_splineFullTime));
@@ -752,34 +747,25 @@ namespace UpdatePacketParser
             richTextBox.Lines = strings.ToArray();
         }
 
-        private Object GetValueBaseOnType(Object value, uint type)
+        private static Object GetValueBaseOnType(Object value, uint type)
         {
-            Object result = 0;
-            byte[] bytes;
             switch (type)
             {
                 case 1:
-                    result = (uint)value;
-                    return result;
+                    return (uint)value;
                 case 2:
-                    bytes = BitConverter.GetBytes((uint)value);
-                    ushort first = BitConverter.ToUInt16(bytes, 0);
-                    ushort second = BitConverter.ToUInt16(bytes, 2);
-                    result = String.Format("{0} {1}", first, second);
-                    return result;
+                    var bytes = BitConverter.GetBytes((uint)value);
+                    var first = BitConverter.ToUInt16(bytes, 0);
+                    var second = BitConverter.ToUInt16(bytes, 2);
+                    return String.Format("{0} {1}", first, second);
                 case 3:
-                    bytes = BitConverter.GetBytes((uint)value);
-                    result = BitConverter.ToSingle(bytes, 0);
-                    return result;
+                    return BitConverter.ToSingle(BitConverter.GetBytes((uint)value), 0);
                 case 4:
-                    result = (uint)value;
-                    return result;
+                    return (uint)value;
                 case 5:
-                    string str = ((uint)value).ToString("X8");
-                    result = str;
-                    return result;
+                    return ((uint)value).ToString("X8");
                 default:
-                    return result;
+                    return 0;
             }
         }
 
