@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WoWObjects;
 using UpdateFields;
 
 namespace UpdatePacketParser
@@ -23,7 +17,7 @@ namespace UpdatePacketParser
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhanledExceptionHandler);
         }
 
-        private void UnhanledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        private static void UnhanledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
             MessageBox.Show(args.ExceptionObject.ToString());
         }
@@ -47,18 +41,18 @@ namespace UpdatePacketParser
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            ListView.SelectedListViewItemCollection slvic = listView1.SelectedItems;
-            for (int i = 0; i < slvic.Count; i++)
+            var slvic = listView1.SelectedItems;
+            for (var i = 0; i < slvic.Count; i++)
             {
-                ListViewItem.ListViewSubItemCollection lvsic = slvic[i].SubItems;
+                var lvsic = slvic[i].SubItems;
                 if (lvsic.Count != 2)
                     return;
                 sb.AppendLine(lvsic[0].Text + '\t' + lvsic[1].Text);
             }
 
-            string temp = sb.ToString();
+            var temp = sb.ToString();
             if (String.IsNullOrEmpty(temp))
                 return;
             Clipboard.SetText(temp);
@@ -66,18 +60,18 @@ namespace UpdatePacketParser
 
         private void copyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            ListView.SelectedListViewItemCollection slvic = listView2.SelectedItems;
-            for (int i = 0; i < slvic.Count; i++)
+            var slvic = listView2.SelectedItems;
+            for (var i = 0; i < slvic.Count; i++)
             {
-                ListViewItem.ListViewSubItemCollection lvsic = slvic[i].SubItems;
+                var lvsic = slvic[i].SubItems;
                 if (lvsic.Count != 2)
                     return;
                 sb.AppendLine(lvsic[0].Text + '\t' + lvsic[1].Text);
             }
 
-            string temp = sb.ToString();
+            var temp = sb.ToString();
             if (String.IsNullOrEmpty(temp))
                 return;
             Clipboard.SetText(temp);
@@ -85,7 +79,7 @@ namespace UpdatePacketParser
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = openFileDialog1.ShowDialog();
+            var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
                 LoadFile(openFileDialog1.FileName);
         }
@@ -119,8 +113,8 @@ namespace UpdatePacketParser
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string[] str = listBox1.Items[listBox1.SelectedIndex].ToString().Split(' ');
-            ulong guid = ulong.Parse(str[0], System.Globalization.NumberStyles.AllowHexSpecifier);
+            var str = listBox1.Items[listBox1.SelectedIndex].ToString().Split(' ');
+            var guid = ulong.Parse(str[0], System.Globalization.NumberStyles.AllowHexSpecifier);
 
             listView1.Items.Clear();
             m_parser.PrintObjectInfo(guid, listView1);

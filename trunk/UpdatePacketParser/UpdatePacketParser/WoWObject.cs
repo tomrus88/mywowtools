@@ -107,8 +107,6 @@ namespace WoWObjects
         public Coords3 m_splinePoint;
         public ulong m_splineGuid;
         public float m_splineRotation;
-        //public byte m_unk1;
-        //public byte m_unk2;
         public uint m_splineCurTime;
         public uint m_splineFullTime;
         public uint m_splineUnk1;
@@ -127,8 +125,6 @@ namespace WoWObjects
             m_splinePoint = new Coords3();
             m_splineGuid = 0;
             m_splineRotation = 0;
-            //m_unk1 = 0;
-            //m_unk2 = 0;
             m_splineCurTime = 0;
             m_splineFullTime = 0;
             m_splineUnk1 = 0;
@@ -237,10 +233,8 @@ namespace WoWObjects
         uint m_valuesCount;
         uint[] m_uint32Values;
         ObjectTypes m_typeId;
-        bool m_new;
         BitArray m_updatemask;
         List<WoWObjectUpdate> m_updates = new List<WoWObjectUpdate>();
-        MovementInfo m_movementInfo;
 
         public WoWObject(uint valuesCount, ObjectTypes typeId)
         {
@@ -255,7 +249,7 @@ namespace WoWObjects
 
         public void Initialize(Dictionary<int, uint> data)
         {
-            for (int i = 0; i < m_updatemask.Count; ++i)
+            for (var i = 0; i < m_updatemask.Count; ++i)
             {
                 if (m_updatemask[i])
                 {
@@ -294,21 +288,12 @@ namespace WoWObjects
             m_typeId = ObjectTypes.TYPEID_OBJECT;
         }
 
-        ~WoWObject()
-        {
-
-        }
-
         public void SetPosition(MovementInfo mInfo)
         {
-            m_movementInfo = mInfo;
+            MovementInfo = mInfo;
         }
 
-        public bool IsNew
-        {
-            get { return m_new; }
-            set { m_new = value; }
-        }
+        public bool IsNew { get; set; }
 
         public ObjectTypes TypeId
         {
@@ -334,10 +319,7 @@ namespace WoWObjects
             set { m_updates = value; }
         }
 
-        public MovementInfo MovementInfo
-        {
-            get { return m_movementInfo; }
-        }
+        public MovementInfo MovementInfo { get; private set; }
 
         public void AddUpdate(WoWObjectUpdate _update)
         {
@@ -346,7 +328,7 @@ namespace WoWObjects
 
         public void AddUpdate(BitArray _mask, Dictionary<int, uint> _data)
         {
-            WoWObjectUpdate _update = new WoWObjectUpdate(_mask, _data);
+            var _update = new WoWObjectUpdate(_mask, _data);
             m_updates.Add(_update);
         }
 
@@ -388,14 +370,14 @@ namespace WoWObjects
 
         public ulong GetUInt64Value(int index)
         {
-            uint low = m_uint32Values[index];
-            uint high = m_uint32Values[index + 1];
+            var low = m_uint32Values[index];
+            var high = m_uint32Values[index + 1];
             return (ulong)(low | (high << 32));
         }
 
         public float GetFloatValue(int index)
         {
-            byte[] temp = BitConverter.GetBytes(m_uint32Values[index]);
+            var temp = BitConverter.GetBytes(m_uint32Values[index]);
             return BitConverter.ToSingle(temp, 0);
         }
 
@@ -412,13 +394,13 @@ namespace WoWObjects
 
         public void SetFloatValue(int index, float value)
         {
-            byte[] temp = BitConverter.GetBytes(value);
+            var temp = BitConverter.GetBytes(value);
             m_uint32Values[index] = BitConverter.ToUInt32(temp, 0);
         }
 
         public void LoadValues(string data)
         {
-            string[] values = data.Split(' ');
+            var values = data.Split(' ');
 
             for (ushort i = 0; i < m_valuesCount; i++)
                 m_uint32Values[i] = Convert.ToUInt32(values[i]);
@@ -426,9 +408,9 @@ namespace WoWObjects
 
         public void Save()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            sb.AppendFormat("INSERT INTO `objects` VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '", GetGUIDHigh(), GetGUIDLow(), m_movementInfo.m_position.X, m_movementInfo.m_position.Y, m_movementInfo.m_position.Z, m_movementInfo.m_position.O, (int)m_typeId);
+            sb.AppendFormat("INSERT INTO `objects` VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '", GetGUIDHigh(), GetGUIDLow(), MovementInfo.m_position.X, MovementInfo.m_position.Y, MovementInfo.m_position.Z, MovementInfo.m_position.O, (int)m_typeId);
 
             for (ushort i = 0; i < m_valuesCount; i++)
             {
@@ -437,7 +419,7 @@ namespace WoWObjects
 
             sb.Append("');");
 
-            StreamWriter sw = new StreamWriter("data.sql", true);
+            var sw = new StreamWriter("data.sql", true);
             sw.WriteLine(sb.ToString());
             sw.Flush();
             sw.Close();

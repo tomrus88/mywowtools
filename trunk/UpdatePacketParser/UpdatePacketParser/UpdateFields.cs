@@ -245,9 +245,9 @@ namespace UpdateFields
         {
             ClearUpdateFields();
 
-            string file = String.Format(Application.StartupPath + "\\" + "updatefields\\{0:D4}.dat", build);
-            FieldType type = FieldType.FIELD_TYPE_NONE;
-            StreamReader sr = new StreamReader(file);
+            var file = String.Format(Application.StartupPath + "\\" + "updatefields\\{0}.dat", build);
+            var type = FieldType.FIELD_TYPE_NONE;
+            var sr = new StreamReader(file);
             while (sr.Peek() >= 0)
             {
                 if (type == FieldType.FIELD_TYPE_END)
@@ -264,7 +264,7 @@ namespace UpdateFields
                     continue;
                 }
 
-                string curline = sr.ReadLine();
+                var curline = sr.ReadLine();
 
                 if (curline.StartsWith("#") || curline.StartsWith("/")) // skip commentary lines
                     continue;
@@ -290,18 +290,18 @@ namespace UpdateFields
                     continue;
                 }
 
-                string[] arr = curline.Split('	');
+                var arr = curline.Split('	');
 
                 if (arr.Length < 3)
                     continue;
 
-                int id = Convert.ToInt32(arr[0]);
-                string name = arr[1];
-                uint type1 = Convert.ToUInt32(arr[2]);
+                var id = Convert.ToInt32(arr[0]);
+                var name = arr[1];
+                var type1 = Convert.ToUInt32(arr[2]);
                 //uint format = Convert.ToUInt32(arr[3]);
-                uint format = 0;
+                const uint format = 0;
 
-                UpdateField uf = new UpdateField(id, name, type1, format, 0);
+                var uf = new UpdateField(id, name, type1, format, 0);
                 switch (type)
                 {
                     case FieldType.FIELD_TYPE_END:
@@ -342,29 +342,29 @@ namespace UpdateFields
         public static void CheckIntegrity()
         {
             // program will crash there if updatefields.dat contains errors
-            for (int i = 0; i < item_uf.Count; i++)
+            for (var i = 0; i < item_uf.Count; i++)
             {
-                UpdateField uf = item_uf[i];
+                var uf = item_uf[i];
             }
 
-            for (int i = 0; i < unit_uf.Count; i++)
+            for (var i = 0; i < unit_uf.Count; i++)
             {
-                UpdateField uf = unit_uf[i];
+                var uf = unit_uf[i];
             }
 
-            for (int i = 0; i < go_uf.Count; i++)
+            for (var i = 0; i < go_uf.Count; i++)
             {
-                UpdateField uf = go_uf[i];
+                var uf = go_uf[i];
             }
 
-            for (int i = 0; i < do_uf.Count; i++)
+            for (var i = 0; i < do_uf.Count; i++)
             {
-                UpdateField uf = do_uf[i];
+                var uf = do_uf[i];
             }
 
-            for (int i = 0; i < corpse_uf.Count; i++)
+            for (var i = 0; i < corpse_uf.Count; i++)
             {
-                UpdateField uf = corpse_uf[i];
+                var uf = corpse_uf[i];
             }
         }
     }
