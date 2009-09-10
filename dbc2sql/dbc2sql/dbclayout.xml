@@ -131,8 +131,11 @@
     <field type="int" name="m_attributesExD"/>
     <field type="int" name="m_attributesExE"/>
     <field type="int" name="m_attributesExF"/>
+    <field type="int" name="m_attributesExG"/>
     <field type="int" name="m_shapeshiftMask"/>
+    <field type="int" name="m_shapeshiftMask2"/>
     <field type="int" name="m_shapeshiftExclude"/>
+    <field type="int" name="m_shapeshiftExclude2"/>
     <field type="int" name="m_targets"/>
     <field type="int" name="m_targetCreatureType"/>
     <field type="int" name="m_requiresSpellFocus"/>
@@ -352,6 +355,10 @@
     <field type="int" name="m_runeCostID"/>
     <field type="int" name="m_spellMissileID"/>
     <field type="int" name="m_powerDisplayID"/>
+    <field type="float" name="m_unk1_1"/>
+    <field type="float" name="m_unk1_2"/>
+    <field type="float" name="m_unk1_3"/>
+    <field type="int" name="m_spellDescriptionVariableID"/>
   </Spell>
   <SpellAuraNames>
     <index>
@@ -498,4 +505,31 @@
     <field type="int" name="pos_x"/>
     <field type="int" name="pos_y"/>
   </WorldMapOverlay>
+  <WorldSafeLocs>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="int" name="id"/>
+    <field type="int" name="map"/>
+    <field type="float" name="pos_x"/>
+    <field type="float" name="pos_y"/>
+    <field type="float" name="pos_z"/>
+    <field type="string" name="m_name_lang_1"/>
+    <field type="string" name="m_name_lang_2"/>
+    <field type="string" name="m_name_lang_3"/>
+    <field type="string" name="m_name_lang_4"/>
+    <field type="string" name="m_name_lang_5"/>
+    <field type="string" name="m_name_lang_6"/>
+    <field type="string" name="m_name_lang_7"/>
+    <field type="string" name="m_name_lang_8"/>
+    <field type="string" name="m_name_lang_9"/>
+    <field type="string" name="m_name_lang_10"/>
+    <field type="string" name="m_name_lang_11"/>
+    <field type="string" name="m_name_lang_12"/>
+    <field type="string" name="m_name_lang_13"/>
+    <field type="string" name="m_name_lang_14"/>
+    <field type="string" name="m_name_lang_15"/>
+    <field type="string" name="m_name_lang_16"/>
+    <field type="int" name="m_name_lang_flags"/>
+  </WorldSafeLocs>
 </DBFilesClient>
