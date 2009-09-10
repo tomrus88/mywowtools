@@ -92,12 +92,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Deflate64  = 9,
 		
 		/// <summary>
-		/// Not supported by #Zip currently
+		/// BZip2 compression. Not supported by #Zip.
 		/// </summary>
 		BZip2      = 11,
 		
 		/// <summary>
-		/// WinZip special for AES encryption, Not supported by #Zip
+		/// WinZip special for AES encryption, Not supported by #Zip.
 		/// </summary>
 		WinZipAES  = 99,
 		
@@ -157,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		Twofish = 0x6721,
 		/// <summary>
-		/// RCS has been used for encryption.
+		/// RC4 has been used for encryption.
 		/// </summary>
 		RC4            = 0x6801,
 		/// <summary>
@@ -590,7 +590,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Convert a string to a byte array
 		/// </summary>
-		/// <param name="flags">The applicable general purpose bits flags</param>
+        /// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
 		/// <param name="str">
 		/// String to convert to an array
 		/// </param>

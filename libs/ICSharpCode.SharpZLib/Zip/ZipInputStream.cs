@@ -100,13 +100,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class ZipInputStream : InflaterInputStream
 	{
 		#region Instance Fields
-		// Delegate for reading bytes from a stream.
-		delegate int ReaderDelegate(byte[] b, int offset, int length);
+
+		/// <summary>
+		/// Delegate for reading bytes from a stream. 
+		/// </summary>
+		delegate int ReadDataHandler(byte[] b, int offset, int length);
 		
 		/// <summary>
 		/// The current reader this instance.
 		/// </summary>
-		ReaderDelegate internalReader;
+		ReadDataHandler internalReader;
 		
 		Crc32 crc = new Crc32();
 		ZipEntry entry;
@@ -125,7 +128,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipInputStream(Stream baseInputStream)
 			: base(baseInputStream, new Inflater(true))
 		{
-			internalReader = new ReaderDelegate(ReadingNotAvailable);
+			internalReader = new ReadDataHandler(ReadingNotAvailable);
 		}
 		#endregion
 		
@@ -281,9 +284,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Determine how to handle reading of data if this is attempted.
 			if (entry.IsCompressionMethodSupported()) {
-				internalReader = new ReaderDelegate(InitialRead);
+				internalReader = new ReadDataHandler(InitialRead);
 			} else {
-				internalReader = new ReaderDelegate(ReadingNotSupported);
+				internalReader = new ReadDataHandler(ReadingNotSupported);
 			}
 			
 			return entry;
@@ -360,7 +363,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (method == (int)CompressionMethod.Deflated) {
 				if ((flags & 8) != 0) {
 					// We don't know how much we must skip, read until end.
-					byte[] tmp = new byte[2048];
+					byte[] tmp = new byte[4096];
 
 					// Read will close this entry
 					while (Read(tmp, 0, tmp.Length) > 0) {
@@ -378,7 +381,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				csize -= inputBuffer.Available;
 				inputBuffer.Available = 0;
 				while (csize != 0) {
-					int skipped = (int)base.Skip(csize & 0xFFFFFFFFL);
+					long skipped = base.Skip(csize);
 				
 					if (skipped <= 0) {
 						throw new ZipException("Zip archive ends early.");
@@ -506,13 +509,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 #endif				
 			}
-			
-			if ( (method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0) ) {
-				inputBuffer.SetInflaterInput(inf);
+
+			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0)) {
+				if ((method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0)) {
+					inputBuffer.SetInflaterInput(inf);
+				}
+
+				internalReader = new ReadDataHandler(BodyRead);
+				return BodyRead(destination, offset, count);
 			}
-			
-			internalReader = new ReaderDelegate(BodyRead);
-			return BodyRead(destination, offset, count);
+			else {
+				internalReader = new ReadDataHandler(ReadingNotAvailable);
+				return 0;
+			}
 		}
 		
 		/// <summary>
@@ -639,7 +648,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public override void Close()
 		{
-			internalReader = new ReaderDelegate(ReadingNotAvailable);
+			internalReader = new ReadDataHandler(ReadingNotAvailable);
 			crc = null;
 			entry = null;
 

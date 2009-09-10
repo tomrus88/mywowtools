@@ -604,7 +604,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		ITaggedData Create(short tag, byte[] data, int offset, int count)
+		static ITaggedData Create(short tag, byte[] data, int offset, int count)
 		{
 			ITaggedData result = null;
 			switch ( tag )
@@ -619,14 +619,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 					result = new RawTaggedData(tag);
 					break;
 			}
-			result.SetData(data_, readValueStart_, readValueLength_);
+			result.SetData(data, offset, count);
 			return result;
 		}
 		
 		/// <summary>
 		/// Get the length of the last value found by <see cref="Find"/>
 		/// </summary>
-		/// <remarks>This is only value if <see cref="Find"/> has previsouly returned true.</remarks>
+		/// <remarks>This is only valid if <see cref="Find"/> has previously returned true.</remarks>
 		public int ValueLength
 		{
 			get { return readValueLength_; }
@@ -636,7 +636,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the index for the current read value.
 		/// </summary>
 		/// <remarks>This is only valid if <see cref="Find"/> has previously returned true.
-		/// Initially it will be the index of the first byte of actual data.  The value is updated after calls to
+		/// Initially the result will be the index of the first byte of actual data.  The value is updated after calls to
 		/// <see cref="ReadInt"/>, <see cref="ReadShort"/> and <see cref="ReadLong"/>. </remarks>
 		public int CurrentReadIndex
 		{
