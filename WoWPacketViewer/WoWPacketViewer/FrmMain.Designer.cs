@@ -40,6 +40,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsParsedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +52,7 @@
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.saveAsParsedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveWardenAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -161,6 +162,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveAsTextToolStripMenuItem,
+            this.saveWardenAsTextToolStripMenuItem,
             this.saveAsParsedTextToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -182,6 +184,13 @@
             this.saveAsTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.saveAsTextToolStripMenuItem.Text = "&Save As Text...";
             this.saveAsTextToolStripMenuItem.Click += new System.EventHandler(this.SaveMenu_Click);
+            // 
+            // saveAsParsedTextToolStripMenuItem
+            // 
+            this.saveAsParsedTextToolStripMenuItem.Name = "saveAsParsedTextToolStripMenuItem";
+            this.saveAsParsedTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.saveAsParsedTextToolStripMenuItem.Text = "Save As Parsed Text...";
+            this.saveAsParsedTextToolStripMenuItem.Click += new System.EventHandler(this.saveAsParsedTextToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -276,6 +285,10 @@
             // 
             this._openDialog.Filter = "WoWBinary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
+            // _saveDialog
+            // 
+            this._saveDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._saveDialog_FileOk);
+            // 
             // _backgroundWorker
             // 
             this._backgroundWorker.WorkerReportsProgress = true;
@@ -283,12 +296,12 @@
             this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             this._backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             // 
-            // saveAsParsedTextToolStripMenuItem
+            // saveWardenAsTextToolStripMenuItem
             // 
-            this.saveAsParsedTextToolStripMenuItem.Name = "saveAsParsedTextToolStripMenuItem";
-            this.saveAsParsedTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.saveAsParsedTextToolStripMenuItem.Text = "Save As Parsed Text...";
-            this.saveAsParsedTextToolStripMenuItem.Click += new System.EventHandler(this.saveAsParsedTextToolStripMenuItem_Click);
+            this.saveWardenAsTextToolStripMenuItem.Name = "saveWardenAsTextToolStripMenuItem";
+            this.saveWardenAsTextToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.saveWardenAsTextToolStripMenuItem.Text = "Save Warden As Text...";
+            this.saveWardenAsTextToolStripMenuItem.Click += new System.EventHandler(this.saveWardenAsTextToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -346,5 +359,6 @@
         private System.ComponentModel.BackgroundWorker _backgroundWorker;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem saveAsParsedTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveWardenAsTextToolStripMenuItem;
     }
 }

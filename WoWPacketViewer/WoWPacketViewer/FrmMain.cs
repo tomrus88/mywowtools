@@ -287,5 +287,34 @@ namespace WoWPacketViewer
                 }
             }
         }
+
+        private void _saveDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            //MessageBox.Show("file ok?");
+        }
+
+        private void saveWardenAsTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (m_packetViewer == null)
+            {
+                MessageBox.Show("You should load something first!");
+                return;
+            }
+
+            _saveDialog.FileName = Path.GetFileName(_openDialog.FileName).Replace("bin", "txt");
+
+            if (_saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (var stream = new StreamWriter(_saveDialog.OpenFile()))
+                {
+                    foreach (var p in m_packetViewer.Packets)
+                    {
+                        if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
+                            continue;
+                        stream.Write(p.HexLike());
+                    }
+                }
+            }
+        }
     }
 }

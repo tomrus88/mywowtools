@@ -71,6 +71,7 @@
     <Compile Include="Parser.cs" />
     <Compile Include="ParserAttribute.cs" />
     <Compile Include="Parsers\AuraUpdateParser.cs" />
+    <Compile Include="Parsers\CMSG_AUTH_SESSION.cs" />
     <Compile Include="Parsers\EquipmentSetsParser.cs" />
     <Compile Include="Parsers\InitialSpellsParser.cs" />
     <Compile Include="Parsers\InspectParser.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Parsers\SpellGoParser.cs" />
     <Compile Include="Parsers\SpellStartParser.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
+    <Compile Include="Parsers\WardenParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmMain.resx">
@@ -119,6 +121,12 @@
     <Compile Include="SqLitePacketViewer.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="WowCorePacketViewer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libs\ICSharpCode.SharpZLib\ICSharpCode.SharpZLib.csproj">
+      <Project>{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}</Project>
+      <Name>ICSharpCode.SharpZLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
