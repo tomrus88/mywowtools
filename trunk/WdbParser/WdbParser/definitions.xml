@@ -153,25 +153,30 @@
     <wdbElement minver="0" maxver="19999" type="uinteger" /> <!-- #2 Defines the length of the record -->
     <wdbElement minver="0" maxver="19999" type="uinteger" /> <!-- #3 Again the ID of the quest -->
     <wdbElement minver="0" maxver="19999" name="Method" type="uinteger" /> <!-- #4 Accepted values: 0, 1 or 2 Possible theory for future dev: 0==cannot in quest log, 1==can in quest log session only(removed on log out), 2==can in quest log always (save to db) -->
-    <wdbElement minver="0" maxver="19999" name="QuestLevel" type="uinteger" /> <!-- #5 Max Level -->
+    <wdbElement minver="0" maxver="19999" name="QuestLevel" type="integer" /> <!-- #5 Max Level -->
+    <wdbElement minver="0" maxver="19999" name="MinLevel" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ZoneOrSort" type="integer" />   <!-- type="uinteger" maxval="100000" #6 Zone, see Appendix -->
     <wdbElement minver="0" maxver="19999" name="Type" type="uinteger" />     <!-- #7 infoID, see QuestInfo.dbc -->
-  	<wdbElement minver="6403" maxver="19999" name="SuggestedPlayers" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="SuggestedPlayers" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="RepObjectiveFaction" type="uinteger" /> <!-- #8 faction - You must have a reputation with this faction -->
     <wdbElement minver="0" maxver="19999" name="RepObjectiveValue" type="integer" />   <!-- #9 reputation - If != 0: Minimum reputation so the user can take the quest -->
-  	<wdbElement minver="0" maxver="19999" name="wdb_unused4" type="uinteger" /> <!-- a second set of repObjectiveFaction -->
+    <wdbElement minver="0" maxver="19999" name="wdb_unused4" type="uinteger" /> <!-- a second set of repObjectiveFaction -->
     <wdbElement minver="0" maxver="19999" name="wdb_unused5" type="integer" />  <!-- a second set of repObjectiveValue -->
     <wdbElement minver="0" maxver="19999" name="NextQuestInChain" type="uinteger" maxval="100000" />  <!-- #12 next_quest, only set, if != 0  -->
+    <wdbElement minver="0" maxver="19999" name="Unk1" type="integer" />
     <wdbElement minver="0" maxver="19999" name="RewOrReqMoney" type="integer" />     <!-- #13 value in copper, if quest is completed -->
     <wdbElement minver="0" maxver="19999" name="RewMoneyMaxLevel" type="uinteger" /> 
     <wdbElement minver="0" maxver="19999" name="RewSpell" type="uinteger" />    <!-- #15 Players learns spell, if quest is completed -->
-    <wdbElement minver="6299" maxver="19999" name="RewSpellCast" type="uinteger" />
-    <wdbElement minver="7521" maxver="19999" name="wdb_Unk6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RewSpellCast" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk6" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="wdb_Unk7" type="single" />
     <wdbElement minver="0" maxver="19999" name="SrcItemId" type="uinteger" /> <!-- #16 Item that starts the quest -->
     <wdbElement minver="0" maxver="19999" name="QuestFlags" type="uinteger" /> <!-- #17 quest_flags   Only set, if value != 00 (hex)  -->
-    <wdbElement minver="8089" maxver="19999" name="CharTitleId" type="uinteger" /> <!-- index of CharTitles.dbc -->
-    <wdbElement minver="8905" maxver="19999" name="wdb_unk1" type="integer" />
-    <wdbElement minver="8905" maxver="19999" name="wdb_unk2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="CharTitleId" type="uinteger" /> <!-- index of CharTitles.dbc -->
+    <wdbElement minver="0" maxver="19999" name="PlayersSlain" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="BonusTalents" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="Unk8" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="Unk9" type="integer" />
     <wdbElement minver="0" maxver="19999" name="RewItemId1" type="uinteger" />   <!-- #18 See itemcache.wdb -->
     <wdbElement minver="0" maxver="19999" name="RewItemCount1" type="uinteger" /><!-- #19 amount of items -->
     <wdbElement minver="0" maxver="19999" name="RewItemId2" type="uinteger" />   <!-- #20 See itemcache.wdb -->
@@ -192,7 +197,22 @@
     <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount5" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="RewChoiceItemId6" type="uinteger" /> <!-- #36 See itemcache.wdb -->
     <wdbElement minver="0" maxver="19999" name="RewChoiceItemCount6" type="uinteger" />
-    <wdbElement minver="5195" maxver="19999" name="PointMapId" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionId1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionId2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionId3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionId4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionId5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionVal1" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionVal2" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionVal3" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionVal4" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionVal5" type="integer" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionUnk1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionUnk2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionUnk3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionUnk4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="RawFactionUnk5" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="PointMapId" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="PointX" type="single" />  <!-- #39 Unknown -->
     <wdbElement minver="0" maxver="19999" name="PointY" type="single" />  <!-- #40 Unknown -->
     <wdbElement minver="0" maxver="19999" name="PointOpt" type="integer" /> <!-- #38 Unknown -->
@@ -200,18 +220,19 @@
     <wdbElement minver="0" maxver="19999" name="Objectives" type="varChar" /> <!-- #43 desc, short description -->
     <wdbElement minver="0" maxver="19999" name="Details" type="varChar" /> <!-- #44 details -->
     <wdbElement minver="0" maxver="19999" name="EndText" type="varChar" /> <!-- #45 second_desc -->
+    <wdbElement minver="0" maxver="19999" name="UnkText" type="varChar" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId1" type="integer" />    <!-- #46 Kill this mob, "kill" in SCP, only set if value is != 0 -->
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount1" type="uinteger" /> <!-- #47 Kill wdb_ReqKillMobOrGOId1 Mobs of type wdb_ReqKillMobOrGOCount1 -->
-    <wdbElement minver="8905" maxver="19999" name="ReqSourceId1" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqSourceId1" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId2" type="integer" />   <!-- #50 -->
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount2" type="uinteger" /><!-- #51 -->
-    <wdbElement minver="8905" maxver="19999" name="ReqSourceId2" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqSourceId2" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId3" type="integer" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount3" type="uinteger" /><!-- #55 -->
-    <wdbElement minver="8905" maxver="19999" name="ReqSourceId3" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqSourceId3" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOId4" type="integer" />
     <wdbElement minver="0" maxver="19999" name="ReqCreatureOrGOCount4" type="uinteger" /><!-- #59 -->
-    <wdbElement minver="8905" maxver="19999" name="ReqSourceId4" type="uinteger" />
+    <wdbElement minver="0" maxver="19999" name="ReqSourceId4" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqItemId1" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqItemCount1" type="uinteger" />
     <wdbElement minver="0" maxver="19999" name="ReqItemId2" type="uinteger" />
