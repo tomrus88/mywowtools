@@ -312,6 +312,11 @@ namespace WoWPacketViewer
                         if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
                             continue;
                         stream.Write(p.HexLike());
+
+                        string parsed = Parser.CreateParser(p).Parse();
+                        if (String.IsNullOrEmpty(parsed))
+                            continue;
+                        stream.Write(parsed);
                     }
                 }
             }
