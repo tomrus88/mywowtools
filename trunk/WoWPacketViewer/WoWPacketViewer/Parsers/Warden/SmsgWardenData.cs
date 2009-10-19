@@ -143,38 +143,7 @@ namespace WoWPacketViewer.Parsers.Warden
 				}
 				else
 				{
-					if (WardenData.WardenDebugForm == null || WardenData.WardenDebugForm.IsDisposed)
-					{
-						WardenData.WardenDebugForm = new FrmWardenDebug();
-					}
-
-					var textBoxes = WardenData.WardenDebugForm.GetTextBoxes();
-					if (textBoxes.Length != 0)
-					{
-						foreach (var tb in textBoxes)
-						{
-							if (tb.Name == "textBox1")
-							{
-								tb.Text = String.Empty;
-								foreach (var str in strings)
-								{
-									tb.Text += str;
-									tb.Text += "\r\n";
-								}
-								tb.Text += Utility.PrintHex(checks, 0, checks.Length);
-								continue;
-							}
-
-							byte val = 0;
-							if (GetByteForCheckType((CheckType) tb.TabIndex, ref val))
-								tb.Text = String.Format("{0:X2}", val);
-						}
-					}
-
-					if (!WardenData.WardenDebugForm.Visible)
-					{
-						WardenData.WardenDebugForm.Show();
-					}
+					WardenData.ShowForm(strings, checks);
 
 					break;
 				}
@@ -280,19 +249,6 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("====== TIMING_CHECK END ======");
 			AppendLine();
 			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
-		}
-
-		private bool GetByteForCheckType(CheckType checkType, ref byte val)
-		{
-			foreach (var temp in WardenData.CheckTypes)
-			{
-				if (temp.Value == checkType)
-				{
-					val = temp.Key;
-					return true;
-				}
-			}
-			return false;
 		}
 
 		private void ValidateCheckSum(uint checkSum, byte[] data)
