@@ -65,6 +65,12 @@
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="BinaryReaderExtensions.cs" />
+    <Compile Include="FrmWardenDebug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmWardenDebug.Designer.cs">
+      <DependentUpon>FrmWardenDebug.cs</DependentUpon>
+    </Compile>
     <Compile Include="Opcodes.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketViewer.cs" />
@@ -88,6 +94,9 @@
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmWardenDebug.resx">
+      <DependentUpon>FrmWardenDebug.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
