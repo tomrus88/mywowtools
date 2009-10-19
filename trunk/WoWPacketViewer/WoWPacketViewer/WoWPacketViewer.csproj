@@ -85,9 +85,12 @@
     <Compile Include="Parsers\MonsterMoveParser.cs" />
     <Compile Include="Parsers\PetSpellsParser.cs" />
     <Compile Include="Parsers\PowerUpdateParser.cs" />
-    <Compile Include="Parsers\SpellGoParser.cs" />
-    <Compile Include="Parsers\SpellParserBase.cs" />
-    <Compile Include="Parsers\SpellStartParser.cs" />
+    <Compile Include="Parsers\Spells\CastFlags.cs" />
+    <Compile Include="Parsers\Spells\CooldownMask.cs" />
+    <Compile Include="Parsers\Spells\SpellGoParser.cs" />
+    <Compile Include="Parsers\Spells\SpellParserBase.cs" />
+    <Compile Include="Parsers\Spells\SpellStartParser.cs" />
+    <Compile Include="Parsers\Spells\TargetFlags.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
     <Compile Include="Parsers\Warden\CheckInfo.cs" />
     <Compile Include="Parsers\Warden\CheckType.cs" />
