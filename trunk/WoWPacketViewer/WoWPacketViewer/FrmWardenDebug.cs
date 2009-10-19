@@ -6,7 +6,7 @@ using WoWPacketViewer.Parsers.Warden;
 
 namespace WoWPacketViewer
 {
-    public partial class FrmWardenDebug : Form
+	internal partial class FrmWardenDebug : Form
     {
         public FrmWardenDebug()
         {
@@ -15,7 +15,7 @@ namespace WoWPacketViewer
 
         public TextBox[] GetTextBoxes()
         {
-            List<TextBox> temp = new List<TextBox>();
+            var temp = new List<TextBox>();
             foreach (var control in Controls)
             {
                 if (control is TextBox)
@@ -32,7 +32,7 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Dictionary<byte, CheckType> checkTypes = new Dictionary<byte, CheckType>();
+            var checkTypes = new Dictionary<byte, CheckType>();
 
             var textBoxes = GetTextBoxes();
 
@@ -60,7 +60,7 @@ namespace WoWPacketViewer
                     if (tb.Name == "textBox1")
                         continue;
 
-                    if(tb.TabIndex == Convert.ToInt32((sender as ToolStripMenuItem).Tag))
+                    if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
                     {
                         tb.Text = textBox1.SelectedText.Trim();
                         break;
@@ -68,5 +68,40 @@ namespace WoWPacketViewer
                 }
             }
         }
+
+    	public void SetInfo(string value)
+    	{
+    		textBox1.Text = value;
+    	}
+
+		public void SetCheckTypes(IDictionary<byte, CheckType> checkTypes)
+		{
+			TextBox[] textBoxes = GetTextBoxes();
+			if (textBoxes.Length == 0) return;
+			foreach (TextBox tb in textBoxes)
+			{
+				if (tb.Name == "textBox1")
+				{
+					continue;
+				}
+
+				byte val = 0;
+				if (GetByteForCheckType((CheckType) tb.TabIndex, ref val, checkTypes))
+					tb.Text = String.Format("{0:X2}", val);
+			}
+		}
+
+		private static bool GetByteForCheckType(CheckType checkType, ref byte val, IDictionary<byte, CheckType> dictionary)
+    	{
+    		foreach (var temp in dictionary)
+    		{
+    			if (temp.Value == checkType)
+    			{
+    				val = temp.Key;
+    				return true;
+    			}
+    		}
+    		return false;
+    	}
     }
 }
