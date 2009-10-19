@@ -92,7 +92,7 @@
     <Compile Include="Parsers\Warden\CheckType.cs" />
     <Compile Include="Parsers\Warden\CmsgWardenData.cs" />
     <Compile Include="Parsers\Warden\SmsgWardenData.cs" />
-    <Compile Include="Parsers\Warden\WardenParser.cs" />
+    <Compile Include="Parsers\Warden\WardenData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmMain.resx">

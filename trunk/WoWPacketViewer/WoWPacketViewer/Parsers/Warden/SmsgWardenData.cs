@@ -7,7 +7,7 @@ using System.Text;
 namespace WoWPacketViewer.Parsers.Warden
 {
 	[Parser(OpCodes.SMSG_WARDEN_DATA)]
-	internal class SmsgWardenData : MsgWardenData
+	internal class SmsgWardenData : Parser
 	{
 		public SmsgWardenData(Packet packet) : base(packet)
 		{
@@ -17,7 +17,7 @@ namespace WoWPacketViewer.Parsers.Warden
 		{
 			BinaryReader gr = Packet.CreateReader();
 
-			s_lastCheckInfo.Clear();
+			WardenData.CheckInfos.Clear();
 
 			var wardenOpcode = gr.ReadByte();
 			AppendFormatLine("S->C Warden Opcode: {0:X2}", wardenOpcode);
@@ -104,14 +104,16 @@ namespace WoWPacketViewer.Parsers.Warden
 
 			while (reader.BaseStream.Position + 1 != reader.BaseStream.Length)
 			{
-				var Xor = checks[checks.Length - 1];
+				var xor = checks[checks.Length - 1];
 
 				var check = reader.ReadByte();
-				var checkType = (byte)(check ^ Xor);
+				var checkType = (byte) (check ^ xor);
 
-				try
+
+				CheckType checkType2;
+				if (WardenData.CheckTypes.TryGetValue(check, out checkType2))
 				{
-					switch (s_checkTypes[check])
+					switch (checkType2)
 					{
 						case CheckType.TIMING_CHECK:
 							Parse_TIMING_CHECK(check, checkType);
@@ -139,16 +141,14 @@ namespace WoWPacketViewer.Parsers.Warden
 							break;
 					}
 				}
-				catch (KeyNotFoundException ex)
+				else
 				{
-					ex.ToString();
-
-					if (s_wardenDebugForm == null || s_wardenDebugForm.IsDisposed)
+					if (WardenData.WardenDebugForm == null || WardenData.WardenDebugForm.IsDisposed)
 					{
-						s_wardenDebugForm = new FrmWardenDebug();
+						WardenData.WardenDebugForm = new FrmWardenDebug();
 					}
 
-					var textBoxes = s_wardenDebugForm.GetTextBoxes();
+					var textBoxes = WardenData.WardenDebugForm.GetTextBoxes();
 					if (textBoxes.Length != 0)
 					{
 						foreach (var tb in textBoxes)
@@ -166,14 +166,14 @@ namespace WoWPacketViewer.Parsers.Warden
 							}
 
 							byte val = 0;
-							if (GetByteForCheckType((CheckType)tb.TabIndex, ref val))
+							if (GetByteForCheckType((CheckType) tb.TabIndex, ref val))
 								tb.Text = String.Format("{0:X2}", val);
 						}
 					}
 
-					if (!s_wardenDebugForm.Visible)
+					if (!WardenData.WardenDebugForm.Visible)
 					{
-						s_wardenDebugForm.Show();
+						WardenData.WardenDebugForm.Show();
 					}
 
 					break;
@@ -195,7 +195,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("Driver: {0}", strings[stringIndex]);
 			AppendFormatLine("====== DRIVER_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private void Parse_LUA_STR_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
@@ -206,7 +206,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("String: {0}", strings[stringIndex]);
 			AppendFormatLine("====== LUA_STR_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private void Parse_MPQ_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
@@ -217,7 +217,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("File: {0}", strings[fileNameIndex]);
 			AppendFormatLine("====== MPQ_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private void Parse_PROC_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
@@ -238,7 +238,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("Bytes to read: {0}", bytesToRead);
 			AppendFormatLine("====== PROC_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private void Parse_PAGE_CHECK(BinaryReader reader, byte check, byte checkType)
@@ -255,7 +255,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("Bytes to read: {0}", bytesToRead);
 			AppendFormatLine("====== PAGE_CHECK_A_B END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private void Parse_MEM_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
@@ -270,7 +270,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("Bytes to read: {0}", readLen);
 			AppendFormatLine("====== MEM_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], readLen));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], readLen));
 		}
 
 		private void Parse_TIMING_CHECK(byte check, byte checkType)
@@ -279,12 +279,12 @@ namespace WoWPacketViewer.Parsers.Warden
 			AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
 			AppendFormatLine("====== TIMING_CHECK END ======");
 			AppendLine();
-			s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+			WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[check], 0));
 		}
 
 		private bool GetByteForCheckType(CheckType checkType, ref byte val)
 		{
-			foreach (var temp in s_checkTypes)
+			foreach (var temp in WardenData.CheckTypes)
 			{
 				if (temp.Value == checkType)
 				{

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using WoWPacketViewer.Parsers;
 using WoWPacketViewer.Parsers.Warden;
 
 namespace WoWPacketViewer
@@ -46,7 +45,7 @@ namespace WoWPacketViewer
                     checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
             }
 
-            MsgWardenData.InitCheckTypes(checkTypes);
+            WardenData.InitCheckTypes(checkTypes);
 
             Hide();
         }
