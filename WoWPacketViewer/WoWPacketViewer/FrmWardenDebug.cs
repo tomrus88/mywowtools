@@ -56,7 +56,9 @@ namespace WoWPacketViewer
         	{
         		if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
         		{
-        			tb.Text = tbInfo.SelectedText.Trim();
+                    var tempCheckId = Convert.ToByte(tbInfo.SelectedText.Trim(), 16);
+                    var checkId = (byte)(tempCheckId ^ WardenData.XorByte);
+                    tb.Text = String.Format("{0:X2}", checkId);
         			break;
         		}
         	}
