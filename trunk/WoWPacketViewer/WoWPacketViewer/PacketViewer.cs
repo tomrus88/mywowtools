@@ -24,7 +24,7 @@ namespace WoWPacketViewer
 
         public string ShowParsed(Packet pkt)
         {
-            return Parser.CreateParser(pkt).Parse();
+            return ParserFactory.CreateParser(pkt).Parse();
         }
 
         public static PacketViewerBase Create(string extension)

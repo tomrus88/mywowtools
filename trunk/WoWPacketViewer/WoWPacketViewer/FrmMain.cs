@@ -279,7 +279,7 @@ namespace WoWPacketViewer
                 {
                     foreach (var p in m_packetViewer.Packets)
                     {
-                        string parsed = Parser.CreateParser(p).Parse();
+                        string parsed = ParserFactory.CreateParser(p).Parse();
                         if(String.IsNullOrEmpty(parsed))
                             continue;
                         stream.Write(parsed);
@@ -313,7 +313,7 @@ namespace WoWPacketViewer
                             continue;
                         stream.Write(p.HexLike());
 
-                        string parsed = Parser.CreateParser(p).Parse();
+                        string parsed = ParserFactory.CreateParser(p).Parse();
                         if (String.IsNullOrEmpty(parsed))
                             continue;
                         stream.Write(parsed);
