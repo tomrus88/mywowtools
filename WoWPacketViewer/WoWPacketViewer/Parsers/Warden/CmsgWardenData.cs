@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Text;
 namespace WoWPacketViewer.Parsers.Warden
 {
 	[Parser(OpCodes.CMSG_WARDEN_DATA)]
-	internal class CmsgWardenData : MsgWardenData
+	internal class CmsgWardenData : Parser
 	{
 		public CmsgWardenData(Packet packet)
 			: base(packet)
@@ -62,7 +61,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			var reader = new BinaryReader(new MemoryStream(result), Encoding.ASCII);
 			AppendFormatLine("====== CHEAT CHECKS RESULTS START ======");
 			AppendLine();
-			foreach (var check in s_lastCheckInfo)
+			foreach (var check in WardenData.CheckInfos)
 			{
 				switch (check.m_type)
 				{
@@ -94,7 +93,7 @@ namespace WoWPacketViewer.Parsers.Warden
 			}
 			AppendFormatLine("====== CHEAT CHECKS RESULTS END ======");
 
-			s_lastCheckInfo.Clear();
+			WardenData.CheckInfos.Clear();
 
 			if (reader.BaseStream.Position != reader.BaseStream.Length)
 				AppendFormatLine("Packet under read!");
