@@ -8,7 +8,6 @@ namespace WoWPacketViewer.Parsers.Warden
 		public static IList<CheckInfo> CheckInfos = new List<CheckInfo>();
 		public static IDictionary<byte, CheckType> CheckTypes = new Dictionary<byte, CheckType>();
 		private static FrmWardenDebug wardenDebugForm;
-        public static byte XorByte { get; private set; }
 
 		public static void InitCheckTypes(IDictionary<byte, CheckType> checkTypes)
 		{
@@ -22,7 +21,7 @@ namespace WoWPacketViewer.Parsers.Warden
 				wardenDebugForm = new FrmWardenDebug();
 			}
 
-            XorByte = checks[checks.Length - 1];
+			wardenDebugForm.XorByte = checks[checks.Length - 1];
 
 			wardenDebugForm.SetInfo(CreateTextInfo(strings, checks));
 
