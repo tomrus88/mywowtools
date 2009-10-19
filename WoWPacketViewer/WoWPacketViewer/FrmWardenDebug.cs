@@ -12,6 +12,8 @@ namespace WoWPacketViewer
             InitializeComponent();
         }
 
+		public byte XorByte { get; set; }
+
 		public TextBox[] GetTextBoxes()
 		{
 			return new[]
@@ -56,9 +58,9 @@ namespace WoWPacketViewer
         	{
         		if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
         		{
-                    var tempCheckId = Convert.ToByte(tbInfo.SelectedText.Trim(), 16);
-                    var checkId = (byte)(tempCheckId ^ WardenData.XorByte);
-                    tb.Text = String.Format("{0:X2}", checkId);
+        			var tempCheckId = Convert.ToByte(tbInfo.SelectedText.Trim(), 16);
+                    var checkId = (byte)(tempCheckId ^ XorByte);
+        			tb.Text = checkId.ToString("X2");
         			break;
         		}
         	}
