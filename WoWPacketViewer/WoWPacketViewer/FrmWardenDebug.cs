@@ -34,9 +34,7 @@ namespace WoWPacketViewer
         {
             var checkTypes = new Dictionary<byte, CheckType>();
 
-            var textBoxes = GetTextBoxes();
-
-            foreach (var tb in textBoxes)
+        	foreach (var tb in GetTextBoxes())
             {
                 if (tb.Name == "textBox1")
                     continue;
@@ -52,38 +50,32 @@ namespace WoWPacketViewer
 
         private void toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (textBox1.SelectedText != String.Empty)
-            {
-                var textBoxes = GetTextBoxes();
-                foreach (var tb in textBoxes)
-                {
-                    if (tb.Name == "textBox1")
-                        continue;
+        	if (tbInfo.SelectedText == String.Empty) return;
 
-                    if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
-                    {
-                        tb.Text = textBox1.SelectedText.Trim();
-                        break;
-                    }
-                }
-            }
+        	foreach (var tb in GetTextBoxes())
+        	{
+        		if (tb.Name == "textBox1")
+        			continue;
+
+        		if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
+        		{
+        			tb.Text = tbInfo.SelectedText.Trim();
+        			break;
+        		}
+        	}
         }
 
-    	public void SetInfo(string value)
+		public void SetInfo(string value)
     	{
-    		textBox1.Text = value;
+    		tbInfo.Text = value;
     	}
 
 		public void SetCheckTypes(IDictionary<byte, CheckType> checkTypes)
 		{
-			TextBox[] textBoxes = GetTextBoxes();
-			if (textBoxes.Length == 0) return;
-			foreach (TextBox tb in textBoxes)
+			foreach (TextBox tb in GetTextBoxes())
 			{
 				if (tb.Name == "textBox1")
-				{
 					continue;
-				}
 
 				byte val = 0;
 				if (GetByteForCheckType((CheckType) tb.TabIndex, ref val, checkTypes))
@@ -91,7 +83,7 @@ namespace WoWPacketViewer
 			}
 		}
 
-		private static bool GetByteForCheckType(CheckType checkType, ref byte val, IDictionary<byte, CheckType> dictionary)
+		private static bool GetByteForCheckType(CheckType checkType, ref byte val, IEnumerable<KeyValuePair<byte, CheckType>> dictionary)
     	{
     		foreach (var temp in dictionary)
     		{
