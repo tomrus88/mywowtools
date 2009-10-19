@@ -9,47 +9,53 @@ namespace WoWPacketViewer
 	public class ParserFactory
 	{
 		private static readonly Dictionary<int, Type> Parsers = new Dictionary<int, Type>();
+		private static readonly Parser UnknownParser = new UnknownPacketParser();
 
-		internal static void Init()
+		static ParserFactory()
+		{
+			Init();
+		}
+
+		private static void Init()
 		{
 			LoadAssembly(Assembly.GetCallingAssembly());
 			if (!Directory.Exists("parsers")) return;
-			foreach (var file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories))
+			foreach (string file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories))
 			{
 				try
 				{
-					var assembly = Assembly.LoadFile(Path.GetFullPath(file));
+					Assembly assembly = Assembly.LoadFile(Path.GetFullPath(file));
 					LoadAssembly(assembly);
 				}
-				catch { }
+				catch
+				{
+				}
 			}
 		}
 
 		private static void LoadAssembly(Assembly assembly)
 		{
-			foreach (var type in assembly.GetTypes())
+			foreach (Type type in assembly.GetTypes())
 			{
-				if (type.IsSubclassOf(typeof(Parser)))
+				if (type.IsSubclassOf(typeof (Parser)))
 				{
-					var attributes = (ParserAttribute[])type.GetCustomAttributes(typeof(ParserAttribute), true);
-					foreach (var attribute in attributes)
+					var attributes = (ParserAttribute[]) type.GetCustomAttributes(typeof (ParserAttribute), true);
+					foreach (ParserAttribute attribute in attributes)
 					{
-						Parsers[(int)attribute.Code] = type;
+						Parsers[(int) attribute.Code] = type;
 					}
 				}
 			}
 		}
 
-		private static readonly Parser UnknownParser = new UnknownPacketParser();
-
 		public static Parser CreateParser(Packet packet)
 		{
 			Type type;
-			if (Parsers.TryGetValue((int)packet.Code, out type))
+			if (!Parsers.TryGetValue((int) packet.Code, out type))
 			{
-				return (Parser)Activator.CreateInstance(type, packet);
+				return UnknownParser;
 			}
-			return UnknownParser;
+			return (Parser) Activator.CreateInstance(type, packet);
 		}
 	}
 }

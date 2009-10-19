@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Windows.Forms;
-
-namespace WoWPacketViewer.Parsers
+﻿namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_MONSTER_MOVE)]
     [Parser(OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)]
