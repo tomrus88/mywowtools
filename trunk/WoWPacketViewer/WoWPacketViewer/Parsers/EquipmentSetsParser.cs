@@ -18,7 +18,7 @@ namespace WoWPacketViewer.Parsers
             var count = gr.ReadUInt32();
             AppendFormatLine("Count: {0}", count);
 
-            for(var i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
             {
                 var setguid = gr.ReadPackedGuid();
                 var setindex = gr.ReadUInt32();
@@ -27,7 +27,7 @@ namespace WoWPacketViewer.Parsers
 
                 AppendFormatLine("EquipmentSet {0}: guid {1}, index {2}, name {3}, iconname {4}", i, setguid, setindex, name, iconname);
 
-                for(var j = 0; j < 19; ++j)
+                for (var j = 0; j < 19; ++j)
                     AppendFormatLine("EquipmentSetItem {0}: guid {1}", j, gr.ReadPackedGuid().ToString("X16"));
             }
 

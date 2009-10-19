@@ -16,13 +16,13 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            var clientBuild =   gr.ReadUInt32();
-            var unk1        =   gr.ReadUInt32();
-            var account     =   gr.ReadCString();
-            var unk2        =   gr.ReadUInt32();
-            var clientSeed  =   gr.ReadUInt32();
-            var unk3        =   gr.ReadUInt64();
-            var digest      =   gr.ReadBytes(20);
+            var clientBuild = gr.ReadUInt32();
+            var unk1 = gr.ReadUInt32();
+            var account = gr.ReadCString();
+            var unk2 = gr.ReadUInt32();
+            var clientSeed = gr.ReadUInt32();
+            var unk3 = gr.ReadUInt64();
+            var digest = gr.ReadBytes(20);
 
             AppendFormatLine("Client Build: {0}", clientBuild);
             AppendFormatLine("Unk1: {0}", unk1);
@@ -43,7 +43,7 @@ namespace WoWPacketViewer.Parsers
             {
                 var count = reader.ReadUInt32();
                 AppendFormatLine("Addons Count: {0}", count);
-                for(var i = 0; i < count; ++i)
+                for (var i = 0; i < count; ++i)
                 {
                     var addonName = reader.ReadCString();
                     var enabled = reader.ReadByte();

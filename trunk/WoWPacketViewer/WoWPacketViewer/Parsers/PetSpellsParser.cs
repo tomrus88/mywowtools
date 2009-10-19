@@ -18,7 +18,7 @@ namespace WoWPacketViewer.Parsers
             var petGUID = gr.ReadUInt64();
             AppendFormatLine("GUID: {0:X16}", petGUID);
 
-            if(petGUID != 0)
+            if (petGUID != 0)
             {
                 AppendFormatLine("Pet family: {0}", gr.ReadUInt16());
 

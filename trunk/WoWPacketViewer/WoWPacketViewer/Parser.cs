@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace WoWPacketViewer
 {
-	public abstract class Parser
+    public abstract class Parser
     {
         private readonly StringBuilder stringBuilder = new StringBuilder();
 
@@ -36,7 +36,7 @@ namespace WoWPacketViewer
 
         public string GetParsedString()
         {
-        	return stringBuilder.ToString();
+            return stringBuilder.ToString();
         }
 
         public void CheckPacket(BinaryReader gr)
@@ -48,7 +48,7 @@ namespace WoWPacketViewer
             }
         }
 
-		protected Packet Packet { get; private set; }
+        protected Packet Packet { get; private set; }
 
         protected Parser(Packet packet)
         {

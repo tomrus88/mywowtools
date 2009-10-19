@@ -25,9 +25,7 @@ namespace WoWPacketViewer
             var frmMain = Owner as ISupportFind;
             var opcode = textBox1.Text;
             if (frmMain != null && !String.IsNullOrEmpty(opcode))
-            {
                 frmMain.Search(opcode, radioButton1.Checked, !checkBox1.Checked);
-            }
         }
 
         private void FrmSearch_FormClosing(object sender, FormClosingEventArgs e)
