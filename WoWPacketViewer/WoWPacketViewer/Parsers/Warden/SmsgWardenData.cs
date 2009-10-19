@@ -111,41 +111,38 @@ namespace WoWPacketViewer.Parsers.Warden
 
 
 				CheckType checkType2;
-                if (WardenData.CheckTypes.TryGetValue(checkType, out checkType2))
-				{
-					switch (checkType2)
-					{
-						case CheckType.TIMING_CHECK:
-							Parse_TIMING_CHECK(check, checkType);
-							break;
-						case CheckType.MEM_CHECK:
-							Parse_MEM_CHECK(strings, reader, check, checkType);
-							break;
-						case CheckType.PAGE_CHECK_A:
-						case CheckType.PAGE_CHECK_B:
-							Parse_PAGE_CHECK(reader, check, checkType);
-							break;
-						case CheckType.PROC_CHECK:
-							Parse_PROC_CHECK(strings, reader, check, checkType);
-							break;
-						case CheckType.MPQ_CHECK:
-							Parse_MPQ_CHECK(strings, reader, check, checkType);
-							break;
-						case CheckType.LUA_STR_CHECK:
-							Parse_LUA_STR_CHECK(strings, reader, check, checkType);
-							break;
-						case CheckType.DRIVER_CHECK:
-							Parse_DRIVER_CHECK(strings, reader, check, checkType);
-							break;
-						default:
-							break;
-					}
-				}
-				else
+				if (!WardenData.CheckTypes.TryGetValue(checkType, out checkType2))
 				{
 					WardenData.ShowForm(strings, checks);
-
 					break;
+				}
+
+				switch (checkType2)
+				{
+					case CheckType.TIMING_CHECK:
+						Parse_TIMING_CHECK(check, checkType);
+						break;
+					case CheckType.MEM_CHECK:
+						Parse_MEM_CHECK(strings, reader, check, checkType);
+						break;
+					case CheckType.PAGE_CHECK_A:
+					case CheckType.PAGE_CHECK_B:
+						Parse_PAGE_CHECK(reader, check, checkType);
+						break;
+					case CheckType.PROC_CHECK:
+						Parse_PROC_CHECK(strings, reader, check, checkType);
+						break;
+					case CheckType.MPQ_CHECK:
+						Parse_MPQ_CHECK(strings, reader, check, checkType);
+						break;
+					case CheckType.LUA_STR_CHECK:
+						Parse_LUA_STR_CHECK(strings, reader, check, checkType);
+						break;
+					case CheckType.DRIVER_CHECK:
+						Parse_DRIVER_CHECK(strings, reader, check, checkType);
+						break;
+					default:
+						break;
 				}
 			}
 			AppendFormatLine("====== CHEAT CHECKS END ======");
