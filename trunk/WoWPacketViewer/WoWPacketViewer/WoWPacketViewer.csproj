@@ -86,6 +86,7 @@
     <Compile Include="Parsers\PetSpellsParser.cs" />
     <Compile Include="Parsers\PowerUpdateParser.cs" />
     <Compile Include="Parsers\SpellGoParser.cs" />
+    <Compile Include="Parsers\SpellParserBase.cs" />
     <Compile Include="Parsers\SpellStartParser.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
     <Compile Include="Parsers\Warden\CheckInfo.cs" />
