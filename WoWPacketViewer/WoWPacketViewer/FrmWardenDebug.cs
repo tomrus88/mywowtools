@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using WoWPacketViewer.Parsers.Warden;
 
@@ -13,19 +12,23 @@ namespace WoWPacketViewer
             InitializeComponent();
         }
 
-        public TextBox[] GetTextBoxes()
-        {
-            var temp = new List<TextBox>();
-            foreach (var control in Controls)
-            {
-                if (control is TextBox)
-                    temp.Add(control as TextBox);
-            }
+		public TextBox[] GetTextBoxes()
+		{
+			return new[]
+			       	{
+			       		tbMemCheck,
+			       		tbPageCheckA,
+			       		tbPageCheckB,
+			       		tbMpqCheck,
+			       		tbLuaStrCheck,
+			       		tbDriverCheck,
+			       		tbTimingCheck,
+			       		tbProcCheck,
+			       		tbModuleCheck
+			       	};
+		}
 
-            return temp.OrderBy(t => t.TabIndex).ToArray();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
+		private void button2_Click(object sender, EventArgs e)
         {
             Hide();
         }
@@ -36,9 +39,6 @@ namespace WoWPacketViewer
 
         	foreach (var tb in GetTextBoxes())
             {
-                if (tb.Name == "textBox1")
-                    continue;
-
                 if (tb.Text != String.Empty)
                     checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
             }
@@ -54,9 +54,6 @@ namespace WoWPacketViewer
 
         	foreach (var tb in GetTextBoxes())
         	{
-        		if (tb.Name == "textBox1")
-        			continue;
-
         		if(tb.TabIndex == Convert.ToInt32(((ToolStripMenuItem) sender).Tag))
         		{
         			tb.Text = tbInfo.SelectedText.Trim();
@@ -74,9 +71,6 @@ namespace WoWPacketViewer
 		{
 			foreach (TextBox tb in GetTextBoxes())
 			{
-				if (tb.Name == "textBox1")
-					continue;
-
 				byte val = 0;
 				if (GetByteForCheckType((CheckType) tb.TabIndex, ref val, checkTypes))
 					tb.Text = String.Format("{0:X2}", val);
