@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			this.tbInfo = new System.Windows.Forms.TextBox();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,11 +60,13 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.tbPageCheckB = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
+        	this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tbInfo
 			// 
 			this.tbInfo.BackColor = System.Drawing.SystemColors.WindowText;
+			this.tbInfo.ContextMenuStrip = this.contextMenuStrip1;
 			this.tbInfo.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.tbInfo.ForeColor = System.Drawing.SystemColors.Window;
 			this.tbInfo.Location = new System.Drawing.Point(12, 12);
@@ -71,6 +75,23 @@
 			this.tbInfo.ReadOnly = true;
 			this.tbInfo.Size = new System.Drawing.Size(448, 257);
 			this.tbInfo.TabIndex = 0;
+			// 
+			// contextMenuStrip1
+			// 
+        	this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+        	                                      	{
+        	                                      		this.toolStripMenuItem1,
+        	                                      		this.toolStripMenuItem2,
+        	                                      		this.toolStripMenuItem3,
+        	                                      		this.toolStripMenuItem4,
+        	                                      		this.toolStripMenuItem5,
+        	                                      		this.toolStripMenuItem6,
+        	                                      		this.toolStripMenuItem7,
+        	                                      		this.toolStripMenuItem8,
+        	                                      		this.toolStripMenuItem9
+        	                                      	});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -362,6 +383,7 @@
 			this.ShowInTaskbar = false;
 			this.Text = "Warden Debug";
 			this.TopMost = true;
+			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -399,6 +421,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
     }
 }
