@@ -76,6 +76,7 @@
     <Compile Include="PacketViewer.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserAttribute.cs" />
+    <Compile Include="ParserFactory.cs" />
     <Compile Include="Parsers\AuraUpdateParser.cs" />
     <Compile Include="Parsers\CMSG_AUTH_SESSION.cs" />
     <Compile Include="Parsers\EquipmentSetsParser.cs" />
