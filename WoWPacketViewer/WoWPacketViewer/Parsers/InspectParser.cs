@@ -21,12 +21,12 @@ namespace WoWPacketViewer.Parsers
             AppendFormatLine("Talent groups count: {0}", talentGroupsCount);
             AppendFormatLine("Talent group index: {0}", gr.ReadByte());
 
-            if(talentGroupsCount > 0)
+            if (talentGroupsCount > 0)
             {
                 var talentsCount = gr.ReadByte();
                 AppendFormatLine("Talents count {0}", talentsCount);
 
-                for(var i = 0; i < talentsCount; ++i)
+                for (var i = 0; i < talentsCount; ++i)
                 {
                     AppendFormatLine("Talent {0}: id {1}, rank {2}", i, gr.ReadUInt32(), gr.ReadByte());
                 }

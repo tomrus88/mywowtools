@@ -280,17 +280,12 @@ namespace WoWPacketViewer
                     foreach (var p in m_packetViewer.Packets)
                     {
                         string parsed = ParserFactory.CreateParser(p).Parse();
-                        if(String.IsNullOrEmpty(parsed))
+                        if (String.IsNullOrEmpty(parsed))
                             continue;
                         stream.Write(parsed);
                     }
                 }
             }
-        }
-
-        private void _saveDialog_FileOk(object sender, CancelEventArgs e)
-        {
-            //MessageBox.Show("file ok?");
         }
 
         private void saveWardenAsTextToolStripMenuItem_Click(object sender, EventArgs e)

@@ -19,7 +19,7 @@ namespace WoWPacketViewer
             get { return m_build; }
             set { m_build = value; }
         }
- 
+
         public abstract int LoadData(string file);
 
         public string ShowParsed(Packet pkt)
@@ -31,14 +31,14 @@ namespace WoWPacketViewer
         {
             switch (extension)
             {
-            case ".bin":
-                return new WowCorePacketViewer();
-            case ".sqlite":
-                return new SqLitePacketViewer();
-            case ".xml":
-                return new SniffitztPacketViewer();
-            default:
-                return null;
+                case ".bin":
+                    return new WowCorePacketViewer();
+                case ".sqlite":
+                    return new SqLitePacketViewer();
+                case ".xml":
+                    return new SniffitztPacketViewer();
+                default:
+                    return null;
             }
         }
     }

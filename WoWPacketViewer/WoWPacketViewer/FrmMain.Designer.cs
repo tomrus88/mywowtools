@@ -285,10 +285,6 @@
             // 
             this._openDialog.Filter = "WoWBinary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
-            // _saveDialog
-            // 
-            this._saveDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._saveDialog_FileOk);
-            // 
             // _backgroundWorker
             // 
             this._backgroundWorker.WorkerReportsProgress = true;

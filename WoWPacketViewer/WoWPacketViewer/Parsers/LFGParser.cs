@@ -35,7 +35,7 @@ namespace WoWPacketViewer.Parsers
         {
             var gr = Packet.CreateReader();
 
-            switch(Packet.Direction)
+            switch (Packet.Direction)
             {
                 case Direction.Client:
                     {
@@ -64,12 +64,12 @@ namespace WoWPacketViewer.Parsers
             var unk1 = gr.ReadByte();
             AppendFormatLine("unk1: {0}", unk1);
 
-            if(unk1 != 0)
+            if (unk1 != 0)
             {
                 var count1 = gr.ReadUInt32();
                 AppendFormatLine("count1: {0}", count1);
 
-                for(var i = 0; i < count1; ++i)
+                for (var i = 0; i < count1; ++i)
                 {
                     AppendFormatLine("Unk1 GUID {0}: {1:X16}", i, gr.ReadUInt64());
                 }
@@ -83,13 +83,13 @@ namespace WoWPacketViewer.Parsers
 
             AppendLine();
 
-            for(var i = 0; i < count2; ++i)
+            for (var i = 0; i < count2; ++i)
             {
                 AppendFormatLine("count2 GUID {0}: {1:X16}", i, gr.ReadUInt64());
                 var flags = gr.ReadUInt32();
                 AppendFormatLine("count2 flags: 0x{0:X8}", flags);
 
-                if((flags & 0x2) != 0)
+                if ((flags & 0x2) != 0)
                 {
                     AppendFormatLine("flags & 0x2 string: {0}", gr.ReadCString());
                 }
@@ -101,7 +101,7 @@ namespace WoWPacketViewer.Parsers
 
                 if ((flags & 0x20) != 0)
                 {
-                    for(var j = 0; j < 3; ++j)
+                    for (var j = 0; j < 3; ++j)
                         AppendFormatLine("flags & 0x20 byte {0}: {1}", j, gr.ReadByte());
                 }
 

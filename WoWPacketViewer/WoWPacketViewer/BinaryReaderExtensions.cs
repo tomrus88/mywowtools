@@ -23,7 +23,7 @@ namespace WoWPacketViewer
             ulong res = 0;
 
             var i = 0;
-            while (i < 9)
+            while (i < 8)
             {
                 if ((mask & 1 << i) != 0)
                 {
