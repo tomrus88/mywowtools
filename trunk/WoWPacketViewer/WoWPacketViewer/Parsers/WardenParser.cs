@@ -10,13 +10,14 @@ namespace WoWPacketViewer.Parsers
     enum CheckType
     {
         MEM_CHECK       = 0,    // byte strIndex + uint Offset + byte Len (checks to ensure memory isn't modified?)
-        PAGE_CHECK_A_B  = 1,    // uint Seed + byte[20] SHA1 + uint Addr + byte Len
-        MPQ_CHECK       = 2,    // byte strIndex (checks to ensure MPQ file isn't modified?)
-        LUA_STR_CHECK   = 3,    // byte strIndex (checks to ensure LUA string isn't used?)
-        DRIVER_CHECK    = 4,    // uint Seed + byte[20] SHA1 + byte strIndex (checks to ensure driver isn't loaded?)
-        TIMING_CHECK    = 5,    // empty (checks to ensure TickCount isn't detoured?)
-        PROC_CHECK      = 6,    // uint Seed + byte[20] SHA1 + byte strIndex1 + byte strIndex2 + uint Offset + byte Len (checks to ensure proc isn't detoured?)
-        MODULE_CHECK    = 7,    // uint Seed + byte[20] SHA1 (checks to ensure module loaded?)
+        PAGE_CHECK_A    = 1,    // uint Seed + byte[20] SHA1 + uint Addr + byte Len
+        PAGE_CHECK_B    = 2,    // uint Seed + byte[20] SHA1 + uint Addr + byte Len
+        MPQ_CHECK       = 3,    // byte strIndex (checks to ensure MPQ file isn't modified?)
+        LUA_STR_CHECK   = 4,    // byte strIndex (checks to ensure LUA string isn't used?)
+        DRIVER_CHECK    = 5,    // uint Seed + byte[20] SHA1 + byte strIndex (checks to ensure driver isn't loaded?)
+        TIMING_CHECK    = 6,    // empty (checks to ensure TickCount isn't detoured?)
+        PROC_CHECK      = 7,    // uint Seed + byte[20] SHA1 + byte strIndex1 + byte strIndex2 + uint Offset + byte Len (checks to ensure proc isn't detoured?)
+        MODULE_CHECK    = 8,    // uint Seed + byte[20] SHA1 (checks to ensure module loaded?)
     }
 
     struct CheckInfo
@@ -37,69 +38,17 @@ namespace WoWPacketViewer.Parsers
     {
         static List<CheckInfo> s_lastCheckInfo = new List<CheckInfo>();
         static Dictionary<byte, CheckType> s_checkTypes = new Dictionary<byte, CheckType>();
-        static bool s_checkTypesInitialized;
+        static FrmWardenDebug s_wardenDebugForm;
 
         public MSG_WARDEN_DATA(Packet packet)
             : base(packet)
         {
-            InitCheckTypes();
+
         }
 
-        private void InitCheckTypes()
+        public static void InitCheckTypes(Dictionary<byte, CheckType> checkTypes)
         {
-            if (s_checkTypesInitialized)
-                return;
-
-            // MEM_CHECK
-            s_checkTypes.Add(0x7C, CheckType.MEM_CHECK);
-            s_checkTypes.Add(0x3D, CheckType.MEM_CHECK);
-            s_checkTypes.Add(0xA5, CheckType.MEM_CHECK);
-            s_checkTypes.Add(0xE4, CheckType.MEM_CHECK);
-            s_checkTypes.Add(0x87, CheckType.MEM_CHECK);
-
-            // PAGE_CHECK_A_B
-            s_checkTypes.Add(0x18, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0x01, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0x74, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0x99, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0xEC, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0x78, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0xDD, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0xE3, CheckType.PAGE_CHECK_A_B);
-            s_checkTypes.Add(0xE8, CheckType.PAGE_CHECK_A_B);
-
-            // MPQ_CHECK
-            s_checkTypes.Add(0xB3, CheckType.MPQ_CHECK);
-            s_checkTypes.Add(0x6E, CheckType.MPQ_CHECK);
-            s_checkTypes.Add(0xF6, CheckType.MPQ_CHECK);
-            s_checkTypes.Add(0xA7, CheckType.MPQ_CHECK);
-            s_checkTypes.Add(0xA6, CheckType.MPQ_CHECK);
-
-            // LUA_STR_CHECK
-            s_checkTypes.Add(0x34, CheckType.LUA_STR_CHECK);
-            s_checkTypes.Add(0x55, CheckType.LUA_STR_CHECK);
-            s_checkTypes.Add(0xCD, CheckType.LUA_STR_CHECK);
-            s_checkTypes.Add(0x0C, CheckType.LUA_STR_CHECK);
-            s_checkTypes.Add(0x4F, CheckType.LUA_STR_CHECK);
-
-            // DRIVER_CHECK
-            //s_checkTypes.Add(0xA6, CheckType.DRIVER_CHECK);
-            //s_checkTypes.Add(0x4F, CheckType.DRIVER_CHECK);
-            s_checkTypes.Add(0xD7, CheckType.DRIVER_CHECK);
-            s_checkTypes.Add(0xD6, CheckType.DRIVER_CHECK);
-            s_checkTypes.Add(0xFD, CheckType.DRIVER_CHECK);
-
-            // TIMING_CHECK
-            s_checkTypes.Add(0xD0, CheckType.TIMING_CHECK);
-            s_checkTypes.Add(0xB9, CheckType.TIMING_CHECK);
-            s_checkTypes.Add(0x21, CheckType.TIMING_CHECK);
-            s_checkTypes.Add(0xA0, CheckType.TIMING_CHECK);
-            s_checkTypes.Add(0xAB, CheckType.TIMING_CHECK);
-
-            // PROC_CHECK
-            s_checkTypes.Add(0x54, CheckType.PROC_CHECK);
-
-            s_checkTypesInitialized = true;
+            s_checkTypes = checkTypes;
         }
 
         public override string Parse()
@@ -158,7 +107,8 @@ namespace WoWPacketViewer.Parsers
                                                     AppendLine();
                                                 }
                                                 break;
-                                            case CheckType.PAGE_CHECK_A_B:
+                                            case CheckType.PAGE_CHECK_A:
+                                            case CheckType.PAGE_CHECK_B:
                                                 {
                                                     var res = reader.ReadByte();
                                                     AppendFormatLine("====== PAGE_CHECK_A_B result START ======");
@@ -311,109 +261,152 @@ namespace WoWPacketViewer.Parsers
                                         var check = reader.ReadByte();
                                         var checkType = check ^ Xor;
 
-                                        switch (s_checkTypes[check])
+                                        try
                                         {
-                                            case CheckType.TIMING_CHECK:
+                                            switch (s_checkTypes[check])
+                                            {
+                                                case CheckType.TIMING_CHECK:
+                                                    {
+                                                        AppendFormatLine("====== TIMING_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("====== TIMING_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                case CheckType.MEM_CHECK:
+                                                    {
+                                                        var strIndex = reader.ReadByte(); // string index
+                                                        var offset = reader.ReadUInt32(); // offset
+                                                        var readLen = reader.ReadByte();  // bytes to read
+                                                        AppendFormatLine("====== MEM_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("Module: {0}", (strings[strIndex] == "") ? "base" : strings[strIndex]);
+                                                        AppendFormatLine("Offset: 0x{0:X8}", offset);
+                                                        AppendFormatLine("Bytes to read: {0}", readLen);
+                                                        AppendFormatLine("====== MEM_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], readLen));
+                                                    }
+                                                    break;
+                                                case CheckType.PAGE_CHECK_A:
+                                                case CheckType.PAGE_CHECK_B:
+                                                    {
+                                                        var seed = reader.ReadUInt32();
+                                                        var sha1 = reader.ReadBytes(20);
+                                                        var addr = reader.ReadUInt32();
+                                                        var bytesToRead = reader.ReadByte();
+                                                        AppendFormatLine("====== PAGE_CHECK_A_B START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("Seed: 0x{0:X8}", seed);
+                                                        AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+                                                        AppendFormatLine("Address: 0x{0:X8}", addr);
+                                                        AppendFormatLine("Bytes to read: {0}", bytesToRead);
+                                                        AppendFormatLine("====== PAGE_CHECK_A_B END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                case CheckType.PROC_CHECK:
+                                                    {
+                                                        var seed = reader.ReadUInt32();
+                                                        var sha1 = reader.ReadBytes(20);
+                                                        var module = reader.ReadByte();
+                                                        var proc = reader.ReadByte();
+                                                        var addr = reader.ReadUInt32();
+                                                        var bytesToRead = reader.ReadByte();
+                                                        AppendFormatLine("====== PROC_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("Seed: 0x{0:X8}", seed);
+                                                        AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+                                                        AppendFormatLine("Module: {0}", strings[module]);
+                                                        AppendFormatLine("Proc: {0}", strings[proc]);
+                                                        AppendFormatLine("Address: 0x{0:X8}", addr);
+                                                        AppendFormatLine("Bytes to read: {0}", bytesToRead);
+                                                        AppendFormatLine("====== PROC_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                case CheckType.MPQ_CHECK:
+                                                    {
+                                                        var fileNameIndex = reader.ReadByte();
+                                                        AppendFormatLine("====== MPQ_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("File: {0}", strings[fileNameIndex]);
+                                                        AppendFormatLine("====== MPQ_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                case CheckType.LUA_STR_CHECK:
+                                                    {
+                                                        var stringIndex = reader.ReadByte();
+                                                        AppendFormatLine("====== LUA_STR_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("String: {0}", strings[stringIndex]);
+                                                        AppendFormatLine("====== LUA_STR_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                case CheckType.DRIVER_CHECK:
+                                                    {
+                                                        var seed = reader.ReadUInt32();
+                                                        var sha1 = reader.ReadBytes(20);
+                                                        var stringIndex = reader.ReadByte();
+                                                        AppendFormatLine("====== DRIVER_CHECK START ======");
+                                                        AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+                                                        AppendFormatLine("Seed: 0x{0:X8}", seed);
+                                                        AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+                                                        AppendFormatLine("Driver: {0}", strings[stringIndex]);
+                                                        AppendFormatLine("====== DRIVER_CHECK END ======");
+                                                        AppendLine();
+                                                        s_lastCheckInfo.Add(new CheckInfo(s_checkTypes[check], 0));
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        catch (KeyNotFoundException ex)
+                                        {
+                                            ex.ToString();
+
+                                            if (s_wardenDebugForm == null || s_wardenDebugForm.IsDisposed)
+                                            {
+                                                s_wardenDebugForm = new FrmWardenDebug();
+                                            }
+
+                                            var textBoxes = s_wardenDebugForm.GetTextBoxes();
+                                            if (textBoxes.Length != 0)
+                                            {
+                                                foreach (var tb in textBoxes)
                                                 {
-                                                    AppendFormatLine("====== TIMING_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("====== TIMING_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.TIMING_CHECK, 0));
+                                                    if (tb.Name == "textBox1")
+                                                    {
+                                                        tb.Text = String.Empty;
+                                                        foreach (var str in strings)
+                                                        {
+                                                            tb.Text += str;
+                                                            tb.Text += "\r\n";
+                                                        }
+                                                        tb.Text += Utility.PrintHex(checks, 0, checks.Length);
+                                                        continue;
+                                                    }
+
+                                                    byte val = 0;
+                                                    if (GetByteForCheckType((CheckType)tb.TabIndex, ref val))
+                                                        tb.Text = String.Format("{0:X2}", val);
                                                 }
-                                                break;
-                                            case CheckType.MEM_CHECK:
-                                                {
-                                                    var strIndex = reader.ReadByte(); // string index
-                                                    var offset = reader.ReadUInt32(); // offset
-                                                    var readLen = reader.ReadByte();  // bytes to read
-                                                    AppendFormatLine("====== MEM_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("Module: {0}", (strings[strIndex] == "") ? "base" : strings[strIndex]);
-                                                    AppendFormatLine("Offset: 0x{0:X8}", offset);
-                                                    AppendFormatLine("Bytes to read: {0}", readLen);
-                                                    AppendFormatLine("====== MEM_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.MEM_CHECK, readLen));
-                                                }
-                                                break;
-                                            case CheckType.PAGE_CHECK_A_B:
-                                                {
-                                                    var seed = reader.ReadUInt32();
-                                                    var sha1 = reader.ReadBytes(20);
-                                                    var addr = reader.ReadUInt32();
-                                                    var bytesToRead = reader.ReadByte();
-                                                    AppendFormatLine("====== PAGE_CHECK_A_B START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("Seed: 0x{0:X8}", seed);
-                                                    AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-                                                    AppendFormatLine("Address: 0x{0:X8}", addr);
-                                                    AppendFormatLine("Bytes to read: {0}", bytesToRead);
-                                                    AppendFormatLine("====== PAGE_CHECK_A_B END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.PAGE_CHECK_A_B, 0));
-                                                }
-                                                break;
-                                            case CheckType.PROC_CHECK:
-                                                {
-                                                    var seed = reader.ReadUInt32();
-                                                    var sha1 = reader.ReadBytes(20);
-                                                    var module = reader.ReadByte();
-                                                    var proc = reader.ReadByte();
-                                                    var addr = reader.ReadUInt32();
-                                                    var bytesToRead = reader.ReadByte();
-                                                    AppendFormatLine("====== PROC_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("Seed: 0x{0:X8}", seed);
-                                                    AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-                                                    AppendFormatLine("Module: {0}", strings[module]);
-                                                    AppendFormatLine("Proc: {0}", strings[proc]);
-                                                    AppendFormatLine("Address: 0x{0:X8}", addr);
-                                                    AppendFormatLine("Bytes to read: {0}", bytesToRead);
-                                                    AppendFormatLine("====== PROC_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.PROC_CHECK, 0));
-                                                }
-                                                break;
-                                            case CheckType.MPQ_CHECK:
-                                                {
-                                                    var fileNameIndex = reader.ReadByte();
-                                                    AppendFormatLine("====== MPQ_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("File: {0}", strings[fileNameIndex]);
-                                                    AppendFormatLine("====== MPQ_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.MPQ_CHECK, 0));
-                                                }
-                                                break;
-                                            case CheckType.LUA_STR_CHECK:
-                                                {
-                                                    var stringIndex = reader.ReadByte();
-                                                    AppendFormatLine("====== LUA_STR_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("String: {0}", strings[stringIndex]);
-                                                    AppendFormatLine("====== LUA_STR_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.LUA_STR_CHECK, 0));
-                                                }
-                                                break;
-                                            case CheckType.DRIVER_CHECK:
-                                                {
-                                                    var seed = reader.ReadUInt32();
-                                                    var sha1 = reader.ReadBytes(20);
-                                                    var stringIndex = reader.ReadByte();
-                                                    AppendFormatLine("====== DRIVER_CHECK START ======");
-                                                    AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-                                                    AppendFormatLine("Seed: 0x{0:X8}", seed);
-                                                    AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-                                                    AppendFormatLine("Driver: {0}", strings[stringIndex]);
-                                                    AppendFormatLine("====== DRIVER_CHECK END ======");
-                                                    AppendLine();
-                                                    s_lastCheckInfo.Add(new CheckInfo(CheckType.DRIVER_CHECK, 0));
-                                                }
-                                                break;
-                                            default:
-                                                break;
+                                            }
+
+                                            if (!s_wardenDebugForm.Visible)
+                                            {
+                                                s_wardenDebugForm.Show();
+                                            }
+
+                                            break;
                                         }
                                     }
                                     AppendFormatLine("====== CHEAT CHECKS END ======");
@@ -461,6 +454,19 @@ namespace WoWPacketViewer.Parsers
                 default:
                     return String.Empty;
             }
+        }
+
+        private bool GetByteForCheckType(CheckType checkType, ref byte val)
+        {
+            foreach (var temp in s_checkTypes)
+            {
+                if (temp.Value == checkType)
+                {
+                    val = temp.Key;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void ValidateCheckSum(uint checkSum, byte[] data)
