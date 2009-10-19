@@ -88,7 +88,7 @@
     <Compile Include="Parsers\SpellGoParser.cs" />
     <Compile Include="Parsers\SpellStartParser.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
-    <Compile Include="Parsers\WardenParser.cs" />
+    <Compile Include="Parsers\Warden\WardenParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmMain.resx">
