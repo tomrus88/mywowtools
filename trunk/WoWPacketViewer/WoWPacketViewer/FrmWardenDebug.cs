@@ -53,5 +53,59 @@ namespace WoWPacketViewer
 
             Hide();
         }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if(textBox1.SelectedText != String.Empty)
+                textBox2.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox3.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox4.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox5.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox6.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox7.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox8.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox9.Text = textBox1.SelectedText.Trim();
+        }
+
+        private void toolStripMenuItem9_Click(object sender, EventArgs e)
+        {
+            if (textBox1.SelectedText != String.Empty)
+                textBox10.Text = textBox1.SelectedText.Trim();
+        }
     }
 }
