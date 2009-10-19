@@ -37,20 +37,12 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var checkTypes = new Dictionary<byte, CheckType>();
-
-        	foreach (var tb in GetTextBoxes())
-            {
-                if (tb.Text != String.Empty)
-                    checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
-            }
-
-            WardenData.InitCheckTypes(checkTypes);
+        	WardenData.InitCheckTypes(GetCheckTypes());
 
             Hide();
         }
 
-        private void toolStripMenuItem_Click(object sender, EventArgs e)
+		private void toolStripMenuItem_Click(object sender, EventArgs e)
         {
         	if (tbInfo.SelectedText == String.Empty) return;
 
@@ -70,6 +62,18 @@ namespace WoWPacketViewer
     	{
     		tbInfo.Text = value;
     	}
+
+		private Dictionary<byte, CheckType> GetCheckTypes()
+		{
+			var checkTypes = new Dictionary<byte, CheckType>();
+
+			foreach (var tb in GetTextBoxes())
+			{
+				if (tb.Text != String.Empty)
+					checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
+			}
+			return checkTypes;
+		}
 
 		public void SetCheckTypes(IDictionary<byte, CheckType> checkTypes)
 		{
