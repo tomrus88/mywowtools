@@ -48,12 +48,7 @@ namespace WoWPacketViewer
             }
         }
 
-        static Parser()
-        {
-            ParserFactory.Init();
-        }
-
-    	protected Packet Packet { get; private set; }
+		protected Packet Packet { get; private set; }
 
         protected Parser(Packet packet)
         {
