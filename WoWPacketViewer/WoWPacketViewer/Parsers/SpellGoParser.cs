@@ -5,7 +5,7 @@ using System.IO;
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_SPELL_GO)]
-    internal class SpellGoParser : Parser
+    internal class SpellGoParser : SpellParserBase
     {
         public SpellGoParser(Packet packet)
             : base(packet)
@@ -26,7 +26,7 @@ namespace WoWPacketViewer.Parsers
 
             readSpellGoTargets(gr);
 
-            var tf = SpellStartParser.ReadTargets(gr);
+            var tf = ReadTargets(gr);
 
             if ((cf & SpellStartParser.CastFlags.CAST_FLAG_12) != SpellStartParser.CastFlags.CAST_FLAG_00)
             {
@@ -80,7 +80,7 @@ namespace WoWPacketViewer.Parsers
             return GetParsedString();
         }
 
-        public static void readSpellGoTargets(BinaryReader br)
+        public void readSpellGoTargets(BinaryReader br)
         {
             var hitCount = br.ReadByte();
 

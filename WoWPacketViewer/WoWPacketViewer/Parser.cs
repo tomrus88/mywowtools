@@ -33,7 +33,7 @@ namespace WoWPacketViewer
             _stringBuilder.AppendFormat(format, args);
         }
 
-        public static void AppendFormatLine(string format, params object[] args)
+        public void AppendFormatLine(string format, params object[] args)
         {
             _stringBuilder.AppendFormat(format, args).AppendLine();
         }
