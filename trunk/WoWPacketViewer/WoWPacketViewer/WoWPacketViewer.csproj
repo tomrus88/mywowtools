@@ -90,6 +90,8 @@
     <Compile Include="Parsers\UnknownPacketParser.cs" />
     <Compile Include="Parsers\Warden\CheckInfo.cs" />
     <Compile Include="Parsers\Warden\CheckType.cs" />
+    <Compile Include="Parsers\Warden\CmsgWardenData.cs" />
+    <Compile Include="Parsers\Warden\SmsgWardenData.cs" />
     <Compile Include="Parsers\Warden\WardenParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

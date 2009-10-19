@@ -46,7 +46,7 @@ namespace WoWPacketViewer
                     checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
             }
 
-            MSG_WARDEN_DATA.InitCheckTypes(checkTypes);
+            MsgWardenData.InitCheckTypes(checkTypes);
 
             Hide();
         }
