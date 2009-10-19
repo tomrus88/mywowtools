@@ -11,38 +11,36 @@ namespace WoWPacketViewer
 {
     public abstract class Parser
     {
-        private static StringBuilder _stringBuilder = new StringBuilder();
+        private readonly StringBuilder stringBuilder = new StringBuilder();
 
-        public static void Append(string str)
+        public void Append(string str)
         {
-            _stringBuilder.Append(str);
+            stringBuilder.Append(str);
         }
 
-        public static void AppendLine()
+        public void AppendLine()
         {
-            _stringBuilder.AppendLine();
+            stringBuilder.AppendLine();
         }
 
-        public static void AppendLine(string str)
+        public void AppendLine(string str)
         {
-            _stringBuilder.AppendLine(str);
+            stringBuilder.AppendLine(str);
         }
 
-        public static void AppendFormat(string format, params object[] args)
+        public void AppendFormat(string format, params object[] args)
         {
-            _stringBuilder.AppendFormat(format, args);
+            stringBuilder.AppendFormat(format, args);
         }
 
         public void AppendFormatLine(string format, params object[] args)
         {
-            _stringBuilder.AppendFormat(format, args).AppendLine();
+            stringBuilder.AppendFormat(format, args).AppendLine();
         }
 
-        public static string GetParsedString()
+        public string GetParsedString()
         {
-            string ret = _stringBuilder.ToString();
-            _stringBuilder.Remove(0, _stringBuilder.Length);
-            return ret;
+        	return stringBuilder.ToString();
         }
 
         public void CheckPacket(BinaryReader gr)
@@ -59,22 +57,20 @@ namespace WoWPacketViewer
             Init();
         }
 
-        private static readonly Dictionary<int, Type> _parsers = new Dictionary<int, Type>();
+        private static readonly Dictionary<int, Type> Parsers = new Dictionary<int, Type>();
         private static void Init()
         {
             LoadAssembly(Assembly.GetCallingAssembly());
-            if (Directory.Exists("parsers"))
-            {
-                foreach (var file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories))
-                {
-                    try
-                    {
-                        var assembly = Assembly.LoadFile(Path.GetFullPath(file));
-                        LoadAssembly(assembly);
-                    }
-                    catch { }
-                }
-            }
+        	if (!Directory.Exists("parsers")) return;
+        	foreach (var file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories))
+        	{
+        		try
+        		{
+        			var assembly = Assembly.LoadFile(Path.GetFullPath(file));
+        			LoadAssembly(assembly);
+        		}
+        		catch { }
+        	}
         }
 
         private static void LoadAssembly(Assembly assembly)
@@ -86,22 +82,22 @@ namespace WoWPacketViewer
                     var attributes = (ParserAttribute[])type.GetCustomAttributes(typeof(ParserAttribute), true);
                     foreach (var attribute in attributes)
                     {
-                        _parsers[(int)attribute.Code] = type;
+                        Parsers[(int)attribute.Code] = type;
                     }
                 }
             }
         }
 
-        private static Parser _unknownParser = new UnknownPacketParser();
+        private static readonly Parser UnknownParser = new UnknownPacketParser();
 
         public static Parser CreateParser(Packet packet)
         {
             Type type;
-            if (_parsers.TryGetValue((int)packet.Code, out type))
+            if (Parsers.TryGetValue((int)packet.Code, out type))
             {
                 return (Parser)Activator.CreateInstance(type, packet);
             }
-            return _unknownParser;
+            return UnknownParser;
         }
 
         protected Packet Packet { get; private set; }
