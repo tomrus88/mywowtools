@@ -56,9 +56,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UpdatePacketParser\UpdatePacketParser.csproj">
-      <Project>{89E7C4DB-8056-47A3-897E-9D8D4A70C305}</Project>
-      <Name>UpdatePacketParser</Name>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{F403FF24-95D3-442C-A620-6F19CAE22059}</Project>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
