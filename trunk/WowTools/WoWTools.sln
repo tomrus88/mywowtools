@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdatePacketParser", "src\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WdbParser", "src\WdbParser\WdbParser.csproj", "{D48BE4C2-564D-4B11-B299-C989D34A1963}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{F403FF24-95D3-442C-A620-6F19CAE22059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET 2.0 = Debug|.NET 2.0
@@ -43,6 +45,14 @@ Global
 		{D48BE4C2-564D-4B11-B299-C989D34A1963}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D48BE4C2-564D-4B11-B299-C989D34A1963}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D48BE4C2-564D-4B11-B299-C989D34A1963}.Release|x86.ActiveCfg = Release|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Debug|.NET 2.0.ActiveCfg = Debug|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Release|.NET 2.0.ActiveCfg = Release|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F403FF24-95D3-442C-A620-6F19CAE22059}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
