@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
 
 namespace WoWPacketViewer
 {
-	public class SqLitePacketViewer : PacketViewerBase
+	public class SqLitePacketViewer : IPacketReader
 	{
-		public override IEnumerable<Packet> ReadPackets(string file)
+		public uint Build
+		{
+			get { return 0; }
+		}
+
+		public IEnumerable<Packet> ReadPackets(string file)
 		{
 			using (var connection = new SQLiteConnection("Data Source=" + file))
 			{
