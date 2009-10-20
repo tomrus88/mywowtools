@@ -1,34 +1,25 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Runtime.InteropServices;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
-namespace WdbParser
+namespace WoWReader
 {
     #region Coords3
     /// <summary>
     ///  Represents a coordinates of WoW object without orientation.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    struct Coords3
+    public struct Coords3
     {
         public float X, Y, Z;
 
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public string GetCoords()
-        {
-            string coords = String.Empty;
-
-            coords += X.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Y.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Z.ToString(CultureInfo.InvariantCulture);
-
-            return coords;
+		  public override string ToString() 
+		  {
+        	    return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", X, Y, Z);
         }
     }
     #endregion
@@ -37,28 +28,17 @@ namespace WdbParser
     /// <summary>
     ///  Represents a coordinates of WoW object with specified orientation.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    struct Coords4
+    public struct Coords4
     {
         public float X, Y, Z, O;
 
         /// <summary>
         ///  Converts the numeric values of this instance to its equivalent string representations, separator is space.
         /// </summary>
-        public string GetCoordsAsString()
+        public override string ToString()
         {
-            string coords = String.Empty;
-
-            coords += X.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Y.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += Z.ToString(CultureInfo.InvariantCulture);
-            coords += " ";
-            coords += O.ToString(CultureInfo.InvariantCulture);
-
-            return coords;
-        }
+        	   return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", X, Y, Z, O);
+		  }
     }
     #endregion
 
@@ -66,7 +46,7 @@ namespace WdbParser
     /// <summary>
     ///  Reads WoW specific data types as binary values in a specific encoding.
     /// </summary>
-    class GenericReader : BinaryReader
+    public class GenericReader : BinaryReader
     {
         #region GenericReader_stream
         /// <summary>
@@ -114,6 +94,16 @@ namespace WdbParser
         }
         #endregion
 
+        #region GenericReader_Remaining
+        /// <summary>
+        /// Get remaining bytes count.
+        /// </summary>
+        public long Remaining
+        {
+            get { return BaseStream.Length - BaseStream.Position; }
+        }
+        #endregion
+
         #region ReadPackedGuid
         /// <summary>
         ///  Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
@@ -150,7 +140,8 @@ namespace WdbParser
 
             for (uint i = 0; i < num; i++)
             {
-                text += (char)ReadByte();
+                //text += (char)ReadByte();
+                text += ReadChar();
             }
             return text;
         }
@@ -165,18 +156,14 @@ namespace WdbParser
         {
             byte num;
             string text = String.Empty;
-            System.Collections.Generic.List<byte>  temp = new System.Collections.Generic.List<byte>();
 
             while ((num = ReadByte()) != 0)
             {
-                //text += (char)num;
-                temp.Add(num);
+                text += (char)num;
             }
 
-            text = Encoding.UTF8.GetString(temp.ToArray());
-
-            //if (text.Length == 0)
-            //    text = "\"\"";
+            if (text.Length == 0)
+                text = "empty";
 
             return text;
         }
