@@ -1,4 +1,6 @@
-﻿namespace WoWPacketViewer.Parsers
+﻿using WowTools.Core;
+
+namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_MONSTER_MOVE)]
     [Parser(OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)]

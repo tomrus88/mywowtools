@@ -1,4 +1,6 @@
-﻿namespace WoWPacketViewer.Parsers.Spells
+﻿using WowTools.Core;
+
+namespace WoWPacketViewer.Parsers.Spells
 {
     [Parser(OpCodes.SMSG_SPELL_START)]
     internal class SpellStartParser : SpellParserBase

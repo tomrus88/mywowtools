@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
