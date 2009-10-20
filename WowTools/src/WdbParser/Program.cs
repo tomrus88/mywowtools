@@ -79,7 +79,7 @@ namespace WdbParser
 
         void ParseWdbFile(string fileName, XmlElement el)
         {
-            GenericReader reader = new GenericReader(fileName);
+			BinaryReader reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read));
             StreamWriter writer = new StreamWriter(fileName + ".sql");
             writer.AutoFlush = true;
             byte[] sig = reader.ReadBytes(4);
@@ -249,7 +249,7 @@ namespace WdbParser
             writer.Close();
         }
 
-        void ReadAndDumpByType(ref GenericReader reader, string valtype, string valname, ref string InsertQuery, bool last)
+        void ReadAndDumpByType(ref BinaryReader reader, string valtype, string valname, ref string InsertQuery, bool last)
         {
             switch (valtype.ToUpper())
             {

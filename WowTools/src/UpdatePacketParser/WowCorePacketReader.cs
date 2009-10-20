@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using UpdateFields;
 using WowTools.Core;
@@ -7,11 +8,11 @@ namespace UpdatePacketParser
 {
     public class WowCorePacketReader : PacketReaderBase
     {
-        private readonly GenericReader _reader;
+        private readonly BinaryReader _reader;
 
         public WowCorePacketReader(string filename)
         {
-            _reader = new GenericReader(filename, Encoding.ASCII);
+			_reader = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             _reader.ReadBytes(3);                    // PKT
             _reader.ReadBytes(2);                    // 0x02, 0x02
             _reader.ReadByte();                      // 0x06
