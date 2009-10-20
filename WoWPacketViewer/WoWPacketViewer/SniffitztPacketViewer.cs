@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace WoWPacketViewer
 {
-    public class SniffitztPacketViewer : PacketViewerBase
+    public class SniffitztPacketViewer : IPacketReader
     {
-    	public override IEnumerable<Packet> ReadPackets(string file)
+    	public uint Build
+    	{
+    		get { return 0; }
+    	}
+
+    	public IEnumerable<Packet> ReadPackets(string file)
     	{
     		var packets = new List<Packet>();
     		var uri = new Uri(Path.GetFullPath(file)).ToString();
