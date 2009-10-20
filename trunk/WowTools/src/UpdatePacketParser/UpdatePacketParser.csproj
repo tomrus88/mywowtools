@@ -69,7 +69,6 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenericReader.cs" />
     <Compile Include="PacketReader.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
