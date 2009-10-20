@@ -139,10 +139,10 @@
     <Compile Include="FrmSearch.Designer.cs">
       <DependentUpon>FrmSearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="SniffitztPacketViewer.cs" />
-    <Compile Include="SqLitePacketViewer.cs" />
+    <Compile Include="SniffitztPacketReader.cs" />
+    <Compile Include="SqLitePacketReader.cs" />
     <Compile Include="Utility.cs" />
-    <Compile Include="WowCorePacketViewer.cs" />
+    <Compile Include="WowCorePacketReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

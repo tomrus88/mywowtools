@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WoWPacketViewer
 {
-	public class WowCorePacketViewer : IPacketReader
+	public class WowCorePacketReader : IPacketReader
 	{
 		public uint Build { get; private set; }
 

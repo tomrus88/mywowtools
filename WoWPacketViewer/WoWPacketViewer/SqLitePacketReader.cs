@@ -3,7 +3,7 @@ using System.Data.SQLite;
 
 namespace WoWPacketViewer
 {
-	public class SqLitePacketViewer : IPacketReader
+	public class SqLitePacketReader : IPacketReader
 	{
 		public uint Build
 		{
