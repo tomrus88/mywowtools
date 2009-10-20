@@ -5,10 +5,9 @@ using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-
-using WoWReader;
 using UpdateFields;
 using WoWObjects;
+using WowTools.Core;
 
 namespace UpdatePacketParser
 {

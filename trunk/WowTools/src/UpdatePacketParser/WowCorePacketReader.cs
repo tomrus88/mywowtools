@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using WoWReader;
 using UpdateFields;
+using WowTools.Core;
 
 namespace UpdatePacketParser
 {
