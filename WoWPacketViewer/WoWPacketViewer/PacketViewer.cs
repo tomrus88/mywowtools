@@ -2,7 +2,7 @@
 
 namespace WoWPacketViewer
 {
-	public abstract class PacketViewerBase
+	public abstract class PacketViewerBase : IPacketReader
 	{
 		protected uint build;
 
@@ -11,7 +11,7 @@ namespace WoWPacketViewer
 			get { return build; }
 		}
 
-		public static PacketViewerBase Create(string extension)
+		public static IPacketReader Create(string extension)
 		{
 			switch (extension)
 			{

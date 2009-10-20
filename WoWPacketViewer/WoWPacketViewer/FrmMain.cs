@@ -13,7 +13,7 @@ namespace WoWPacketViewer
 
         private delegate void ListViewUpdateControl(bool end);
 
-        private PacketViewerBase m_packetViewer;
+        private IPacketReader m_packetViewer;
         private FrmSearch m_searchForm;
 
         public FrmMain()
