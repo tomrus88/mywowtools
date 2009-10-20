@@ -7,11 +7,11 @@ namespace WoWPacketViewer
 			switch (extension)
 			{
 				case ".bin":
-					return new WowCorePacketViewer();
+					return new WowCorePacketReader();
 				case ".sqlite":
-					return new SqLitePacketViewer();
+					return new SqLitePacketReader();
 				case ".xml":
-					return new SniffitztPacketViewer();
+					return new SniffitztPacketReader();
 				default:
 					return null;
 			}

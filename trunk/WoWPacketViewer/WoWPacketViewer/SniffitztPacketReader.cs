@@ -6,7 +6,7 @@ using System.Xml.XPath;
 
 namespace WoWPacketViewer
 {
-    public class SniffitztPacketViewer : IPacketReader
+    public class SniffitztPacketReader : IPacketReader
     {
     	public uint Build
     	{
