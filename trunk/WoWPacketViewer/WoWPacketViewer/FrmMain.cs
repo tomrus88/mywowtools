@@ -184,7 +184,7 @@ namespace WoWPacketViewer
 
             _statusLabel.Text = "Loading...";
             var file = _openDialog.FileName;
-    		m_packetViewer = PacketViewerBase.Create(Path.GetExtension(file));
+    		m_packetViewer = PacketReaderFactory.Create(Path.GetExtension(file));
     		
 			if (!Loaded()) return;
 
