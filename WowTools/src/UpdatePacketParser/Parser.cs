@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -61,9 +60,9 @@ namespace UpdatePacketParser
 
         private void ParseRest(BinaryReader gr)
         {
-            var objects_count = gr.ReadUInt32();
+            var objectsCount = gr.ReadUInt32();
 
-            for (var i = 0; i < objects_count; i++)
+            for (var i = 0; i < objectsCount; i++)
             {
                 var updateType = (UpdateTypes)gr.ReadByte();
                 switch (updateType)
@@ -94,8 +93,8 @@ namespace UpdatePacketParser
         private void ParseValues(BinaryReader gr)
         {
             var guid = gr.ReadPackedGuid();
-            var blocks_count = gr.ReadByte();
-            var updatemask = new int[blocks_count];
+            var blocksCount = gr.ReadByte();
+            var updatemask = new int[blocksCount];
             for (var i = 0; i < updatemask.Length; ++i)
             {
                 updatemask[i] = gr.ReadInt32();
@@ -432,8 +431,8 @@ namespace UpdatePacketParser
             }
 
             // values part
-            var blocks_count = gr.ReadByte();
-            var updatemask = new int[blocks_count];
+            var blocksCount = gr.ReadByte();
+            var updatemask = new int[blocksCount];
             for (var i = 0; i < updatemask.Length; ++i)
             {
                 updatemask[i] = gr.ReadInt32();
@@ -475,20 +474,20 @@ namespace UpdatePacketParser
         private static void ParseOORObjects(BinaryReader gr)
         {
             var count = gr.ReadUInt32();
-            var GUIDS = new ulong[count];
+            var guids = new ulong[count];
             for (uint i = 0; i < count; ++i)
             {
-                GUIDS[i] = gr.ReadPackedGuid();
+                guids[i] = gr.ReadPackedGuid();
             }
         }
 
         private static void ParseNearObjects(BinaryReader gr)
         {
             var count = gr.ReadUInt32();
-            var GUIDS = new ulong[count];
+            var guids = new ulong[count];
             for (uint i = 0; i < count; ++i)
             {
-                GUIDS[i] = gr.ReadPackedGuid();
+                guids[i] = gr.ReadPackedGuid();
             }
         }
 
@@ -557,13 +556,7 @@ namespace UpdatePacketParser
             }
         }
 
-        private WoWObject GetObjectAtIndex(int index)
-        {
-            // TODO: handle possible exception in case invalid index
-            return m_objects.ElementAt(index).Value;
-        }
-
-        public void PrintObjectInfo(ulong guid, ListView listView)
+    	public void PrintObjectInfo(ulong guid, ListView listView)
         {
             var obj = m_objects[guid];
             var type = obj.TypeId;
@@ -575,7 +568,7 @@ namespace UpdatePacketParser
 
                 var uf = UpdateFieldsLoader.GetUpdateField(type, i);
                 var value = GetValueBaseOnType(obj.UInt32Values[i], uf.Type);
-                var item = new ListViewItem(new string[] { uf.Name, value.ToString() });
+                var item = new ListViewItem(new[] { uf.Name, value.ToString() });
                 listView.Items.Add(item);
             }
         }
@@ -600,7 +593,7 @@ namespace UpdatePacketParser
 
                     var uf = UpdateFieldsLoader.GetUpdateField(type, i);
                     var value = GetValueBaseOnType(update.updatedata[i], uf.Type);
-                    var item = new ListViewItem(new string[] { uf.Name, value.ToString() }, group);
+                    var item = new ListViewItem(new[] { uf.Name, value.ToString() }, group);
                     listView.Items.Add(item);
                 }
             }
