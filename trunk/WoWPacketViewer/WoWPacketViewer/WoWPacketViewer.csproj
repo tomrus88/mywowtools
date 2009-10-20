@@ -73,6 +73,7 @@
     <Compile Include="FrmWardenDebug.Designer.cs">
       <DependentUpon>FrmWardenDebug.cs</DependentUpon>
     </Compile>
+    <Compile Include="ISupportFind.cs" />
     <Compile Include="Opcodes.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketViewer.cs" />
