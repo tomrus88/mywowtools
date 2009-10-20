@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using System.Runtime.InteropServices;
 
 namespace WowTools.Core
 {
@@ -11,6 +9,7 @@ namespace WowTools.Core
 	public class GenericReader : BinaryReader
 	{
 		#region GenericReader_stream
+
 		/// <summary>
 		///  Not yet.
 		/// </summary>
@@ -19,9 +18,11 @@ namespace WowTools.Core
 			: base(input)
 		{
 		}
+
 		#endregion
 
 		#region GenericReader_stream_encoding
+
 		/// <summary>
 		///  Not yet.
 		/// </summary>
@@ -31,9 +32,11 @@ namespace WowTools.Core
 			: base(input, encoding)
 		{
 		}
+
 		#endregion
 
 		#region GenericReader_filestream
+
 		/// <summary>
 		///  Not yet.
 		/// </summary>
@@ -42,9 +45,11 @@ namespace WowTools.Core
 			: base(new FileStream(fname, FileMode.Open, FileAccess.Read))
 		{
 		}
+
 		#endregion
 
 		#region GenericReader_filestream_encoding
+
 		/// <summary>
 		///  Not yet.
 		/// </summary>
@@ -54,121 +59,7 @@ namespace WowTools.Core
 			: base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
 		{
 		}
-		#endregion
 
-		#region ReadPackedGuid
-		/// <summary>
-		///  Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
-		/// </summary>
-		public ulong ReadPackedGuid()
-		{
-			ulong res = 0;
-			byte mask = ReadByte();
-
-			if (mask == 0)
-				return res;
-
-			int i = 0;
-
-			while (i < 9)
-			{
-				if ((mask & 1 << i) != 0)
-					res += (ulong)ReadByte() << (i * 8);
-				i++;
-			}
-			return res;
-		}
-		#endregion
-
-		#region ReadStringNumber
-		/// <summary>
-		///  Reads the string with known length from the current stream and advances the current position of the stream by string length.
-		/// <seealso cref="GenericReader.ReadStringNull"/>
-		/// </summary>
-		public string ReadStringNumber()
-		{
-			string text = String.Empty;
-			uint num = ReadUInt32(); // string length
-
-			for (uint i = 0; i < num; i++)
-			{
-				//text += (char)ReadByte();
-				text += ReadChar();
-			}
-			return text;
-		}
-		#endregion
-
-		#region ReadStringNull
-		/// <summary>
-		///  Reads the NULL terminated string from the current stream and advances the current position of the stream by string length + 1.
-		/// <seealso cref="GenericReader.ReadStringNumber"/>
-		/// </summary>
-		public string ReadStringNull()
-		{
-			byte num;
-			string text = String.Empty;
-
-			while ((num = ReadByte()) != 0)
-			{
-				text += (char)num;
-			}
-
-			if (text.Length == 0)
-				text = "empty";
-
-			return text;
-		}
-		#endregion
-
-		#region ReadCoords3
-		/// <summary>
-		///  Reads the object coordinates from the current stream and advances the current position of the stream by 12 bytes.
-		/// </summary>
-		public Coords3 ReadCoords3()
-		{
-			Coords3 v;
-
-			v.X = ReadSingle();
-			v.Y = ReadSingle();
-			v.Z = ReadSingle();
-
-			return v;
-		}
-		#endregion
-
-		#region ReadCoords4
-		/// <summary>
-		///  Reads the object coordinates and orientation from the current stream and advances the current position of the stream by 16 bytes.
-		/// </summary>
-		public Coords4 ReadCoords4()
-		{
-			Coords4 v;
-
-			v.X = ReadSingle();
-			v.Y = ReadSingle();
-			v.Z = ReadSingle();
-			v.O = ReadSingle();
-
-			return v;
-		}
-		#endregion
-
-		#region ReadStruct
-		/// <summary>
-		/// Reads struct from the current stream and advances the current position if the stream by SizeOf(T) bytes.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="binReader"></param>
-		/// <returns></returns>
-		public unsafe T ReadStruct<T>() where T : struct
-		{
-			byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
-			GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
-			T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-			handle.Free();
-			return returnObject;
-		}
 		#endregion
 	}
 }

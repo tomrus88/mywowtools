@@ -141,7 +141,7 @@ namespace WdbParser
                                 }
                             case "VARCHAR":
                                 {
-                                    var valval = Regex.Replace(reader.ReadStringNull(), @"'", @"\'");
+                                    var valval = Regex.Replace(reader.ReadCString(), @"'", @"\'");
                                     valval = Regex.Replace(valval, "\"", "\\\"");
                                     if (valname != null)
                                         InsertQuery += (quote + valval + quote);
@@ -276,7 +276,7 @@ namespace WdbParser
                     }
                 case "VARCHAR":
                     {
-                        var valval = Regex.Replace(reader.ReadStringNull(), @"'", @"\'");
+                        var valval = Regex.Replace(reader.ReadCString(), @"'", @"\'");
                         valval = Regex.Replace(valval, "\"", "\\\"");
                         if (valname != null)
                             InsertQuery += (quote + valval + quote);
