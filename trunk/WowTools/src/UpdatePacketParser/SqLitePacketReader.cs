@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using UpdateFields;
 
 namespace UpdatePacketParser
 {
-    public class SqLitePacketReader : PacketReaderBase
+    public class SqLitePacketReader : IPacketReader
     {
         private static readonly DbProviderFactory factory = System.Data.SQLite.SQLiteFactory.Instance;
         private readonly DbDataReader _reader;
@@ -26,7 +27,7 @@ namespace UpdatePacketParser
             UpdateFieldsLoader.LoadUpdateFields(10026);
         }
 
-        public override Packet ReadPacket()
+        public Packet ReadPacket()
         {
             if (!_reader.Read())
             {
@@ -40,5 +41,16 @@ namespace UpdatePacketParser
             packet.Size = packet.Data.Length;
             return packet;
         }
+
+    	public virtual IEnumerable<Packet> ReadPackets()
+    	{
+    		var packets = new List<Packet>();
+    		Packet packet;
+    		while ((packet = ReadPacket()) != null)
+    		{
+    			packets.Add(packet);
+    		}
+    		return packets;
+    	}
     }
 }

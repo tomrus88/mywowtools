@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using UpdateFields;
 using System.Xml;
 
 namespace UpdatePacketParser
 {
-    public class SniffitztPacketReader : PacketReaderBase
+    public class SniffitztPacketReader : IPacketReader
     {
         private readonly XmlDocument _document;
         private readonly XmlNodeList _packets;
-        private int _readPackets = 0;
+        private int _readPackets;
 
         public SniffitztPacketReader(string filename)
         {
@@ -22,7 +23,7 @@ namespace UpdatePacketParser
             UpdateFieldsLoader.LoadUpdateFields(build);
         }
 
-        public override Packet ReadPacket()
+        public Packet ReadPacket()
         {
             if (_readPackets >= _packets.Count)
             {
@@ -53,5 +54,16 @@ namespace UpdatePacketParser
             _readPackets++;
             return packet;
         }
+
+    	public virtual IEnumerable<Packet> ReadPackets()
+    	{
+    		var packets = new List<Packet>();
+    		Packet packet;
+    		while ((packet = ReadPacket()) != null)
+    		{
+    			packets.Add(packet);
+    		}
+    		return packets;
+    	}
     }
 }

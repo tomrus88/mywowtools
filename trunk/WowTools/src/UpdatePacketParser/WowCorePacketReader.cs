@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UpdateFields;
 
 namespace UpdatePacketParser
 {
-    public class WowCorePacketReader : PacketReaderBase
+    public class WowCorePacketReader : IPacketReader
     {
         private readonly BinaryReader _reader;
 
@@ -22,7 +23,7 @@ namespace UpdatePacketParser
             UpdateFieldsLoader.LoadUpdateFields(build);
         }
 
-        public override Packet ReadPacket()
+        public Packet ReadPacket()
         {
             if (_reader.PeekChar() < 0)
                 return null;
@@ -37,5 +38,16 @@ namespace UpdatePacketParser
             packet.Data = _reader.ReadBytes(packet.Size);
             return packet;
         }
+
+    	public virtual IEnumerable<Packet> ReadPackets()
+    	{
+    		var packets = new List<Packet>();
+    		Packet packet;
+    		while ((packet = ReadPacket()) != null)
+    		{
+    			packets.Add(packet);
+    		}
+    		return packets;
+    	}
     }
 }

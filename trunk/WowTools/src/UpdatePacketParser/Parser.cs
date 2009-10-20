@@ -27,11 +27,10 @@ namespace UpdatePacketParser
             return obj;
         }
 
-        public Parser(PacketReaderBase reader)
+        public Parser(IPacketReader reader)
         {
-            Packet packet;
-            while ((packet = reader.ReadPacket()) != null)
-            {
+        	foreach (var packet in reader.ReadPackets())
+        	{
                 var gr = new BinaryReader(new MemoryStream(packet.Data));
                 switch (packet.Code)
                 {
@@ -52,7 +51,7 @@ namespace UpdatePacketParser
             }
         }
 
-        private static void CheckPacket(BinaryReader gr)
+    	private static void CheckPacket(BinaryReader gr)
         {
             if (gr.BaseStream.Position != gr.BaseStream.Length)
                 MessageBox.Show(String.Format("Packet parsing error, diff {0}", gr.BaseStream.Length - gr.BaseStream.Position));
