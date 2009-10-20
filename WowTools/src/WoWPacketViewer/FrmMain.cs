@@ -176,7 +176,7 @@ namespace WoWPacketViewer
 
 			Packet packet = packets[SelectedIndex];
 
-			textBox1.Text = packet.HexLike();
+			textBox1.Text = Utility.HexLike(packet);
 			textBox2.Text = ParserFactory.CreateParser(packet).Parse();
 		}
 
@@ -218,7 +218,7 @@ namespace WoWPacketViewer
 			{
 				foreach (Packet p in packets)
 				{
-					stream.Write(p.HexLike());
+					stream.Write(Utility.HexLike(p));
 				}
 			}
 		}
@@ -318,7 +318,7 @@ namespace WoWPacketViewer
 				{
 					if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
 						continue;
-					stream.Write(p.HexLike());
+					stream.Write(Utility.HexLike(p));
 
 					string parsed = ParserFactory.CreateParser(p).Parse();
 					if (String.IsNullOrEmpty(parsed))
