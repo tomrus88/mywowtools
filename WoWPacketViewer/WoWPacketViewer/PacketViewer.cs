@@ -1,45 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WoWPacketViewer
 {
-    public abstract class PacketViewerBase
-    {
-        protected List<Packet> m_packets = new List<Packet>();
+	public abstract class PacketViewerBase
+	{
+		protected uint build;
 
-        public List<Packet> Packets
-        {
-            get { return m_packets; }
-        }
+		public uint Build
+		{
+			get { return build; }
+		}
 
-        protected uint m_build;
+		public static PacketViewerBase Create(string extension)
+		{
+			switch (extension)
+			{
+				case ".bin":
+					return new WowCorePacketViewer();
+				case ".sqlite":
+					return new SqLitePacketViewer();
+				case ".xml":
+					return new SniffitztPacketViewer();
+				default:
+					return null;
+			}
+		}
 
-        public uint Build
-        {
-            get { return m_build; }
-            set { m_build = value; }
-        }
-
-        public abstract int LoadData(string file);
-
-        public string ShowParsed(Packet pkt)
-        {
-            return ParserFactory.CreateParser(pkt).Parse();
-        }
-
-        public static PacketViewerBase Create(string extension)
-        {
-            switch (extension)
-            {
-                case ".bin":
-                    return new WowCorePacketViewer();
-                case ".sqlite":
-                    return new SqLitePacketViewer();
-                case ".xml":
-                    return new SniffitztPacketViewer();
-                default:
-                    return null;
-            }
-        }
-    }
+		public abstract IEnumerable<Packet> ReadPackets(string file);
+	}
 }

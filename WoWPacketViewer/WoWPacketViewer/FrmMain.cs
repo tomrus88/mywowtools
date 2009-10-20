@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -6,12 +7,7 @@ using System.Windows.Forms;
 
 namespace WoWPacketViewer
 {
-    public interface ISupportFind
-    {
-        void Search(string text, bool searchUp, bool ignoreCase);
-    }
-
-    public partial class FrmMain : Form, ISupportFind
+	public partial class FrmMain : Form, ISupportFind
     {
         private delegate void AddListViewItem(ListViewItem item);
 
@@ -25,19 +21,19 @@ namespace WoWPacketViewer
             InitializeComponent();
         }
 
-        private void AddPacket(ListViewItem item)
-        {
-            if (_list.InvokeRequired)
-            {
-                Invoke(new AddListViewItem(AddPacket), item);
-            }
-            else
-            {
-                _list.Items.Add(item);
-            }
-        }
+		private void AddPacket(ListViewItem item)
+		{
+			if (_list.InvokeRequired)
+			{
+				Invoke(new AddListViewItem(AddPacket), item);
+			}
+			else
+			{
+				_list.Items.Add(item);
+			}
+		}
 
-        private void UpdateControl(bool end)
+		private void UpdateControl(bool end)
         {
             if (_list.InvokeRequired)
             {
@@ -58,7 +54,7 @@ namespace WoWPacketViewer
 
         public void FillListView(BackgroundWorker worker)
         {
-            var pkt = (from packet in m_packetViewer.Packets
+            var pkt = (from packet in Packets
                        where packet.Code == OpCodes.CMSG_AUTH_SESSION
                        select packet).FirstOrDefault();
 
@@ -75,13 +71,13 @@ namespace WoWPacketViewer
 
             var i = 0;
             UpdateControl(false);
-            foreach (var p in m_packetViewer.Packets)
+			foreach (var p in Packets)
             {
                 AddPacket(p.Direction == Direction.Client
                                 ? new ListViewItem(new[] { p.UnixTime.ToString("X8"), p.TicksCount.ToString("X8"), p.Code.ToString(), string.Empty, p.Data.Length.ToString() })
                                 : new ListViewItem(new[] { p.UnixTime.ToString("X8"), p.TicksCount.ToString("X8"), string.Empty, p.Code.ToString(), p.Data.Length.ToString() }));
                 ++i;
-                worker.ReportProgress((int)((i / (float)m_packetViewer.Packets.Count) * 100f));
+				worker.ReportProgress((int)((i / (float)Packets.Count) * 100f));
             }
             UpdateControl(true);
         }
@@ -96,7 +92,9 @@ namespace WoWPacketViewer
             }
             else
             {
-                MessageBox.Show(string.Format("Can't find:'{0}'", text), "Packet Viewer", MessageBoxButtons.OK,
+                MessageBox.Show(string.Format("Can't find:'{0}'", text), 
+					"Packet Viewer", 
+					MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
         }
@@ -161,14 +159,20 @@ namespace WoWPacketViewer
 
             if (SelectedIndex != -1)
             {
-                var packet = m_packetViewer.Packets[SelectedIndex];
+                var packet = Packets[SelectedIndex];
 
                 textBox1.Text = packet.HexLike();
-                textBox2.Text = m_packetViewer.ShowParsed(packet);
+            	textBox2.Text = ParserFactory.CreateParser(packet).Parse();
             }
         }
 
-        private void OpenMenu_Click(object sender, EventArgs e)
+		private List<Packet> Packets
+		{
+			get;
+			set;
+		}
+
+    	private void OpenMenu_Click(object sender, EventArgs e)
         {
             if (_openDialog.ShowDialog() != DialogResult.OK)
             {
@@ -180,18 +184,23 @@ namespace WoWPacketViewer
 
             _statusLabel.Text = "Loading...";
             var file = _openDialog.FileName;
-            m_packetViewer = PacketViewerBase.Create(Path.GetExtension(file));
-            if (m_packetViewer != null)
-            {
-                m_packetViewer.LoadData(file);
-                //_statusLabel.Text = String.Format("Client Build: {0}", m_packetViewer.Build);
-                _backgroundWorker.RunWorkerAsync(m_packetViewer.Packets.Count);
-            }
+    		m_packetViewer = PacketViewerBase.Create(Path.GetExtension(file));
+    		
+			if (!Loaded()) return;
+
+    		Packets = m_packetViewer.ReadPackets(file).ToList();
+    		//_statusLabel.Text = String.Format("Client Build: {0}", m_packetViewer.Build);
+    		_backgroundWorker.RunWorkerAsync(Packets.Count);
         }
 
-        private void SaveMenu_Click(object sender, EventArgs e)
+		private bool Loaded()
+		{
+			return m_packetViewer != null;
+		}
+
+		private void SaveMenu_Click(object sender, EventArgs e)
         {
-            if (m_packetViewer == null)
+			if (!Loaded())
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -201,7 +210,7 @@ namespace WoWPacketViewer
             {
                 using (var stream = new StreamWriter(_saveDialog.OpenFile()))
                 {
-                    foreach (var p in m_packetViewer.Packets)
+					foreach (var p in Packets)
                     {
                         stream.Write(p.HexLike());
                     }
@@ -267,7 +276,7 @@ namespace WoWPacketViewer
 
         private void saveAsParsedTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (m_packetViewer == null)
+			if (!Loaded())
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -277,7 +286,7 @@ namespace WoWPacketViewer
             {
                 using (var stream = new StreamWriter(_saveDialog.OpenFile()))
                 {
-                    foreach (var p in m_packetViewer.Packets)
+					foreach (var p in Packets)
                     {
                         string parsed = ParserFactory.CreateParser(p).Parse();
                         if (String.IsNullOrEmpty(parsed))
@@ -290,7 +299,7 @@ namespace WoWPacketViewer
 
         private void saveWardenAsTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (m_packetViewer == null)
+			if (!Loaded())
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -302,7 +311,7 @@ namespace WoWPacketViewer
             {
                 using (var stream = new StreamWriter(_saveDialog.OpenFile()))
                 {
-                    foreach (var p in m_packetViewer.Packets)
+					foreach (var p in Packets)
                     {
                         if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
                             continue;
