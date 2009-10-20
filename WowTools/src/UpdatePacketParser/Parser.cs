@@ -495,7 +495,7 @@ namespace UpdatePacketParser
         public static void Decompress(ref GenericReader gr)
         {
             var uncompressedLength = gr.ReadInt32();
-            var input = gr.ReadBytes((int)gr.Remaining);
+            var input = gr.ReadBytes((int)(gr.BaseStream.Length - gr.BaseStream.Position));
             gr.Close();
             var output = new byte[uncompressedLength];
             DecompressZLib(input, output);
