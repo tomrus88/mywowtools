@@ -9,12 +9,14 @@ namespace WoWPacketViewer.Parsers.Warden
         public static IDictionary<byte, CheckType> CheckTypes = new Dictionary<byte, CheckType>();
         private static FrmWardenDebug wardenDebugForm;
 
-        public static void InitCheckTypes(IDictionary<byte, CheckType> checkTypes)
-        {
-            CheckTypes = checkTypes;
-        }
+		public static void InitCheckTypes()
+		{
+			if (wardenDebugForm == null || wardenDebugForm.IsDisposed)
+				return;
+			CheckTypes = wardenDebugForm.CheckTypes;
+		}
 
-        public static void ShowForm(IEnumerable<string> strings, byte[] checks)
+    	public static void ShowForm(IEnumerable<string> strings, byte[] checks)
         {
             if (wardenDebugForm == null || wardenDebugForm.IsDisposed)
                 wardenDebugForm = new FrmWardenDebug();
@@ -23,7 +25,7 @@ namespace WoWPacketViewer.Parsers.Warden
 
             wardenDebugForm.SetInfo(CreateTextInfo(strings, checks));
 
-            wardenDebugForm.SetCheckTypes(CheckTypes);
+            wardenDebugForm.CheckTypes = CheckTypes;
 
             if (!wardenDebugForm.Visible)
                 wardenDebugForm.Show();
