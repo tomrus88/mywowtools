@@ -28,9 +28,7 @@ namespace WoWPacketViewer
 				uint tickcount = gr.ReadUInt32();
 				uint size = gr.ReadUInt32();
 				OpCodes opcode = (direction == Direction.Client) ? (OpCodes) gr.ReadUInt32() : (OpCodes) gr.ReadUInt16();
-				byte[] data = gr.ReadBytes((int) size
-				                           - ((direction == Direction.Client) ? 4 : 2)
-					);
+				byte[] data = gr.ReadBytes((int) size - ((direction == Direction.Client) ? 4 : 2));
 
 				packets.Add(new Packet(direction, opcode, data, unixtime, tickcount));
 			}
