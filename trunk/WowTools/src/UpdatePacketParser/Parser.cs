@@ -33,7 +33,7 @@ namespace UpdatePacketParser
             Packet packet;
             while ((packet = reader.ReadPacket()) != null)
             {
-                var gr = new GenericReader(new MemoryStream(packet.Data));
+                var gr = new BinaryReader(new MemoryStream(packet.Data));
                 switch (packet.Code)
                 {
                     case 169:
@@ -59,7 +59,7 @@ namespace UpdatePacketParser
                 MessageBox.Show(String.Format("Packet parsing error, diff {0}", gr.BaseStream.Length - gr.BaseStream.Position));
         }
 
-        private void ParseRest(GenericReader gr)
+        private void ParseRest(BinaryReader gr)
         {
             var objects_count = gr.ReadUInt32();
 
@@ -91,7 +91,7 @@ namespace UpdatePacketParser
             }
         }
 
-        private void ParseValues(GenericReader gr)
+        private void ParseValues(BinaryReader gr)
         {
             var guid = gr.ReadPackedGuid();
             var blocks_count = gr.ReadByte();
@@ -123,7 +123,7 @@ namespace UpdatePacketParser
             wowobj.AddUpdate(update);
         }
 
-        private static void ParseMovement(GenericReader gr)
+        private static void ParseMovement(BinaryReader gr)
         {
             var guid = gr.ReadPackedGuid();
             var updateflags = (UpdateFlags)gr.ReadUInt16();
@@ -285,7 +285,7 @@ namespace UpdatePacketParser
             }
         }
 
-        private void ParseCreateObjects(GenericReader gr)
+        private void ParseCreateObjects(BinaryReader gr)
         {
             // Variables
             var movementInfo = new MovementInfo(0);
@@ -472,7 +472,7 @@ namespace UpdatePacketParser
             m_objects.Add(guid, wowobj);
         }
 
-        private static void ParseOORObjects(GenericReader gr)
+        private static void ParseOORObjects(BinaryReader gr)
         {
             var count = gr.ReadUInt32();
             var GUIDS = new ulong[count];
@@ -482,7 +482,7 @@ namespace UpdatePacketParser
             }
         }
 
-        private static void ParseNearObjects(GenericReader gr)
+        private static void ParseNearObjects(BinaryReader gr)
         {
             var count = gr.ReadUInt32();
             var GUIDS = new ulong[count];
@@ -492,14 +492,14 @@ namespace UpdatePacketParser
             }
         }
 
-        public static void Decompress(ref GenericReader gr)
+        public static void Decompress(ref BinaryReader gr)
         {
             var uncompressedLength = gr.ReadInt32();
             var input = gr.ReadBytes((int)(gr.BaseStream.Length - gr.BaseStream.Position));
             gr.Close();
             var output = new byte[uncompressedLength];
             DecompressZLib(input, output);
-            gr = new GenericReader(new MemoryStream(output));
+            gr = new BinaryReader(new MemoryStream(output));
         }
 
         public static void DecompressZLib(byte[] input, byte[] output)
