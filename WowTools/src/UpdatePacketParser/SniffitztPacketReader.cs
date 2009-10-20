@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UpdateFields;
 using System.Xml;
+using WowTools.Core;
 
 namespace UpdatePacketParser
 {
@@ -48,7 +49,7 @@ namespace UpdatePacketParser
 
             var packet = new Packet();
             packet.Size = len;
-            packet.Code = Convert.ToInt32(element.Attributes["opcode"].Value);
+            packet.Code = (OpCodes) Convert.ToInt32(element.Attributes["opcode"].Value);
             packet.Data = bytes;
 
             _readPackets++;

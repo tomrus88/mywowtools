@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using UpdateFields;
+using WowTools.Core;
 
 namespace UpdatePacketParser
 {
@@ -36,7 +37,7 @@ namespace UpdatePacketParser
             }
 
             var packet = new Packet();
-            packet.Code = (int)_reader.GetInt32(0);
+            packet.Code = (OpCodes) _reader.GetInt32(0);
             packet.Data = (byte[])_reader.GetValue(1);
             packet.Size = packet.Data.Length;
             return packet;

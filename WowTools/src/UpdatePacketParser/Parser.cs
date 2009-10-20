@@ -34,11 +34,11 @@ namespace UpdatePacketParser
                 var gr = packet.CreateReader();
                 switch (packet.Code)
                 {
-                    case 169:
+                    case OpCodes.SMSG_UPDATE_OBJECT:
                         ParseRest(gr);
                         CheckPacket(gr);
                         break;
-                    case 502:
+                    case OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT:
                         Decompress(ref gr);
                         ParseRest(gr);
                         CheckPacket(gr);
