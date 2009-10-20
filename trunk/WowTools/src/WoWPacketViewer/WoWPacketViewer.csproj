@@ -72,7 +72,6 @@
     </Compile>
     <Compile Include="IPacketReader.cs" />
     <Compile Include="ISupportFind.cs" />
-    <Compile Include="Opcodes.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketReaderFactory.cs" />
     <Compile Include="Parser.cs" />

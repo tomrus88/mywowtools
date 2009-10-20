@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers.Warden
 {

@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace UpdatePacketParser
 {
 	public class Packet
@@ -5,5 +7,10 @@ namespace UpdatePacketParser
 		public int Size { get; set; }
 		public int Code { get; set; }
 		public byte[] Data { get; set; }
+
+		public BinaryReader CreateReader()
+		{
+			return new BinaryReader(new MemoryStream(Data));
+		}
 	}
 }
