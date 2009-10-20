@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWPacketViewer", "WoWPacketViewer\WoWPacketViewer.csproj", "{9E80DAFC-44D7-4C9E-8AE9-515A78B13232}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWPacketViewer", "src\WoWPacketViewer\WoWPacketViewer.csproj", "{9E80DAFC-44D7-4C9E-8AE9-515A78B13232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
