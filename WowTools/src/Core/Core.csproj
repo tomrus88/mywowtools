@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coords3.cs" />
+    <Compile Include="Coords4.cs" />
     <Compile Include="GenericReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

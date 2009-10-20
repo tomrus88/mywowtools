@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Globalization;
-using WoWReader;
+using WowTools.Core;
 
 namespace WdbParser
 {

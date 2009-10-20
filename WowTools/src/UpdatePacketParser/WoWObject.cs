@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UpdateFields;
-using WoWReader;
+using WowTools.Core;
 
 namespace WoWObjects
 {
