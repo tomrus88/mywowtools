@@ -57,8 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Coords3.cs" />
-    <Compile Include="Coords4.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
@@ -143,6 +141,12 @@
     <Compile Include="SqLitePacketReader.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="WowCorePacketReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{F403FF24-95D3-442C-A620-6F19CAE22059}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
