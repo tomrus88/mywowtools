@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using WowTools.Core;
 
 namespace WoWPacketViewer
 {

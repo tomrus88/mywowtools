@@ -31,7 +31,7 @@ namespace UpdatePacketParser
         {
         	foreach (var packet in reader.ReadPackets())
         	{
-                var gr = new BinaryReader(new MemoryStream(packet.Data));
+                var gr = packet.CreateReader();
                 switch (packet.Code)
                 {
                     case 169:

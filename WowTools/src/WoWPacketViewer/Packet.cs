@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using WowTools.Core;
 
 namespace WoWPacketViewer
 {
@@ -25,7 +26,7 @@ namespace WoWPacketViewer
             TicksCount = tickscount;
         }
 
-        public virtual BinaryReader CreateReader()
+        public BinaryReader CreateReader()
         {
             return new BinaryReader(new MemoryStream(Data));
         }
