@@ -96,7 +96,7 @@ namespace UpdatePacketParser
 		{
 			ulong guid = gr.ReadPackedGuid();
 
-			new MovementInfo().Read(gr);
+			MovementInfo.Read( gr);
 		}
 
 		private void ParseCreateObjects(BinaryReader gr)
@@ -105,8 +105,7 @@ namespace UpdatePacketParser
 
 			var objectTypeId = (ObjectTypes) gr.ReadByte();
 
-			var movement = new MovementInfo();
-			movement.Read(gr);
+			MovementInfo movement = MovementInfo.Read(gr);
 
 			// values part
 			WoWObjectUpdate update = WoWObjectUpdate.Read(gr);
