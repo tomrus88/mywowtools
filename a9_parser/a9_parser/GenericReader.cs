@@ -204,13 +204,12 @@ namespace a9_parser
             return v;
         }
         #endregion
-        
+
         #region ReadStruct
         /// <summary>
         /// Reads struct from the current stream and advances the current position if the stream by SizeOf(T) bytes.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="binReader"></param>
         /// <returns></returns>
         public unsafe T ReadStruct<T>() where T : struct
         {
