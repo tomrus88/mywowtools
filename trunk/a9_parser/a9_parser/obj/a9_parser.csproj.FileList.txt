@@ -1,9 +1,0 @@
-bin\Release\a9_parser.exe
-bin\Release\a9_parser.pdb
-obj\Release\ResolveAssemblyReference.cache
-obj\Release\a9_parser.Form1.resources
-obj\Release\a9_parser.Properties.Resources.resources
-obj\Release\a9_parser.csproj.GenerateResource.Cache
-obj\Release\a9_parser.exe
-obj\Release\a9_parser.pdb
-bin\Release\a9_parser.xml
