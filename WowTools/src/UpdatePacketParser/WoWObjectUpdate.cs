@@ -4,37 +4,37 @@ using System.IO;
 
 namespace WoWObjects
 {
-	public class WoWObjectUpdate
-	{
-		public IDictionary<int, uint> Data { get; private set; }
+    public class WoWObjectUpdate
+    {
+        public IDictionary<int, uint> Data { get; private set; }
 
-		protected WoWObjectUpdate(IDictionary<int, uint> data)
-		{
-			Data = data;
-		}
+        protected WoWObjectUpdate(IDictionary<int, uint> data)
+        {
+            Data = data;
+        }
 
-		public static WoWObjectUpdate Read(BinaryReader gr)
-		{
-			byte blocksCount = gr.ReadByte();
-			var updatemask = new int[blocksCount];
-			for (int i = 0; i < updatemask.Length; ++i)
-			{
-				updatemask[i] = gr.ReadInt32();
-			}
+        public static WoWObjectUpdate Read(BinaryReader gr)
+        {
+            byte blocksCount = gr.ReadByte();
+            var updatemask = new int[blocksCount];
+            for (int i = 0; i < updatemask.Length; ++i)
+            {
+                updatemask[i] = gr.ReadInt32();
+            }
 
-			var mask = new BitArray(updatemask);
+            var mask = new BitArray(updatemask);
 
-			var values = new Dictionary<int, uint>();
+            var values = new Dictionary<int, uint>();
 
-			for (int i = 0; i < mask.Count; ++i)
-			{
-				if (mask[i])
-				{
-					values[i] = gr.ReadUInt32();
-				}
-			}
+            for (int i = 0; i < mask.Count; ++i)
+            {
+                if (mask[i])
+                {
+                    values[i] = gr.ReadUInt32();
+                }
+            }
 
-			return new WoWObjectUpdate(values);
-		}
-	};
+            return new WoWObjectUpdate(values);
+        }
+    };
 }
