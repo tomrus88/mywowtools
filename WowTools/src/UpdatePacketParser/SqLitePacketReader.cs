@@ -37,21 +37,21 @@ namespace UpdatePacketParser
             }
 
             var packet = new Packet();
-            packet.Code = (OpCodes) _reader.GetInt32(0);
+            packet.Code = (OpCodes)_reader.GetInt32(0);
             packet.Data = (byte[])_reader.GetValue(1);
             packet.Size = packet.Data.Length;
             return packet;
         }
 
-    	public virtual IEnumerable<Packet> ReadPackets()
-    	{
-    		var packets = new List<Packet>();
-    		Packet packet;
-    		while ((packet = ReadPacket()) != null)
-    		{
-    			packets.Add(packet);
-    		}
-    		return packets;
-    	}
+        public virtual IEnumerable<Packet> ReadPackets()
+        {
+            var packets = new List<Packet>();
+            Packet packet;
+            while ((packet = ReadPacket()) != null)
+            {
+                packets.Add(packet);
+            }
+            return packets;
+        }
     }
 }

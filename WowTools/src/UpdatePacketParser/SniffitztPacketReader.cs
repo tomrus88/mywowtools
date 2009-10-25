@@ -49,22 +49,22 @@ namespace UpdatePacketParser
 
             var packet = new Packet();
             packet.Size = len;
-            packet.Code = (OpCodes) Convert.ToInt32(element.Attributes["opcode"].Value);
+            packet.Code = (OpCodes)Convert.ToInt32(element.Attributes["opcode"].Value);
             packet.Data = bytes;
 
             _readPackets++;
             return packet;
         }
 
-    	public virtual IEnumerable<Packet> ReadPackets()
-    	{
-    		var packets = new List<Packet>();
-    		Packet packet;
-    		while ((packet = ReadPacket()) != null)
-    		{
-    			packets.Add(packet);
-    		}
-    		return packets;
-    	}
+        public virtual IEnumerable<Packet> ReadPackets()
+        {
+            var packets = new List<Packet>();
+            Packet packet;
+            while ((packet = ReadPacket()) != null)
+            {
+                packets.Add(packet);
+            }
+            return packets;
+        }
     }
 }
