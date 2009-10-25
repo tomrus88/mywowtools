@@ -37,12 +37,12 @@ namespace WoWPacketViewer
         {
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.IsSubclassOf(typeof (Parser)))
+                if (type.IsSubclassOf(typeof(Parser)))
                 {
-                    var attributes = (ParserAttribute[]) type.GetCustomAttributes(typeof (ParserAttribute), true);
+                    var attributes = (ParserAttribute[])type.GetCustomAttributes(typeof(ParserAttribute), true);
                     foreach (ParserAttribute attribute in attributes)
                     {
-                        Parsers[(int) attribute.Code] = type;
+                        Parsers[(int)attribute.Code] = type;
                     }
                 }
             }
@@ -51,11 +51,11 @@ namespace WoWPacketViewer
         public static Parser CreateParser(Packet packet)
         {
             Type type;
-            if (!Parsers.TryGetValue((int) packet.Code, out type))
+            if (!Parsers.TryGetValue((int)packet.Code, out type))
             {
                 return UnknownParser;
             }
-            return (Parser) Activator.CreateInstance(type, packet);
+            return (Parser)Activator.CreateInstance(type, packet);
         }
     }
 }

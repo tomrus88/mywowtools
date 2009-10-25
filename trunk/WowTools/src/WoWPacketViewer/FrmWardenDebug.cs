@@ -14,7 +14,7 @@ namespace WoWPacketViewer
 
         public byte XorByte { get; set; }
 
-    	private TextBox[] GetTextBoxes()
+        private TextBox[] GetTextBoxes()
         {
             return new[]
             {
@@ -37,12 +37,12 @@ namespace WoWPacketViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-        	WardenData.InitCheckTypes();
+            WardenData.InitCheckTypes();
 
-        	Hide();
+            Hide();
         }
 
-    	private void toolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tbInfo.SelectedText == String.Empty) return;
 
@@ -63,30 +63,30 @@ namespace WoWPacketViewer
             tbInfo.Text = value;
         }
 
-    	public IDictionary<byte, CheckType> CheckTypes
-    	{
-    		get
-    		{
-    			var checkTypes = new Dictionary<byte, CheckType>();
-    			foreach (var tb in GetTextBoxes())
-    			{
-    				if (tb.Text != String.Empty)
-    					checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType) tb.TabIndex);
-    			}
-    			return checkTypes;
-    		}
-    		set
-    		{
-    			foreach (TextBox tb in GetTextBoxes())
-    			{
-    				byte val = 0;
-    				if (GetByteForCheckType((CheckType) tb.TabIndex, ref val, value))
-    					tb.Text = String.Format("{0:X2}", val);
-    			}
-    		}
-    	}
+        public IDictionary<byte, CheckType> CheckTypes
+        {
+            get
+            {
+                var checkTypes = new Dictionary<byte, CheckType>();
+                foreach (var tb in GetTextBoxes())
+                {
+                    if (tb.Text != String.Empty)
+                        checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
+                }
+                return checkTypes;
+            }
+            set
+            {
+                foreach (TextBox tb in GetTextBoxes())
+                {
+                    byte val = 0;
+                    if (GetByteForCheckType((CheckType)tb.TabIndex, ref val, value))
+                        tb.Text = String.Format("{0:X2}", val);
+                }
+            }
+        }
 
-    	private static bool GetByteForCheckType(CheckType checkType, ref byte val, IEnumerable<KeyValuePair<byte, CheckType>> dictionary)
+        private static bool GetByteForCheckType(CheckType checkType, ref byte val, IEnumerable<KeyValuePair<byte, CheckType>> dictionary)
         {
             foreach (var temp in dictionary)
             {

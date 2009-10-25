@@ -12,7 +12,7 @@ namespace UpdatePacketParser
 
         public WowCorePacketReader(string filename)
         {
-			_reader = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.ASCII);
+            _reader = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             _reader.ReadBytes(3);                    // PKT
             _reader.ReadBytes(2);                    // 0x02, 0x02
             _reader.ReadByte();                      // 0x06
@@ -35,20 +35,20 @@ namespace UpdatePacketParser
 
             var packet = new Packet();
             packet.Size = _reader.ReadInt32() - (direction == 0xFF ? 2 : 4);
-            packet.Code = (OpCodes) (direction == 0xFF ? _reader.ReadInt16() : _reader.ReadInt32());
+            packet.Code = (OpCodes)(direction == 0xFF ? _reader.ReadInt16() : _reader.ReadInt32());
             packet.Data = _reader.ReadBytes(packet.Size);
             return packet;
         }
 
-    	public virtual IEnumerable<Packet> ReadPackets()
-    	{
-    		var packets = new List<Packet>();
-    		Packet packet;
-    		while ((packet = ReadPacket()) != null)
-    		{
-    			packets.Add(packet);
-    		}
-    		return packets;
-    	}
+        public virtual IEnumerable<Packet> ReadPackets()
+        {
+            var packets = new List<Packet>();
+            Packet packet;
+            while ((packet = ReadPacket()) != null)
+            {
+                packets.Add(packet);
+            }
+            return packets;
+        }
     }
 }

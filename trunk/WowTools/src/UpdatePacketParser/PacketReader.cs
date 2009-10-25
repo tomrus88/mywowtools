@@ -2,8 +2,8 @@
 
 namespace UpdatePacketParser
 {
-	public interface IPacketReader
-	{
-		IEnumerable<Packet> ReadPackets();
-	}
+    public interface IPacketReader
+    {
+        IEnumerable<Packet> ReadPackets();
+    }
 }
