@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using WowTools.Core;
 
@@ -35,7 +33,7 @@ namespace WoWPacketViewer.Parsers.Warden
                     Parse_CHEAT_CHECKS_RESULTS(gr);
                     break;
                 case 0x04:
-                    byte[] hash = gr.ReadBytes(20); // SHA1 hash
+                    byte[] hash = gr.ReadBytes(20); // SHA1 hash of tranformed seed
                     AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(hash));
                     AppendLine();
                     break;
@@ -55,10 +53,9 @@ namespace WoWPacketViewer.Parsers.Warden
             var bufLen = gr.ReadUInt16();
             var checkSum = gr.ReadUInt32();
             var result = gr.ReadBytes(bufLen);
-            ValidateCheckSum(checkSum, result);
             AppendFormatLine("Cheat check result:");
             AppendFormatLine("Len: {0}", bufLen);
-            AppendFormatLine("Checksum: 0x{0:X8}", checkSum);
+            AppendFormatLine("Checksum: 0x{0:X8} {1}", checkSum, WardenData.ValidateCheckSum(checkSum, result));
             var reader = new BinaryReader(new MemoryStream(result), Encoding.ASCII);
             AppendFormatLine("====== CHEAT CHECKS RESULTS START ======");
             AppendLine();
@@ -179,22 +176,6 @@ namespace WoWPacketViewer.Parsers.Warden
             }
             AppendFormatLine("====== MEM_CHECK result END ======");
             AppendLine();
-        }
-
-        private void ValidateCheckSum(uint checkSum, byte[] data)
-        {
-            var hash = new SHA1CryptoServiceProvider().ComputeHash(data);
-            var res = new uint[5];
-
-            for (var i = 0; i < 5; ++i)
-                res[i] = BitConverter.ToUInt32(hash, 4 * i);
-
-            var newCheckSum = res[0] ^ res[1] ^ res[2] ^ res[3] ^ res[4];
-
-            if (checkSum != newCheckSum)
-                AppendFormatLine("CheckSum is not valid!");
-            else
-                AppendFormatLine("CheckSum is valid!");
         }
     }
 }
