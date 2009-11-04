@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using WowTools.Core;
 
@@ -10,7 +8,8 @@ namespace WoWPacketViewer.Parsers.Warden
     [Parser(OpCodes.SMSG_WARDEN_DATA)]
     internal class SmsgWardenData : Parser
     {
-        public SmsgWardenData(Packet packet) : base(packet)
+        public SmsgWardenData(Packet packet)
+            : base(packet)
         {
         }
 
@@ -21,12 +20,14 @@ namespace WoWPacketViewer.Parsers.Warden
             WardenData.CheckInfos.Clear();
 
             var wardenOpcode = gr.ReadByte();
+            gr.BaseStream.Position = 0;
             AppendFormatLine("S->C Warden Opcode: {0:X2}", wardenOpcode);
 
             switch (wardenOpcode)
             {
                 case 0x00:
                     {
+                        var opcode = gr.ReadByte();
                         var md5 = gr.ReadBytes(16); // md5
                         var rc4 = gr.ReadBytes(16); // rc4 key
                         var len = gr.ReadInt32();   // len
@@ -38,6 +39,7 @@ namespace WoWPacketViewer.Parsers.Warden
                     break;
                 case 0x01:
                     {
+                        var opcode = gr.ReadByte();
                         var len = gr.ReadInt16();
                         var chunk = gr.ReadBytes(len);
                         AppendFormatLine("Received warden module chunk, len {0}", len);
@@ -51,23 +53,21 @@ namespace WoWPacketViewer.Parsers.Warden
                     {
                         while (gr.BaseStream.Position != gr.BaseStream.Length)
                         {
+                            var opcode = gr.ReadByte();
                             var len = gr.ReadInt16();
                             var checkSum = gr.ReadUInt32();
                             var data = gr.ReadBytes(len);
 
-                            ValidateCheckSum(checkSum, data);
-
                             AppendFormatLine("Len: {0}", len);
-                            AppendFormatLine("Checksum: 0x{0:X8}", checkSum);
+                            AppendFormatLine("Checksum: 0x{0:X8} {1}", checkSum, WardenData.ValidateCheckSum(checkSum, data));
                             AppendFormatLine("Data: 0x{0}", Utility.ByteArrayToHexString(data));
                             AppendLine();
-                            if (gr.BaseStream.Position != gr.BaseStream.Length)
-                                gr.ReadByte(); // next 0x03 opcode
                         }
                     }
                     break;
                 case 0x05:
                     {
+                        var opcode = gr.ReadByte();
                         var seed = gr.ReadBytes(16);
                         AppendFormatLine("Seed: 0x{0}", Utility.ByteArrayToHexString(seed));
                         AppendLine();
@@ -90,6 +90,9 @@ namespace WoWPacketViewer.Parsers.Warden
 
             List<string> strings = new List<string>();
             strings.Add("");
+
+            var opcode = gr.ReadByte();
+
             byte len;
             while ((len = gr.ReadByte()) != 0)
             {
@@ -111,7 +114,7 @@ namespace WoWPacketViewer.Parsers.Warden
                 CheckType checkType2;
                 if (!WardenData.CheckTypes.TryGetValue(checkType, out checkType2))
                 {
-                    WardenData.ShowForm(strings, checks);
+                    WardenData.ShowForm(strings, checks, check);
                     break;
                 }
 
@@ -244,22 +247,6 @@ namespace WoWPacketViewer.Parsers.Warden
             AppendFormatLine("====== TIMING_CHECK END ======");
             AppendLine();
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
-        }
-
-        private void ValidateCheckSum(uint checkSum, byte[] data)
-        {
-            var hash = new SHA1CryptoServiceProvider().ComputeHash(data);
-            var res = new uint[5];
-
-            for (var i = 0; i < 5; ++i)
-                res[i] = BitConverter.ToUInt32(hash, 4 * i);
-
-            var newCheckSum = res[0] ^ res[1] ^ res[2] ^ res[3] ^ res[4];
-
-            if (checkSum != newCheckSum)
-                AppendFormatLine("CheckSum is not valid!");
-            else
-                AppendFormatLine("CheckSum is valid!");
         }
     }
 }

@@ -71,7 +71,16 @@ namespace WoWPacketViewer
                 foreach (var tb in GetTextBoxes())
                 {
                     if (tb.Text != String.Empty)
-                        checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
+                    {
+                        try
+                        {
+                            checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Duplicate check type detected!");
+                        }
+                    }
                 }
                 return checkTypes;
             }

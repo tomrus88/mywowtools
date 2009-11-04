@@ -87,9 +87,7 @@ namespace UpdatePacketParser
 
             WoWObject wowobj = GetWoWObject(guid);
             if (wowobj != null)
-            {
                 wowobj.AddUpdate(woWObjectUpdate);
-            }
         }
 
         private static void ParseMovement(BinaryReader gr)
@@ -112,13 +110,9 @@ namespace UpdatePacketParser
 
             WoWObject obj = GetWoWObject(guid);
             if (obj == null)
-            {
                 objects.Add(guid, new WoWObject(objectTypeId, movement, update.Data));
-            }
             else
-            {
                 obj.AddUpdate(update);
-            }
         }
 
         private static void ParseOutOfRangeObjects(BinaryReader gr)
@@ -126,9 +120,7 @@ namespace UpdatePacketParser
             uint count = gr.ReadUInt32();
             var guids = new ulong[count];
             for (uint i = 0; i < count; ++i)
-            {
                 guids[i] = gr.ReadPackedGuid();
-            }
         }
 
         private static void ParseNearObjects(BinaryReader gr)
@@ -136,9 +128,7 @@ namespace UpdatePacketParser
             uint count = gr.ReadUInt32();
             var guids = new ulong[count];
             for (uint i = 0; i < count; ++i)
-            {
                 guids[i] = gr.ReadPackedGuid();
-            }
         }
 
         private static void Decompress(ref BinaryReader gr)
