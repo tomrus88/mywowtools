@@ -19,8 +19,8 @@
     <wdbElement name="Modelid2" type="uinteger" />
     <wdbElement name="Modelid3" type="uinteger" />
     <wdbElement name="Modelid4" type="uinteger" />
-    <wdbElement name="wdb_Unk15" type="single" />
-    <wdbElement name="wdb_Unk16" type="single" />
+    <wdbElement name="HealthModifier" type="single" />
+    <wdbElement name="PowerModifier" type="single" />
     <wdbElement name="RacialLeader" type="tinyInt" />
     <wdbElement name="QuestItem_1" type="uinteger" />
     <wdbElement name="QuestItem_2" type="uinteger" />
@@ -67,52 +67,52 @@
     </wdbElement>
     <wdbElement name="ScalingStatDistribution" type="uinteger" />
     <wdbElement name="ScalingStatValue" type="uinteger" />
-    <wdbElement name="dmg_min1" type="single" />
-    <wdbElement name="dmg_max1" type="single" />
-    <wdbElement name="dmg_type1" type="uinteger" />
-    <wdbElement name="dmg_min2" type="single" />
-    <wdbElement name="dmg_max2" type="single" />
-    <wdbElement name="dmg_type2" type="uinteger" />
+    <wdbElement name="DmgMin1" type="single" />
+    <wdbElement name="DmgMax1" type="single" />
+    <wdbElement name="DmgType1" type="uinteger" />
+    <wdbElement name="DmgMin2" type="single" />
+    <wdbElement name="DmgMax2" type="single" />
+    <wdbElement name="DmgType2" type="uinteger" />
     <wdbElement name="Armor" type="uinteger" />
-    <wdbElement name="holy_res" type="uinteger" />
-    <wdbElement name="fire_res" type="uinteger" />
-    <wdbElement name="nature_res" type="uinteger" />
-    <wdbElement name="frost_res" type="uinteger" />
-    <wdbElement name="shadow_res" type="uinteger" />
-    <wdbElement name="arcane_res" type="uinteger" />
+    <wdbElement name="Holy_res" type="uinteger" />
+    <wdbElement name="Fire_res" type="uinteger" />
+    <wdbElement name="Nature_res" type="uinteger" />
+    <wdbElement name="Frost_res" type="uinteger" />
+    <wdbElement name="Shadow_res" type="uinteger" />
+    <wdbElement name="Arcane_res" type="uinteger" />
     <wdbElement name="Delay" type="uinteger" />
     <wdbElement name="AmmoType" type="uinteger" />
     <wdbElement name="RangedModRange" type="single" />
-    <wdbElement name="spellid_1" type="uinteger" />
-    <wdbElement name="spelltrigger_1" type="uinteger" />
-    <wdbElement name="spellcharges_1" type="integer" />
-    <wdbElement name="spellcooldown_1" type="integer" />
-    <wdbElement name="spellcategory_1" type="uinteger" />
-    <wdbElement name="spellcategorycooldown_1" type="integer" />
-    <wdbElement name="spellid_2" type="uinteger" />
-    <wdbElement name="spelltrigger_2" type="uinteger" />
-    <wdbElement name="spellcharges_2" type="integer" />
-    <wdbElement name="spellcooldown_2" type="integer" />
-    <wdbElement name="spellcategory_2" type="uinteger" />
-    <wdbElement name="spellcategorycooldown_2" type="integer" />
-    <wdbElement name="spellid_3" type="uinteger" />
-    <wdbElement name="spelltrigger_3" type="uinteger" />
-    <wdbElement name="spellcharges_3" type="integer" />
-    <wdbElement name="spellcooldown_3" type="integer" />
-    <wdbElement name="spellcategory_3" type="uinteger" />
-    <wdbElement name="spellcategorycooldown_3" type="integer" />
-    <wdbElement name="spellid_4" type="uinteger" />
-    <wdbElement name="spelltrigger_4" type="uinteger" />
-    <wdbElement name="spellcharges_4" type="integer" />
-    <wdbElement name="spellcooldown_4" type="integer" />
-    <wdbElement name="spellcategory_4" type="uinteger" />
-    <wdbElement name="spellcategorycooldown_4" type="integer" />
-    <wdbElement name="spellid_5" type="uinteger" />
-    <wdbElement name="spelltrigger_5" type="uinteger" />
-    <wdbElement name="spellcharges_5" type="integer" />
-    <wdbElement name="spellcooldown_5" type="integer" />
-    <wdbElement name="spellcategory_5" type="uinteger" />
-    <wdbElement name="spellcategorycooldown_5" type="integer" />
+    <wdbElement name="SpellId_1" type="uinteger" />
+    <wdbElement name="Spelltrigger_1" type="uinteger" />
+    <wdbElement name="Spellcharges_1" type="integer" />
+    <wdbElement name="Spellcooldown_1" type="integer" />
+    <wdbElement name="Spellcategory_1" type="uinteger" />
+    <wdbElement name="Spellcategorycooldown_1" type="integer" />
+    <wdbElement name="SpellId_2" type="uinteger" />
+    <wdbElement name="Spelltrigger_2" type="uinteger" />
+    <wdbElement name="Spellcharges_2" type="integer" />
+    <wdbElement name="Spellcooldown_2" type="integer" />
+    <wdbElement name="Spellcategory_2" type="uinteger" />
+    <wdbElement name="Spellcategorycooldown_2" type="integer" />
+    <wdbElement name="SpellId_3" type="uinteger" />
+    <wdbElement name="Spelltrigger_3" type="uinteger" />
+    <wdbElement name="Spellcharges_3" type="integer" />
+    <wdbElement name="Spellcooldown_3" type="integer" />
+    <wdbElement name="Spellcategory_3" type="uinteger" />
+    <wdbElement name="Spellcategorycooldown_3" type="integer" />
+    <wdbElement name="SpellId_4" type="uinteger" />
+    <wdbElement name="Spelltrigger_4" type="uinteger" />
+    <wdbElement name="Spellcharges_4" type="integer" />
+    <wdbElement name="Spellcooldown_4" type="integer" />
+    <wdbElement name="Spellcategory_4" type="uinteger" />
+    <wdbElement name="Spellcategorycooldown_4" type="integer" />
+    <wdbElement name="SpellId_5" type="uinteger" />
+    <wdbElement name="Spelltrigger_5" type="uinteger" />
+    <wdbElement name="Spellcharges_5" type="integer" />
+    <wdbElement name="Spellcooldown_5" type="integer" />
+    <wdbElement name="Spellcategory_5" type="uinteger" />
+    <wdbElement name="Spellcategorycooldown_5" type="integer" />
     <wdbElement name="Bonding" type="uinteger" />
     <wdbElement name="Description" type="varChar" />
     <wdbElement name="PageText" type="uinteger" />
@@ -131,13 +131,13 @@
     <wdbElement name="Map" type="integer" />
     <wdbElement name="BagFamily" type="integer" />
     <wdbElement name="TotemCategory" type="integer" />
-    <wdbElement name="socketColor_1" type="integer" />
-    <wdbElement name="socketContent_1" type="integer" />
-    <wdbElement name="socketColor_2" type="integer" />
-    <wdbElement name="socketContent_2" type="integer" />
-    <wdbElement name="socketColor_3" type="integer" />
-    <wdbElement name="socketContent_3" type="integer" />
-    <wdbElement name="socketBonus" type="integer" />
+    <wdbElement name="SocketColor_1" type="integer" />
+    <wdbElement name="SocketContent_1" type="integer" />
+    <wdbElement name="SocketColor_2" type="integer" />
+    <wdbElement name="SocketContent_2" type="integer" />
+    <wdbElement name="SocketColor_3" type="integer" />
+    <wdbElement name="SocketContent_3" type="integer" />
+    <wdbElement name="SocketBonus" type="integer" />
     <wdbElement name="GemProperties" type="integer" />
     <wdbElement name="RequiredDisenchantSkill" type="integer" />
     <wdbElement name="ArmorDamageModifier" type="single" />
@@ -155,25 +155,25 @@
     <wdbElement name="ZoneOrSort" type="integer" />
     <wdbElement name="Type" type="uinteger" />
     <wdbElement name="SuggestedPlayers" type="uinteger" />
-    <wdbElement name="RepObjectiveFaction" type="uinteger" />
-    <wdbElement name="RepObjectiveValue" type="integer" />
-    <wdbElement name="wdb_unused4" type="uinteger" />
-    <wdbElement name="wdb_unused5" type="integer" />
+    <wdbElement name="RepObjectiveFaction1" type="uinteger" />
+    <wdbElement name="RepObjectiveValue1" type="integer" />
+    <wdbElement name="RepObjectiveFaction2" type="uinteger" />
+    <wdbElement name="RepObjectiveValue2" type="integer" />
     <wdbElement name="NextQuestInChain" type="uinteger" />
     <wdbElement name="Unk1" type="integer" />
     <wdbElement name="RewOrReqMoney" type="integer" />
     <wdbElement name="RewMoneyMaxLevel" type="uinteger" /> 
     <wdbElement name="RewSpell" type="uinteger" />
     <wdbElement name="RewSpellCast" type="uinteger" />
-    <wdbElement name="wdb_Unk6" type="uinteger" />
-    <wdbElement name="wdb_Unk7" type="single" />
+    <wdbElement name="Honor1" type="uinteger" />
+    <wdbElement name="Honor2" type="single" />
     <wdbElement name="SrcItemId" type="uinteger" />
     <wdbElement name="QuestFlags" type="uinteger" />
     <wdbElement name="CharTitleId" type="uinteger" />
     <wdbElement name="PlayersSlain" type="integer" />
     <wdbElement name="BonusTalents" type="integer" />
-    <wdbElement name="Unk8" type="integer" />
-    <wdbElement name="Unk9" type="integer" />
+    <wdbElement name="BonusArenaPoints" type="integer" />
+    <wdbElement name="Unk2" type="integer" />
     <wdbElement name="RewItemId1" type="uinteger" /> 
     <wdbElement name="RewItemCount1" type="uinteger" />
     <wdbElement name="RewItemId2" type="uinteger" />
@@ -204,20 +204,20 @@
     <wdbElement name="RawFactionVal3" type="integer" />
     <wdbElement name="RawFactionVal4" type="integer" />
     <wdbElement name="RawFactionVal5" type="integer" />
-    <wdbElement name="RawFactionUnk1" type="uinteger" />
-    <wdbElement name="RawFactionUnk2" type="uinteger" />
-    <wdbElement name="RawFactionUnk3" type="uinteger" />
-    <wdbElement name="RawFactionUnk4" type="uinteger" />
-    <wdbElement name="RawFactionUnk5" type="uinteger" />
+    <wdbElement name="RawFactionValOverride1" type="uinteger" />
+    <wdbElement name="RawFactionValOverride2" type="uinteger" />
+    <wdbElement name="RawFactionValOverride3" type="uinteger" />
+    <wdbElement name="RawFactionValOverride4" type="uinteger" />
+    <wdbElement name="RawFactionValOverride5" type="uinteger" />
     <wdbElement name="PointMapId" type="uinteger" />
     <wdbElement name="PointX" type="single" />
     <wdbElement name="PointY" type="single" />
-    <wdbElement name="PointOpt" type="integer" />
+    <wdbElement name="Unk3" type="integer" />
     <wdbElement name="Title" type="varChar" />
     <wdbElement name="Objectives" type="varChar" />
     <wdbElement name="Details" type="varChar" />
+    <wdbElement name="ToDoText" type="varChar" />
     <wdbElement name="EndText" type="varChar" />
-    <wdbElement name="UnkText" type="varChar" />
     <wdbElement name="ReqCreatureOrGOId1" type="integer" />
     <wdbElement name="ReqCreatureOrGOCount1" type="uinteger" />
     <wdbElement name="ReqSourceId1" type="uinteger" />
@@ -348,9 +348,9 @@
     <wdbElement name="NextPage" type="uinteger" />
   </wdbId>
   <wdbId name="itemtextcache">
-    <wdbElement name="id" type="uinteger" key="yes" />
+    <wdbElement name="Id" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="text" type="varChar" />
+    <wdbElement name="Text" type="varChar" />
   </wdbId>
   <wdbId name="gameobjectcache">
     <wdbElement name="Entry" type="uinteger" key="yes" />
