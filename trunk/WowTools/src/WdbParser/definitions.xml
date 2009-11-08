@@ -40,7 +40,7 @@
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
-    <wdbElement name="Displayid" type="uinteger" />
+    <wdbElement name="DisplayId" type="uinteger" />
     <wdbElement name="Quality" type="uinteger" />
     <wdbElement name="Flags" type="uinteger" />
     <wdbElement name="Faction" type="uinteger" />
@@ -53,7 +53,7 @@
     <wdbElement name="RequiredLevel" type="uinteger" />
     <wdbElement name="RequiredSkill" type="uinteger" />
     <wdbElement name="RequiredSkillRank" type="uinteger" />
-    <wdbElement name="Requiredspell" type="uinteger" />
+    <wdbElement name="RequiredSpell" type="uinteger" />
     <wdbElement name="RequiredHonorRank" type="uinteger" />
     <wdbElement name="RequiredCityRank" type="uinteger" />
     <wdbElement name="RequiredReputationFaction" type="uinteger" />
@@ -61,7 +61,7 @@
     <wdbElement name="MaxCount" type="uinteger" />
     <wdbElement name="Stackable" type="uinteger" />
     <wdbElement name="ContainerSlots" type="uinteger" />
-    <wdbElement name="NumberofStats" type="struct" maxcount="10">
+    <wdbElement name="NumberOfStats" type="struct" maxcount="10">
       <structElement name="ItemModType" type="uinteger" />
       <structElement name="ItemModValue" type="integer" />
     </wdbElement>
@@ -74,58 +74,58 @@
     <wdbElement name="DmgMax2" type="single" />
     <wdbElement name="DmgType2" type="uinteger" />
     <wdbElement name="Armor" type="uinteger" />
-    <wdbElement name="Holy_res" type="uinteger" />
-    <wdbElement name="Fire_res" type="uinteger" />
-    <wdbElement name="Nature_res" type="uinteger" />
-    <wdbElement name="Frost_res" type="uinteger" />
-    <wdbElement name="Shadow_res" type="uinteger" />
-    <wdbElement name="Arcane_res" type="uinteger" />
+    <wdbElement name="HolyRes" type="uinteger" />
+    <wdbElement name="FireRes" type="uinteger" />
+    <wdbElement name="NatureRes" type="uinteger" />
+    <wdbElement name="FrostRes" type="uinteger" />
+    <wdbElement name="ShadowRes" type="uinteger" />
+    <wdbElement name="ArcaneRes" type="uinteger" />
     <wdbElement name="Delay" type="uinteger" />
     <wdbElement name="AmmoType" type="uinteger" />
     <wdbElement name="RangedModRange" type="single" />
     <wdbElement name="SpellId_1" type="uinteger" />
-    <wdbElement name="Spelltrigger_1" type="uinteger" />
-    <wdbElement name="Spellcharges_1" type="integer" />
-    <wdbElement name="Spellcooldown_1" type="integer" />
-    <wdbElement name="Spellcategory_1" type="uinteger" />
-    <wdbElement name="Spellcategorycooldown_1" type="integer" />
+    <wdbElement name="SpellTrigger_1" type="uinteger" />
+    <wdbElement name="SpellCharges_1" type="integer" />
+    <wdbElement name="SpellCooldown_1" type="integer" />
+    <wdbElement name="SpellCategory_1" type="uinteger" />
+    <wdbElement name="SpellCategoryCooldown_1" type="integer" />
     <wdbElement name="SpellId_2" type="uinteger" />
-    <wdbElement name="Spelltrigger_2" type="uinteger" />
-    <wdbElement name="Spellcharges_2" type="integer" />
-    <wdbElement name="Spellcooldown_2" type="integer" />
-    <wdbElement name="Spellcategory_2" type="uinteger" />
-    <wdbElement name="Spellcategorycooldown_2" type="integer" />
+    <wdbElement name="SpellTrigger_2" type="uinteger" />
+    <wdbElement name="SpellCharges_2" type="integer" />
+    <wdbElement name="SpellCooldown_2" type="integer" />
+    <wdbElement name="SpellCategory_2" type="uinteger" />
+    <wdbElement name="SpellCategorycooldown_2" type="integer" />
     <wdbElement name="SpellId_3" type="uinteger" />
-    <wdbElement name="Spelltrigger_3" type="uinteger" />
-    <wdbElement name="Spellcharges_3" type="integer" />
-    <wdbElement name="Spellcooldown_3" type="integer" />
-    <wdbElement name="Spellcategory_3" type="uinteger" />
-    <wdbElement name="Spellcategorycooldown_3" type="integer" />
+    <wdbElement name="SpellTrigger_3" type="uinteger" />
+    <wdbElement name="SpellCharges_3" type="integer" />
+    <wdbElement name="SpellCooldown_3" type="integer" />
+    <wdbElement name="SpellCategory_3" type="uinteger" />
+    <wdbElement name="SpellCategoryCooldown_3" type="integer" />
     <wdbElement name="SpellId_4" type="uinteger" />
-    <wdbElement name="Spelltrigger_4" type="uinteger" />
-    <wdbElement name="Spellcharges_4" type="integer" />
-    <wdbElement name="Spellcooldown_4" type="integer" />
-    <wdbElement name="Spellcategory_4" type="uinteger" />
-    <wdbElement name="Spellcategorycooldown_4" type="integer" />
+    <wdbElement name="SpellTrigger_4" type="uinteger" />
+    <wdbElement name="SpellCharges_4" type="integer" />
+    <wdbElement name="SpellCooldown_4" type="integer" />
+    <wdbElement name="SpellCategory_4" type="uinteger" />
+    <wdbElement name="SpellCategoryCooldown_4" type="integer" />
     <wdbElement name="SpellId_5" type="uinteger" />
-    <wdbElement name="Spelltrigger_5" type="uinteger" />
-    <wdbElement name="Spellcharges_5" type="integer" />
-    <wdbElement name="Spellcooldown_5" type="integer" />
-    <wdbElement name="Spellcategory_5" type="uinteger" />
-    <wdbElement name="Spellcategorycooldown_5" type="integer" />
+    <wdbElement name="SpellTrigger_5" type="uinteger" />
+    <wdbElement name="SpellCharges_5" type="integer" />
+    <wdbElement name="SpellCooldown_5" type="integer" />
+    <wdbElement name="SpellCategory_5" type="uinteger" />
+    <wdbElement name="SpellCategoryCooldown_5" type="integer" />
     <wdbElement name="Bonding" type="uinteger" />
     <wdbElement name="Description" type="varChar" />
     <wdbElement name="PageText" type="uinteger" />
     <wdbElement name="LanguageID" type="uinteger" />
     <wdbElement name="PageMaterial" type="uinteger" />
     <wdbElement name="Startquest" type="uinteger" />
-    <wdbElement name="Lockid" type="uinteger" />
+    <wdbElement name="LockId" type="uinteger" />
     <wdbElement name="Material" type="integer" />
     <wdbElement name="Sheath" type="uinteger" />
     <wdbElement name="RandomProperty" type="uinteger" />
     <wdbElement name="RandomSuffix" type="uinteger" />
     <wdbElement name="Block" type="uinteger" /> 
-    <wdbElement name="Itemset" type="uinteger" />
+    <wdbElement name="ItemSet" type="uinteger" />
     <wdbElement name="MaxDurability" type="uinteger" />
     <wdbElement name="Area" type="uinteger" />
     <wdbElement name="Map" type="integer" />
