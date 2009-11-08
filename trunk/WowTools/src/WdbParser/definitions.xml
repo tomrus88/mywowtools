@@ -3,7 +3,7 @@
   <wdbId name="creaturecache">
     <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="name" type="varChar" />
+    <wdbElement name="Name" type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
@@ -31,16 +31,16 @@
     <wdbElement name="MovementId" type="uinteger" />
   </wdbId>
   <wdbId name="itemcache">
-    <wdbElement name="entry" type="uinteger" key="yes" />
+    <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="class" type="uinteger" />
-    <wdbElement name="subclass" type="uinteger" />
-    <wdbElement name="unk0" type="integer" />
-    <wdbElement name="name" type="varChar" />
+    <wdbElement name="Class" type="uinteger" />
+    <wdbElement name="SubClass" type="uinteger" />
+    <wdbElement name="Unk0" type="integer" />
+    <wdbElement name="Name" type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
-    <wdbElement name="displayid" type="uinteger" />
+    <wdbElement name="Displayid" type="uinteger" />
     <wdbElement name="Quality" type="uinteger" />
     <wdbElement name="Flags" type="uinteger" />
     <wdbElement name="Faction" type="uinteger" />
@@ -53,13 +53,13 @@
     <wdbElement name="RequiredLevel" type="uinteger" />
     <wdbElement name="RequiredSkill" type="uinteger" />
     <wdbElement name="RequiredSkillRank" type="uinteger" />
-    <wdbElement name="requiredspell" type="uinteger" />
-    <wdbElement name="requiredhonorrank" type="uinteger" />
+    <wdbElement name="Requiredspell" type="uinteger" />
+    <wdbElement name="RequiredHonorRank" type="uinteger" />
     <wdbElement name="RequiredCityRank" type="uinteger" />
     <wdbElement name="RequiredReputationFaction" type="uinteger" />
     <wdbElement name="RequiredReputationRank" type="uinteger" />
-    <wdbElement name="maxcount" type="uinteger" />
-    <wdbElement name="stackable" type="uinteger" />
+    <wdbElement name="MaxCount" type="uinteger" />
+    <wdbElement name="Stackable" type="uinteger" />
     <wdbElement name="ContainerSlots" type="uinteger" />
     <wdbElement name="NumberofStats" type="struct" maxcount="10">
       <structElement name="ItemModType" type="uinteger" />
@@ -73,14 +73,14 @@
     <wdbElement name="dmg_min2" type="single" />
     <wdbElement name="dmg_max2" type="single" />
     <wdbElement name="dmg_type2" type="uinteger" />
-    <wdbElement name="armor" type="uinteger" />
+    <wdbElement name="Armor" type="uinteger" />
     <wdbElement name="holy_res" type="uinteger" />
     <wdbElement name="fire_res" type="uinteger" />
     <wdbElement name="nature_res" type="uinteger" />
     <wdbElement name="frost_res" type="uinteger" />
     <wdbElement name="shadow_res" type="uinteger" />
     <wdbElement name="arcane_res" type="uinteger" />
-    <wdbElement name="delay" type="uinteger" />
+    <wdbElement name="Delay" type="uinteger" />
     <wdbElement name="AmmoType" type="uinteger" />
     <wdbElement name="RangedModRange" type="single" />
     <wdbElement name="spellid_1" type="uinteger" />
@@ -113,21 +113,21 @@
     <wdbElement name="spellcooldown_5" type="integer" />
     <wdbElement name="spellcategory_5" type="uinteger" />
     <wdbElement name="spellcategorycooldown_5" type="integer" />
-    <wdbElement name="bonding" type="uinteger" />
-    <wdbElement name="description" type="varChar" />
+    <wdbElement name="Bonding" type="uinteger" />
+    <wdbElement name="Description" type="varChar" />
     <wdbElement name="PageText" type="uinteger" />
     <wdbElement name="LanguageID" type="uinteger" />
     <wdbElement name="PageMaterial" type="uinteger" />
-    <wdbElement name="startquest" type="uinteger" />
-    <wdbElement name="lockid" type="uinteger" />
+    <wdbElement name="Startquest" type="uinteger" />
+    <wdbElement name="Lockid" type="uinteger" />
     <wdbElement name="Material" type="integer" />
-    <wdbElement name="sheath" type="uinteger" />
+    <wdbElement name="Sheath" type="uinteger" />
     <wdbElement name="RandomProperty" type="uinteger" />
     <wdbElement name="RandomSuffix" type="uinteger" />
-    <wdbElement name="block" type="uinteger" /> 
-    <wdbElement name="itemset" type="uinteger" />
+    <wdbElement name="Block" type="uinteger" /> 
+    <wdbElement name="Itemset" type="uinteger" />
     <wdbElement name="MaxDurability" type="uinteger" />
-    <wdbElement name="area" type="uinteger" />
+    <wdbElement name="Area" type="uinteger" />
     <wdbElement name="Map" type="integer" />
     <wdbElement name="BagFamily" type="integer" />
     <wdbElement name="TotemCategory" type="integer" />
@@ -146,7 +146,7 @@
     <wdbElement name="HolidayID" type="uinteger" />
   </wdbId>
   <wdbId name="questcache">
-    <wdbElement name="entry" type="uinteger" key="yes" />
+    <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
     <wdbElement type="uinteger" />
     <wdbElement name="Method" type="uinteger" />
@@ -336,16 +336,16 @@
     <wdbElement name="em7_5" type="uinteger" />
   </wdbId>
   <wdbId name="itemnamecache">
-    <wdbElement name="entry" type="uinteger" key="yes" />
+    <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="name" type="varChar" />
-    <wdbElement name="unk1" type="uinteger" />
+    <wdbElement name="Name" type="varChar" />
+    <wdbElement name="InventoryType" type="uinteger" />
   </wdbId>
   <wdbId name="pagetextcache">
-    <wdbElement name="entry" type="uinteger" key="yes" />
+    <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="text" type="varChar" />
-    <wdbElement name="next_page" type="uinteger" />
+    <wdbElement name="Text" type="varChar" />
+    <wdbElement name="NextPage" type="uinteger" />
   </wdbId>
   <wdbId name="itemtextcache">
     <wdbElement name="id" type="uinteger" key="yes" />
@@ -353,17 +353,17 @@
     <wdbElement name="text" type="varChar" />
   </wdbId>
   <wdbId name="gameobjectcache">
-    <wdbElement name="entry" type="uinteger" key="yes" />
+    <wdbElement name="Entry" type="uinteger" key="yes" />
     <wdbElement type="size" />
-    <wdbElement name="type" type="uinteger" />
-    <wdbElement name="displayId" type="uinteger" />
-    <wdbElement name="name" type="varChar" />
+    <wdbElement name="Type" type="uinteger" />
+    <wdbElement name="DisplayId" type="uinteger" />
+    <wdbElement name="Name" type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement type="varChar" />
     <wdbElement name="IconName" type="varChar" />
-    <wdbElement name="castBarCaption" type="varChar" />
-    <wdbElement name="wdb_Unk35" type="varChar" />
+    <wdbElement name="CastBarCaption" type="varChar" />
+    <wdbElement name="wdb_Unk1" type="varChar" />
     <wdbElement name="data0" type="uinteger" />
     <wdbElement name="data1" type="uinteger" />
     <wdbElement name="data2" type="uinteger" />
@@ -388,7 +388,7 @@
     <wdbElement name="data21" type="uinteger" />
     <wdbElement name="data22" type="uinteger" />
     <wdbElement name="data23" type="uinteger" />
-    <wdbElement name="size" type="single" />
+    <wdbElement name="Size" type="single" />
     <wdbElement name="QuestItem_1" type="uinteger" />
     <wdbElement name="QuestItem_2" type="uinteger" />
     <wdbElement name="QuestItem_3" type="uinteger" />
