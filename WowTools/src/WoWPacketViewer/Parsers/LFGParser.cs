@@ -24,7 +24,7 @@ namespace WoWPacketViewer.Parsers
         DAMAGE = 8
     };
 
-    [Parser(OpCodes.MSG_LOOKING_FOR_GROUP)]
+    //[Parser(OpCodes.MSG_LOOKING_FOR_GROUP)]
     internal class LookingForGroupParser : Parser
     {
         public LookingForGroupParser(Packet packet)

@@ -106,6 +106,16 @@
     <field type="int" name="id"/>
     <field type="string" name="name"/>
   </QuestSort>
+  <PowerDisplay>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="int" name="id"/>
+    <field type="int" name="category"/>
+    <field type="string" name="name"/>
+    <field type="string" name="description"/>
+    <field type="int" name="ref_icon"/>
+  </PowerDisplay>
   <SkillLine>
     <index>
       <primary>id</primary>
