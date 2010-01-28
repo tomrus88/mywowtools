@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWObjects
+namespace WowTools.Core
 {
     [Flags]
     public enum SplineFlags : uint

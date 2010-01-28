@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UpdateFields;
+using WowTools.Core;
 
 namespace WoWObjects
 {

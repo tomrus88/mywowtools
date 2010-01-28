@@ -7,12 +7,15 @@ namespace WoWPacketViewer.Parsers
     [Parser(OpCodes.SMSG_POWER_UPDATE)]
     internal class PowerUpdateParser : Parser
     {
-        private enum ManaType
+        private enum PowerType
         {
             Mana,
             Rage,
             Focus,
             Energy,
+            Happiness,
+            Rune,
+            RunicPower,
         }
 
         public PowerUpdateParser(Packet pkt)
@@ -25,7 +28,7 @@ namespace WoWPacketViewer.Parsers
             var gr = Packet.CreateReader();
 
             AppendFormatLine("GUID: 0x{0:X16}", gr.ReadPackedGuid());
-            AppendFormatLine("Type: {0}", (ManaType)gr.ReadByte());
+            AppendFormatLine("Type: {0}", (PowerType)gr.ReadByte());
             AppendFormatLine("Value: {0}", gr.ReadUInt32());
 
             CheckPacket(gr);

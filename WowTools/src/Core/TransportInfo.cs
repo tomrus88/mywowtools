@@ -1,7 +1,6 @@
 ﻿using System.IO;
-using WowTools.Core;
 
-namespace WoWObjects
+namespace WowTools.Core
 {
     public class TransportInfo
     {

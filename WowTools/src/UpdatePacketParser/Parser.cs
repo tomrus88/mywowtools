@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using UpdateFields;
 using WoWObjects;
 using WowTools.Core;
 
@@ -15,10 +14,10 @@ namespace UpdatePacketParser
 
         public Parser(IPacketReader reader)
         {
-            foreach (Packet packet in reader.ReadPackets())
+            foreach (var packet in reader.ReadPackets())
             {
-                BinaryReader gr = packet.CreateReader();
-                OpCodes code = packet.Code;
+                var gr = packet.CreateReader();
+                var code = packet.Code;
                 if (code == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                 {
                     code = OpCodes.SMSG_UPDATE_OBJECT;
@@ -33,6 +32,20 @@ namespace UpdatePacketParser
                 gr.Close();
             }
         }
+
+        //public Parser(BinaryReader reader, OpCodes opcode)
+        //{
+        //    if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
+        //    {
+        //        opcode = OpCodes.SMSG_UPDATE_OBJECT;
+        //        Decompress(ref reader);
+        //    }
+        //    if (opcode == OpCodes.SMSG_UPDATE_OBJECT)
+        //    {
+        //        ParseRest(reader);
+        //        CheckPacket(reader);
+        //    }
+        //}
 
         private WoWObject GetWoWObject(ulong guid)
         {
@@ -49,9 +62,9 @@ namespace UpdatePacketParser
 
         private void ParseRest(BinaryReader gr)
         {
-            uint objectsCount = gr.ReadUInt32();
+            var objectsCount = gr.ReadUInt32();
 
-            for (int i = 0; i < objectsCount; i++)
+            for (var i = 0; i < objectsCount; i++)
             {
                 var updateType = (UpdateTypes)gr.ReadByte();
                 switch (updateType)
@@ -83,58 +96,65 @@ namespace UpdatePacketParser
         {
             ulong guid = gr.ReadPackedGuid();
 
-            WoWObjectUpdate woWObjectUpdate = WoWObjectUpdate.Read(gr);
+            var woWObjectUpdate = WoWObjectUpdate.Read(gr);
 
-            WoWObject wowobj = GetWoWObject(guid);
+            var wowobj = GetWoWObject(guid);
             if (wowobj != null)
                 wowobj.AddUpdate(woWObjectUpdate);
+            else
+                MessageBox.Show("Boom!");
         }
 
         private static void ParseMovement(BinaryReader gr)
         {
-            ulong guid = gr.ReadPackedGuid();
+            var guid = gr.ReadPackedGuid();
 
-            MovementInfo.Read(gr);
+            var mInfo = MovementInfo.Read(gr);
+
+            // is it even used by blizzard?
         }
 
         private void ParseCreateObjects(BinaryReader gr)
         {
-            ulong guid = gr.ReadPackedGuid();
+            var guid = gr.ReadPackedGuid();
 
             var objectTypeId = (ObjectTypes)gr.ReadByte();
 
-            MovementInfo movement = MovementInfo.Read(gr);
+            var movement = MovementInfo.Read(gr);
 
             // values part
-            WoWObjectUpdate update = WoWObjectUpdate.Read(gr);
+            var update = WoWObjectUpdate.Read(gr);
 
-            WoWObject obj = GetWoWObject(guid);
+            var obj = GetWoWObject(guid);
             if (obj == null)
                 objects.Add(guid, new WoWObject(objectTypeId, movement, update.Data));
             else
-                obj.AddUpdate(update);
+            {
+                objects.Remove(guid);
+                objects.Add(guid, new WoWObject(objectTypeId, movement, update.Data));
+            }
         }
 
         private static void ParseOutOfRangeObjects(BinaryReader gr)
         {
-            uint count = gr.ReadUInt32();
+            var count = gr.ReadUInt32();
             var guids = new ulong[count];
-            for (uint i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
                 guids[i] = gr.ReadPackedGuid();
         }
 
         private static void ParseNearObjects(BinaryReader gr)
         {
-            uint count = gr.ReadUInt32();
+            var count = gr.ReadUInt32();
             var guids = new ulong[count];
-            for (uint i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
                 guids[i] = gr.ReadPackedGuid();
         }
 
         private static void Decompress(ref BinaryReader gr)
         {
-            int uncompressedLength = gr.ReadInt32();
-            byte[] input = gr.ReadBytes((int)(gr.BaseStream.Length - gr.BaseStream.Position));
+            var uncompressedLength = gr.ReadInt32();
+            var input = gr.ReadBytes((int)(gr.BaseStream.Length - gr.BaseStream.Position));
             gr.Close();
             var output = new byte[uncompressedLength];
             var inflater = new Inflater();
@@ -149,10 +169,10 @@ namespace UpdatePacketParser
 
             foreach (var pair in objects)
             {
-                ulong guid = pair.Key;
-                ObjectTypes type = pair.Value.TypeId;
+                var guid = pair.Key;
+                var type = pair.Value.TypeId;
 
-                string final = String.Format("{0:X16} {1}", guid, type);
+                var final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
@@ -168,7 +188,7 @@ namespace UpdatePacketParser
 
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
                 {
-                    uint highGUID = (pair.Value.GetGUIDHigh() >> 16);
+                    var highGUID = (pair.Value.GetGUIDHigh() >> 16);
                     if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE &&
                         (highGUID == 0xF130 || highGUID == 0xF530))
                         continue;
@@ -189,22 +209,22 @@ namespace UpdatePacketParser
                         continue;
                 }
 
-                ulong guid = pair.Key;
-                ObjectTypes type = pair.Value.TypeId;
+                var guid = pair.Key;
+                var type = pair.Value.TypeId;
 
-                string final = String.Format("{0:X16} {1}", guid, type);
+                var final = String.Format("{0:X16} {1}", guid, type);
                 listBox.Items.Add(final);
             }
         }
 
         public void PrintObjectInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = objects[guid];
-            ObjectTypes type = obj.TypeId;
+            var obj = objects[guid];
+            var type = obj.TypeId;
 
             foreach (var kvp in obj.Data)
             {
-                UpdateField uf = UpdateFieldsLoader.GetUpdateField(type, kvp.Key);
+                var uf = UpdateFieldsLoader.GetUpdateField(type, kvp.Key);
                 var value = GetValueBaseOnType(kvp.Value, uf.Type);
                 listView.Items.Add(new ListViewItem(new[] { uf.Name, value }));
             }
@@ -212,10 +232,15 @@ namespace UpdatePacketParser
 
         public void PrintObjectUpdatesInfo(ulong guid, ListView listView)
         {
-            WoWObject obj = objects[guid];
-            ObjectTypes type = obj.TypeId;
-            int c = 0;
-            foreach (WoWObjectUpdate update in obj.Updates)
+            var obj = objects[guid];
+
+            // make a temp copy of original values
+            var objData = new Dictionary<int, uint>();
+            foreach (var v in obj.Data)
+                objData[v.Key] = v.Value;
+
+            var c = 0;
+            foreach (var update in obj.Updates)
             {
                 c++;
                 var group = new ListViewGroup(String.Format("Update {0}:", c));
@@ -223,17 +248,25 @@ namespace UpdatePacketParser
 
                 foreach (var kvp in update.Data)
                 {
-                    UpdateField uf = UpdateFieldsLoader.GetUpdateField(type, kvp.Key);
-                    var value = GetValueBaseOnType(kvp.Value, uf.Type);
-                    listView.Items.Add(new ListViewItem(new[] { uf.Name, value }, group));
+                    var uf = UpdateFieldsLoader.GetUpdateField(obj.TypeId, kvp.Key);
+                    var oldValue = GetValueBaseOnType((uint)0, uf.Type); // default value 0
+
+                    if (objData.ContainsKey(kvp.Key))
+                    {
+                        oldValue = GetValueBaseOnType(objData[kvp.Key], uf.Type);
+                        objData[kvp.Key] = kvp.Value;
+                    }
+
+                    var newValue = GetValueBaseOnType(kvp.Value, uf.Type);
+                    listView.Items.Add(new ListViewItem(new[] { uf.Name, oldValue, newValue }, group));
                 }
             }
         }
 
         public void PrintObjectMovementInfo(ulong guid, RichTextBox richTextBox)
         {
-            WoWObject obj = objects[guid];
-            MovementInfo mInfo = obj.Movement;
+            var obj = objects[guid];
+            var mInfo = obj.Movement;
             var strings = new List<string>();
 
             strings.Add(String.Format("Update Flags: {0}", mInfo.UpdateFlags));
@@ -376,18 +409,18 @@ namespace UpdatePacketParser
             switch (type)
             {
                 case 1:
-                    return ((uint)value).ToString();
+                    return "uint: " + ((uint)value).ToString();
                 case 2:
-                    byte[] bytes = BitConverter.GetBytes((uint)value);
-                    ushort first = BitConverter.ToUInt16(bytes, 0);
-                    ushort second = BitConverter.ToUInt16(bytes, 2);
-                    return String.Format("{0} {1}", first, second);
+                    var bytes = BitConverter.GetBytes((uint)value);
+                    var first = BitConverter.ToUInt16(bytes, 0);
+                    var second = BitConverter.ToUInt16(bytes, 2);
+                    return "ushort: " + String.Format("{0} {1}", first, second);
                 case 3:
-                    return BitConverter.ToSingle(BitConverter.GetBytes((uint)value), 0).ToString();
+                    return "float: " + BitConverter.ToSingle(BitConverter.GetBytes((uint)value), 0).ToString();
                 case 4:
-                    return ((uint)value).ToString();
+                    return "ulong part: 0x" + ((uint)value).ToString("X8");
                 case 5:
-                    return ((uint)value).ToString("X8");
+                    return "bytes: 0x" + ((uint)value).ToString("X8");
                 default:
                     return "0";
             }
