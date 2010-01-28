@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace UpdateFields
+namespace WowTools.Core
 {
     #region UpdateTypes
     /// <summary>
@@ -89,6 +89,10 @@ namespace UpdateFields
         /// Unknown, added in 3.1
         /// </summary>
         UPDATEFLAG_GO_ROTATION = 0x200,
+        /// <summary>
+        /// Unknown, added in 3.1+
+        /// </summary>
+        UPDATEFLAG_UNK1 = 0x400,
     }
     #endregion
 

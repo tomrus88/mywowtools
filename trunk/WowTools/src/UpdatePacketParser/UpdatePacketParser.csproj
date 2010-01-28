@@ -69,8 +69,6 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="MovementFlags.cs" />
-    <Compile Include="MovementInfo.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketReader.cs" />
     <Compile Include="Parser.cs" />
@@ -279,11 +277,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SniffitztPacketReader.cs" />
-    <Compile Include="SplineFlags.cs" />
-    <Compile Include="SplineInfo.cs" />
     <Compile Include="SqLitePacketReader.cs" />
-    <Compile Include="TransportInfo.cs" />
-    <Compile Include="UpdateFields.cs" />
     <Compile Include="WowCorePacketReader.cs" />
     <Compile Include="WoWObject.cs" />
     <Compile Include="WoWObjectUpdate.cs" />

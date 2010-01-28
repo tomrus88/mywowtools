@@ -78,7 +78,7 @@
     <Compile Include="ParserAttribute.cs" />
     <Compile Include="ParserFactory.cs" />
     <Compile Include="Parsers\AuraUpdateParser.cs" />
-    <Compile Include="Parsers\CMSG_AUTH_SESSION.cs" />
+    <Compile Include="Parsers\AuthSession.cs" />
     <Compile Include="Parsers\EquipmentSetsParser.cs" />
     <Compile Include="Parsers\InitialSpellsParser.cs" />
     <Compile Include="Parsers\InspectParser.cs" />
@@ -93,6 +93,7 @@
     <Compile Include="Parsers\Spells\SpellStartParser.cs" />
     <Compile Include="Parsers\Spells\TargetFlags.cs" />
     <Compile Include="Parsers\UnknownPacketParser.cs" />
+    <Compile Include="Parsers\UpdatePacketParser.cs" />
     <Compile Include="Parsers\Warden\CheckInfo.cs" />
     <Compile Include="Parsers\Warden\CheckType.cs" />
     <Compile Include="Parsers\Warden\CmsgWardenData.cs" />

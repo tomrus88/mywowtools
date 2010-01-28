@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using UpdateFields;
+using WowTools.Core;
 
 namespace UpdatePacketParser
 {

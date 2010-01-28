@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UpdateFields;
 using System.Xml;
 using WowTools.Core;
 

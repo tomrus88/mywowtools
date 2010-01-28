@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using UpdateFields;
 using WowTools.Core;
 
 namespace UpdatePacketParser

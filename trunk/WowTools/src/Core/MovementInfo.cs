@@ -1,8 +1,6 @@
 ﻿using System.IO;
-using UpdateFields;
-using WowTools.Core;
 
-namespace WoWObjects
+namespace WowTools.Core
 {
     public class MovementInfo
     {
@@ -86,15 +84,6 @@ namespace WoWObjects
 
                 for (byte i = 0; i < movement.speeds.Length; ++i)
                     movement.speeds[i] = gr.ReadSingle();
-                //float walk_speed = gr.ReadSingle();
-                //float run_speed = gr.ReadSingle();
-                //float swim_back = gr.ReadSingle();
-                //float swin_speed = gr.ReadSingle();
-                //float walk_back = gr.ReadSingle();
-                //float fly_speed = gr.ReadSingle();
-                //float fly_back = gr.ReadSingle();
-                //float turn_speed = gr.ReadSingle();
-                //float unk_speed = gr.ReadSingle();
 
                 if ((movement.Flags & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
                 {
