@@ -406,21 +406,22 @@ namespace UpdatePacketParser
 
         private static string GetValueBaseOnType(Object value, uint type)
         {
+            var bytes = BitConverter.GetBytes((uint)value);
+
             switch (type)
             {
                 case 1:
-                    return "uint: " + ((uint)value).ToString();
+                    return String.Format("int: {0:D}", BitConverter.ToInt32(bytes, 0));
                 case 2:
-                    var bytes = BitConverter.GetBytes((uint)value);
-                    var first = BitConverter.ToUInt16(bytes, 0);
-                    var second = BitConverter.ToUInt16(bytes, 2);
-                    return "ushort: " + String.Format("{0} {1}", first, second);
+                    return String.Format("2 x ushort: {0} {1}", BitConverter.ToUInt16(bytes, 0), BitConverter.ToUInt16(bytes, 2));
                 case 3:
-                    return "float: " + BitConverter.ToSingle(BitConverter.GetBytes((uint)value), 0).ToString();
+                    return String.Format("float: {0}", BitConverter.ToSingle(bytes, 0));
                 case 4:
-                    return "ulong part: 0x" + ((uint)value).ToString("X8");
+                    return String.Format("ulong part: 0x{0:X8}", (uint)value);
                 case 5:
-                    return "bytes: 0x" + ((uint)value).ToString("X8");
+                    return String.Format("bytes: 0x{0:X8}", (uint)value);
+                case 6:
+                    return String.Format("ushort: {0}, byte {1}, byte {2}", BitConverter.ToUInt16(bytes, 0), bytes[2], bytes[3]);
                 default:
                     return "0";
             }

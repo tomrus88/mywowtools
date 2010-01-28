@@ -27,6 +27,7 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
+            richTextBox1.Clear();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -94,6 +95,7 @@ namespace UpdatePacketParser
             listBox1.Items.Clear();
             listView1.Items.Clear();
             listView2.Items.Clear();
+            richTextBox1.Clear();
             switch (Path.GetExtension(filename))
             {
                 case ".bin":
