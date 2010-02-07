@@ -31,8 +31,8 @@ namespace WowTools.Core
         public TransportInfo Transport { get; private set; }
         public uint TransportTime { get; private set; }
         public float UnkFloat0X100 { get; private set; }
-        public ushort Unknown1 { get; private set; }
-        public float Unknown2 { get; private set; }
+        public MovementFlags2 Flags2 { get; private set; }
+        public float SplineElevation { get; private set; }
         public UpdateFlags UpdateFlags { get; private set; }
         public uint VehicleId { get; private set; }
 
@@ -51,25 +51,25 @@ namespace WowTools.Core
             if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_LIVING) != 0)
             {
                 movement.Flags = (MovementFlags)gr.ReadUInt32();
-                movement.Unknown1 = gr.ReadUInt16();
+                movement.Flags2 = (MovementFlags2)gr.ReadUInt16();
                 movement.TimeStamp = gr.ReadUInt32();
 
                 movement.Position = gr.ReadCoords4();
 
-                if ((movement.Flags & MovementFlags.MOVEMENTFLAG_ONTRANSPORT) != 0)
+                if ((movement.Flags & MovementFlags.ONTRANSPORT) != 0)
                 {
                     movement.Transport = TransportInfo.Read(gr);
                 }
 
-                if (((movement.Flags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) != 0) ||
-                    ((movement.Unknown1 & 0x20) != 0))
+                if (((movement.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) != 0) ||
+                    ((movement.Flags2 & MovementFlags2.AlwaysAllowPitching) != 0))
                 {
                     movement.SwimPitch = gr.ReadSingle();
                 }
 
                 movement.FallTime = gr.ReadUInt32();
 
-                if ((movement.Flags & MovementFlags.MOVEMENTFLAG_JUMPING) != 0)
+                if ((movement.Flags & MovementFlags.FALLING) != 0)
                 {
                     movement.JumpUnk1 = gr.ReadSingle();
                     movement.JumpSinAngle = gr.ReadSingle();
@@ -77,15 +77,15 @@ namespace WowTools.Core
                     movement.JumpXySpeed = gr.ReadSingle();
                 }
 
-                if ((movement.Flags & MovementFlags.MOVEMENTFLAG_SPLINE) != 0)
+                if ((movement.Flags & MovementFlags.SPLINEELEVATION) != 0)
                 {
-                    movement.Unknown2 = gr.ReadSingle();
+                    movement.SplineElevation = gr.ReadSingle();
                 }
 
                 for (byte i = 0; i < movement.speeds.Length; ++i)
                     movement.speeds[i] = gr.ReadSingle();
 
-                if ((movement.Flags & MovementFlags.MOVEMENTFLAG_SPLINE2) != 0)
+                if ((movement.Flags & MovementFlags.SPLINEENABLED) != 0)
                 {
                     movement.Spline = SplineInfo.Read(gr);
                 }

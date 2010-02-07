@@ -28,41 +28,43 @@ namespace WoWPacketViewer.Parsers
             AppendFormatLine("Dest Position: {0}", gr.ReadCoords3());
             AppendFormatLine("Ticks Count: 0x{0:X8}", gr.ReadUInt32());
 
-            var movementType = gr.ReadByte(); // 0-4
+            var movementType = (SplineType)gr.ReadByte(); // 0-4
             AppendFormatLine("MovementType: 0x{0:X2}", movementType);
 
             switch (movementType)
             {
-                case 1:
+                case SplineType.Normal:
+                    break;
+                case SplineType.Stop:
                     // client sets following values to:
                     // movementFlags = 0x1000;
                     // moveTime = 0;
                     // splinesCount = 1;
                     break;
-                case 2:
+                case SplineType.FacingSpot:
                     AppendFormatLine("Target Position: {0}", gr.ReadCoords3());
                     break;
-                case 3:
+                case SplineType.FacingTarget:
                     AppendFormatLine("Target GUID: 0x{0:X16}", gr.ReadUInt64());
                     break;
-                case 4:
+                case SplineType.FacingAngle:
                     AppendFormatLine("Target Rotation: {0}", gr.ReadSingle());
                     break;
                 default:
                     break;
             }
 
-            if (movementType != 1)
+            if (movementType != SplineType.Stop)
             {
                 #region Block1
 
                 /// <summary>
                 /// block1
                 /// </summary>
-                var movementFlags = gr.ReadUInt32();
-                AppendFormatLine("Movement Flags: 0x{0:X8}", movementFlags);
+                var splineFlags = (SplineFlags)gr.ReadUInt32();
+                AppendFormatLine("Movement Flags: 0x{0:X8}", splineFlags);
 
-                if ((movementFlags & 0x200000) != 0)
+                if ((splineFlags & SplineFlags.UNK3) != 0)
                 {
                     var unk_0x200000 = gr.ReadByte();
                     var unk_0x200000_ms_time = gr.ReadUInt32();
@@ -73,7 +75,7 @@ namespace WoWPacketViewer.Parsers
                 var moveTime = gr.ReadUInt32();
                 AppendFormatLine("Movement Time: 0x{0:X8}", moveTime);
 
-                if ((movementFlags & 0x800) != 0)
+                if ((splineFlags & SplineFlags.TRAJECTORY) != 0)
                 {
                     var unk_float_0x800 = gr.ReadSingle();
                     var unk_int_0x800 = gr.ReadUInt32();
@@ -91,7 +93,7 @@ namespace WoWPacketViewer.Parsers
                 /// <summary>
                 /// block2
                 /// </summary>
-                if ((movementFlags & 0x42000) != 0)
+                if ((splineFlags & (SplineFlags.FLYING | SplineFlags.CATMULLROM)) != 0)
                 {
                     var startPos = gr.ReadCoords3();
                     AppendFormatLine("Splines Start Point: {0}", startPos);
