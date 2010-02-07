@@ -12,13 +12,13 @@ namespace WowTools.Core
         public uint CurrentTime { get; private set; }
         public uint FullTime { get; private set; }
         public uint Unknown1 { get; private set; }
-        public float UnknownFloat1 { get; private set; }
+        public float DurationMultiplier { get; private set; }
         public float UnknownFloat2 { get; private set; }
         public float UnknownFloat3 { get; private set; }
         public uint Unknown2 { get; private set; }
         public uint Count { get; private set; }
         private readonly List<Coords3> splines = new List<Coords3>();
-        public byte Unknown3 { get; private set; }
+        public SplineMode SplineMode { get; private set; }
         public Coords3 EndPoint { get; private set; }
 
         public List<Coords3> Splines
@@ -31,17 +31,17 @@ namespace WowTools.Core
             var spline = new SplineInfo();
             spline.Flags = (SplineFlags)gr.ReadUInt32();
 
-            if ((spline.Flags & SplineFlags.POINT) != 0)
+            if ((spline.Flags & SplineFlags.FINALPOINT) != SplineFlags.NONE)
             {
                 spline.Point = gr.ReadCoords3();
             }
 
-            if ((spline.Flags & SplineFlags.TARGET) != 0)
+            if ((spline.Flags & SplineFlags.FINALTARGET) != SplineFlags.NONE)
             {
                 spline.Guid = gr.ReadUInt64();
             }
 
-            if ((spline.Flags & SplineFlags.ORIENT) != 0)
+            if ((spline.Flags & SplineFlags.FINALORIENT) != SplineFlags.NONE)
             {
                 spline.Rotation = gr.ReadSingle();
             }
@@ -50,7 +50,7 @@ namespace WowTools.Core
             spline.FullTime = gr.ReadUInt32();
             spline.Unknown1 = gr.ReadUInt32();
 
-            spline.UnknownFloat1 = gr.ReadSingle();
+            spline.DurationMultiplier = gr.ReadSingle();
             spline.UnknownFloat2 = gr.ReadSingle();
             spline.UnknownFloat3 = gr.ReadSingle();
 
@@ -63,7 +63,7 @@ namespace WowTools.Core
                 spline.splines.Add(gr.ReadCoords3());
             }
 
-            spline.Unknown3 = gr.ReadByte(); // added in 3.0.8
+            spline.SplineMode = (SplineMode)gr.ReadByte();
 
             spline.EndPoint = gr.ReadCoords3();
             return spline;

@@ -44,6 +44,7 @@
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -55,7 +56,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -79,7 +79,7 @@
             this.listBox1.Location = new System.Drawing.Point(0, 0);
             this.listBox1.Margin = new System.Windows.Forms.Padding(0);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(243, 389);
+            this.listBox1.Size = new System.Drawing.Size(242, 389);
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -125,7 +125,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(830, 394);
-            this.splitContainer1.SplitterDistance = 243;
+            this.splitContainer1.SplitterDistance = 242;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -139,7 +139,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(586, 394);
+            this.tabControl1.Size = new System.Drawing.Size(587, 394);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -148,7 +148,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(426, 367);
+            this.tabPage1.Size = new System.Drawing.Size(579, 368);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Create";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -164,7 +164,7 @@
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Margin = new System.Windows.Forms.Padding(0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(420, 361);
+            this.listView1.Size = new System.Drawing.Size(573, 362);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -185,7 +185,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(578, 368);
+            this.tabPage2.Size = new System.Drawing.Size(579, 368);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Updates";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -202,7 +202,7 @@
             this.listView2.Location = new System.Drawing.Point(3, 3);
             this.listView2.Margin = new System.Windows.Forms.Padding(0);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(572, 362);
+            this.listView2.Size = new System.Drawing.Size(573, 362);
             this.listView2.TabIndex = 3;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -217,13 +217,18 @@
             this.columnHeader4.Text = "Old Value";
             this.columnHeader4.Width = 150;
             // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "New Value";
+            this.columnHeader5.Width = 150;
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.richTextBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(414, 367);
+            this.tabPage3.Size = new System.Drawing.Size(579, 368);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Movement Info";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -234,7 +239,7 @@
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(408, 361);
+            this.richTextBox1.Size = new System.Drawing.Size(573, 362);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -305,11 +310,6 @@
             this.copyToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
             this.copyToolStripMenuItem1.Text = "Copy";
             this.copyToolStripMenuItem1.Click += new System.EventHandler(this.copyToolStripMenuItem1_Click);
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "New Value";
-            this.columnHeader5.Width = 150;
             // 
             // FrmMain
             // 

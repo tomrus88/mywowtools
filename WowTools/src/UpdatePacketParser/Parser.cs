@@ -274,12 +274,12 @@ namespace UpdatePacketParser
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Movement Flags: {0}", mInfo.Flags));
-                strings.Add(String.Format("Unknown Flags: {0:X4}", mInfo.Unknown1));
+                strings.Add(String.Format("Unknown Flags: {0:X4}", mInfo.Flags2));
                 strings.Add(String.Format("Timestamp: {0:X8}", mInfo.TimeStamp));
 
                 strings.Add(String.Format("Position: {0}", mInfo.Position));
 
-                if ((mInfo.Flags & MovementFlags.MOVEMENTFLAG_ONTRANSPORT) != MovementFlags.MOVEMENTFLAG_NONE)
+                if ((mInfo.Flags & MovementFlags.ONTRANSPORT) != MovementFlags.NONE)
                 {
                     strings.Add(String.Format("Transport GUID: {0:X16}", mInfo.Transport.Guid));
                     strings.Add(String.Format("Transport POS: {0}", mInfo.Transport.Position));
@@ -287,15 +287,15 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Transport Seat: {0:X2}", mInfo.Transport.Seat));
                 }
 
-                if (((mInfo.Flags & (MovementFlags.MOVEMENTFLAG_SWIMMING | MovementFlags.MOVEMENTFLAG_UNK5)) !=
-                     MovementFlags.MOVEMENTFLAG_NONE) || ((mInfo.Unknown1 & 0x20) != 0))
+                if (((mInfo.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) !=
+                     MovementFlags.NONE) || ((mInfo.Flags2 & MovementFlags2.AlwaysAllowPitching) != 0))
                 {
                     strings.Add(String.Format("Swimming Pitch: {0}", mInfo.SwimPitch));
                 }
 
                 strings.Add(String.Format("Fall Time: {0:X8}", mInfo.FallTime));
 
-                if ((mInfo.Flags & MovementFlags.MOVEMENTFLAG_JUMPING) != MovementFlags.MOVEMENTFLAG_NONE)
+                if ((mInfo.Flags & MovementFlags.FALLING) != MovementFlags.NONE)
                 {
                     strings.Add(String.Format("Jumping Unk: {0}", mInfo.JumpUnk1));
                     strings.Add(String.Format("Jumping Sin: {0}", mInfo.JumpSinAngle));
@@ -303,29 +303,29 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Jumping Speed: {0}", mInfo.JumpXySpeed));
                 }
 
-                if ((mInfo.Flags & MovementFlags.MOVEMENTFLAG_SPLINE) != MovementFlags.MOVEMENTFLAG_NONE)
+                if ((mInfo.Flags & MovementFlags.SPLINEELEVATION) != MovementFlags.NONE)
                 {
-                    strings.Add(String.Format("Unknown (spline?): {0}", mInfo.Unknown2));
+                    strings.Add(String.Format("Spline elevation: {0}", mInfo.SplineElevation));
                 }
 
                 for (byte i = 0; i < mInfo.Speeds.Length; ++i)
                     strings.Add(String.Format("Speed{0}: {1}", i, mInfo.Speeds[i]));
 
-                if ((mInfo.Flags & MovementFlags.MOVEMENTFLAG_SPLINE2) != MovementFlags.MOVEMENTFLAG_NONE)
+                if ((mInfo.Flags & MovementFlags.SPLINEENABLED) != MovementFlags.NONE)
                 {
                     strings.Add(String.Format("Spline Flags: {0}", mInfo.Spline.Flags));
 
-                    if ((mInfo.Spline.Flags & SplineFlags.POINT) != SplineFlags.NONE)
+                    if ((mInfo.Spline.Flags & SplineFlags.FINALPOINT) != SplineFlags.NONE)
                     {
                         strings.Add(String.Format("Spline Point: {0}", mInfo.Spline.Point));
                     }
 
-                    if ((mInfo.Spline.Flags & SplineFlags.TARGET) != SplineFlags.NONE)
+                    if ((mInfo.Spline.Flags & SplineFlags.FINALTARGET) != SplineFlags.NONE)
                     {
                         strings.Add(String.Format("Spline GUID: {0:X16}", mInfo.Spline.Guid));
                     }
 
-                    if ((mInfo.Spline.Flags & SplineFlags.ORIENT) != SplineFlags.NONE)
+                    if ((mInfo.Spline.Flags & SplineFlags.FINALORIENT) != SplineFlags.NONE)
                     {
                         strings.Add(String.Format("Spline Orient: {0}", mInfo.Spline.Rotation));
                     }
@@ -334,7 +334,7 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Spline FullTime: {0:X8}", mInfo.Spline.FullTime));
                     strings.Add(String.Format("Spline Unk: {0:X8}", mInfo.Spline.Unknown1));
 
-                    strings.Add(String.Format("Spline float1: {0}", mInfo.Spline.UnknownFloat1));
+                    strings.Add(String.Format("Spline float1: {0}", mInfo.Spline.DurationMultiplier));
                     strings.Add(String.Format("Spline float2: {0}", mInfo.Spline.UnknownFloat2));
                     strings.Add(String.Format("Spline float3: {0}", mInfo.Spline.UnknownFloat3));
 
@@ -347,7 +347,7 @@ namespace UpdatePacketParser
                         strings.Add(String.Format("Splines_{0}: {1}", i, mInfo.Spline.Splines[(int)i]));
                     }
 
-                    strings.Add(String.Format("Spline byte3: {0:X2}", mInfo.Spline.Unknown3));
+                    strings.Add(String.Format("Spline byte3: {0:X2}", mInfo.Spline.SplineMode));
 
                     strings.Add(String.Format("Spline End Point: {0}", mInfo.Spline.EndPoint));
                 }
