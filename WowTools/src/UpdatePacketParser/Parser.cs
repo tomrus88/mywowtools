@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using ICSharpCode.SharpZipLib.Zip.Compression;
+using System.IO.Compression;
 using WoWObjects;
 using WowTools.Core;
 
@@ -154,12 +154,13 @@ namespace UpdatePacketParser
         private static void Decompress(ref BinaryReader gr)
         {
             var uncompressedLength = gr.ReadInt32();
+            gr.ReadBytes(2); // unk junk from RFC 1950
             var input = gr.ReadBytes((int)(gr.BaseStream.Length - gr.BaseStream.Position));
             gr.Close();
+            var dStream = new DeflateStream(new MemoryStream(input), CompressionMode.Decompress);
             var output = new byte[uncompressedLength];
-            var inflater = new Inflater();
-            inflater.SetInput(input, 0, input.Length);
-            inflater.Inflate(output, 0, output.Length);
+            dStream.Read(output, 0, output.Length);
+            dStream.Close();
             gr = new BinaryReader(new MemoryStream(output));
         }
 
@@ -274,7 +275,7 @@ namespace UpdatePacketParser
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Movement Flags: {0}", mInfo.Flags));
-                strings.Add(String.Format("Unknown Flags: {0:X4}", mInfo.Flags2));
+                strings.Add(String.Format("Unknown Flags: {0}", mInfo.Flags2));
                 strings.Add(String.Format("Timestamp: {0:X8}", mInfo.TimeStamp));
 
                 strings.Add(String.Format("Position: {0}", mInfo.Position));
@@ -347,7 +348,7 @@ namespace UpdatePacketParser
                         strings.Add(String.Format("Splines_{0}: {1}", i, mInfo.Spline.Splines[(int)i]));
                     }
 
-                    strings.Add(String.Format("Spline byte3: {0:X2}", mInfo.Spline.SplineMode));
+                    strings.Add(String.Format("Spline mode: {0}", mInfo.Spline.SplineMode));
 
                     strings.Add(String.Format("Spline End Point: {0}", mInfo.Spline.EndPoint));
                 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using ICSharpCode.SharpZipLib.Zip.Compression;
+using System.IO;
+using System.IO.Compression;
+
 
 namespace WoWPacketViewer
 {
@@ -54,9 +56,9 @@ namespace WoWPacketViewer
             var uncompressedLength = BitConverter.ToUInt32(data, 0);
             var output = new byte[uncompressedLength];
 
-            var item = new Inflater();
-            item.SetInput(data, 4, data.Length - 4);
-            item.Inflate(output, 0, output.Length);
+            var dStream = new DeflateStream(new MemoryStream(data, 6, data.Length - 6), CompressionMode.Decompress);
+            dStream.Read(output, 0, output.Length);
+            dStream.Close();
 
             return output;
         }
