@@ -23,13 +23,14 @@ namespace WoWPacketViewer.Parsers
                 AppendFormatLine("Seat Position: 0x{0:X2}", gr.ReadByte());
             }
 
-            AppendFormatLine("Monster unk byte: {0}", gr.ReadByte());
+            AppendFormatLine("Monster unk byte: {0}", gr.ReadByte()); // toggle MOVEFLAG2 & 0x40
 
-            AppendFormatLine("Dest Position: {0}", gr.ReadCoords3());
+            var dest = gr.ReadCoords3();
+            AppendFormatLine("Dest Position: {0}", dest);
             AppendFormatLine("Ticks Count: 0x{0:X8}", gr.ReadUInt32());
 
             var movementType = (SplineType)gr.ReadByte(); // 0-4
-            AppendFormatLine("MovementType: 0x{0:X2}", movementType);
+            AppendFormatLine("SplineType: {0}", movementType);
 
             switch (movementType)
             {
@@ -40,7 +41,8 @@ namespace WoWPacketViewer.Parsers
                     // movementFlags = 0x1000;
                     // moveTime = 0;
                     // splinesCount = 1;
-                    break;
+                    CheckPacket(gr);
+                    return GetParsedString();
                 case SplineType.FacingSpot:
                     AppendFormatLine("Target Position: {0}", gr.ReadCoords3());
                     break;
@@ -62,12 +64,12 @@ namespace WoWPacketViewer.Parsers
                 /// block1
                 /// </summary>
                 var splineFlags = (SplineFlags)gr.ReadUInt32();
-                AppendFormatLine("Movement Flags: 0x{0:X8}", splineFlags);
+                AppendFormatLine("Movement Flags: {0}", splineFlags);
 
                 if ((splineFlags & SplineFlags.UNK3) != 0)
                 {
-                    var unk_0x200000 = gr.ReadByte();
-                    var unk_0x200000_ms_time = gr.ReadUInt32();
+                    var unk_0x200000 = gr.ReadByte(); // anim type
+                    var unk_0x200000_ms_time = gr.ReadUInt32(); // time
 
                     AppendFormatLine("Flags 0x200000: byte 0x{0:X8} and int 0x{1:X8}", unk_0x200000, unk_0x200000_ms_time);
                 }
@@ -109,6 +111,12 @@ namespace WoWPacketViewer.Parsers
                 else
                 {
                     var startPos = gr.ReadCoords3();
+
+                    var temp = new Coords3();
+                    temp.X = (dest.X + startPos.X) * 0.5f;
+                    temp.Y = (dest.Y + startPos.Y) * 0.5f;
+                    temp.Z = (dest.Z + startPos.Z) * 0.5f;
+
                     AppendFormatLine("Current position: {0}", startPos);
 
                     if (splinesCount > 1)
@@ -118,27 +126,27 @@ namespace WoWPacketViewer.Parsers
                             var packedOffset = gr.ReadInt32();
                             AppendFormatLine("Packed Offset: 0x{0:X8}", packedOffset);
 
-                            #region UnpackOffset
+                            #region Unpack
 
                             var x = ((packedOffset & 0x7FF) << 21 >> 21) * 0.25f;
                             var y = ((((packedOffset >> 11) & 0x7FF) << 21) >> 21) * 0.25f;
                             var z = ((packedOffset >> 22 << 22) >> 22) * 0.25f;
-                            AppendFormatLine("Path Point {0}: {1}, {2}, {3}", i, startPos.X + x, startPos.Y + y, startPos.Z + z);
+                            AppendFormatLine("Path Point {0}: {1}, {2}, {3}", i, temp.X - x, temp.Y - y, temp.Z - z);
 
                             #endregion
 
-                            /*#region PackingTest
+                            #region Pack
 
                             var packed = 0;
-                            packed |= (int) (x/0.25f) & 0x7FF;
-                            packed |= ((int) (y/0.25f) & 0x7FF) << 11;
-                            packed |= ((int) (z/0.25f) & 0x3FF) << 22;
+                            packed |= (int)(x / 0.25f) & 0x7FF;
+                            packed |= ((int)(y / 0.25f) & 0x7FF) << 11;
+                            packed |= ((int)(z / 0.25f) & 0x3FF) << 22;
                             AppendFormatLine("Test packing 0x{0:X8}", packed);
 
-                            if(packedOffset != packed)
-                                MessageBox.Show("Not equal!");
+                            if (packedOffset != packed)
+                                AppendFormatLine("Not equal!");
 
-                            #endregion*/
+                            #endregion
                         }
                     }
                 }
