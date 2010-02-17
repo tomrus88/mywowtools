@@ -178,7 +178,8 @@ namespace WoWPacketViewer
             Packet packet = packets[SelectedIndex];
 
             textBox1.Text = Utility.HexLike(packet);
-            textBox2.Text = ParserFactory.CreateParser(packet).Parse();
+            var parser = ParserFactory.CreateParser(packet);
+            textBox2.Text = parser.Parse();
         }
 
         private void OpenMenu_Click(object sender, EventArgs e)
