@@ -25,8 +25,8 @@ namespace WoWPacketViewer.Parsers
 
             AppendFormatLine("Monster unk byte: {0}", gr.ReadByte()); // toggle MOVEFLAG2 & 0x40
 
-            var dest = gr.ReadCoords3();
-            AppendFormatLine("Dest Position: {0}", dest);
+            var curr = gr.ReadCoords3();
+            AppendFormatLine("Current Position: {0}", curr);
             AppendFormatLine("Ticks Count: 0x{0:X8}", gr.ReadUInt32());
 
             var movementType = (SplineType)gr.ReadByte(); // 0-4
@@ -64,18 +64,18 @@ namespace WoWPacketViewer.Parsers
                 /// block1
                 /// </summary>
                 var splineFlags = (SplineFlags)gr.ReadUInt32();
-                AppendFormatLine("Movement Flags: {0}", splineFlags);
+                AppendFormatLine("Spline Flags: {0}", splineFlags);
 
                 if ((splineFlags & SplineFlags.UNK3) != 0)
                 {
                     var unk_0x200000 = gr.ReadByte(); // anim type
                     var unk_0x200000_ms_time = gr.ReadUInt32(); // time
 
-                    AppendFormatLine("Flags 0x200000: byte 0x{0:X8} and int 0x{1:X8}", unk_0x200000, unk_0x200000_ms_time);
+                    AppendFormatLine("Flags 0x200000: anim type 0x{0:X8} and time 0x{1:X8}", unk_0x200000, unk_0x200000_ms_time);
                 }
 
                 var moveTime = gr.ReadUInt32();
-                AppendFormatLine("Movement Time: 0x{0:X8}", moveTime);
+                AppendFormatLine("Spline Time: 0x{0:X8}", moveTime);
 
                 if ((splineFlags & SplineFlags.TRAJECTORY) != 0)
                 {
@@ -110,14 +110,14 @@ namespace WoWPacketViewer.Parsers
                 }
                 else
                 {
-                    var startPos = gr.ReadCoords3();
+                    var dest = gr.ReadCoords3();
 
                     var temp = new Coords3();
-                    temp.X = (dest.X + startPos.X) * 0.5f;
-                    temp.Y = (dest.Y + startPos.Y) * 0.5f;
-                    temp.Z = (dest.Z + startPos.Z) * 0.5f;
+                    temp.X = (curr.X + dest.X) * 0.5f;
+                    temp.Y = (curr.Y + dest.Y) * 0.5f;
+                    temp.Z = (curr.Z + dest.Z) * 0.5f;
 
-                    AppendFormatLine("Current position: {0}", startPos);
+                    AppendFormatLine("Dest position: {0}", dest);
 
                     if (splinesCount > 1)
                     {
@@ -138,7 +138,7 @@ namespace WoWPacketViewer.Parsers
                             #region Pack
 
                             var packed = 0;
-                            packed |= (int)(x / 0.25f) & 0x7FF;
+                            packed |= ((int)(x / 0.25f) & 0x7FF);
                             packed |= ((int)(y / 0.25f) & 0x7FF) << 11;
                             packed |= ((int)(z / 0.25f) & 0x3FF) << 22;
                             AppendFormatLine("Test packing 0x{0:X8}", packed);
