@@ -40,6 +40,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveWardenAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsParsedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,6 @@
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.saveWardenAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -87,7 +87,10 @@
             this._list.TabIndex = 0;
             this._list.UseCompatibleStateImageBehavior = false;
             this._list.View = System.Windows.Forms.View.Details;
+            this._list.SearchForVirtualItem += new System.Windows.Forms.SearchForVirtualItemEventHandler(this._list_SearchForVirtualItem);
             this._list.SelectedIndexChanged += new System.EventHandler(this.List_Select);
+            this._list.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this._list_RetrieveVirtualItem);
+            this._list.CacheVirtualItems += new System.Windows.Forms.CacheVirtualItemsEventHandler(this._list_CacheVirtualItems);
             // 
             // columnHeader1
             // 
@@ -173,7 +176,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenMenu_Click);
             // 
@@ -181,14 +184,21 @@
             // 
             this.saveAsTextToolStripMenuItem.Name = "saveAsTextToolStripMenuItem";
             this.saveAsTextToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveAsTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.saveAsTextToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.saveAsTextToolStripMenuItem.Text = "&Save As Text...";
             this.saveAsTextToolStripMenuItem.Click += new System.EventHandler(this.SaveMenu_Click);
+            // 
+            // saveWardenAsTextToolStripMenuItem
+            // 
+            this.saveWardenAsTextToolStripMenuItem.Name = "saveWardenAsTextToolStripMenuItem";
+            this.saveWardenAsTextToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.saveWardenAsTextToolStripMenuItem.Text = "Save Warden As Text...";
+            this.saveWardenAsTextToolStripMenuItem.Click += new System.EventHandler(this.saveWardenAsTextToolStripMenuItem_Click);
             // 
             // saveAsParsedTextToolStripMenuItem
             // 
             this.saveAsParsedTextToolStripMenuItem.Name = "saveAsParsedTextToolStripMenuItem";
-            this.saveAsParsedTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.saveAsParsedTextToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.saveAsParsedTextToolStripMenuItem.Text = "Save As Parsed Text...";
             this.saveAsParsedTextToolStripMenuItem.Click += new System.EventHandler(this.saveAsParsedTextToolStripMenuItem_Click);
             // 
@@ -196,7 +206,7 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitMenu_Click);
             // 
@@ -291,13 +301,6 @@
             this._backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
             this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             this._backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
-            // 
-            // saveWardenAsTextToolStripMenuItem
-            // 
-            this.saveWardenAsTextToolStripMenuItem.Name = "saveWardenAsTextToolStripMenuItem";
-            this.saveWardenAsTextToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.saveWardenAsTextToolStripMenuItem.Text = "Save Warden As Text...";
-            this.saveWardenAsTextToolStripMenuItem.Click += new System.EventHandler(this.saveWardenAsTextToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
