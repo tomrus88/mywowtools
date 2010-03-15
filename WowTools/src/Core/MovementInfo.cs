@@ -58,7 +58,7 @@ namespace WowTools.Core
 
                 if ((movement.Flags & MovementFlags.ONTRANSPORT) != 0)
                 {
-                    movement.Transport = TransportInfo.Read(gr);
+                    movement.Transport = TransportInfo.Read(gr, movement.Flags2);
                 }
 
                 if (((movement.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) != 0) ||
