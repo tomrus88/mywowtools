@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -21,7 +22,7 @@ namespace WoWPacketViewer.Parsers.Warden
 
             var wardenOpcode = gr.ReadByte();
             gr.BaseStream.Position = 0;
-            AppendFormatLine("S->C Warden Opcode: {0:X2}", wardenOpcode);
+            //AppendFormatLine("S->C Warden Opcode: {0:X2}", wardenOpcode);
 
             switch (wardenOpcode)
             {
@@ -85,8 +86,8 @@ namespace WoWPacketViewer.Parsers.Warden
 
         private void Parse_CHEAT_CHECKS(BinaryReader gr)
         {
-            AppendFormatLine("====== CHEAT CHECKS START ======");
-            AppendLine();
+            //AppendFormatLine("====== CHEAT CHECKS START ======");
+            //AppendLine();
 
             List<string> strings = new List<string>();
             strings.Add("");
@@ -143,11 +144,12 @@ namespace WoWPacketViewer.Parsers.Warden
                         Parse_DRIVER_CHECK(strings, reader, check, checkType);
                         break;
                     default:
+                        AppendFormatLine("Unknown CheckType {0}", checkType2);
                         break;
                 }
             }
-            AppendFormatLine("====== CHEAT CHECKS END ======");
-            AppendLine();
+            //AppendFormatLine("====== CHEAT CHECKS END ======");
+            //AppendLine();
         }
 
         private void Parse_DRIVER_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
@@ -155,35 +157,44 @@ namespace WoWPacketViewer.Parsers.Warden
             var seed = reader.ReadUInt32();
             var sha1 = reader.ReadBytes(20);
             var stringIndex = reader.ReadByte();
-            AppendFormatLine("====== DRIVER_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("Seed: 0x{0:X8}", seed);
-            AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-            AppendFormatLine("Driver: {0}", strings[stringIndex]);
-            AppendFormatLine("====== DRIVER_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== DRIVER_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("Seed: 0x{0:X8}", seed);
+            //AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+            //AppendFormatLine("Driver: {0}", strings[stringIndex]);
+            //AppendFormatLine("====== DRIVER_CHECK END ======");
+            //AppendLine();
+
+            AppendFormatLine("INSERT INTO warden_data_result (`check`,`data`,`address`,`length`,`str`,`result`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');", checkType, Utility.ByteArrayToHexString(BitConverter.GetBytes(seed)) + Utility.ByteArrayToHexString(sha1), "", "", strings[stringIndex], "");
+
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
 
         private void Parse_LUA_STR_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
         {
             var stringIndex = reader.ReadByte();
-            AppendFormatLine("====== LUA_STR_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("String: {0}", strings[stringIndex]);
-            AppendFormatLine("====== LUA_STR_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== LUA_STR_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("String: {0}", strings[stringIndex]);
+            //AppendFormatLine("====== LUA_STR_CHECK END ======");
+            //AppendLine();
+
+            AppendFormatLine("INSERT INTO warden_data_result (`check`,`data`,`address`,`length`,`str`,`result`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');", checkType, "", "", "", strings[stringIndex], "");
+
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
 
         private void Parse_MPQ_CHECK(IList<string> strings, BinaryReader reader, byte check, byte checkType)
         {
             var fileNameIndex = reader.ReadByte();
-            AppendFormatLine("====== MPQ_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("File: {0}", strings[fileNameIndex]);
-            AppendFormatLine("====== MPQ_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== MPQ_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("File: {0}", strings[fileNameIndex]);
+            //AppendFormatLine("====== MPQ_CHECK END ======");
+            //AppendLine();
+
+            AppendFormatLine("INSERT INTO warden_data_result (`check`,`data`,`address`,`length`,`str`,`result`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');", checkType, "", "", "", strings[fileNameIndex], "");
+
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
 
@@ -195,16 +206,16 @@ namespace WoWPacketViewer.Parsers.Warden
             var proc = reader.ReadByte();
             var addr = reader.ReadUInt32();
             var bytesToRead = reader.ReadByte();
-            AppendFormatLine("====== PROC_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("Seed: 0x{0:X8}", seed);
-            AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-            AppendFormatLine("Module: {0}", strings[module]);
-            AppendFormatLine("Proc: {0}", strings[proc]);
-            AppendFormatLine("Address: 0x{0:X8}", addr);
-            AppendFormatLine("Bytes to read: {0}", bytesToRead);
-            AppendFormatLine("====== PROC_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== PROC_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("Seed: 0x{0:X8}", seed);
+            //AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+            //AppendFormatLine("Module: {0}", strings[module]);
+            //AppendFormatLine("Proc: {0}", strings[proc]);
+            //AppendFormatLine("Address: 0x{0:X8}", addr);
+            //AppendFormatLine("Bytes to read: {0}", bytesToRead);
+            //AppendFormatLine("====== PROC_CHECK END ======");
+            //AppendLine();
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
 
@@ -214,14 +225,17 @@ namespace WoWPacketViewer.Parsers.Warden
             var sha1 = reader.ReadBytes(20);
             var addr = reader.ReadUInt32();
             var bytesToRead = reader.ReadByte();
-            AppendFormatLine("====== PAGE_CHECK_A_B START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("Seed: 0x{0:X8}", seed);
-            AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-            AppendFormatLine("Address: 0x{0:X8}", addr);
-            AppendFormatLine("Bytes to read: {0}", bytesToRead);
-            AppendFormatLine("====== PAGE_CHECK_A_B END ======");
-            AppendLine();
+            //AppendFormatLine("====== PAGE_CHECK_A_B START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("Seed: 0x{0:X8}", seed);
+            //AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
+            //AppendFormatLine("Address: 0x{0:X8}", addr);
+            //AppendFormatLine("Bytes to read: {0}", bytesToRead);
+            //AppendFormatLine("====== PAGE_CHECK_A_B END ======");
+            //AppendLine();
+
+            AppendFormatLine("INSERT INTO warden_data_result (`check`,`data`,`address`,`length`,`str`,`result`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');", checkType, Utility.ByteArrayToHexString(BitConverter.GetBytes(seed)) + Utility.ByteArrayToHexString(sha1), addr, bytesToRead, "", "");
+
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
 
@@ -230,22 +244,25 @@ namespace WoWPacketViewer.Parsers.Warden
             var strIndex = reader.ReadByte(); // string index
             var offset = reader.ReadUInt32(); // offset
             var readLen = reader.ReadByte();  // bytes to read
-            AppendFormatLine("====== MEM_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("Module: {0}", (strings[strIndex] == "") ? "base" : strings[strIndex]);
-            AppendFormatLine("Offset: 0x{0:X8}", offset);
-            AppendFormatLine("Bytes to read: {0}", readLen);
-            AppendFormatLine("====== MEM_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== MEM_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("Module: {0}", (strings[strIndex] == "") ? "base" : strings[strIndex]);
+            //AppendFormatLine("Offset: 0x{0:X8}", offset);
+            //AppendFormatLine("Bytes to read: {0}", readLen);
+            //AppendFormatLine("====== MEM_CHECK END ======");
+            //AppendLine();
+
+            AppendFormatLine("INSERT INTO warden_data_result (`check`,`data`,`address`,`length`,`str`,`result`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');", checkType, "", offset, readLen, strings[strIndex], "");
+
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], readLen));
         }
 
         private void Parse_TIMING_CHECK(byte check, byte checkType)
         {
-            AppendFormatLine("====== TIMING_CHECK START ======");
-            AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
-            AppendFormatLine("====== TIMING_CHECK END ======");
-            AppendLine();
+            //AppendFormatLine("====== TIMING_CHECK START ======");
+            //AppendFormatLine("CheckType {0:X2} ({1:X2})", checkType, check);
+            //AppendFormatLine("====== TIMING_CHECK END ======");
+            //AppendLine();
             WardenData.CheckInfos.Add(new CheckInfo(WardenData.CheckTypes[checkType], 0));
         }
     }
