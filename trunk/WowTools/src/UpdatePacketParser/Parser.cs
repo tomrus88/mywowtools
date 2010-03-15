@@ -291,17 +291,17 @@ namespace UpdatePacketParser
                 if (((mInfo.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) !=
                      MovementFlags.NONE) || ((mInfo.Flags2 & MovementFlags2.AlwaysAllowPitching) != 0))
                 {
-                    strings.Add(String.Format("Swimming Pitch: {0}", mInfo.SwimPitch));
+                    strings.Add(String.Format("Swimming Pitch: {0}", mInfo.Pitch));
                 }
 
                 strings.Add(String.Format("Fall Time: {0:X8}", mInfo.FallTime));
 
                 if ((mInfo.Flags & MovementFlags.FALLING) != MovementFlags.NONE)
                 {
-                    strings.Add(String.Format("Jumping Unk: {0}", mInfo.JumpUnk1));
-                    strings.Add(String.Format("Jumping Sin: {0}", mInfo.JumpSinAngle));
-                    strings.Add(String.Format("Jumping Cos: {0}", mInfo.JumpCosAngle));
-                    strings.Add(String.Format("Jumping Speed: {0}", mInfo.JumpXySpeed));
+                    strings.Add(String.Format("Jumping Unk: {0}", mInfo.FallVelocity));
+                    strings.Add(String.Format("Jumping Sin: {0}", mInfo.FallCosAngle));
+                    strings.Add(String.Format("Jumping Cos: {0}", mInfo.FallSinAngle));
+                    strings.Add(String.Format("Jumping Speed: {0}", mInfo.FallSpeed));
                 }
 
                 if ((mInfo.Flags & MovementFlags.SPLINEELEVATION) != MovementFlags.NONE)
@@ -309,8 +309,8 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Spline elevation: {0}", mInfo.SplineElevation));
                 }
 
-                for (byte i = 0; i < mInfo.Speeds.Length; ++i)
-                    strings.Add(String.Format("Speed{0}: {1}", i, mInfo.Speeds[i]));
+                for (byte i = 0; i < mInfo.speeds.Length; ++i)
+                    strings.Add(String.Format("Speed{0}: {1}", i, mInfo.speeds[i]));
 
                 if ((mInfo.Flags & MovementFlags.SPLINEENABLED) != MovementFlags.NONE)
                 {
@@ -357,10 +357,11 @@ namespace UpdatePacketParser
             {
                 if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_POSITION) != UpdateFlags.UPDATEFLAG_NONE)
                 {
-                    strings.Add(String.Format("GUID 0x100: {0:X16}", mInfo.Guid0X100));
-                    strings.Add(String.Format("Position 0x100: {0}", mInfo.Pos0X100));
-                    strings.Add(String.Format("Position2 0x100: {0}", mInfo.Pos20X100));
-                    strings.Add(String.Format("Unkf 0x100: {0}", mInfo.UnkFloat0X100));
+                    strings.Add(String.Format("GUID 0x100: {0:X16}", mInfo.Transport.Guid));
+                    strings.Add(String.Format("Position 0x100: {0}", mInfo.Position));
+                    strings.Add(String.Format("TransportPosition 0x100: {0}", mInfo.Transport.Position));
+                    strings.Add(String.Format("Facing 0x100: {0}", mInfo.Facing));
+                    strings.Add(String.Format("Transport Facing 0x100: {0}", mInfo.Transport.Facing));
                 }
                 else
                 {
@@ -383,7 +384,7 @@ namespace UpdatePacketParser
 
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_TARGET_GUID) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("Target GUID: {0:X16}", mInfo.FullGuid));
+                strings.Add(String.Format("Target GUID: {0:X16}", mInfo.AttackingTarget));
             }
 
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_TRANSPORT) != UpdateFlags.UPDATEFLAG_NONE)
@@ -394,12 +395,12 @@ namespace UpdatePacketParser
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != UpdateFlags.UPDATEFLAG_NONE)
             {
                 strings.Add(String.Format("Vehicle Id: {0:X8}", mInfo.VehicleId));
-                strings.Add(String.Format("Facing Adjustement: {0}", mInfo.FacingAdjustement));
+                strings.Add(String.Format("Facing Adjustement: {0}", mInfo.VehicleAimAdjustement));
             }
 
             if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != UpdateFlags.UPDATEFLAG_NONE)
             {
-                strings.Add(String.Format("GO rotation: {0}", mInfo.Guid0X200.ToString("X16")));
+                strings.Add(String.Format("GO rotation: {0}", mInfo.GoRotationULong.ToString("X16")));
             }
 
             richTextBox.Lines = strings.ToArray();

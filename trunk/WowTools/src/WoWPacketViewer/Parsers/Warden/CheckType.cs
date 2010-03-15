@@ -10,6 +10,6 @@ namespace WoWPacketViewer.Parsers.Warden
         DRIVER_CHECK = 5,   // uint Seed + byte[20] SHA1 + byte strIndex (checks to ensure driver isn't loaded?)
         TIMING_CHECK = 6,   // empty (checks to ensure TickCount isn't detoured?)
         PROC_CHECK = 7,     // uint Seed + byte[20] SHA1 + byte strIndex1 + byte strIndex2 + uint Offset + byte Len (checks to ensure proc isn't detoured?)
-        MODULE_CHECK = 8    // uint Seed + byte[20] SHA1 (checks to ensure module loaded?)
+        MODULE_CHECK = 8    // uint Seed + byte[20] SHA1 (checks to ensure module isn't loaded)
     }
 }

@@ -124,7 +124,7 @@ namespace WoWPacketViewer.Parsers
                         for (var i = 0; i < splinesCount - 1; ++i)
                         {
                             var packedOffset = gr.ReadInt32();
-                            AppendFormatLine("Packed Offset: 0x{0:X8}", packedOffset);
+                            AppendFormatLine("Packed Vector: 0x{0:X8}", packedOffset);
 
                             #region Unpack
 
