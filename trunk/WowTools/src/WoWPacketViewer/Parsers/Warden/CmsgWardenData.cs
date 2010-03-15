@@ -17,7 +17,7 @@ namespace WoWPacketViewer.Parsers.Warden
             BinaryReader gr = Packet.CreateReader();
 
             byte wardenOpcode = gr.ReadByte();
-            AppendFormatLine("C->S Warden Opcode: {0:X2}", wardenOpcode);
+            //AppendFormatLine("C->S Warden Opcode: {0:X2}", wardenOpcode);
 
             switch (wardenOpcode)
             {
@@ -53,12 +53,12 @@ namespace WoWPacketViewer.Parsers.Warden
             var bufLen = gr.ReadUInt16();
             var checkSum = gr.ReadUInt32();
             var result = gr.ReadBytes(bufLen);
-            AppendFormatLine("Cheat check result:");
-            AppendFormatLine("Len: {0}", bufLen);
-            AppendFormatLine("Checksum: 0x{0:X8} {1}", checkSum, WardenData.ValidateCheckSum(checkSum, result));
+            //AppendFormatLine("Cheat check result:");
+            //AppendFormatLine("Len: {0}", bufLen);
+            //AppendFormatLine("Checksum: 0x{0:X8} {1}", checkSum, WardenData.ValidateCheckSum(checkSum, result));
             var reader = new BinaryReader(new MemoryStream(result), Encoding.ASCII);
-            AppendFormatLine("====== CHEAT CHECKS RESULTS START ======");
-            AppendLine();
+            //AppendFormatLine("====== CHEAT CHECKS RESULTS START ======");
+            //AppendLine();
             foreach (var check in WardenData.CheckInfos)
             {
                 switch (check.m_type)
@@ -89,7 +89,7 @@ namespace WoWPacketViewer.Parsers.Warden
                         break;
                 }
             }
-            AppendFormatLine("====== CHEAT CHECKS RESULTS END ======");
+            //AppendFormatLine("====== CHEAT CHECKS RESULTS END ======");
 
             WardenData.CheckInfos.Clear();
 
@@ -102,80 +102,90 @@ namespace WoWPacketViewer.Parsers.Warden
         private void Parse_PROC_CHECK_RESULT(BinaryReader reader)
         {
             var res = reader.ReadByte();
-            AppendFormatLine("====== PROC_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
-            AppendFormatLine("====== PROC_CHECK result END ======");
-            AppendLine();
+            //AppendFormatLine("====== PROC_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
+            //AppendFormatLine("====== PROC_CHECK result END ======");
+            //AppendLine();
         }
 
         private void Parse_TIMING_CHECK_RESULT(BinaryReader reader)
         {
             var res = reader.ReadByte();
             var unk = reader.ReadInt32();
-            AppendFormatLine("====== TIMING_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
-            AppendFormatLine("Ticks: 0x{0:X8}", unk);
-            AppendFormatLine("====== TIMING_CHECK result END ======");
-            AppendLine();
+            //AppendFormatLine("====== TIMING_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
+            //AppendFormatLine("Ticks: 0x{0:X8}", unk);
+            //AppendFormatLine("====== TIMING_CHECK result END ======");
+            //AppendLine();
         }
 
         private void Parse_DRIVER_CHECK_RESULT(BinaryReader reader)
         {
             var res = reader.ReadByte();
-            AppendFormatLine("====== DRIVER_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
-            AppendFormatLine("====== DRIVER_CHECK result END ======");
-            AppendLine();
+            //AppendFormatLine("====== DRIVER_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
+            //AppendFormatLine("====== DRIVER_CHECK result END ======");
+            //AppendLine();
         }
 
         private void Parse_LUA_STR_CHECK_RESULT(BinaryReader reader)
         {
             var unk = reader.ReadByte();
-            var len = reader.ReadByte();
-            AppendFormatLine("====== LUA_STR_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", unk);
-            AppendFormatLine("Len: {0}", len);
-            if (len > 0)
+
+            //AppendFormatLine("====== LUA_STR_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", unk);
+            if(unk == 0)
             {
-                var data = reader.ReadBytes(len);
-                AppendFormatLine("Data: 0x{0}", Utility.ByteArrayToHexString(data));
+                var len = reader.ReadByte();
+            //    AppendFormatLine("Len: {0}", len);
+                if (len > 0)
+                {
+                    var data = reader.ReadBytes(len);
+            //        AppendFormatLine("Data: 0x{0}", Utility.ByteArrayToHexString(data));
+                }
             }
-            AppendFormatLine("====== LUA_STR_CHECK result END ======");
-            AppendLine();
+
+            //AppendFormatLine("====== LUA_STR_CHECK result END ======");
+            //AppendLine();
         }
 
         private void Parse_MPQ_CHECK_RESULT(BinaryReader reader)
         {
             var res = reader.ReadByte();
-            var sha1 = reader.ReadBytes(20);
-            AppendFormatLine("====== MPQ_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
-            AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(sha1));
-            AppendFormatLine("====== MPQ_CHECK result END ======");
-            AppendLine();
+
+            //AppendFormatLine("====== MPQ_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
+            if(res == 0)
+            {
+                var sha1 = reader.ReadBytes(20);
+                AppendFormatLine("MPQ SHA1: {0}", Utility.ByteArrayToHexString(sha1));
+            }
+
+            //AppendFormatLine("====== MPQ_CHECK result END ======");
+            //AppendLine();
         }
 
         private void Parse_PAGE_CHECK_RESULT(BinaryReader reader)
         {
             var res = reader.ReadByte();
-            AppendFormatLine("====== PAGE_CHECK_A_B result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
-            AppendFormatLine("====== PAGE_CHECK_A_B result END ======");
-            AppendLine();
+            //AppendFormatLine("====== PAGE_CHECK_A_B result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
+            //AppendFormatLine("====== PAGE_CHECK_A_B result END ======");
+            //AppendLine();
         }
 
         private void Parse_MEM_CHECK_RESULT(BinaryReader reader, CheckInfo check)
         {
             var res = reader.ReadByte();
-            AppendFormatLine("====== MEM_CHECK result START ======");
-            AppendFormatLine("Result: 0x{0:X2}", res);
+            //AppendFormatLine("====== MEM_CHECK result START ======");
+            //AppendFormatLine("Result: 0x{0:X2}", res);
             if (res == 0)
             {
                 var bytes = reader.ReadBytes(check.m_length);
-                AppendFormatLine("Bytes: 0x{0}", Utility.ByteArrayToHexString(bytes));
+                AppendFormatLine("MEM Bytes: {0}", Utility.ByteArrayToHexString(bytes));
             }
-            AppendFormatLine("====== MEM_CHECK result END ======");
-            AppendLine();
+            //AppendFormatLine("====== MEM_CHECK result END ======");
+            //AppendLine();
         }
     }
 }
