@@ -320,7 +320,7 @@ namespace WoWPacketViewer
                 {
                     if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
                         continue;
-                    //stream.Write(Utility.HexLike(p));
+                    stream.Write(Utility.HexLike(p));
 
                     string parsed = ParserFactory.CreateParser(p).Parse();
                     if (String.IsNullOrEmpty(parsed))

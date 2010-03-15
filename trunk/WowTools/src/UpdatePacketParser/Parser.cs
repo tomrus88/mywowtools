@@ -8,7 +8,7 @@ using WowTools.Core;
 
 namespace UpdatePacketParser
 {
-    public class Parser
+    internal class Parser
     {
         private readonly Dictionary<ulong, WoWObject> objects = new Dictionary<ulong, WoWObject>();
 
@@ -33,19 +33,19 @@ namespace UpdatePacketParser
             }
         }
 
-        public Parser(BinaryReader reader, OpCodes opcode)
-        {
-            if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
-            {
-                opcode = OpCodes.SMSG_UPDATE_OBJECT;
-                Decompress(ref reader);
-            }
-            if (opcode == OpCodes.SMSG_UPDATE_OBJECT)
-            {
-                ParseRest(reader);
-                CheckPacket(reader);
-            }
-        }
+        //public Parser(BinaryReader reader, OpCodes opcode)
+        //{
+        //    if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
+        //    {
+        //        opcode = OpCodes.SMSG_UPDATE_OBJECT;
+        //        Decompress(ref reader);
+        //    }
+        //    if (opcode == OpCodes.SMSG_UPDATE_OBJECT)
+        //    {
+        //        ParseRest(reader);
+        //        CheckPacket(reader);
+        //    }
+        //}
 
         private WoWObject GetWoWObject(ulong guid)
         {
