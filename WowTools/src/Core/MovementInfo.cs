@@ -43,6 +43,12 @@ namespace WowTools.Core
 
         public ulong GoRotationULong { get; private set; }
 
+        public MovementInfo()
+        {
+            Transport = new TransportInfo();
+            Spline = new SplineInfo();
+        }
+
         public static MovementInfo Read(BinaryReader gr)
         {
             var movement = new MovementInfo();
