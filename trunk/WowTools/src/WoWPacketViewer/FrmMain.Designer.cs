@@ -47,12 +47,10 @@
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this._statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this._progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -230,8 +228,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._statusLabel,
-            this._progressBar});
+            this._statusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 408);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(890, 22);
@@ -244,11 +241,6 @@
             this._statusLabel.Name = "_statusLabel";
             this._statusLabel.Size = new System.Drawing.Size(38, 17);
             this._statusLabel.Text = "Ready";
-            // 
-            // _progressBar
-            // 
-            this._progressBar.Name = "_progressBar";
-            this._progressBar.Size = new System.Drawing.Size(100, 16);
             // 
             // splitContainer1
             // 
@@ -293,14 +285,7 @@
             // 
             // _openDialog
             // 
-            this._openDialog.Filter = "WoWBinary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
-            // 
-            // _backgroundWorker
-            // 
-            this._backgroundWorker.WorkerReportsProgress = true;
-            this._backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
-            this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
-            this._backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this._openDialog.Filter = "WoW Binary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
             // FrmMain
             // 
@@ -349,13 +334,11 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog _openDialog;
         private System.Windows.Forms.ToolStripStatusLabel _statusLabel;
-        private System.Windows.Forms.ToolStripProgressBar _progressBar;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsTextToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog _saveDialog;
         public System.Windows.Forms.ListView _list;
-        private System.ComponentModel.BackgroundWorker _backgroundWorker;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem saveAsParsedTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveWardenAsTextToolStripMenuItem;

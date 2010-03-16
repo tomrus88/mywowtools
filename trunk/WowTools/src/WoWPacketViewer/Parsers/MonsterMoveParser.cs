@@ -20,7 +20,7 @@ namespace WoWPacketViewer.Parsers
             if (Packet.Code == OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)
             {
                 AppendFormatLine("Transport GUID: 0x{0:X16}", gr.ReadPackedGuid());
-                AppendFormatLine("Seat Position: 0x{0:X2}", gr.ReadByte());
+                AppendFormatLine("Transport Seat: 0x{0:X2}", gr.ReadByte());
             }
 
             AppendFormatLine("Monster unk byte: {0}", gr.ReadByte()); // toggle MOVEFLAG2 & 0x40
@@ -41,118 +41,116 @@ namespace WoWPacketViewer.Parsers
                     // movementFlags = 0x1000;
                     // moveTime = 0;
                     // splinesCount = 1;
+                    // and returns
                     CheckPacket(gr);
                     return GetParsedString();
                 case SplineType.FacingSpot:
-                    AppendFormatLine("Target Position: {0}", gr.ReadCoords3());
+                    AppendFormatLine("Facing Point: {0}", gr.ReadCoords3());
                     break;
                 case SplineType.FacingTarget:
-                    AppendFormatLine("Target GUID: 0x{0:X16}", gr.ReadUInt64());
+                    AppendFormatLine("Facing GUID: 0x{0:X16}", gr.ReadUInt64());
                     break;
                 case SplineType.FacingAngle:
-                    AppendFormatLine("Target Rotation: {0}", gr.ReadSingle());
+                    AppendFormatLine("Facing Angle: {0}", gr.ReadSingle());
                     break;
                 default:
                     break;
             }
 
-            if (movementType != SplineType.Stop)
+            #region Block1
+
+            /// <summary>
+            /// block1
+            /// </summary>
+            var splineFlags = (SplineFlags)gr.ReadUInt32();
+            AppendFormatLine("Spline Flags: {0}", splineFlags);
+
+            if ((splineFlags & SplineFlags.UNK3) != 0)
             {
-                #region Block1
+                var unk_0x200000 = gr.ReadByte(); // anim type
+                var unk_0x200000_ms_time = gr.ReadUInt32(); // time
 
-                /// <summary>
-                /// block1
-                /// </summary>
-                var splineFlags = (SplineFlags)gr.ReadUInt32();
-                AppendFormatLine("Spline Flags: {0}", splineFlags);
-
-                if ((splineFlags & SplineFlags.UNK3) != 0)
-                {
-                    var unk_0x200000 = gr.ReadByte(); // anim type
-                    var unk_0x200000_ms_time = gr.ReadUInt32(); // time
-
-                    AppendFormatLine("Flags 0x200000: anim type 0x{0:X8} and time 0x{1:X8}", unk_0x200000, unk_0x200000_ms_time);
-                }
-
-                var moveTime = gr.ReadUInt32();
-                AppendFormatLine("Spline Time: 0x{0:X8}", moveTime);
-
-                if ((splineFlags & SplineFlags.TRAJECTORY) != 0)
-                {
-                    var unk_float_0x800 = gr.ReadSingle();
-                    var unk_int_0x800 = gr.ReadUInt32();
-
-                    AppendFormatLine("Flags 0x800: float {0} and int 0x{1:X8}", unk_float_0x800, unk_int_0x800);
-                }
-
-                var splinesCount = gr.ReadUInt32();
-                AppendFormatLine("Splines Count: {0}", splinesCount);
-
-                #endregion
-
-                #region Block2
-
-                /// <summary>
-                /// block2
-                /// </summary>
-                if ((splineFlags & (SplineFlags.FLYING | SplineFlags.CATMULLROM)) != 0)
-                {
-                    var startPos = gr.ReadCoords3();
-                    AppendFormatLine("Splines Start Point: {0}", startPos);
-
-                    if (splinesCount > 1)
-                    {
-                        for (var i = 0; i < splinesCount - 1; ++i)
-                        {
-                            AppendFormatLine("Spline Point {0}: {1}", i, gr.ReadCoords3());
-                        }
-                    }
-                }
-                else
-                {
-                    var dest = gr.ReadCoords3();
-
-                    var temp = new Coords3();
-                    temp.X = (curr.X + dest.X) * 0.5f;
-                    temp.Y = (curr.Y + dest.Y) * 0.5f;
-                    temp.Z = (curr.Z + dest.Z) * 0.5f;
-
-                    AppendFormatLine("Dest position: {0}", dest);
-
-                    if (splinesCount > 1)
-                    {
-                        for (var i = 0; i < splinesCount - 1; ++i)
-                        {
-                            var packedOffset = gr.ReadInt32();
-                            AppendFormatLine("Packed Vector: 0x{0:X8}", packedOffset);
-
-                            #region Unpack
-
-                            var x = ((packedOffset & 0x7FF) << 21 >> 21) * 0.25f;
-                            var y = ((((packedOffset >> 11) & 0x7FF) << 21) >> 21) * 0.25f;
-                            var z = ((packedOffset >> 22 << 22) >> 22) * 0.25f;
-                            AppendFormatLine("Path Point {0}: {1}, {2}, {3}", i, temp.X - x, temp.Y - y, temp.Z - z);
-
-                            #endregion
-
-                            #region Pack
-
-                            var packed = 0;
-                            packed |= ((int)(x / 0.25f) & 0x7FF);
-                            packed |= ((int)(y / 0.25f) & 0x7FF) << 11;
-                            packed |= ((int)(z / 0.25f) & 0x3FF) << 22;
-                            AppendFormatLine("Test packing 0x{0:X8}", packed);
-
-                            if (packedOffset != packed)
-                                AppendFormatLine("Not equal!");
-
-                            #endregion
-                        }
-                    }
-                }
-
-                #endregion
+                AppendFormatLine("SplineFlags 0x200000: anim type 0x{0:X8} and time 0x{1:X8}", unk_0x200000, unk_0x200000_ms_time);
             }
+
+            var moveTime = gr.ReadUInt32();
+            AppendFormatLine("Spline Time: 0x{0:X8}", moveTime);
+
+            if ((splineFlags & SplineFlags.TRAJECTORY) != 0)
+            {
+                var unk_float_0x800 = gr.ReadSingle();
+                var unk_int_0x800 = gr.ReadUInt32();
+
+                AppendFormatLine("SplineFlags 0x800: float {0} and int 0x{1:X8}", unk_float_0x800, unk_int_0x800);
+            }
+
+            var splinesCount = gr.ReadUInt32();
+            AppendFormatLine("Splines Count: {0}", splinesCount);
+
+            #endregion
+
+            #region Block2
+
+            /// <summary>
+            /// block2
+            /// </summary>
+            if ((splineFlags & (SplineFlags.FLYING | SplineFlags.CATMULLROM)) != 0)
+            {
+                var startPos = gr.ReadCoords3();
+                AppendFormatLine("Splines Start Point: {0}", startPos);
+
+                if (splinesCount > 1)
+                {
+                    for (var i = 0; i < splinesCount - 1; ++i)
+                    {
+                        AppendFormatLine("Spline Point {0}: {1}", i, gr.ReadCoords3());
+                    }
+                }
+            }
+            else
+            {
+                var dest = gr.ReadCoords3();
+
+                var mid = new Coords3();
+                mid.X = (curr.X + dest.X) * 0.5f;
+                mid.Y = (curr.Y + dest.Y) * 0.5f;
+                mid.Z = (curr.Z + dest.Z) * 0.5f;
+
+                AppendFormatLine("Dest position: {0}", dest);
+
+                if (splinesCount > 1)
+                {
+                    for (var i = 0; i < splinesCount - 1; ++i)
+                    {
+                        var packedOffset = gr.ReadInt32();
+                        AppendFormatLine("Packed Vector: 0x{0:X8}", packedOffset);
+
+                        #region Unpack
+
+                        var x = ((packedOffset & 0x7FF) << 21 >> 21) * 0.25f;
+                        var y = ((((packedOffset >> 11) & 0x7FF) << 21) >> 21) * 0.25f;
+                        var z = ((packedOffset >> 22 << 22) >> 22) * 0.25f;
+                        AppendFormatLine("Path Point {0}: {1}, {2}, {3}", i, mid.X - x, mid.Y - y, mid.Z - z);
+
+                        #endregion
+
+                        #region Pack
+
+                        var packed = 0;
+                        packed |= ((int)(x / 0.25f) & 0x7FF);
+                        packed |= ((int)(y / 0.25f) & 0x7FF) << 11;
+                        packed |= ((int)(z / 0.25f) & 0x3FF) << 22;
+                        AppendFormatLine("Test packing 0x{0:X8}", packed);
+
+                        if (packedOffset != packed)
+                            AppendFormatLine("Not equal!");
+
+                        #endregion
+                    }
+                }
+            }
+
+            #endregion
 
             CheckPacket(gr);
 
