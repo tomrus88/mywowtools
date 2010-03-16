@@ -13,8 +13,7 @@ namespace WoWPacketViewer
         private IPacketReader packetViewer;
         private FrmSearch searchForm;
         private List<Packet> packets;
-        private ListViewItem[] myCache;                     // array to cache items for the virtual list
-        private int firstItem;                              // stores the index of the first item in the cache
+        private Dictionary<int, ListViewItem> _listCache = new Dictionary<int, ListViewItem>();
         private bool searchUp;
         private bool ignoreCase;
 
@@ -80,6 +79,7 @@ namespace WoWPacketViewer
             textBox1.Clear();
             textBox2.Clear();
             _list.Items.Clear();
+            _listCache.Clear();
 
             _statusLabel.Text = "Loading...";
             var file = _openDialog.FileName;
@@ -93,7 +93,7 @@ namespace WoWPacketViewer
             _list.VirtualMode = true;
             _list.VirtualListSize = packets.Count;
 
-            _backgroundWorker.RunWorkerAsync(packets.Count);
+            _statusLabel.Text = String.Format("Done. Client Build: {0}", packetViewer.Build);
         }
 
         private bool Loaded()
@@ -133,24 +133,6 @@ namespace WoWPacketViewer
 
             if (!searchForm.Visible)
                 searchForm.Show(this);
-        }
-
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage < 100)
-                _progressBar.Value = e.ProgressPercentage;
-            else
-                _progressBar.Visible = false;
-        }
-
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //FillListView(sender as BackgroundWorker);
-        }
-
-        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            _statusLabel.Text = String.Format("Done. Client Build: {0}", packetViewer.Build);
         }
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
@@ -224,33 +206,15 @@ namespace WoWPacketViewer
         private void _list_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             // check to see if the requested item is currently in the cache
-            if (myCache != null && e.ItemIndex >= firstItem && e.ItemIndex < firstItem + myCache.Length)
+            if (_listCache.ContainsKey(e.ItemIndex))
             {
                 // A cache hit, so get the ListViewItem from the cache instead of making a new one.
-                e.Item = myCache[e.ItemIndex - firstItem];
+                e.Item = _listCache[e.ItemIndex];
             }
             else
             {
                 // A cache miss, so create a new ListViewItem and pass it back.
-                var p = packets[e.ItemIndex];
-
-                e.Item = p.Direction == Direction.Client
-                    ? new ListViewItem(new[]
-                        {
-                            p.UnixTime.ToString("X8"), 
-                            p.TicksCount.ToString("X8"), 
-                            p.Code.ToString(),
-                            String.Empty,
-                            p.Data.Length.ToString()
-                        })
-                    : new ListViewItem(new[]
-                        {
-                            p.UnixTime.ToString("X8"), 
-                            p.TicksCount.ToString("X8"), 
-                            String.Empty,
-                            p.Code.ToString(), 
-                            p.Data.Length.ToString()
-                        });
+                e.Item = CreateListViewItemByIndex(e.ItemIndex);
             }
         }
 
@@ -290,7 +254,7 @@ namespace WoWPacketViewer
         {
             // We've gotten a request to refresh the cache.
             // First check if it's really necessary.
-            if (myCache != null && e.StartIndex >= firstItem && e.EndIndex <= firstItem + myCache.Length)
+            if (_listCache.ContainsKey(e.StartIndex) && _listCache.ContainsKey(e.EndIndex))
             {
                 // If the newly requested cache is a subset of the old cache, 
                 // no need to rebuild everything, so do nothing.
@@ -298,16 +262,25 @@ namespace WoWPacketViewer
             }
 
             // Now we need to rebuild the cache.
-            firstItem = e.StartIndex;
             int length = e.EndIndex - e.StartIndex + 1; // indexes are inclusive
-            myCache = new ListViewItem[length];
 
             // Fill the cache with the appropriate ListViewItems.
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; ++i)
             {
-                var p = packets[e.StartIndex + i];
+                // Skip already existing ListViewItemsItems
+                if (_listCache.ContainsKey(e.StartIndex + i))
+                    continue;
 
-                myCache[i] = p.Direction == Direction.Client
+                // Add new ListViewItemsItem to the cache
+                _listCache.Add(e.StartIndex + i, CreateListViewItemByIndex(e.StartIndex + i));
+            }
+        }
+
+        private ListViewItem CreateListViewItemByIndex(int index)
+        {
+            var p = packets[index];
+
+            return p.Direction == Direction.Client
                     ? new ListViewItem(new[]
                         {
                             p.UnixTime.ToString("X8"), 
@@ -324,7 +297,6 @@ namespace WoWPacketViewer
                             p.Code.ToString(), 
                             p.Data.Length.ToString()
                         });
-            }
         }
     }
 }
