@@ -33,20 +33,6 @@ namespace UpdatePacketParser
             }
         }
 
-        public Parser(BinaryReader reader, OpCodes opcode)
-        {
-            if (opcode == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
-            {
-                opcode = OpCodes.SMSG_UPDATE_OBJECT;
-                Decompress(ref reader);
-            }
-            if (opcode == OpCodes.SMSG_UPDATE_OBJECT)
-            {
-                ParseRest(reader);
-                CheckPacket(reader);
-            }
-        }
-
         private WoWObject GetWoWObject(ulong guid)
         {
             WoWObject obj;
@@ -184,28 +170,28 @@ namespace UpdatePacketParser
 
             foreach (var pair in objects)
             {
-                if ((pair.Value.GetType() & mask) != ObjectTypeMask.TYPEMASK_NONE)
+                if (pair.Value.GetType().HasFlag(mask))
                     continue;
 
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
                 {
                     var highGUID = (pair.Value.GetGUIDHigh() >> 16);
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_UNITS) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag( CustomFilterMask.CUSTOM_FILTER_UNITS) &&
                         (highGUID == 0xF130 || highGUID == 0xF530))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_PETS) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_PETS) &&
                         (highGUID == 0xF140 || highGUID == 0xF540))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_VEHICLES) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_VEHICLES) &&
                         (highGUID == 0xF150 || highGUID == 0xF550))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_OBJECTS) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_OBJECTS) &&
                         (highGUID == 0xF110 || highGUID == 0xF510))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_TRANSPORT) &&
                         (highGUID == 0xF120 || highGUID == 0xF520))
                         continue;
-                    if ((customMask & CustomFilterMask.CUSTOM_FILTER_MO_TRANSPORT) != CustomFilterMask.CUSTOM_FILTER_NONE &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_MO_TRANSPORT) &&
                         (highGUID == 0x1FC0))
                         continue;
                 }
@@ -272,7 +258,7 @@ namespace UpdatePacketParser
 
             strings.Add(String.Format("Update Flags: {0}", mInfo.UpdateFlags));
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_LIVING) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_LIVING))
             {
                 strings.Add(String.Format("Movement Flags: {0}", mInfo.Flags));
                 strings.Add(String.Format("Unknown Flags: {0}", mInfo.Flags2));
@@ -280,7 +266,7 @@ namespace UpdatePacketParser
 
                 strings.Add(String.Format("Position: {0}", mInfo.Position));
 
-                if ((mInfo.Flags & MovementFlags.ONTRANSPORT) != MovementFlags.NONE)
+                if (mInfo.Flags.HasFlag(MovementFlags.ONTRANSPORT))
                 {
                     strings.Add(String.Format("Transport GUID: {0:X16}", mInfo.Transport.Guid));
                     strings.Add(String.Format("Transport POS: {0}", mInfo.Transport.Position));
@@ -288,15 +274,15 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Transport Seat: {0:X2}", mInfo.Transport.Seat));
                 }
 
-                if (((mInfo.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) !=
-                     MovementFlags.NONE) || ((mInfo.Flags2 & MovementFlags2.AlwaysAllowPitching) != 0))
+                if (mInfo.Flags.HasFlag(MovementFlags.SWIMMING | MovementFlags.FLYING) || 
+                    mInfo.Flags2.HasFlag(MovementFlags2.AlwaysAllowPitching))
                 {
                     strings.Add(String.Format("Swimming Pitch: {0}", mInfo.Pitch));
                 }
 
                 strings.Add(String.Format("Fall Time: {0:X8}", mInfo.FallTime));
 
-                if ((mInfo.Flags & MovementFlags.FALLING) != MovementFlags.NONE)
+                if (mInfo.Flags.HasFlag(MovementFlags.FALLING))
                 {
                     strings.Add(String.Format("Jumping Unk: {0}", mInfo.FallVelocity));
                     strings.Add(String.Format("Jumping Sin: {0}", mInfo.FallCosAngle));
@@ -304,7 +290,7 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Jumping Speed: {0}", mInfo.FallSpeed));
                 }
 
-                if ((mInfo.Flags & MovementFlags.SPLINEELEVATION) != MovementFlags.NONE)
+                if (mInfo.Flags.HasFlag(MovementFlags.SPLINEELEVATION))
                 {
                     strings.Add(String.Format("Spline elevation: {0}", mInfo.SplineElevation));
                 }
@@ -312,21 +298,21 @@ namespace UpdatePacketParser
                 for (byte i = 0; i < mInfo.speeds.Length; ++i)
                     strings.Add(String.Format("Speed{0}: {1}", i, mInfo.speeds[i]));
 
-                if ((mInfo.Flags & MovementFlags.SPLINEENABLED) != MovementFlags.NONE)
+                if (mInfo.Flags.HasFlag(MovementFlags.SPLINEENABLED))
                 {
                     strings.Add(String.Format("Spline Flags: {0}", mInfo.Spline.Flags));
 
-                    if ((mInfo.Spline.Flags & SplineFlags.FINALPOINT) != SplineFlags.NONE)
+                    if (mInfo.Spline.Flags.HasFlag(SplineFlags.FINALPOINT))
                     {
                         strings.Add(String.Format("Spline Point: {0}", mInfo.Spline.Point));
                     }
 
-                    if ((mInfo.Spline.Flags & SplineFlags.FINALTARGET) != SplineFlags.NONE)
+                    if (mInfo.Spline.Flags.HasFlag(SplineFlags.FINALTARGET))
                     {
                         strings.Add(String.Format("Spline GUID: {0:X16}", mInfo.Spline.Guid));
                     }
 
-                    if ((mInfo.Spline.Flags & SplineFlags.FINALORIENT) != SplineFlags.NONE)
+                    if (mInfo.Spline.Flags.HasFlag(SplineFlags.FINALORIENT))
                     {
                         strings.Add(String.Format("Spline Orient: {0}", mInfo.Spline.Rotation));
                     }
@@ -355,7 +341,7 @@ namespace UpdatePacketParser
             }
             else
             {
-                if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_POSITION) != UpdateFlags.UPDATEFLAG_NONE)
+                if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_GO_POSITION))
                 {
                     strings.Add(String.Format("GUID 0x100: {0:X16}", mInfo.Transport.Guid));
                     strings.Add(String.Format("Position 0x100: {0}", mInfo.Position));
@@ -365,40 +351,40 @@ namespace UpdatePacketParser
                 }
                 else
                 {
-                    if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != UpdateFlags.UPDATEFLAG_NONE)
+                    if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_HAS_POSITION))
                     {
                         strings.Add(String.Format("Position: {0}", mInfo.Position));
                     }
                 }
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_LOWGUID) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_LOWGUID))
             {
                 strings.Add(String.Format("Low GUID: {0:X8}", mInfo.LowGuid));
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_HIGHGUID) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_HIGHGUID))
             {
                 strings.Add(String.Format("High GUID: {0:X8}", mInfo.HighGuid));
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_TARGET_GUID) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_TARGET_GUID))
             {
                 strings.Add(String.Format("Target GUID: {0:X16}", mInfo.AttackingTarget));
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_TRANSPORT) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_TRANSPORT))
             {
                 strings.Add(String.Format("Transport Time: {0:X8}", mInfo.TransportTime));
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_VEHICLE))
             {
                 strings.Add(String.Format("Vehicle Id: {0:X8}", mInfo.VehicleId));
                 strings.Add(String.Format("Facing Adjustement: {0}", mInfo.VehicleAimAdjustement));
             }
 
-            if ((mInfo.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != UpdateFlags.UPDATEFLAG_NONE)
+            if (mInfo.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_GO_ROTATION))
             {
                 strings.Add(String.Format("GO rotation: {0}", mInfo.GoRotationULong.ToString("X16")));
             }

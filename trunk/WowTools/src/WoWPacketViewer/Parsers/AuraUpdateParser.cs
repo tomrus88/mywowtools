@@ -49,12 +49,12 @@ namespace WoWPacketViewer.Parsers
 
                     AppendFormatLine("Charges: {0:X2}", gr.ReadByte());
 
-                    if (!((af & AuraFlags.NotOwner) != AuraFlags.None))
+                    if (af.HasFlag(AuraFlags.NotOwner) == false)
                     {
                         AppendFormatLine("GUID2: {0:X16}", gr.ReadPackedGuid());
                     }
 
-                    if ((af & AuraFlags.Duration) != AuraFlags.None)
+                    if (af.HasFlag(AuraFlags.Duration))
                     {
                         AppendFormatLine("Full duration: {0:X8}", gr.ReadUInt32());
 

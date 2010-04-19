@@ -24,12 +24,12 @@ namespace WoWPacketViewer.Parsers.Spells
 
             ReadTargets(gr);
 
-            if ((cf & CastFlags.CAST_FLAG_12) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_12))
             {
                 AppendFormatLine("PredictedPower: {0}", gr.ReadUInt32());
             }
 
-            if ((cf & CastFlags.CAST_FLAG_22) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_22))
             {
                 var v1 = gr.ReadByte();
                 AppendFormatLine("RuneState Before: {0}", (CooldownMask)v1);
@@ -42,7 +42,7 @@ namespace WoWPacketViewer.Parsers.Spells
 
                     if ((v3 & v1) != 0)
                     {
-                        if (!((v3 & v2) != 0))
+                        if ((v3 & v2) == 0)
                         {
                             var v4 = gr.ReadByte();
                             AppendFormatLine("Cooldown for {0} is {1}", (CooldownMask)v3, v4);
@@ -51,7 +51,7 @@ namespace WoWPacketViewer.Parsers.Spells
                 }
             }
 
-            if ((cf & CastFlags.CAST_FLAG_06) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_06))
             {
                 AppendFormatLine("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }

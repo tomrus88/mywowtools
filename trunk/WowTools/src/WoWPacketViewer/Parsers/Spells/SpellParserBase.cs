@@ -10,38 +10,38 @@ namespace WoWPacketViewer.Parsers.Spells
         {
         }
 
-        public TargetFlags ReadTargets(BinaryReader br)
+        protected TargetFlags ReadTargets(BinaryReader br)
         {
-            var tf = (TargetFlags)br.ReadUInt32();
+            var tf = (TargetFlags) br.ReadUInt32();
             AppendFormatLine("TargetFlags: {0}", tf);
 
-            if ((tf & (TargetFlags.TARGET_FLAG_UNIT |
-                       TargetFlags.TARGET_FLAG_PVP_CORPSE |
-                       TargetFlags.TARGET_FLAG_OBJECT |
-                       TargetFlags.TARGET_FLAG_CORPSE |
-                       TargetFlags.TARGET_FLAG_UNK2)) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_UNIT) ||
+                tf.HasFlag(TargetFlags.TARGET_FLAG_PVP_CORPSE) ||
+                tf.HasFlag(TargetFlags.TARGET_FLAG_OBJECT) ||
+                tf.HasFlag(TargetFlags.TARGET_FLAG_CORPSE) ||
+                tf.HasFlag(TargetFlags.TARGET_FLAG_UNK2))
             {
                 AppendFormatLine("ObjectTarget: 0x{0:X16}", br.ReadPackedGuid());
             }
 
-            if ((tf & (TargetFlags.TARGET_FLAG_ITEM |
-                       TargetFlags.TARGET_FLAG_TRADE_ITEM)) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_ITEM) ||
+                tf.HasFlag(TargetFlags.TARGET_FLAG_TRADE_ITEM))
             {
                 AppendFormatLine("ItemTarget: 0x{0:X16}", br.ReadPackedGuid());
             }
 
-            if ((tf & TargetFlags.TARGET_FLAG_SOURCE_LOCATION) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_SOURCE_LOCATION))
             {
                 AppendFormatLine("SrcTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
             }
 
-            if ((tf & TargetFlags.TARGET_FLAG_DEST_LOCATION) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_DEST_LOCATION))
             {
                 AppendFormatLine("DstTargetGuid: {0}", br.ReadPackedGuid().ToString("X16"));
                 AppendFormatLine("DstTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
             }
 
-            if ((tf & TargetFlags.TARGET_FLAG_STRING) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_STRING))
             {
                 AppendFormatLine("StringTarget: {0}", br.ReadCString());
             }
