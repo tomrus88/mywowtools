@@ -55,7 +55,7 @@ namespace WowTools.Core
 
             movement.UpdateFlags = (UpdateFlags)gr.ReadUInt16();
 
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_LIVING) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_LIVING))
             {
                 movement.Flags = (MovementFlags)gr.ReadUInt32();
                 movement.Flags2 = (MovementFlags2)gr.ReadUInt16();
@@ -64,20 +64,20 @@ namespace WowTools.Core
                 movement.Position = gr.ReadCoords3();
                 movement.Facing = gr.ReadSingle();
 
-                if ((movement.Flags & MovementFlags.ONTRANSPORT) != 0)
+                if (movement.Flags.HasFlag(MovementFlags.ONTRANSPORT))
                 {
                     movement.Transport = TransportInfo.Read(gr, movement.Flags2);
                 }
 
-                if (((movement.Flags & (MovementFlags.SWIMMING | MovementFlags.FLYING)) != 0) ||
-                    ((movement.Flags2 & MovementFlags2.AlwaysAllowPitching) != 0))
+                if (movement.Flags.HasFlag(MovementFlags.SWIMMING | MovementFlags.FLYING) ||
+                    movement.Flags2.HasFlag(MovementFlags2.AlwaysAllowPitching))
                 {
                     movement.Pitch = gr.ReadSingle();
                 }
 
                 movement.FallTime = gr.ReadUInt32();
 
-                if ((movement.Flags & MovementFlags.FALLING) != 0)
+                if (movement.Flags.HasFlag(MovementFlags.FALLING))
                 {
                     movement.FallVelocity = gr.ReadSingle();
                     movement.FallCosAngle = gr.ReadSingle();
@@ -85,7 +85,7 @@ namespace WowTools.Core
                     movement.FallSpeed = gr.ReadSingle();
                 }
 
-                if ((movement.Flags & MovementFlags.SPLINEELEVATION) != 0)
+                if (movement.Flags.HasFlag(MovementFlags.SPLINEELEVATION))
                 {
                     movement.SplineElevation = gr.ReadSingle();
                 }
@@ -93,14 +93,14 @@ namespace WowTools.Core
                 for (byte i = 0; i < movement.speeds.Length; ++i)
                     movement.speeds[i] = gr.ReadSingle();
 
-                if ((movement.Flags & MovementFlags.SPLINEENABLED) != 0)
+                if (movement.Flags.HasFlag(MovementFlags.SPLINEENABLED))
                 {
                     movement.Spline = SplineInfo.Read(gr);
                 }
             }
             else
             {
-                if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_POSITION) != 0)
+                if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_GO_POSITION))
                 {
                     movement.Transport.Guid = gr.ReadPackedGuid();
                     movement.Position = gr.ReadCoords3();
@@ -108,42 +108,42 @@ namespace WowTools.Core
                     movement.Facing = gr.ReadSingle();
                     movement.Transport.Facing = gr.ReadSingle();
                 }
-                else if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_HAS_POSITION) != 0)
+                else if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_HAS_POSITION))
                 {
                     movement.Position = gr.ReadCoords3();
                     movement.Facing = gr.ReadSingle();
                 }
             }
 
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_LOWGUID) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_LOWGUID))
             {
                 movement.LowGuid = gr.ReadUInt32();
             }
 
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_HIGHGUID) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_HIGHGUID))
             {
                 movement.HighGuid = gr.ReadUInt32();
             }
 
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_TARGET_GUID) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_TARGET_GUID))
             {
                 movement.AttackingTarget = gr.ReadPackedGuid();
             }
 
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_TRANSPORT) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_TRANSPORT))
             {
                 movement.TransportTime = gr.ReadUInt32();
             }
 
             // WotLK
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_VEHICLE) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_VEHICLE))
             {
                 movement.VehicleId = gr.ReadUInt32();
                 movement.VehicleAimAdjustement = gr.ReadSingle();
             }
 
             // 3.1
-            if ((movement.UpdateFlags & UpdateFlags.UPDATEFLAG_GO_ROTATION) != 0)
+            if (movement.UpdateFlags.HasFlag(UpdateFlags.UPDATEFLAG_GO_ROTATION))
             {
                 movement.GoRotationULong = gr.ReadUInt64();
             }

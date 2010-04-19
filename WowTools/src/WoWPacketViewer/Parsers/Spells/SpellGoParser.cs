@@ -27,12 +27,12 @@ namespace WoWPacketViewer.Parsers.Spells
 
             var tf = ReadTargets(gr);
 
-            if ((cf & CastFlags.CAST_FLAG_12) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_12))
             {
                 AppendFormatLine("PredictedPower: {0}", gr.ReadUInt32());
             }
 
-            if ((cf & CastFlags.CAST_FLAG_22) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_22))
             {
                 var v1 = gr.ReadByte();
                 AppendFormatLine("Cooldowns Before: {0}", (CooldownMask)v1);
@@ -45,7 +45,7 @@ namespace WoWPacketViewer.Parsers.Spells
 
                     if ((v3 & v1) != 0)
                     {
-                        if (!((v3 & v2) != 0))
+                        if ((v3 & v2) == 0)
                         {
                             var v4 = gr.ReadByte();
                             AppendFormatLine("Cooldown for {0} is {1}", (CooldownMask)v3, v4);
@@ -54,22 +54,22 @@ namespace WoWPacketViewer.Parsers.Spells
                 }
             }
 
-            if ((cf & CastFlags.CAST_FLAG_18) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_18))
             {
                 AppendFormatLine("0x20000: Unk float {0}, unk int {1}", gr.ReadSingle(), gr.ReadUInt32());
             }
 
-            if ((cf & CastFlags.CAST_FLAG_06) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_06))
             {
                 AppendFormatLine("Projectile displayid {0}, inventoryType {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }
 
-            if ((cf & CastFlags.CAST_FLAG_20) != CastFlags.CAST_FLAG_00)
+            if (cf.HasFlag(CastFlags.CAST_FLAG_20))
             {
                 AppendFormatLine("cast flags & 0x80000: Unk int {0}, uint int {1}", gr.ReadUInt32(), gr.ReadUInt32());
             }
 
-            if ((tf & TargetFlags.TARGET_FLAG_DEST_LOCATION) != TargetFlags.TARGET_FLAG_SELF)
+            if (tf.HasFlag(TargetFlags.TARGET_FLAG_DEST_LOCATION))
             {
                 AppendFormatLine("targetFlags & 0x40: byte {0}", gr.ReadByte());
             }

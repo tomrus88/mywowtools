@@ -19,7 +19,7 @@ namespace WowTools.Core
             tInfo.Facing = reader.ReadSingle();
             tInfo.Time = reader.ReadUInt32();
             tInfo.Seat = reader.ReadByte();
-            if ((flags2 & MovementFlags2.InterpolatedPlayerMovement) != MovementFlags2.None)
+            if (flags2.HasFlag(MovementFlags2.InterpolatedPlayerMovement))
                 tInfo.Time2 = reader.ReadUInt32();
             return tInfo;
         }

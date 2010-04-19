@@ -31,17 +31,17 @@ namespace WowTools.Core
             var spline = new SplineInfo();
             spline.Flags = (SplineFlags)gr.ReadUInt32();
 
-            if ((spline.Flags & SplineFlags.FINALPOINT) != SplineFlags.NONE)
+            if (spline.Flags.HasFlag(SplineFlags.FINALPOINT))
             {
                 spline.Point = gr.ReadCoords3();
             }
 
-            if ((spline.Flags & SplineFlags.FINALTARGET) != SplineFlags.NONE)
+            if (spline.Flags.HasFlag(SplineFlags.FINALTARGET))
             {
                 spline.Guid = gr.ReadUInt64();
             }
 
-            if ((spline.Flags & SplineFlags.FINALORIENT) != SplineFlags.NONE)
+            if (spline.Flags.HasFlag(SplineFlags.FINALORIENT))
             {
                 spline.Rotation = gr.ReadSingle();
             }

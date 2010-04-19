@@ -59,13 +59,11 @@ namespace WoWPacketViewer.Parsers
 
             #region Block1
 
-            /// <summary>
-            /// block1
-            /// </summary>
+            // block1
             var splineFlags = (SplineFlags)gr.ReadUInt32();
             AppendFormatLine("Spline Flags: {0}", splineFlags);
 
-            if ((splineFlags & SplineFlags.UNK3) != 0)
+            if (splineFlags.HasFlag(SplineFlags.UNK3))
             {
                 var unk_0x200000 = gr.ReadByte(); // anim type
                 var unk_0x200000_ms_time = gr.ReadUInt32(); // time
@@ -76,7 +74,7 @@ namespace WoWPacketViewer.Parsers
             var moveTime = gr.ReadUInt32();
             AppendFormatLine("Spline Time: 0x{0:X8}", moveTime);
 
-            if ((splineFlags & SplineFlags.TRAJECTORY) != 0)
+            if (splineFlags.HasFlag(SplineFlags.TRAJECTORY))
             {
                 var unk_float_0x800 = gr.ReadSingle();
                 var unk_int_0x800 = gr.ReadUInt32();
@@ -91,10 +89,8 @@ namespace WoWPacketViewer.Parsers
 
             #region Block2
 
-            /// <summary>
-            /// block2
-            /// </summary>
-            if ((splineFlags & (SplineFlags.FLYING | SplineFlags.CATMULLROM)) != 0)
+            // block2
+            if (splineFlags.HasFlag(SplineFlags.FLYING | SplineFlags.CATMULLROM))
             {
                 var startPos = gr.ReadCoords3();
                 AppendFormatLine("Splines Start Point: {0}", startPos);
