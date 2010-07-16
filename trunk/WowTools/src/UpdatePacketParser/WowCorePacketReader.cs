@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using WowTools.Core;
-using System;
 
 namespace UpdatePacketParser
 {
@@ -13,8 +13,8 @@ namespace UpdatePacketParser
         public WowCorePacketReader(string filename)
         {
             _reader = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.ASCII);
-            _reader.ReadBytes(3);                    // PKT
-            var version = _reader.ReadUInt16();      // sniff version (0x0201, 0x0202)
+            _reader.ReadBytes(3);                   // PKT
+            var version = _reader.ReadUInt16();     // sniff version (0x0201, 0x0202)
             ushort build;
             switch(version)
             {
