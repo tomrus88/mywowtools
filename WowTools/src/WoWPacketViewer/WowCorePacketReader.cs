@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,13 +14,25 @@ namespace WoWPacketViewer
         {
             using (var gr = new BinaryReader(new FileStream(file, FileMode.Open, FileAccess.Read), Encoding.ASCII))
             {
-                gr.ReadBytes(3); // PKT
-                gr.ReadBytes(2); // 0x02, 0x02
-                gr.ReadByte(); // 0x06
-                Build = gr.ReadUInt16(); // build
-                gr.ReadBytes(4); // client locale
-                gr.ReadBytes(20); // packet key
-                gr.ReadBytes(64); // realm name
+                gr.ReadBytes(3);                        // PKT
+                var version = gr.ReadUInt16();          // sniff version (0x0201, 0x0202)
+
+                switch (version)
+                {
+                    case 0x0201:
+                        Build = gr.ReadUInt16();        // build
+                        gr.ReadBytes(40);               // session key
+                        break;
+                    case 0x0202:
+                        gr.ReadByte();                  // 0x06
+                        Build = gr.ReadUInt16();        // build
+                        gr.ReadBytes(4);                // client locale
+                        gr.ReadBytes(20);               // packet key
+                        gr.ReadBytes(64);               // realm name
+                        break;
+                    default:
+                        throw new Exception(String.Format("Unknown sniff version {0:X2}", version));
+                }
 
                 var packets = new List<Packet>();
                 while (gr.PeekChar() >= 0)

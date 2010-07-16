@@ -142,6 +142,7 @@
     <field type="int" name="m_attributesExE"/>
     <field type="int" name="m_attributesExF"/>
     <field type="int" name="m_attributesExG"/>
+    <field type="int" name="m_attributesExH"/>
     <field type="int" name="m_shapeshiftMask"/>
     <field type="int" name="m_shapeshiftMask2"/>
     <field type="int" name="m_shapeshiftExclude"/>
@@ -163,7 +164,9 @@
     <field type="int" name="m_categoryRecoveryTime"/>
     <field type="int" name="m_interruptFlags"/>
     <field type="int" name="m_auraInterruptFlags"/>
+    <field type="int" name="m_auraInterruptFlags2"/>
     <field type="int" name="m_channelInterruptFlags"/>
+    <field type="int" name="m_channelInterruptFlags2"/>
     <field type="int" name="m_procTypeMask"/>
     <field type="int" name="m_procChance"/>
     <field type="int" name="m_procCharges"/>
@@ -175,7 +178,6 @@
     <field type="int" name="m_manaCost"/>
     <field type="int" name="m_manaCostPerLevel"/>
     <field type="int" name="m_manaPerSecond"/>
-    <field type="int" name="m_manaPerSecondPerLeve"/>
     <field type="int" name="m_rangeIndex"/>
     <field type="float" name="m_speed"/>
     <field type="int" name="m_modalNextSpell"/>
@@ -207,12 +209,6 @@
     <field type="int" name="m_effectDieSides_1"/>
     <field type="int" name="m_effectDieSides_2"/>
     <field type="int" name="m_effectDieSides_3"/>
-    <field type="int" name="m_effectBaseDice_1"/>
-    <field type="int" name="m_effectBaseDice_2"/>
-    <field type="int" name="m_effectBaseDice_3"/>
-    <field type="float" name="m_effectDicePerLevel_1"/>
-    <field type="float" name="m_effectDicePerLevel_2"/>
-    <field type="float" name="m_effectDicePerLevel_3"/>
     <field type="float" name="m_effectRealPointsPerLevel_1"/>
     <field type="float" name="m_effectRealPointsPerLevel_2"/>
     <field type="float" name="m_effectRealPointsPerLevel_3"/>
@@ -231,6 +227,9 @@
     <field type="int" name="m_effectRadiusIndex_1"/>
     <field type="int" name="m_effectRadiusIndex_2"/>
     <field type="int" name="m_effectRadiusIndex_3"/>
+    <field type="int" name="m_effectUnk_1"/>
+    <field type="int" name="m_effectUnk_2"/>
+    <field type="int" name="m_effectUnk_3"/>
     <field type="int" name="m_effectAura_1"/>
     <field type="int" name="m_effectAura_2"/>
     <field type="int" name="m_effectAura_3"/>
@@ -271,75 +270,10 @@
     <field type="uint" name="m_spellVisualID_2"/>
     <field type="int" name="m_spellIconID"/>
     <field type="int" name="m_activeIconID"/>
-    <field type="int" name="m_spellPriority"/>
     <field type="string" name="m_name_lang_1"/>
-    <field type="string" name="m_name_lang_2"/>
-    <field type="string" name="m_name_lang_3"/>
-    <field type="string" name="m_name_lang_4"/>
-    <field type="string" name="m_name_lang_5"/>
-    <field type="string" name="m_name_lang_6"/>
-    <field type="string" name="m_name_lang_7"/>
-    <field type="string" name="m_name_lang_8"/>
-    <field type="string" name="m_name_lang_9"/>
-    <field type="string" name="m_name_lang_10"/>
-    <field type="string" name="m_name_lang_11"/>
-    <field type="string" name="m_name_lang_12"/>
-    <field type="string" name="m_name_lang_13"/>
-    <field type="string" name="m_name_lang_14"/>
-    <field type="string" name="m_name_lang_15"/>
-    <field type="string" name="m_name_lang_16"/>
-    <field type="int" name="m_name_lang_flags"/>
     <field type="string" name="m_nameSubtext_lang_1"/>
-    <field type="string" name="m_nameSubtext_lang_2"/>
-    <field type="string" name="m_nameSubtext_lang_3"/>
-    <field type="string" name="m_nameSubtext_lang_4"/>
-    <field type="string" name="m_nameSubtext_lang_5"/>
-    <field type="string" name="m_nameSubtext_lang_6"/>
-    <field type="string" name="m_nameSubtext_lang_7"/>
-    <field type="string" name="m_nameSubtext_lang_8"/>
-    <field type="string" name="m_nameSubtext_lang_9"/>
-    <field type="string" name="m_nameSubtext_lang_10"/>
-    <field type="string" name="m_nameSubtext_lang_11"/>
-    <field type="string" name="m_nameSubtext_lang_12"/>
-    <field type="string" name="m_nameSubtext_lang_13"/>
-    <field type="string" name="m_nameSubtext_lang_14"/>
-    <field type="string" name="m_nameSubtext_lang_15"/>
-    <field type="string" name="m_nameSubtext_lang_16"/>
-    <field type="int" name="m_nameSubtext_lang_flags"/>
     <field type="string" name="m_description_lang_1"/>
-    <field type="string" name="m_description_lang_2"/>
-    <field type="string" name="m_description_lang_3"/>
-    <field type="string" name="m_description_lang_4"/>
-    <field type="string" name="m_description_lang_5"/>
-    <field type="string" name="m_description_lang_6"/>
-    <field type="string" name="m_description_lang_7"/>
-    <field type="string" name="m_description_lang_8"/>
-    <field type="string" name="m_description_lang_9"/>
-    <field type="string" name="m_description_lang_10"/>
-    <field type="string" name="m_description_lang_11"/>
-    <field type="string" name="m_description_lang_12"/>
-    <field type="string" name="m_description_lang_13"/>
-    <field type="string" name="m_description_lang_14"/>
-    <field type="string" name="m_description_lang_15"/>
-    <field type="string" name="m_description_lang_16"/>
-    <field type="int" name="m_description_lang_flags"/>
     <field type="string" name="m_auraDescription_lang_1"/>
-    <field type="string" name="m_auraDescription_lang_2"/>
-    <field type="string" name="m_auraDescription_lang_3"/>
-    <field type="string" name="m_auraDescription_lang_4"/>
-    <field type="string" name="m_auraDescription_lang_5"/>
-    <field type="string" name="m_auraDescription_lang_6"/>
-    <field type="string" name="m_auraDescription_lang_7"/>
-    <field type="string" name="m_auraDescription_lang_8"/>
-    <field type="string" name="m_auraDescription_lang_9"/>
-    <field type="string" name="m_auraDescription_lang_10"/>
-    <field type="string" name="m_auraDescription_lang_11"/>
-    <field type="string" name="m_auraDescription_lang_12"/>
-    <field type="string" name="m_auraDescription_lang_13"/>
-    <field type="string" name="m_auraDescription_lang_14"/>
-    <field type="string" name="m_auraDescription_lang_15"/>
-    <field type="string" name="m_auraDescription_lang_16"/>
-    <field type="int" name="m_auraDescription_lang_flags"/>
     <field type="int" name="m_manaCostPct"/>
     <field type="int" name="m_startRecoveryCategory"/>
     <field type="int" name="m_startRecoveryTime"/>
@@ -369,6 +303,11 @@
     <field type="float" name="m_unk1_2"/>
     <field type="float" name="m_unk1_3"/>
     <field type="int" name="m_spellDescriptionVariableID"/>
+    <field type="int" name="m_spellDifficultyID"/>
+    <field type="int" name="m_spellScalingID"/>
+    <field type="int" name="m_unk2_1"/>
+    <field type="int" name="m_unk2_2"/>
+    <field type="int" name="m_unk2_3"/>
   </Spell>
   <SpellAuraNames>
     <index>
