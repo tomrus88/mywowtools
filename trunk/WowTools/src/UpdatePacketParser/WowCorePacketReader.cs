@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using WowTools.Core;
+using System;
 
 namespace UpdatePacketParser
 {
@@ -13,12 +14,24 @@ namespace UpdatePacketParser
         {
             _reader = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             _reader.ReadBytes(3);                    // PKT
-            _reader.ReadBytes(2);                    // 0x02, 0x02
-            _reader.ReadByte();                      // 0x06
-            var build = _reader.ReadUInt16();     // build
-            _reader.ReadBytes(4);                    // client locale
-            _reader.ReadBytes(20);                   // packet key
-            _reader.ReadBytes(64);                   // realm name
+            var version = _reader.ReadUInt16();      // sniff version (0x0201, 0x0202)
+            ushort build;
+            switch(version)
+            {
+                case 0x0201:
+                    build = _reader.ReadUInt16();   // build
+                    _reader.ReadBytes(40);          // session key
+                    break;
+                case 0x0202:
+                    _reader.ReadByte();             // 0x06
+                    build = _reader.ReadUInt16();   // build
+                    _reader.ReadBytes(4);           // client locale
+                    _reader.ReadBytes(20);          // packet key
+                    _reader.ReadBytes(64);          // realm name
+                    break;
+                default:
+                    throw new Exception(String.Format("Unknown sniff version {0:X2}", version));
+            }
 
             UpdateFieldsLoader.LoadUpdateFields(build);
         }

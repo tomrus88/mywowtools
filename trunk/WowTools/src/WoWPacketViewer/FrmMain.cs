@@ -109,6 +109,8 @@ namespace WoWPacketViewer
                 return;
             }
 
+            _saveDialog.FileName = Path.GetFileName(_openDialog.FileName).Replace("bin", "txt");
+
             if (_saveDialog.ShowDialog() != DialogResult.OK)
                 return;
 

@@ -110,6 +110,11 @@ namespace UpdatePacketParser
                 default:
                     break;
             }
+            //UpdateFieldsLoader.LoadUpdateFields(12025);
+            //var br = new BinaryReader(new FileStream("upd400.bin", FileMode.Open));
+            //m_parser = new Parser(br, WowTools.Core.OpCodes.SMSG_UPDATE_OBJECT);
+            //br.Close();
+
             m_parser.PrintObjects(listBox1);
         }
 
