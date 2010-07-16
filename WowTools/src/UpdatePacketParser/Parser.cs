@@ -18,12 +18,12 @@ namespace UpdatePacketParser
             {
                 var gr = packet.CreateReader();
                 var code = packet.Code;
-                if (code == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT || code == (OpCodes)0x1242)
+                if (code == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                 {
                     code = OpCodes.SMSG_UPDATE_OBJECT;
                     Decompress(ref gr);
                 }
-                if (code == OpCodes.SMSG_UPDATE_OBJECT || code == (OpCodes)0x402C)
+                if (code == OpCodes.SMSG_UPDATE_OBJECT)
                 {
                     ParseRest(gr);
                     CheckPacket(gr);
