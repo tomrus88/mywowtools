@@ -90,7 +90,7 @@ namespace WoWPacketViewer.Parsers
             #region Block2
 
             // block2
-            if (splineFlags.HasFlag(SplineFlags.FLYING | SplineFlags.CATMULLROM))
+            if (splineFlags.HasFlag(SplineFlags.FLYING) || splineFlags.HasFlag(SplineFlags.CATMULLROM))
             {
                 var startPos = gr.ReadCoords3();
                 AppendFormatLine("Splines Start Point: {0}", startPos);

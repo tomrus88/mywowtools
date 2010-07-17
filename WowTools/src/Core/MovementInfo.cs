@@ -69,7 +69,7 @@ namespace WowTools.Core
                     movement.Transport = TransportInfo.Read(gr, movement.Flags2);
                 }
 
-                if (movement.Flags.HasFlag(MovementFlags.SWIMMING | MovementFlags.FLYING) ||
+                if (movement.Flags.HasFlag(MovementFlags.SWIMMING) || movement.Flags.HasFlag(MovementFlags.FLYING) ||
                     movement.Flags2.HasFlag(MovementFlags2.AlwaysAllowPitching))
                 {
                     movement.Pitch = gr.ReadSingle();
