@@ -176,7 +176,7 @@ namespace UpdatePacketParser
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
                 {
                     var highGUID = (pair.Value.GetGUIDHigh() >> 16);
-                    if (customMask.HasFlag( CustomFilterMask.CUSTOM_FILTER_UNITS) &&
+                    if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_UNITS) &&
                         (highGUID == 0xF130 || highGUID == 0xF530))
                         continue;
                     if (customMask.HasFlag(CustomFilterMask.CUSTOM_FILTER_PETS) &&
@@ -274,7 +274,7 @@ namespace UpdatePacketParser
                     strings.Add(String.Format("Transport Seat: {0:X2}", mInfo.Transport.Seat));
                 }
 
-                if (mInfo.Flags.HasFlag(MovementFlags.SWIMMING | MovementFlags.FLYING) || 
+                if (mInfo.Flags.HasFlag(MovementFlags.SWIMMING) || mInfo.Flags.HasFlag(MovementFlags.FLYING) ||
                     mInfo.Flags2.HasFlag(MovementFlags2.AlwaysAllowPitching))
                 {
                     strings.Add(String.Format("Swimming Pitch: {0}", mInfo.Pitch));
