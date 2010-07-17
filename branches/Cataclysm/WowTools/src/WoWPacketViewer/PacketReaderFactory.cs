@@ -4,9 +4,10 @@ namespace WoWPacketViewer
     {
         public static IPacketReader Create(string extension)
         {
-            switch (extension)
+            switch (extension.ToLowerInvariant())
             {
                 case ".bin":
+                case ".pkt":
                     return new WowCorePacketReader();
                 case ".sqlite":
                     return new SqLitePacketReader();

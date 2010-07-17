@@ -92,6 +92,7 @@ namespace WoWPacketViewer
 
             _list.VirtualMode = true;
             _list.VirtualListSize = packets.Count;
+            _list.EnsureVisible(0);
 
             _statusLabel.Text = String.Format("Done. Client Build: {0}", packetViewer.Build);
         }
