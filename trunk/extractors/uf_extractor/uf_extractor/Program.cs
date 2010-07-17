@@ -305,7 +305,7 @@ namespace uf_extractor
             // пишем в файл
             StreamWriter sw = new StreamWriter("UpdateFields.h");
             sw.WriteLine("/*");
-            sw.WriteLine(" * Copyright (C) 2005-2008 MaNGOS <http://www.mangosproject.org/>");
+            sw.WriteLine(" * Copyright (C) 2005-2010 MaNGOS <http://www.mangosproject.org/>");
             sw.WriteLine(" *");
             sw.WriteLine(" * This program is free software; you can redistribute it and/or modify");
             sw.WriteLine(" * it under the terms of the GNU General Public License as published by");
