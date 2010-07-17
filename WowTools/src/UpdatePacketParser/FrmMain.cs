@@ -96,9 +96,10 @@ namespace UpdatePacketParser
             listView1.Items.Clear();
             listView2.Items.Clear();
             richTextBox1.Clear();
-            switch (Path.GetExtension(filename))
+            switch (Path.GetExtension(filename).ToLowerInvariant())
             {
                 case ".bin":
+                case ".pkt":
                     m_parser = new Parser(new WowCorePacketReader(filename));
                     break;
                 case ".sqlite":
