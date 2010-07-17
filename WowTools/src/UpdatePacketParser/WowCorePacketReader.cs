@@ -16,7 +16,7 @@ namespace UpdatePacketParser
             _reader.ReadBytes(3);                   // PKT
             var version = _reader.ReadUInt16();     // sniff version (0x0201, 0x0202)
             ushort build;
-            switch(version)
+            switch (version)
             {
                 case 0x0201:
                     build = _reader.ReadUInt16();   // build
