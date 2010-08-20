@@ -158,7 +158,16 @@ namespace uf_extractor2
 
                 long oldpos = gr.BaseStream.Position;
                 gr.BaseStream.Position = val1 - FIELDS_NAMES_OFFSET;
-                cur = gr.ReadStringNull();
+
+                try
+                {
+                    cur = gr.ReadStringNull();
+                }
+                catch(EndOfStreamException exc)
+                {
+                    break;
+                }
+
                 gr.BaseStream.Position = oldpos;
 
                 string info = String.Format("Size: {0}, Type: {1}, Flags: {2}", val3, (UpdateFieldType)val4, (UpdatafieldFlags)val5);
@@ -166,8 +175,8 @@ namespace uf_extractor2
                 UpdateField uf = new UpdateField(cur, val2, val3, info);
                 list.Add(uf);
 
-                if (!old.Equals("CORPSE_FIELD_PAD") && cur.Equals("CORPSE_FIELD_PAD"))
-                    break;
+                //if (!old.Equals("CORPSE_FIELD_PAD") && cur.Equals("CORPSE_FIELD_PAD"))
+                //    break;
 
                 old = cur;
             } while (true);
