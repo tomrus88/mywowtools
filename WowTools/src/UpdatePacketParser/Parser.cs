@@ -170,7 +170,7 @@ namespace UpdatePacketParser
 
             foreach (var pair in objects)
             {
-                if (pair.Value.GetType().HasFlag(mask))
+                if ((pair.Value.GetType() & mask) != ObjectTypeMask.TYPEMASK_NONE)
                     continue;
 
                 if (customMask != CustomFilterMask.CUSTOM_FILTER_NONE)
