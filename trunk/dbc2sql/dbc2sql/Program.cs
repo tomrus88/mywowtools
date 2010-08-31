@@ -13,12 +13,12 @@ namespace dbc2sql
 {
     class Program
     {
-        static DBCReader m_reader;
+        static IWowClientDBReader m_reader;
         static XmlDocument m_definitions;
 
         static void Main(string[] args)
         {
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 Console.WriteLine("Please specify file name!");
                 return;
@@ -34,7 +34,10 @@ namespace dbc2sql
 
             LoadDefinitions();
 
-            m_reader = new DBCReader(fileName);
+            if (Path.GetExtension(fileName).ToLowerInvariant() == ".dbc")
+                m_reader = new DBCReader(fileName);
+            else
+                m_reader = new DB2Reader(fileName);
 
             Console.WriteLine("Records: {0}, Fields: {1}, String Table Size: {2}", m_reader.RecordsCount, m_reader.FieldsCount, m_reader.StringTableSize);
 
@@ -236,8 +239,9 @@ namespace dbc2sql
         }
     }
 
-    class DBCReader
+    class DBCReader : IWowClientDBReader
     {
+        private const uint HeaderSize = 20;
         private const uint DBCFmtSig = 0x43424457;          // WDBC
 
         private GenericReader m_stringsReader;
@@ -282,7 +286,7 @@ namespace dbc2sql
         {
             GenericReader m_reader = new GenericReader(fileName, Encoding.UTF8);
 
-            if (m_reader.BaseStream.Length < 4 * 5)
+            if (m_reader.BaseStream.Length < HeaderSize)
             {
                 Console.WriteLine("File {0} is corrupted!", fileName);
                 return;
@@ -305,7 +309,7 @@ namespace dbc2sql
             byte[] stringTable = m_reader.ReadBytes(stringTableSize);
             m_stringsReader = new GenericReader(new MemoryStream(stringTable), Encoding.UTF8);
 
-            m_reader.BaseStream.Position = 20;
+            m_reader.BaseStream.Position = HeaderSize; // end of the header
 
             m_rows = new byte[m_recordsCount][];
 
@@ -314,5 +318,105 @@ namespace dbc2sql
 
             m_reader.Close();
         }
+    }
+
+    class DB2Reader : IWowClientDBReader
+    {
+        private const uint HeaderSize = 48;
+        private const uint DB2FmtSig = 0x32424457;          // WDB2
+
+        private GenericReader m_stringsReader;
+
+        private int m_recordsCount;
+        private int m_fieldsCount;
+
+        private byte[][] m_rows;
+
+        public int RecordsCount
+        {
+            get { return m_recordsCount; }
+        }
+
+        public int FieldsCount
+        {
+            get { return m_fieldsCount; }
+        }
+
+        public int StringTableSize
+        {
+            get { return (int)m_stringsReader.BaseStream.Length; }
+        }
+
+        public byte[] GetRowAsByteArray(int row)
+        {
+            return m_rows[row];
+        }
+
+        public GenericReader GetRowAsGenericReader(int row)
+        {
+            return new GenericReader(new MemoryStream(m_rows[row]), Encoding.UTF8);
+        }
+
+        public string GetString(int offset)
+        {
+            m_stringsReader.BaseStream.Position = offset;
+            return m_stringsReader.ReadStringNull();
+        }
+
+        public DB2Reader(string fileName)
+        {
+            GenericReader m_reader = new GenericReader(fileName, Encoding.UTF8);
+
+            if (m_reader.BaseStream.Length < HeaderSize)
+            {
+                Console.WriteLine("File {0} is corrupted!", fileName);
+                return;
+            }
+
+            if (m_reader.ReadUInt32() != DB2FmtSig)
+            {
+                Console.WriteLine("File {0} isn't valid DBC file!", fileName);
+                return;
+            }
+
+            m_recordsCount = m_reader.ReadInt32();
+            m_fieldsCount = m_reader.ReadInt32();
+
+            int recordSize = m_reader.ReadInt32();
+            int stringTableSize = m_reader.ReadInt32();
+
+            uint dbHash = m_reader.ReadUInt32(); // new field in WDB2
+            uint build = m_reader.ReadUInt32(); // new field in WDB2
+
+            var unk1 = m_reader.ReadInt32(); // new field in WDB2
+            var unk2 = m_reader.ReadInt32(); // new field in WDB2
+            var unk3 = m_reader.ReadInt32(); // new field in WDB2
+            var unk4 = m_reader.ReadInt32(); // new field in WDB2
+            var unk5 = m_reader.ReadInt32(); // new field in WDB2
+
+            m_reader.BaseStream.Position = m_reader.BaseStream.Length - stringTableSize;
+
+            byte[] stringTable = m_reader.ReadBytes(stringTableSize);
+            m_stringsReader = new GenericReader(new MemoryStream(stringTable), Encoding.UTF8);
+
+            m_reader.BaseStream.Position = HeaderSize; // end of the header
+
+            m_rows = new byte[m_recordsCount][];
+
+            for (int i = 0; i < m_recordsCount; i++)
+                m_rows[i] = m_reader.ReadBytes(recordSize);
+
+            m_reader.Close();
+        }
+    }
+
+    interface IWowClientDBReader
+    {
+        int RecordsCount { get; }
+        int FieldsCount { get; }
+        int StringTableSize { get; }
+        byte[] GetRowAsByteArray(int row);
+        GenericReader GetRowAsGenericReader(int row);
+        string GetString(int offset);
     }
 }

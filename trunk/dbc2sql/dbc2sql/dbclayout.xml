@@ -35,6 +35,19 @@
     <field type="string" name="name"/>
     <field type="string" name="description"/>
   </Faction>
+  <Item>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="int" name="id"/>
+    <field type="int" name="field_1"/>
+    <field type="int" name="field_2"/>
+    <field type="int" name="field_3"/>
+    <field type="int" name="field_4"/>
+    <field type="int" name="field_5"/>
+    <field type="int" name="field_6"/>
+    <field type="int" name="field_7"/>
+  </Item>
   <ItemDisplayInfo>
     <index>
       <primary>id</primary>
@@ -113,8 +126,9 @@
     <field type="int" name="id"/>
     <field type="int" name="category"/>
     <field type="string" name="name"/>
-    <field type="string" name="description"/>
-    <field type="int" name="ref_icon"/>
+    <field type="byte" name="r"/>
+    <field type="byte" name="g"/>
+    <field type="byte" name="b"/>
   </PowerDisplay>
   <SkillLine>
     <index>
