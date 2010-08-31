@@ -68,7 +68,7 @@ namespace WoWPacketViewer
             var dir = (packet.Direction == Direction.Client) ? "C->S" : "S->C";
 
             var result = new StringBuilder();
-            result.AppendFormat("Packet {0}, {1} ({2}), len {3}", dir, packet.Code, (ushort)packet.Code, length);
+            result.AppendFormat("Packet {0}, {1} (0x{2:X4}), len {3}", dir, packet.Code, (ushort)packet.Code, length);
             result.AppendLine();
 
             if (length == 0)
