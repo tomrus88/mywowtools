@@ -40,13 +40,13 @@
       <primary>id</primary>
     </index>
     <field type="int" name="id"/>
-    <field type="int" name="field_1"/>
-    <field type="int" name="field_2"/>
-    <field type="int" name="field_3"/>
-    <field type="int" name="field_4"/>
-    <field type="int" name="field_5"/>
-    <field type="int" name="field_6"/>
-    <field type="int" name="field_7"/>
+    <field type="int" name="class"/>
+    <field type="int" name="subclass"/>
+    <field type="int" name="unk0"/>
+    <field type="int" name="material"/>
+    <field type="int" name="displayid"/>
+    <field type="int" name="inventorytype"/>
+    <field type="int" name="sheath"/>
   </Item>
   <ItemDisplayInfo>
     <index>
@@ -90,19 +90,19 @@
     <index>
       <primary>id</primary>
     </index>
-    <field type="int" name="field_001"/>
-    <field type="int" name="field_002"/>
-    <field type="int" name="field_003"/>
-    <field type="int" name="field_004"/>
-    <field type="int" name="field_005"/>
-    <field type="int" name="field_006"/>
-    <field type="int" name="field_007"/>
-    <field type="int" name="field_008"/>
-    <field type="int" name="field_009"/>
-    <field type="int" name="field_010"/>
-    <field type="int" name="field_011"/>
-    <field type="int" name="field_012"/>
-    <field type="int" name="field_013"/>
+    <field type="int" name="id"/>
+    <field type="int" name="quality"/>
+    <field type="uint" name="flags"/>
+    <field type="uint" name="flags2"/>
+    <field type="int" name="buyprice"/>
+    <field type="int" name="sellprice"/>
+    <field type="int" name="inventorytype"/>
+    <field type="int" name="allowableclass"/>
+    <field type="int" name="allowablerace"/>
+    <field type="int" name="itemlevel"/>
+    <field type="int" name="requiredlevel"/>
+    <field type="int" name="requiredskill"/>
+    <field type="int" name="requiredskillrank"/>
     <field type="int" name="field_014"/>
     <field type="int" name="field_015"/>
     <field type="int" name="field_016"/>
