@@ -56,7 +56,7 @@ namespace dbc2sql
             {
                 GenericReader reader = m_reader.GetRowAsGenericReader(i);
 
-                string result = "INSERT INTO dbc_" + Path.GetFileNameWithoutExtension(fileName) + " VALUES (";
+                string result = "INSERT INTO `dbc_" + Path.GetFileNameWithoutExtension(fileName) + "` VALUES (";
 
                 int flds = 0;
 
@@ -168,12 +168,12 @@ namespace dbc2sql
 
         static void WriteSqlStructure(StreamWriter sqlWriter, string fileName, XmlNodeList fields, XmlNodeList indexes)
         {
-            sqlWriter.WriteLine("DROP TABLE IF EXISTS dbc_{0};", Path.GetFileNameWithoutExtension(fileName));
-            sqlWriter.WriteLine("CREATE TABLE dbc_{0} (", Path.GetFileNameWithoutExtension(fileName));
+            sqlWriter.WriteLine("DROP TABLE IF EXISTS `dbc_{0}`;", Path.GetFileNameWithoutExtension(fileName));
+            sqlWriter.WriteLine("CREATE TABLE `dbc_{0}` (", Path.GetFileNameWithoutExtension(fileName));
 
             foreach (XmlElement field in fields)
             {
-                sqlWriter.Write("\t" + field.Attributes["name"].Value);
+                sqlWriter.Write("\t" + String.Format("`{0}`", field.Attributes["name"].Value));
 
                 switch (field.Attributes["type"].Value)
                 {
@@ -220,7 +220,7 @@ namespace dbc2sql
 
             foreach (XmlElement index in indexes)
             {
-                sqlWriter.WriteLine("\tPRIMARY KEY ({0})", index["primary"].InnerText);
+                sqlWriter.WriteLine("\tPRIMARY KEY (`{0}`)", index["primary"].InnerText);
             }
 
             sqlWriter.WriteLine(") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Export of {0}';", Path.GetFileName(fileName));
