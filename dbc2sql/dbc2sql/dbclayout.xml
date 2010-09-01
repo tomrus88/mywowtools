@@ -52,7 +52,7 @@
     <index>
       <primary>id</primary>
     </index>
-    <field type="int" index="primary" name="id"/>
+    <field type="int" name="id"/>
     <field type="string" name="icon"/>
   </ItemDisplayInfo>
   <ItemSet>
@@ -86,6 +86,142 @@
     <field type="int" name="pieces_7"/>
     <field type="int" name="pieces_8"/>
   </ItemSet>
+  <Item-sparse>
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="int" name="field_001"/>
+    <field type="int" name="field_002"/>
+    <field type="int" name="field_003"/>
+    <field type="int" name="field_004"/>
+    <field type="int" name="field_005"/>
+    <field type="int" name="field_006"/>
+    <field type="int" name="field_007"/>
+    <field type="int" name="field_008"/>
+    <field type="int" name="field_009"/>
+    <field type="int" name="field_010"/>
+    <field type="int" name="field_011"/>
+    <field type="int" name="field_012"/>
+    <field type="int" name="field_013"/>
+    <field type="int" name="field_014"/>
+    <field type="int" name="field_015"/>
+    <field type="int" name="field_016"/>
+    <field type="int" name="field_017"/>
+    <field type="int" name="field_018"/>
+    <field type="int" name="field_019"/>
+    <field type="int" name="field_020"/>
+    <field type="int" name="field_021"/>
+    <field type="int" name="field_022"/>
+    <field type="int" name="field_023"/>
+    <field type="int" name="field_024"/>
+    <field type="int" name="field_025"/>
+    <field type="int" name="field_026"/>
+    <field type="int" name="field_027"/>
+    <field type="int" name="field_028"/>
+    <field type="int" name="field_029"/>
+    <field type="int" name="field_030"/>
+    <field type="int" name="field_031"/>
+    <field type="int" name="field_032"/>
+    <field type="int" name="field_033"/>
+    <field type="int" name="field_034"/>
+    <field type="int" name="field_035"/>
+    <field type="int" name="field_036"/>
+    <field type="int" name="field_037"/>
+    <field type="int" name="field_038"/>
+    <field type="int" name="field_039"/>
+    <field type="int" name="field_040"/>
+    <field type="int" name="field_041"/>
+    <field type="int" name="field_042"/>
+    <field type="int" name="field_043"/>
+    <field type="int" name="field_044"/>
+    <field type="int" name="field_045"/>
+    <field type="int" name="field_046"/>
+    <field type="int" name="field_047"/>
+    <field type="int" name="field_048"/>
+    <field type="int" name="field_049"/>
+    <field type="int" name="field_050"/>
+    <field type="int" name="field_051"/>
+    <field type="int" name="field_052"/>
+    <field type="int" name="field_053"/>
+    <field type="int" name="field_054"/>
+    <field type="int" name="field_055"/>
+    <field type="int" name="field_056"/>
+    <field type="int" name="field_057"/>
+    <field type="int" name="field_058"/>
+    <field type="int" name="field_059"/>
+    <field type="int" name="field_060"/>
+    <field type="int" name="field_061"/>
+    <field type="int" name="field_062"/>
+    <field type="int" name="field_063"/>
+    <field type="int" name="field_064"/>
+    <field type="int" name="field_065"/>
+    <field type="int" name="field_066"/>
+    <field type="int" name="field_067"/>
+    <field type="int" name="field_068"/>
+    <field type="int" name="field_069"/>
+    <field type="int" name="field_070"/>
+    <field type="int" name="field_071"/>
+    <field type="int" name="field_072"/>
+    <field type="int" name="field_073"/>
+    <field type="int" name="field_074"/>
+    <field type="int" name="field_075"/>
+    <field type="int" name="field_076"/>
+    <field type="int" name="field_077"/>
+    <field type="int" name="field_078"/>
+    <field type="int" name="field_079"/>
+    <field type="int" name="field_080"/>
+    <field type="int" name="field_081"/>
+    <field type="int" name="field_082"/>
+    <field type="int" name="field_083"/>
+    <field type="int" name="field_084"/>
+    <field type="int" name="field_085"/>
+    <field type="int" name="field_086"/>
+    <field type="int" name="field_087"/>
+    <field type="int" name="field_088"/>
+    <field type="int" name="field_089"/>
+    <field type="int" name="field_090"/>
+    <field type="int" name="field_091"/>
+    <field type="int" name="field_092"/>
+    <field type="int" name="field_093"/>
+    <field type="int" name="field_094"/>
+    <field type="int" name="field_095"/>
+    <field type="int" name="field_096"/>
+    <field type="int" name="field_097"/>
+    <field type="int" name="field_098"/>
+    <field type="int" name="field_099"/>
+    <field type="int" name="field_100"/>
+    <field type="int" name="field_101"/>
+    <field type="int" name="field_102"/>
+    <field type="int" name="field_103"/>
+    <field type="int" name="field_104"/>
+    <field type="int" name="field_105"/>
+    <field type="int" name="field_106"/>
+    <field type="int" name="field_107"/>
+    <field type="int" name="field_108"/>
+    <field type="int" name="field_109"/>
+    <field type="int" name="field_110"/>
+    <field type="int" name="field_111"/>
+    <field type="int" name="field_112"/>
+    <field type="int" name="field_113"/>
+    <field type="int" name="field_114"/>
+    <field type="int" name="field_115"/>
+    <field type="int" name="field_116"/>
+    <field type="int" name="field_117"/>
+    <field type="int" name="field_118"/>
+    <field type="int" name="field_119"/>
+    <field type="int" name="field_120"/>
+    <field type="int" name="field_121"/>
+    <field type="int" name="field_122"/>
+    <field type="int" name="field_123"/>
+    <field type="int" name="field_124"/>
+    <field type="int" name="field_125"/>
+    <field type="int" name="field_126"/>
+    <field type="int" name="field_127"/>
+    <field type="int" name="field_128"/>
+    <field type="int" name="field_129"/>
+    <field type="int" name="field_130"/>
+    <field type="int" name="field_131"/>
+  </Item-sparse>
   <Languages>
     <index>
       <primary>id</primary>
