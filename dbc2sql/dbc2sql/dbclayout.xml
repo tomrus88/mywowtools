@@ -152,7 +152,7 @@
     <field type="int" name="stat_unk2_9"/>
     <field type="int" name="stat_unk2_10"/>
     <field type="int" name="scalingstatdistribution"/>
-    <field type="int" name="unk1"/>
+    <field type="int" name="damagetype"/>
     <field type="int" name="delay"/>
     <field type="float" name="rangedmodrange"/>
     <field type="int" name="spellid_1"/>
@@ -187,9 +187,9 @@
     <field type="int" name="spellcategorycooldown_5"/>
     <field type="int" name="bonding"/>
     <field type="string" name="name"/>
-    <field type="int" name="field_098"/>
-    <field type="int" name="field_099"/>
-    <field type="int" name="field_100"/>
+    <field type="string" name="name2"/>
+    <field type="string" name="name3"/>
+    <field type="string" name="name4"/>
     <field type="string" name="description"/>
     <field type="int" name="pagetext"/>
     <field type="int" name="languageid"/>
