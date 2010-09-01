@@ -320,6 +320,7 @@ namespace dbc2sql
     {
         private const uint HeaderSize = 48;
         private const uint DB2FmtSig = 0x32424457;          // WDB2
+        private const uint ADBFmtSig = 0x32484357;          // WCH2
 
         private GenericReader m_stringsReader;
 
@@ -369,7 +370,9 @@ namespace dbc2sql
                 return;
             }
 
-            if (m_reader.ReadUInt32() != DB2FmtSig)
+            var signature = m_reader.ReadUInt32();
+
+            if (signature != DB2FmtSig || signature != ADBFmtSig)
             {
                 Console.WriteLine("File {0} isn't valid DBC file!", fileName);
                 return;
@@ -384,7 +387,7 @@ namespace dbc2sql
             uint tableHash = m_reader.ReadUInt32(); // new field in WDB2
             uint build = m_reader.ReadUInt32(); // new field in WDB2
 
-            var unk1 = m_reader.ReadInt32(); // new field in WDB2
+            var unk1 = m_reader.ReadInt32(); // new field in WDB2 (Unix time in WCH2)
             var unk2 = m_reader.ReadInt32(); // new field in WDB2
             var unk3 = m_reader.ReadInt32(); // new field in WDB2
             var locale = m_reader.ReadInt32(); // new field in WDB2
