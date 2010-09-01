@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
 using System.Xml;
-
 using WoWReader;
 
 namespace dbc2sql
@@ -399,7 +395,7 @@ namespace dbc2sql
             byte[] stringTable = m_reader.ReadBytes(stringTableSize);
             m_stringsReader = new GenericReader(new MemoryStream(stringTable), Encoding.UTF8);
 
-            m_reader.BaseStream.Position = HeaderSize; // end of the header
+            m_reader.BaseStream.Position = unk3 > 0 ? ((unk3 * 4 - HeaderSize) + (unk3 * 2 - HeaderSize)) : HeaderSize;
 
             m_rows = new byte[m_recordsCount][];
 
