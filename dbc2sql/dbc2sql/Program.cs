@@ -381,13 +381,13 @@ namespace dbc2sql
             int recordSize = m_reader.ReadInt32();
             int stringTableSize = m_reader.ReadInt32();
 
-            uint dbHash = m_reader.ReadUInt32(); // new field in WDB2
+            uint tableHash = m_reader.ReadUInt32(); // new field in WDB2
             uint build = m_reader.ReadUInt32(); // new field in WDB2
 
             var unk1 = m_reader.ReadInt32(); // new field in WDB2
             var unk2 = m_reader.ReadInt32(); // new field in WDB2
             var unk3 = m_reader.ReadInt32(); // new field in WDB2
-            var unk4 = m_reader.ReadInt32(); // new field in WDB2
+            var locale = m_reader.ReadInt32(); // new field in WDB2
             var unk5 = m_reader.ReadInt32(); // new field in WDB2
 
             m_reader.BaseStream.Position = m_reader.BaseStream.Length - stringTableSize;
