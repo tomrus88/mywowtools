@@ -372,7 +372,7 @@ namespace dbc2sql
 
             var signature = m_reader.ReadUInt32();
 
-            if (signature != DB2FmtSig || signature != ADBFmtSig)
+            if (signature != DB2FmtSig && signature != ADBFmtSig)
             {
                 Console.WriteLine("File {0} isn't valid DBC file!", fileName);
                 return;
@@ -393,6 +393,7 @@ namespace dbc2sql
             var locale = m_reader.ReadInt32(); // new field in WDB2
             var unk5 = m_reader.ReadInt32(); // new field in WDB2
 
+            stringTableSize += (signature == ADBFmtSig ? 1 : 0); // hack for adb files
             m_reader.BaseStream.Position = m_reader.BaseStream.Length - stringTableSize;
 
             byte[] stringTable = m_reader.ReadBytes(stringTableSize);
