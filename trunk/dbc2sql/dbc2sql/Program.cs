@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,7 +36,7 @@ namespace dbc2sql
             else
                 m_reader = new DB2Reader(fileName);
 
-            Console.WriteLine("Records: {0}, Fields: {1}, String Table Size: {2}", m_reader.RecordsCount, m_reader.FieldsCount, m_reader.StringTableSize);
+            Console.WriteLine("Records: {0}, Fields: {1}, Row Size {2}, String Table Size: {3}", m_reader.RecordsCount, m_reader.FieldsCount, m_reader.RecordSize, m_reader.StringTableSize);
 
             XmlElement definition = m_definitions["DBFilesClient"][fileName.Split('.')[0]];
 
@@ -240,27 +241,16 @@ namespace dbc2sql
         private const uint HeaderSize = 20;
         private const uint DBCFmtSig = 0x43424457;          // WDBC
 
-        private GenericReader m_stringsReader;
+        private GenericReader m_reader;
 
-        private int m_recordsCount;
-        private int m_fieldsCount;
+        private Dictionary<int, string> m_stringTable = new Dictionary<int, string>();
+
+        public int RecordsCount { get; private set; }
+        public int FieldsCount { get; private set; }
+        public int RecordSize { get; private set; }
+        public int StringTableSize { get; private set; }
 
         private byte[][] m_rows;
-
-        public int RecordsCount
-        {
-            get { return m_recordsCount; }
-        }
-
-        public int FieldsCount
-        {
-            get { return m_fieldsCount; }
-        }
-
-        public int StringTableSize
-        {
-            get { return (int)m_stringsReader.BaseStream.Length; }
-        }
 
         public byte[] GetRowAsByteArray(int row)
         {
@@ -274,13 +264,12 @@ namespace dbc2sql
 
         public string GetString(int offset)
         {
-            m_stringsReader.BaseStream.Position = offset;
-            return m_stringsReader.ReadStringNull();
+            return m_stringTable[offset];
         }
 
         public DBCReader(string fileName)
         {
-            GenericReader m_reader = new GenericReader(fileName, Encoding.UTF8);
+            m_reader = new GenericReader(fileName, Encoding.UTF8);
 
             if (m_reader.BaseStream.Length < HeaderSize)
             {
@@ -294,55 +283,53 @@ namespace dbc2sql
                 return;
             }
 
-            m_recordsCount = m_reader.ReadInt32();
-            m_fieldsCount = m_reader.ReadInt32();
+            RecordsCount = m_reader.ReadInt32();
+            FieldsCount = m_reader.ReadInt32();
+            RecordSize = m_reader.ReadInt32();
+            StringTableSize = m_reader.ReadInt32();
 
-            int recordSize = m_reader.ReadInt32();
-            int stringTableSize = m_reader.ReadInt32();
+            m_rows = new byte[RecordsCount][];
 
-            m_reader.BaseStream.Position = m_reader.BaseStream.Length - stringTableSize;
+            for (int i = 0; i < RecordsCount; i++)
+                m_rows[i] = m_reader.ReadBytes(RecordSize);
 
-            byte[] stringTable = m_reader.ReadBytes(stringTableSize);
-            m_stringsReader = new GenericReader(new MemoryStream(stringTable), Encoding.UTF8);
+            int stringTableStart = (int)m_reader.BaseStream.Position;
 
-            m_reader.BaseStream.Position = HeaderSize; // end of the header
-
-            m_rows = new byte[m_recordsCount][];
-
-            for (int i = 0; i < m_recordsCount; i++)
-                m_rows[i] = m_reader.ReadBytes(recordSize);
+            while (m_reader.BaseStream.Position != m_reader.BaseStream.Length)
+            {
+                int index = (int)m_reader.BaseStream.Position - stringTableStart;
+                m_stringTable[index] = m_reader.ReadStringNull();
+            }
 
             m_reader.Close();
+            m_reader = null;
+        }
+
+        ~DBCReader()
+        {
+            m_stringTable.Clear();
+
+            if (m_reader != null)
+                m_reader.Close();
         }
     }
 
     class DB2Reader : IWowClientDBReader
     {
-        private const uint HeaderSize = 48;
+        private const int HeaderSize = 48;
         private const uint DB2FmtSig = 0x32424457;          // WDB2
         private const uint ADBFmtSig = 0x32484357;          // WCH2
 
-        private GenericReader m_stringsReader;
+        private GenericReader m_reader;
 
-        private int m_recordsCount;
-        private int m_fieldsCount;
+        private Dictionary<int, string> m_stringTable = new Dictionary<int, string>();
+
+        public int RecordsCount { get; private set; }
+        public int FieldsCount { get; private set; }
+        public int RecordSize { get; private set; }
+        public int StringTableSize { get; private set; }
 
         private byte[][] m_rows;
-
-        public int RecordsCount
-        {
-            get { return m_recordsCount; }
-        }
-
-        public int FieldsCount
-        {
-            get { return m_fieldsCount; }
-        }
-
-        public int StringTableSize
-        {
-            get { return (int)m_stringsReader.BaseStream.Length; }
-        }
 
         public byte[] GetRowAsByteArray(int row)
         {
@@ -356,13 +343,12 @@ namespace dbc2sql
 
         public string GetString(int offset)
         {
-            m_stringsReader.BaseStream.Position = offset;
-            return m_stringsReader.ReadStringNull();
+            return m_stringTable[offset];
         }
 
         public DB2Reader(string fileName)
         {
-            GenericReader m_reader = new GenericReader(fileName, Encoding.UTF8);
+            m_reader = new GenericReader(fileName, Encoding.UTF8);
 
             if (m_reader.BaseStream.Length < HeaderSize)
             {
@@ -378,35 +364,49 @@ namespace dbc2sql
                 return;
             }
 
-            m_recordsCount = m_reader.ReadInt32();
-            m_fieldsCount = m_reader.ReadInt32();
-
-            int recordSize = m_reader.ReadInt32();
-            int stringTableSize = m_reader.ReadInt32();
+            RecordsCount = m_reader.ReadInt32();
+            FieldsCount = m_reader.ReadInt32(); // not fields count in WCH2
+            RecordSize = m_reader.ReadInt32();
+            StringTableSize = m_reader.ReadInt32();
 
             uint tableHash = m_reader.ReadUInt32(); // new field in WDB2
             uint build = m_reader.ReadUInt32(); // new field in WDB2
 
-            var unk1 = m_reader.ReadInt32(); // new field in WDB2 (Unix time in WCH2)
-            var unk2 = m_reader.ReadInt32(); // new field in WDB2
-            var unk3 = m_reader.ReadInt32(); // new field in WDB2
-            var locale = m_reader.ReadInt32(); // new field in WDB2
-            var unk5 = m_reader.ReadInt32(); // new field in WDB2
+            int unk1 = m_reader.ReadInt32(); // new field in WDB2 (Unix time in WCH2)
+            int unk2 = m_reader.ReadInt32(); // new field in WDB2
+            int unk3 = m_reader.ReadInt32(); // new field in WDB2 (index table?)
+            int locale = m_reader.ReadInt32(); // new field in WDB2
+            int unk5 = m_reader.ReadInt32(); // new field in WDB2
 
-            stringTableSize += (signature == ADBFmtSig ? 1 : 0); // hack for adb files
-            m_reader.BaseStream.Position = m_reader.BaseStream.Length - stringTableSize;
+            if (unk3 != 0)
+            {
+                m_reader.ReadBytes(unk3 * 4 - HeaderSize);     // an index for rows
+                m_reader.ReadBytes(unk3 * 2 - HeaderSize * 2); // a memory allocation bank
+            }
 
-            byte[] stringTable = m_reader.ReadBytes(stringTableSize);
-            m_stringsReader = new GenericReader(new MemoryStream(stringTable), Encoding.UTF8);
+            m_rows = new byte[RecordsCount][];
 
-            m_reader.BaseStream.Position = unk3 > 0 ? ((unk3 * 4 - HeaderSize) + (unk3 * 2 - HeaderSize)) : HeaderSize;
+            for (int i = 0; i < RecordsCount; i++)
+                m_rows[i] = m_reader.ReadBytes(RecordSize);
 
-            m_rows = new byte[m_recordsCount][];
+            int stringTableStart = (int)m_reader.BaseStream.Position;
 
-            for (int i = 0; i < m_recordsCount; i++)
-                m_rows[i] = m_reader.ReadBytes(recordSize);
+            while (m_reader.BaseStream.Position != m_reader.BaseStream.Length)
+            {
+                int index = (int)m_reader.BaseStream.Position - stringTableStart;
+                m_stringTable[index] = m_reader.ReadStringNull();
+            }
 
             m_reader.Close();
+            m_reader = null;
+        }
+
+        ~DB2Reader()
+        {
+            m_stringTable.Clear();
+
+            if (m_reader != null)
+                m_reader.Close();
         }
     }
 
@@ -414,6 +414,7 @@ namespace dbc2sql
     {
         int RecordsCount { get; }
         int FieldsCount { get; }
+        int RecordSize { get; }
         int StringTableSize { get; }
         byte[] GetRowAsByteArray(int row);
         GenericReader GetRowAsGenericReader(int row);
