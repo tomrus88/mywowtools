@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using WoWReader;
 
 namespace dbc2sql
 {
@@ -12,6 +11,7 @@ namespace dbc2sql
     {
         static IWowClientDBReader m_reader;
         static XmlDocument m_definitions;
+        static string DBCName;
 
         static void Main(string[] args)
         {
@@ -38,7 +38,9 @@ namespace dbc2sql
 
             Console.WriteLine("Records: {0}, Fields: {1}, Row Size {2}, String Table Size: {3}", m_reader.RecordsCount, m_reader.FieldsCount, m_reader.RecordSize, m_reader.StringTableSize);
 
-            XmlElement definition = m_definitions["DBFilesClient"][fileName.Split('.')[0]];
+            DBCName = Path.GetFileNameWithoutExtension(fileName);
+
+            XmlElement definition = m_definitions["DBFilesClient"][DBCName];
 
             if (definition == null)
             {
@@ -55,9 +57,10 @@ namespace dbc2sql
 
             for (int i = 0; i < m_reader.RecordsCount; ++i)
             {
-                GenericReader reader = m_reader.GetRowAsGenericReader(i);
+                BinaryReader reader = m_reader[i];
 
-                string result = "INSERT INTO `dbc_" + Path.GetFileNameWithoutExtension(fileName) + "` VALUES (";
+                StringBuilder result = new StringBuilder();
+                result.Append("INSERT INTO `dbc_" + DBCName + "` VALUES (");
 
                 int flds = 0;
 
@@ -66,85 +69,50 @@ namespace dbc2sql
                     switch (field.Attributes["type"].Value)
                     {
                         case "long":
-                            {
-                                var value1 = reader.ReadInt64();
-                                result += value1;
-                            }
+                            result.Append(reader.ReadInt64());
                             break;
                         case "ulong":
-                            {
-                                var value2 = reader.ReadUInt64();
-                                result += value2;
-                            }
+                            result.Append(reader.ReadUInt64());
                             break;
                         case "int":
-                            {
-                                var value3 = reader.ReadInt32();
-                                result += value3;
-                            }
+                            result.Append(reader.ReadInt32());
                             break;
                         case "uint":
-                            {
-                                var value4 = reader.ReadUInt32();
-                                result += value4;
-                            }
+                            result.Append(reader.ReadUInt32());
                             break;
                         case "short":
-                            {
-                                var value5 = reader.ReadInt16();
-                                result += value5;
-                            }
+                            result.Append(reader.ReadInt16());
                             break;
                         case "ushort":
-                            {
-                                var value6 = reader.ReadUInt16();
-                                result += value6;
-                            }
+                            result.Append(reader.ReadUInt16());
                             break;
                         case "sbyte":
-                            {
-                                var value7 = reader.ReadSByte();
-                                result += value7;
-                            }
+                            result.Append(reader.ReadSByte());
                             break;
                         case "byte":
-                            {
-                                var value8 = reader.ReadByte();
-                                result += value8;
-                            }
+                            result.Append(reader.ReadByte());
                             break;
                         case "float":
-                            {
-                                var value9 = Regex.Replace(reader.ReadSingle().ToString(), @",", @".");
-                                result += value9;
-                            }
+                            result.Append(reader.ReadSingle().ToString(CultureInfo.InvariantCulture));
                             break;
                         case "double":
-                            {
-                                var value10 = Regex.Replace(reader.ReadDouble().ToString(), @",", @".");
-                                result += value10;
-                            }
+                            result.Append(reader.ReadDouble().ToString(CultureInfo.InvariantCulture));
                             break;
                         case "string":
-                            {
-                                var value11 = StripBadCharacters(m_reader.GetString(reader.ReadInt32()));
-                                result += ("\"" + value11 + "\"");
-                            }
+                            result.Append("\"" + StripBadCharacters(m_reader.StringTable[reader.ReadInt32()]) + "\"");
                             break;
                         default:
-                            {
-                                Console.WriteLine("Incorrect field type '{0}'.", field["type"].Value);
-                            }
+                            Console.WriteLine("Incorrect field type '{0}'.", field["type"].Value);
                             break;
                     }
 
                     if (flds != fields.Count - 1)
-                        result += ", ";
+                        result.Append(", ");
 
                     flds++;
                 }
 
-                result += ");";
+                result.Append(");");
                 sqlWriter.WriteLine(result);
 
                 if (reader.BaseStream.Position != reader.BaseStream.Length)
@@ -169,8 +137,8 @@ namespace dbc2sql
 
         static void WriteSqlStructure(StreamWriter sqlWriter, string fileName, XmlNodeList fields, XmlNodeList indexes)
         {
-            sqlWriter.WriteLine("DROP TABLE IF EXISTS `dbc_{0}`;", Path.GetFileNameWithoutExtension(fileName));
-            sqlWriter.WriteLine("CREATE TABLE `dbc_{0}` (", Path.GetFileNameWithoutExtension(fileName));
+            sqlWriter.WriteLine("DROP TABLE IF EXISTS `dbc_{0}`;", DBCName);
+            sqlWriter.WriteLine("CREATE TABLE `dbc_{0}` (", DBCName);
 
             foreach (XmlElement field in fields)
             {
@@ -234,190 +202,5 @@ namespace dbc2sql
             input = Regex.Replace(input, @"\""", @"\""");
             return input;
         }
-    }
-
-    class DBCReader : IWowClientDBReader
-    {
-        private const uint HeaderSize = 20;
-        private const uint DBCFmtSig = 0x43424457;          // WDBC
-
-        private GenericReader m_reader;
-
-        private Dictionary<int, string> m_stringTable = new Dictionary<int, string>();
-
-        public int RecordsCount { get; private set; }
-        public int FieldsCount { get; private set; }
-        public int RecordSize { get; private set; }
-        public int StringTableSize { get; private set; }
-
-        private byte[][] m_rows;
-
-        public byte[] GetRowAsByteArray(int row)
-        {
-            return m_rows[row];
-        }
-
-        public GenericReader GetRowAsGenericReader(int row)
-        {
-            return new GenericReader(new MemoryStream(m_rows[row]), Encoding.UTF8);
-        }
-
-        public string GetString(int offset)
-        {
-            return m_stringTable[offset];
-        }
-
-        public DBCReader(string fileName)
-        {
-            m_reader = new GenericReader(fileName, Encoding.UTF8);
-
-            if (m_reader.BaseStream.Length < HeaderSize)
-            {
-                Console.WriteLine("File {0} is corrupted!", fileName);
-                return;
-            }
-
-            if (m_reader.ReadUInt32() != DBCFmtSig)
-            {
-                Console.WriteLine("File {0} isn't valid DBC file!", fileName);
-                return;
-            }
-
-            RecordsCount = m_reader.ReadInt32();
-            FieldsCount = m_reader.ReadInt32();
-            RecordSize = m_reader.ReadInt32();
-            StringTableSize = m_reader.ReadInt32();
-
-            m_rows = new byte[RecordsCount][];
-
-            for (int i = 0; i < RecordsCount; i++)
-                m_rows[i] = m_reader.ReadBytes(RecordSize);
-
-            int stringTableStart = (int)m_reader.BaseStream.Position;
-
-            while (m_reader.BaseStream.Position != m_reader.BaseStream.Length)
-            {
-                int index = (int)m_reader.BaseStream.Position - stringTableStart;
-                m_stringTable[index] = m_reader.ReadStringNull();
-            }
-
-            m_reader.Close();
-            m_reader = null;
-        }
-
-        ~DBCReader()
-        {
-            m_stringTable.Clear();
-
-            if (m_reader != null)
-                m_reader.Close();
-        }
-    }
-
-    class DB2Reader : IWowClientDBReader
-    {
-        private const int HeaderSize = 48;
-        private const uint DB2FmtSig = 0x32424457;          // WDB2
-        private const uint ADBFmtSig = 0x32484357;          // WCH2
-
-        private GenericReader m_reader;
-
-        private Dictionary<int, string> m_stringTable = new Dictionary<int, string>();
-
-        public int RecordsCount { get; private set; }
-        public int FieldsCount { get; private set; }
-        public int RecordSize { get; private set; }
-        public int StringTableSize { get; private set; }
-
-        private byte[][] m_rows;
-
-        public byte[] GetRowAsByteArray(int row)
-        {
-            return m_rows[row];
-        }
-
-        public GenericReader GetRowAsGenericReader(int row)
-        {
-            return new GenericReader(new MemoryStream(m_rows[row]), Encoding.UTF8);
-        }
-
-        public string GetString(int offset)
-        {
-            return m_stringTable[offset];
-        }
-
-        public DB2Reader(string fileName)
-        {
-            m_reader = new GenericReader(fileName, Encoding.UTF8);
-
-            if (m_reader.BaseStream.Length < HeaderSize)
-            {
-                Console.WriteLine("File {0} is corrupted!", fileName);
-                return;
-            }
-
-            var signature = m_reader.ReadUInt32();
-
-            if (signature != DB2FmtSig && signature != ADBFmtSig)
-            {
-                Console.WriteLine("File {0} isn't valid DBC file!", fileName);
-                return;
-            }
-
-            RecordsCount = m_reader.ReadInt32();
-            FieldsCount = m_reader.ReadInt32(); // not fields count in WCH2
-            RecordSize = m_reader.ReadInt32();
-            StringTableSize = m_reader.ReadInt32();
-
-            uint tableHash = m_reader.ReadUInt32(); // new field in WDB2
-            uint build = m_reader.ReadUInt32(); // new field in WDB2
-
-            int unk1 = m_reader.ReadInt32(); // new field in WDB2 (Unix time in WCH2)
-            int unk2 = m_reader.ReadInt32(); // new field in WDB2
-            int unk3 = m_reader.ReadInt32(); // new field in WDB2 (index table?)
-            int locale = m_reader.ReadInt32(); // new field in WDB2
-            int unk5 = m_reader.ReadInt32(); // new field in WDB2
-
-            if (unk3 != 0)
-            {
-                m_reader.ReadBytes(unk3 * 4 - HeaderSize);     // an index for rows
-                m_reader.ReadBytes(unk3 * 2 - HeaderSize * 2); // a memory allocation bank
-            }
-
-            m_rows = new byte[RecordsCount][];
-
-            for (int i = 0; i < RecordsCount; i++)
-                m_rows[i] = m_reader.ReadBytes(RecordSize);
-
-            int stringTableStart = (int)m_reader.BaseStream.Position;
-
-            while (m_reader.BaseStream.Position != m_reader.BaseStream.Length)
-            {
-                int index = (int)m_reader.BaseStream.Position - stringTableStart;
-                m_stringTable[index] = m_reader.ReadStringNull();
-            }
-
-            m_reader.Close();
-            m_reader = null;
-        }
-
-        ~DB2Reader()
-        {
-            m_stringTable.Clear();
-
-            if (m_reader != null)
-                m_reader.Close();
-        }
-    }
-
-    interface IWowClientDBReader
-    {
-        int RecordsCount { get; }
-        int FieldsCount { get; }
-        int RecordSize { get; }
-        int StringTableSize { get; }
-        byte[] GetRowAsByteArray(int row);
-        GenericReader GetRowAsGenericReader(int row);
-        string GetString(int offset);
     }
 }
