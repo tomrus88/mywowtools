@@ -1,10 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
-namespace WoWReader
+namespace dbc2sql
 {
     #region Coords3
     /// <summary>
@@ -62,66 +62,21 @@ namespace WoWReader
     }
     #endregion
 
-    #region GenericReader
-    /// <summary>
-    ///  Reads WoW specific data types as binary values in a specific encoding.
-    /// </summary>
-    class GenericReader : BinaryReader
+    static class BinaryReaderExtensions
     {
-        #region GenericReader_stream
-        /// <summary>
-        ///  Not yet.
-        /// </summary>
-        /// <param name="input">Input stream.</param>
-        public GenericReader(Stream input)
-            : base(input)
+        public static BinaryReader FromFile(string fileName)
         {
+            return new BinaryReader(new FileStream(fileName, FileMode.Open), Encoding.UTF8);
         }
-        #endregion
-
-        #region GenericReader_stream_encoding
-        /// <summary>
-        ///  Not yet.
-        /// </summary>
-        /// <param name="input">Input stream.</param>
-        /// <param name="encoding">Input encoding.</param>
-        public GenericReader(Stream input, Encoding encoding)
-            : base(input, encoding)
-        {
-        }
-        #endregion
-
-        #region GenericReader_filestream
-        /// <summary>
-        ///  Not yet.
-        /// </summary>
-        /// <param name="fname">Input file name.</param>
-        public GenericReader(string fname)
-            : base(new FileStream(fname, FileMode.Open, FileAccess.Read))
-        {
-        }
-        #endregion
-
-        #region GenericReader_filestream_encoding
-        /// <summary>
-        ///  Not yet.
-        /// </summary>
-        /// <param name="fname">Input file name.</param>
-        /// <param name="encoding">Input encoding.</param>
-        public GenericReader(string fname, Encoding encoding)
-            : base(new FileStream(fname, FileMode.Open, FileAccess.Read), encoding)
-        {
-        }
-        #endregion
 
         #region ReadPackedGuid
         /// <summary>
         ///  Reads the packed guid from the current stream and advances the current position of the stream by packed guid size.
         /// </summary>
-        public ulong ReadPackedGuid()
+        public static ulong ReadPackedGuid(this BinaryReader reader)
         {
             ulong res = 0;
-            byte mask = ReadByte();
+            byte mask = reader.ReadByte();
 
             if (mask == 0)
                 return res;
@@ -131,7 +86,7 @@ namespace WoWReader
             while (i < 9)
             {
                 if ((mask & 1 << i) != 0)
-                    res += (ulong)ReadByte() << (i * 8);
+                    res += (ulong)reader.ReadByte() << (i * 8);
                 i++;
             }
             return res;
@@ -143,14 +98,14 @@ namespace WoWReader
         ///  Reads the string with known length from the current stream and advances the current position of the stream by string length.
         /// <seealso cref="GenericReader.ReadStringNull"/>
         /// </summary>
-        public string ReadStringNumber()
+        public static string ReadStringNumber(this BinaryReader reader)
         {
             string text = String.Empty;
-            uint num = ReadUInt32(); // string length
+            uint num = reader.ReadUInt32(); // string length
 
             for (uint i = 0; i < num; i++)
             {
-                text += (char)ReadByte();
+                text += (char)reader.ReadByte();
             }
             return text;
         }
@@ -161,13 +116,13 @@ namespace WoWReader
         ///  Reads the NULL terminated string from the current stream and advances the current position of the stream by string length + 1.
         /// <seealso cref="GenericReader.ReadStringNumber"/>
         /// </summary>
-        public string ReadStringNull()
+        public static string ReadStringNull(this BinaryReader reader)
         {
             byte num;
             string text = String.Empty;
-            System.Collections.Generic.List<byte>  temp = new System.Collections.Generic.List<byte>();
+            System.Collections.Generic.List<byte> temp = new System.Collections.Generic.List<byte>();
 
-            while ((num = ReadByte()) != 0)
+            while ((num = reader.ReadByte()) != 0)
                 temp.Add(num);
 
             text = Encoding.UTF8.GetString(temp.ToArray());
@@ -180,13 +135,13 @@ namespace WoWReader
         /// <summary>
         ///  Reads the object coordinates from the current stream and advances the current position of the stream by 12 bytes.
         /// </summary>
-        public Coords3 ReadCoords3()
+        public static Coords3 ReadCoords3(this BinaryReader reader)
         {
             Coords3 v;
 
-            v.X = ReadSingle();
-            v.Y = ReadSingle();
-            v.Z = ReadSingle();
+            v.X = reader.ReadSingle();
+            v.Y = reader.ReadSingle();
+            v.Z = reader.ReadSingle();
 
             return v;
         }
@@ -196,14 +151,14 @@ namespace WoWReader
         /// <summary>
         ///  Reads the object coordinates and orientation from the current stream and advances the current position of the stream by 16 bytes.
         /// </summary>
-        public Coords4 ReadCoords4()
+        public static Coords4 ReadCoords4(this BinaryReader reader)
         {
             Coords4 v;
 
-            v.X = ReadSingle();
-            v.Y = ReadSingle();
-            v.Z = ReadSingle();
-            v.O = ReadSingle();
+            v.X = reader.ReadSingle();
+            v.Y = reader.ReadSingle();
+            v.Z = reader.ReadSingle();
+            v.O = reader.ReadSingle();
 
             return v;
         }
@@ -216,9 +171,9 @@ namespace WoWReader
         /// <typeparam name="T"></typeparam>
         /// <param name="binReader"></param>
         /// <returns></returns>
-        public unsafe T ReadStruct<T>() where T : struct
+        public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
         {
-            byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
+            byte[] rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
             T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             handle.Free();
@@ -226,5 +181,4 @@ namespace WoWReader
         }
         #endregion
     }
-    #endregion
 }
