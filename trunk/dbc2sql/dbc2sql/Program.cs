@@ -102,8 +102,7 @@ namespace dbc2sql
                             result.Append("\"" + StripBadCharacters(m_reader.StringTable[reader.ReadInt32()]) + "\"");
                             break;
                         default:
-                            Console.WriteLine("Incorrect field type '{0}'.", field["type"].Value);
-                            break;
+                            throw new Exception(String.Format("Unknown field type {0}!", field["type"].Value));
                     }
 
                     if (flds != fields.Count - 1)
@@ -180,8 +179,7 @@ namespace dbc2sql
                         sqlWriter.Write(" TEXT NOT NULL");
                         break;
                     default:
-                        Console.WriteLine("wtf?");
-                        break;
+                        throw new Exception(String.Format("Unknown field type {0}!", field.Attributes["type"].Value));
                 }
 
                 sqlWriter.WriteLine(",");
