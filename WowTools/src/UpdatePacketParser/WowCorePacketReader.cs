@@ -29,6 +29,8 @@ namespace UpdatePacketParser
                     _reader.ReadBytes(20);          // packet key
                     _reader.ReadBytes(64);          // realm name
                     break;
+                case 0x0300:
+                    throw new Exception(String.Format("Unsupported sniff version {0:X2}", version));
                 default:
                     throw new Exception(String.Format("Unknown sniff version {0:X2}", version));
             }
