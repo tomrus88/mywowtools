@@ -8,13 +8,16 @@ using dbc2sql;
 
 namespace DBC_Viewer
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         DataTable m_dataTable;
+        public DataTable DataTable { get { return m_dataTable; } }
         DataView m_dataView;
+        public DataView DataView { get { return m_dataView; } }
         IWowClientDBReader m_reader;
+        FilterForm m_filterForm;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -134,15 +137,24 @@ namespace DBC_Viewer
 
         private void filterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetDataView(m_dataTable.AsEnumerable().Where(tr => (tr.Field<int>("Col 1") & 128) != 0).AsDataView());
+            if (m_dataTable == null)
+                return;
+
+            if (m_filterForm == null || m_filterForm.IsDisposed)
+                m_filterForm = new FilterForm();
+            if (!m_filterForm.Visible)
+                m_filterForm.Show(this);
         }
 
         private void resetFilterToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (m_dataTable == null)
+                return;
+
             SetDataView(m_dataTable.DefaultView);
         }
 
-        private void SetDataView(DataView dataView)
+        public void SetDataView(DataView dataView)
         {
             m_dataView = dataView;
             dataGridView1.DataSource = m_dataView;
