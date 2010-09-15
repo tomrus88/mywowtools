@@ -25,48 +25,325 @@ namespace DBC_Viewer
         {
             var owner = ((MainForm)Owner);
             var dt = owner.DataTable;
-            var col = (string)comboBox1.SelectedItem;
+            var colName = (string)comboBox1.SelectedItem;
             var op = (string)comboBox2.SelectedItem;
 
-            if (op == null || col == null)
+            var col = dt.Columns[colName];
+
+            if (op == null || colName == null)
             {
-                MessageBox.Show("Select something first");
+                MessageBox.Show("Select something first!");
                 return;
             }
 
-            var val = 0;
+            string val = textBox1.Text;
 
-            try
+            if (val == String.Empty)
             {
-                val = Convert.ToInt32(textBox1.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid value entered!");
+                MessageBox.Show("Enter something first!");
                 return;
             }
 
-            switch (op)
+            if (col.DataType == typeof(string))
             {
-                case "&":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) & val) != 0).AsDataView());
-                    break;
-                case "~&":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) & val) == 0).AsDataView());
-                    break;
-                case "==":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) == val)).AsDataView());
-                    break;
-                case "!=":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) != val)).AsDataView());
-                    break;
-                case "<":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) < val)).AsDataView());
-                    break;
-                case ">":
-                    owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(col) > val)).AsDataView());
-                    break;
+                switch (op)
+                {
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<string>(colName) == (string)val)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<string>(colName) != (string)val)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
             }
+            else if (col.DataType == typeof(long))
+            {
+                var locVal = Convert.ToInt64(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<long>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(ulong))
+            {
+                var locVal = Convert.ToUInt64(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ulong>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(int))
+            {
+                var locVal = Convert.ToInt32(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<int>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(uint))
+            {
+                var locVal = Convert.ToUInt32(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<uint>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(short))
+            {
+                var locVal = Convert.ToInt16(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<short>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(ushort))
+            {
+                var locVal = Convert.ToUInt16(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<ushort>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(sbyte))
+            {
+                var locVal = Convert.ToSByte(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<sbyte>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(byte))
+            {
+                var locVal = Convert.ToByte(val);
+
+                switch (op)
+                {
+                    case "&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) & locVal) != 0).AsDataView());
+                        break;
+                    case "~&":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) & locVal) == 0).AsDataView());
+                        break;
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<byte>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(float))
+            {
+                var locVal = Convert.ToSingle(val);
+
+                switch (op)
+                {
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<float>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<float>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<float>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<float>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else if (col.DataType == typeof(double))
+            {
+                var locVal = Convert.ToDouble(val);
+
+                switch (op)
+                {
+                    case "==":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<double>(colName) == locVal)).AsDataView());
+                        break;
+                    case "!=":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<double>(colName) != locVal)).AsDataView());
+                        break;
+                    case "<":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<double>(colName) < locVal)).AsDataView());
+                        break;
+                    case ">":
+                        owner.SetDataView(dt.AsEnumerable().Where(tr => (tr.Field<double>(colName) > locVal)).AsDataView());
+                        break;
+                    default:
+                        MessageBox.Show("Unsupported operation for selected column!");
+                        return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Unhandled type?");
+            }
+
+            //dt.AsEnumerable().Where(tr => tr[colName] == val).AsDataView();
+            //dt.AsEnumerable().Where(tr => tr[colName] & val).AsDataView();
         }
 
         private void FilterForm_FormClosing(object sender, FormClosingEventArgs e)
