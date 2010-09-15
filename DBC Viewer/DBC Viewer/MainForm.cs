@@ -35,6 +35,9 @@ namespace DBC_Viewer
             dataGridView1.VirtualMode = false;
             dataGridView1.DataSource = null;
 
+            if (m_filterForm != null)
+                m_filterForm.Dispose();
+
             toolStripProgressBar1.Visible = true;
 
             backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
