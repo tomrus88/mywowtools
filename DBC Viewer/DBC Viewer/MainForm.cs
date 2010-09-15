@@ -62,7 +62,7 @@ namespace DBC_Viewer
 
             if (m_dataTable.Columns[e.ColumnIndex].DataType != typeof(string))
             {
-                if(m_dataTable.Columns[e.ColumnIndex].DataType == typeof(int))
+                if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(int))
                     val = Convert.ToInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
                 else
                     val = (int)Convert.ToUInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
@@ -141,7 +141,7 @@ namespace DBC_Viewer
                 {
                     var colName = m_dataTable.Columns[j].ColumnName;
 
-                    switch(fields[j].Attributes["type"].Value)
+                    switch (fields[j].Attributes["type"].Value)
                     {
                         case "long":
                             dataRow[colName] = br.ReadInt64();
@@ -193,9 +193,7 @@ namespace DBC_Viewer
             var columns = new DataColumn[indexes.Count];
             var idx = 0;
             foreach (XmlElement index in indexes)
-            {
                 columns[idx++] = m_dataTable.Columns[index["primary"].InnerText];
-            }
             m_dataTable.PrimaryKey = columns;
         }
 
@@ -287,6 +285,8 @@ namespace DBC_Viewer
         {
             m_dataView = dataView;
             dataGridView1.DataSource = m_dataView;
+
+            label2.Text = String.Format("Rows Displayed: {0}", m_dataView.Count);
         }
 
         void LoadDefinitions()
