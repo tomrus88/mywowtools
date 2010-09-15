@@ -102,7 +102,7 @@ namespace dbc2sql
                             result.Append("\"" + StripBadCharacters(m_reader.StringTable[reader.ReadInt32()]) + "\"");
                             break;
                         default:
-                            throw new Exception(String.Format("Unknown field type {0}!", field["type"].Value));
+                            throw new Exception(String.Format("Unknown field type {0}!", field.Attributes["type"].Value));
                     }
 
                     if (flds != fields.Count - 1)
