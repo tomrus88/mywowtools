@@ -25,10 +25,10 @@ namespace DBC_Viewer
                 if (filter.Op != "!=")
                     continue;
                 if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T))) != 0)
-                    return false;
+                    return true;
             }
 
-            return true;
+            return false;
         }
 
         private bool Less<T>(DataRow row) where T : IComparable<T>
