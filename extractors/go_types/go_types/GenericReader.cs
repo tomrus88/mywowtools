@@ -217,7 +217,7 @@ namespace go_types
         /// <typeparam name="T"></typeparam>
         /// <param name="binReader"></param>
         /// <returns></returns>
-        public unsafe T ReadStruct<T>() where T : struct
+        public T ReadStruct<T>() where T : struct
         {
             byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
