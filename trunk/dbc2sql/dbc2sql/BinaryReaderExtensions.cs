@@ -171,7 +171,7 @@ namespace dbc2sql
         /// <typeparam name="T"></typeparam>
         /// <param name="binReader"></param>
         /// <returns></returns>
-        public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
+        public static T ReadStruct<T>(this BinaryReader reader) where T : struct
         {
             byte[] rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);

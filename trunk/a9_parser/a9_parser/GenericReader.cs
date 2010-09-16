@@ -211,7 +211,7 @@ namespace a9_parser
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public unsafe T ReadStruct<T>() where T : struct
+        public T ReadStruct<T>() where T : struct
         {
             byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
