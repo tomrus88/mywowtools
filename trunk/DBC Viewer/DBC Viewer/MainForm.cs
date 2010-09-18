@@ -18,6 +18,7 @@ namespace DBC_Viewer
         DataView m_dataView;
         IWowClientDBReader m_reader;
         FilterForm m_filterForm;
+        XmlDocument m_definitions;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
@@ -43,7 +44,9 @@ namespace DBC_Viewer
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Text = "Loading...";
 
-            backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
+            var definition = GetDefinition(openFileDialog1.FileName);
+
+            backgroundWorker1.RunWorkerAsync(new object[] { openFileDialog1.FileName, definition });
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -106,17 +109,13 @@ namespace DBC_Viewer
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            var file = (string)e.Argument;
+            object[] arg = (object[])e.Argument;
 
-            var definitions = new XmlDocument();
-            definitions.Load("dbclayout.xml");
-
-            XmlElement definition = definitions["DBFilesClient"][Path.GetFileNameWithoutExtension(file)];
+            var file = (string)arg[0];
+            var definition = (XmlElement)arg[1]; ;
 
             if (definition == null)
             {
-                var msg = String.Format("{0} missing definition!", Path.GetFileName(file));
-                ShowErrorMessageBox(msg);
                 e.Cancel = true;
                 return;
             }
@@ -204,6 +203,31 @@ namespace DBC_Viewer
             }
 
             e.Result = file;
+        }
+
+        private XmlElement GetDefinition(string file)
+        {
+            XmlNodeList definitions = m_definitions["DBFilesClient"].GetElementsByTagName(Path.GetFileNameWithoutExtension(file));
+
+            if (definitions.Count == 0)
+            {
+                var msg = String.Format("{0} missing definition!", Path.GetFileName(file));
+                ShowErrorMessageBox(msg);
+                return null;
+            }
+            else if (definitions.Count == 1)
+            {
+                return ((XmlElement)definitions[0]);
+            }
+            else
+            {
+                DefinitionSelect selector = new DefinitionSelect();
+                selector.SetDefinitions(definitions);
+                var result = selector.ShowDialog(this);
+                if (result != DialogResult.OK || selector.DefinitionIndex == -1)
+                    return null;
+                return ((XmlElement)definitions[selector.DefinitionIndex]);
+            }
         }
 
         private void ShowErrorMessageBox(string msg)
@@ -321,6 +345,12 @@ namespace DBC_Viewer
             dataGridView1.DataSource = m_dataView;
 
             label2.Text = String.Format("Rows Displayed: {0}", m_dataView.Count);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            m_definitions = new XmlDocument();
+            m_definitions.Load("dbclayout.xml");
         }
     }
 }
