@@ -28,7 +28,7 @@ namespace DBC_Viewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(m_filters.Count == 0)
+            if (m_filters.Count == 0)
             {
                 MessageBox.Show("Add filter(s) first!");
                 return;
@@ -143,6 +143,20 @@ namespace DBC_Viewer
             var colName = (string)listBox2.SelectedItem;
             var op = (string)comboBox3.SelectedItem;
             var val = textBox2.Text;
+
+            var owner = ((MainForm)Owner);
+            var dt = owner.DataTable;
+            var col = dt.Columns[colName];
+
+            try
+            {
+                Convert.ChangeType(val, col.DataType);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid filter!");
+                return;
+            }
 
             listBox1.Items.Add(String.Format("{0} {1} {2}", colName, op, val));
             SyncFilters();

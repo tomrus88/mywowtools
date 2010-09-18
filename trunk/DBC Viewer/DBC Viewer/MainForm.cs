@@ -1,26 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using System.Globalization;
-using System.Linq;
 using dbc2sql;
 
 namespace DBC_Viewer
 {
     public partial class MainForm : Form
     {
+        // Fields
         DataTable m_dataTable;
-        public DataTable DataTable { get { return m_dataTable; } }
         DataView m_dataView;
-        public DataView DataView { get { return m_dataView; } }
         IWowClientDBReader m_reader;
-        XmlDocument m_definitions;
-        string DBCName;
         FilterForm m_filterForm;
+
+        // Properties
+        public DataTable DataTable { get { return m_dataTable; } }
+        public DataView DataView { get { return m_dataView; } }
 
         public MainForm()
         {
@@ -32,6 +33,7 @@ namespace DBC_Viewer
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
 
+            Text = "DBC Viewer";
             dataGridView1.VirtualMode = false;
             dataGridView1.DataSource = null;
 
@@ -39,6 +41,7 @@ namespace DBC_Viewer
                 m_filterForm.Dispose();
 
             toolStripProgressBar1.Visible = true;
+            toolStripStatusLabel1.Text = "Loading...";
 
             backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
         }
@@ -74,11 +77,12 @@ namespace DBC_Viewer
                 val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)m_dataView[e.RowIndex][e.ColumnIndex], true) == 0 select k.Key).FirstOrDefault();
 
             var sb = new StringBuilder();
-            sb.AppendFormat(new BinaryFormatter(), "Integer: {0:D}{1}", val, Environment.NewLine);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "Integer: {0:D}{1}", val, Environment.NewLine);
             sb.AppendFormat(new BinaryFormatter(), "HEX: {0:X}{1}", val, Environment.NewLine);
             sb.AppendFormat(new BinaryFormatter(), "BIN: {0:B}{1}", val, Environment.NewLine);
-            sb.AppendFormat(new BinaryFormatter(), "Float: {0}{1}", BitConverter.ToSingle(BitConverter.GetBytes(val), 0), Environment.NewLine);
-            sb.AppendFormat(new BinaryFormatter(), "String: {0}{1}", m_reader.StringTable[val], Environment.NewLine);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "Float: {0}{1}", BitConverter.ToSingle(BitConverter.GetBytes(val), 0), Environment.NewLine);
+            //sb.AppendFormat(CultureInfo.InvariantCulture, "Double: {0}{1}", BitConverter.ToDouble(BitConverter.GetBytes(val), 0), Environment.NewLine);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "String: {0}{1}", m_reader.StringTable[(int)val], Environment.NewLine);
             e.ToolTipText = sb.ToString();
         }
 
@@ -104,25 +108,34 @@ namespace DBC_Viewer
         {
             var file = (string)e.Argument;
 
-            LoadDefinitions();
+            var definitions = new XmlDocument();
+            definitions.Load("dbclayout.xml");
+
+            XmlElement definition = definitions["DBFilesClient"][Path.GetFileNameWithoutExtension(file)];
+
+            if (definition == null)
+            {
+                var msg = String.Format("{0} missing definition!", Path.GetFileName(file));
+                ShowErrorMessageBox(msg);
+                e.Cancel = true;
+                return;
+            }
 
             if (Path.GetExtension(file).ToLowerInvariant() == ".dbc")
                 m_reader = new DBCReader(file);
             else
                 m_reader = new DB2Reader(file);
 
-            DBCName = Path.GetFileNameWithoutExtension(file);
+            XmlNodeList fields = definition.GetElementsByTagName("field");
 
-            XmlElement definition = m_definitions["DBFilesClient"][DBCName];
-
-            if (definition == null)
+            if (fields.Count != m_reader.FieldsCount)
             {
-                MessageBox.Show(DBCName + " missing definition!");
+                var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
+                ShowErrorMessageBox(msg);
                 e.Cancel = true;
                 return;
             }
 
-            XmlNodeList fields = definition.GetElementsByTagName("field");
             XmlNodeList indexes = definition.GetElementsByTagName("index");
 
             m_dataTable = new DataTable(Path.GetFileName(file));
@@ -189,6 +202,13 @@ namespace DBC_Viewer
                 int percent = (int)((float)m_dataTable.Rows.Count / (float)m_reader.RecordsCount * 100.0f);
                 (sender as BackgroundWorker).ReportProgress(percent);
             }
+
+            e.Result = file;
+        }
+
+        private void ShowErrorMessageBox(string msg)
+        {
+            MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void CreateIndexes(XmlNodeList indexes)
@@ -257,11 +277,22 @@ namespace DBC_Viewer
             toolStripProgressBar1.Visible = false;
             toolStripProgressBar1.Value = 0;
 
-            if (e.Cancelled == true)
-                return;
-
-            SetDataView(m_dataTable.DefaultView);
-            dataGridView1.VirtualMode = true;
+            if (e.Error != null)
+            {
+                ShowErrorMessageBox(e.Error.ToString());
+                toolStripStatusLabel1.Text = "Error.";
+            }
+            else if (e.Cancelled == true)
+            {
+                toolStripStatusLabel1.Text = "Error in definitions.";
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = "Ready.";
+                Text = String.Format("DBC Viewer - {0}", e.Result.ToString());
+                SetDataView(m_dataTable.DefaultView);
+                dataGridView1.VirtualMode = true;
+            }
         }
 
         private void filterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -290,12 +321,6 @@ namespace DBC_Viewer
             dataGridView1.DataSource = m_dataView;
 
             label2.Text = String.Format("Rows Displayed: {0}", m_dataView.Count);
-        }
-
-        void LoadDefinitions()
-        {
-            m_definitions = new XmlDocument();
-            m_definitions.Load("dbclayout.xml");
         }
     }
 }
