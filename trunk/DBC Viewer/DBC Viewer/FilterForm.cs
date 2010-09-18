@@ -5,27 +5,12 @@ using System.Windows.Forms;
 
 namespace DBC_Viewer
 {
-    struct FilterOptions
-    {
-        public string Col { get; set; }
-        public string Op { get; set; }
-        public string Val { get; set; }
-
-        public FilterOptions(string col, string op, string val)
-            : this()
-        {
-            Col = col;
-            Op = op;
-            Val = val;
-        }
-    }
-
     public partial class FilterForm : Form
     {
         EnumerableRowCollection<DataRow> m_filter;
-        Object[] decimalOperators;
-        Object[] stringOperators;
-        Object[] floatOperators;
+        Object[] decimalOperators = new Object[] { "&", "~&", "==", "!=", "<", ">" };
+        Object[] stringOperators = new Object[] { "==", "!=", "*__", "__*", "_*_" };
+        Object[] floatOperators = new Object[] { "==", "!=", "<", ">" };
         Dictionary<int, FilterOptions> m_filters = new Dictionary<int, FilterOptions>();
 
         public FilterForm()
@@ -38,17 +23,17 @@ namespace DBC_Viewer
             var dt = ((MainForm)Owner).DataTable;
 
             for (var i = 0; i < dt.Columns.Count; ++i)
-            {
                 listBox2.Items.Add(dt.Columns[i].ColumnName);
-            }
-
-            decimalOperators = new Object[] { "&", "~&", "==", "!=", "<", ">" };
-            stringOperators = new Object[] { "==", "!=", "*__", "__*", "_*_" };
-            floatOperators = new Object[] { "==", "!=", "<", ">" };
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(m_filters.Count == 0)
+            {
+                MessageBox.Show("Add filter(s) first!");
+                return;
+            }
+
             var owner = ((MainForm)Owner);
             var dt = owner.DataTable;
 
@@ -66,9 +51,6 @@ namespace DBC_Viewer
 
         private bool FilterTable(DataTable dt)
         {
-            if (m_filters.Count == 0)
-                return true;
-
             bool result = false;
             foreach (var filter in m_filters)
             {
@@ -162,8 +144,8 @@ namespace DBC_Viewer
             var op = (string)comboBox3.SelectedItem;
             var val = textBox2.Text;
 
-            var idx = listBox1.Items.Add(String.Format("{0} {1} {2}", colName, op, val));
-            m_filters[idx] = new FilterOptions(colName, op, val);
+            listBox1.Items.Add(String.Format("{0} {1} {2}", colName, op, val));
+            SyncFilters();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -171,12 +153,26 @@ namespace DBC_Viewer
             if (listBox1.SelectedIndex == -1)
                 return;
 
-            var idx = listBox1.SelectedIndex;
-            listBox1.Items.RemoveAt(idx);
-            m_filters.Remove(idx);
+            listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            SyncFilters();
 
             if (listBox1.Items.Count > 0)
                 listBox1.SelectedIndex = 0;
+        }
+
+        private void SyncFilters()
+        {
+            m_filters.Clear();
+
+            for (var i = 0; i < listBox1.Items.Count; ++i)
+            {
+                string filter = (string)listBox1.Items[i];
+                var args = filter.Split(' ');
+                if (args.Length != 3)
+                    throw new ArgumentException("We got a trouble!");
+
+                m_filters[i] = new FilterOptions(args[0], args[1], args[2]);
+            }
         }
     }
 }
