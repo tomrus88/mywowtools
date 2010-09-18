@@ -56,6 +56,7 @@
     <Compile Include="FilterForm.Designer.cs">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FilterOptions.cs" />
     <Compile Include="FilterPredicates.cs">
       <SubType>Form</SubType>
     </Compile>
