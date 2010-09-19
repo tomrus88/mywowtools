@@ -41,12 +41,25 @@ namespace DBC_Viewer
             if (m_filterForm != null)
                 m_filterForm.Dispose();
 
+            var definition = GetDefinition(openFileDialog1.FileName);
+
+            if (definition == null)
+            {
+                //StartEditor(definition);
+                return;
+            }
+
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Text = "Loading...";
 
-            var definition = GetDefinition(openFileDialog1.FileName);
-
             backgroundWorker1.RunWorkerAsync(new object[] { openFileDialog1.FileName, definition });
+        }
+
+        private void StartEditor(XmlElement def)
+        {
+            DefinitionEditor editor = new DefinitionEditor();
+            editor.SetDefinitions(def);
+            editor.ShowDialog(/*this*/);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -114,12 +127,6 @@ namespace DBC_Viewer
             var file = (string)arg[0];
             var definition = (XmlElement)arg[1]; ;
 
-            if (definition == null)
-            {
-                e.Cancel = true;
-                return;
-            }
-
             if (Path.GetExtension(file).ToLowerInvariant() == ".dbc")
                 m_reader = new DBCReader(file);
             else
@@ -131,6 +138,7 @@ namespace DBC_Viewer
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
+                //StartEditor(definition);
                 e.Cancel = true;
                 return;
             }
@@ -309,6 +317,7 @@ namespace DBC_Viewer
             else if (e.Cancelled == true)
             {
                 toolStripStatusLabel1.Text = "Error in definitions.";
+                //StartEditor(null);
             }
             else
             {
