@@ -23,6 +23,7 @@ namespace DBCViewer
         IWowClientDBReader m_reader;
         FilterForm m_filterForm;
         XmlDocument m_definitions;
+        DirectoryCatalog m_catalog;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
@@ -374,21 +375,9 @@ namespace DBCViewer
 
         private void Compose()
         {
-            var catalog = new DirectoryCatalog(Environment.CurrentDirectory);
-            var container = new CompositionContainer(catalog);
+            m_catalog = new DirectoryCatalog(Environment.CurrentDirectory);
+            var container = new CompositionContainer(m_catalog);
             container.ComposeParts(this);
-
-            //while (true)
-            //{
-            //    foreach (IPlugin plugin in Plugins)
-            //    {
-            //        plugin.Run(m_dataTable);
-            //    }
-
-            //    Console.ReadLine(); // Thread.Sleep(10);
-
-            //    catalog.Refresh();
-            //}
         }
 
         private void runPluginToolStripMenuItem_Click(object sender, EventArgs e)
@@ -398,6 +387,8 @@ namespace DBCViewer
                 ShowErrorMessageBox("Nothing loaded yet!");
                 return;
             }
+
+            m_catalog.Refresh();
 
             if (Plugins.Count == 0)
             {
