@@ -1,6 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id: dbclayout.xml 2010-18-09 0:13:00 TOM_RUS $ -->
 <DBFilesClient>
+  <Achievement build="12984">
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="uint" name="id" />
+    <field type="int" name="factionFlag" />
+    <field type="int" name="mapId" />
+    <field type="uint" name="parentAchievement" />
+    <field type="string" name="name" />
+    <field type="string" name="description" />
+    <field type="uint" name="categoryId" />
+    <field type="uint" name="rewardPoints" />
+    <field type="uint" name="OrderInCategory" />
+    <field type="uint" name="flags" />
+    <field type="uint" name="iconId" />
+    <field type="string" name="reward" />
+    <field type="uint" name="reqCriteriasCount" />
+    <field type="uint" name="refAchievement" />
+  </Achievement>
   <Achievement_Category build="12984">
     <index>
       <primary>id</primary>

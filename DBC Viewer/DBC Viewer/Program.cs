@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     static class Program
     {

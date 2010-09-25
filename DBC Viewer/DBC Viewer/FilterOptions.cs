@@ -1,5 +1,5 @@
 ﻿
-namespace DBC_Viewer
+namespace DBCViewer
 {
     struct FilterOptions
     {

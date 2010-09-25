@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     public class BinaryFormatter : IFormatProvider, ICustomFormatter
     {
