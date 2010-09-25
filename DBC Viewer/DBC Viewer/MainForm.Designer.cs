@@ -44,7 +44,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.exportToSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runPluginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -66,7 +66,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.exportToSQLToolStripMenuItem,
+            this.runPluginToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
@@ -201,12 +201,12 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
-            // exportToSQLToolStripMenuItem
+            // runPluginToolStripMenuItem
             // 
-            this.exportToSQLToolStripMenuItem.Name = "exportToSQLToolStripMenuItem";
-            this.exportToSQLToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.exportToSQLToolStripMenuItem.Text = "Export to SQL...";
-            this.exportToSQLToolStripMenuItem.Click += new System.EventHandler(this.exportToSQLToolStripMenuItem_Click);
+            this.runPluginToolStripMenuItem.Name = "runPluginToolStripMenuItem";
+            this.runPluginToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.runPluginToolStripMenuItem.Text = "Run plugin...";
+            this.runPluginToolStripMenuItem.Click += new System.EventHandler(this.runPluginToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -250,7 +250,7 @@
         private System.Windows.Forms.ToolStripMenuItem filterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetFilterToolStripMenuItem;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripMenuItem exportToSQLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runPluginToolStripMenuItem;
     }
 }
 

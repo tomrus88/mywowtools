@@ -12,11 +12,6 @@ namespace Export2SQL
     [Export(typeof(IPlugin))]
     public class Export2SQL : IPlugin
     {
-        public string Name
-        {
-            get { return "Export2SQL"; }
-        }
-
         public void Run(DataTable data)
         {
             StreamWriter sqlWriter = new StreamWriter(Path.GetFileNameWithoutExtension(data.TableName) + ".sql");

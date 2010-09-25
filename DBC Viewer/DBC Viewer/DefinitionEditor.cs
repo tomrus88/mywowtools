@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -7,6 +7,10 @@ namespace DBCViewer
 {
     public partial class DefinitionEditor : Form
     {
+        private ListViewItem.ListViewSubItem m_listViewSubItem;
+        private readonly string[] comboBoxItems1 = new string[] { "long", "ulong", "int", "uint", "short", "ushort", "sbyte", "byte", "float", "double", "string" };
+        private readonly string[] comboBoxItems2 = new string[] { "True", "False" };
+
         public DefinitionEditor()
         {
             InitializeComponent();
@@ -14,7 +18,6 @@ namespace DBCViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
             WriteXml("test");
             Close();
         }
@@ -32,41 +35,38 @@ namespace DBCViewer
             else
                 doc["DBFilesClient"].ReplaceChild(newnode, oldnode);
 
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (ListViewItem item in listView1.Items)
             {
-                if (row.Cells[0].Value != null && row.Cells[1].Value != null && row.Cells[2].Value != null && row.Cells[3].Value != null)
+                if (item.SubItems[2].Text == "True")
                 {
-                    if ((string)row.Cells[1].Value == String.Empty)
-                        continue;
-
-                    if ((bool)row.Cells[3].Value)
-                    {
-                        XmlElement index = doc.CreateElement("index");
-                        XmlNode primary = index.AppendChild(doc.CreateElement("primary"));
-                        primary.InnerText = (string)row.Cells[1].Value;
-                        doc["DBFilesClient"][name].AppendChild(index);
-                    }
-
-                    XmlElement ele = doc.CreateElement("field");
-                    ele.SetAttributeNode("type", "").Value = (string)row.Cells[2].Value;
-                    ele.SetAttributeNode("name", "").Value = (string)row.Cells[1].Value;
-                    doc["DBFilesClient"][name].AppendChild(ele);
+                    XmlElement index = doc.CreateElement("index");
+                    XmlNode primary = index.AppendChild(doc.CreateElement("primary"));
+                    primary.InnerText = item.SubItems[0].Text;
+                    doc["DBFilesClient"][name].AppendChild(index);
                 }
+
+                XmlElement ele = doc.CreateElement("field");
+                ele.SetAttributeNode("type", "").Value = item.SubItems[1].Text;
+                ele.SetAttributeNode("name", "").Value = item.SubItems[0].Text;
+                doc["DBFilesClient"][name].AppendChild(ele);
             }
             doc.Save("dbclayout_test.xml");
         }
 
         public void SetDefinitions(XmlElement def)
         {
+            if (def == null)
+                return;
+
             XmlNodeList fields = def.GetElementsByTagName("field");
             XmlNodeList indexes = def.GetElementsByTagName("index");
+
             foreach (XmlNode field in fields)
             {
-                var row = dataGridView1.Rows.Add();
-                ((DataGridViewCell)dataGridView1[0, row]).Value = row;
-                ((DataGridViewCell)dataGridView1[1, row]).Value = field.Attributes["name"].Value;
-                ((DataGridViewComboBoxCell)dataGridView1[2, row]).Value = field.Attributes["type"].Value;
-                ((DataGridViewCheckBoxCell)dataGridView1[3, row]).Value = IsIndexColumn(field.Attributes["name"].Value, indexes);
+                listView1.Items.Add(new ListViewItem(new string[] {
+                    field.Attributes["name"].Value,
+                    field.Attributes["type"].Value,
+                    IsIndexColumn(field.Attributes["name"].Value, indexes).ToString()}));
             }
         }
 
@@ -78,28 +78,124 @@ namespace DBCViewer
             return false;
         }
 
-        private void dataGridView1_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        private void listView1_DragDrop(object sender, DragEventArgs e)
         {
-            e.Row.Cells[0].Value = dataGridView1.Rows.Count;
-            e.Row.Cells[1].Value = "";
-            e.Row.Cells[2].Value = "int";
-            e.Row.Cells[3].Value = false;
-        }
+            Point point = listView1.PointToClient(new Point(e.X, e.Y));
+            ListViewItem dragToItem = listView1.GetItemAt(point.X, point.Y);
 
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex != 0 || e.RowIndex == -1)
+            if (dragToItem == null)
                 return;
 
-            try
+            ListViewItem dragFromItem = listView1.SelectedItems[0];
+
+            var dragToIndex = dragToItem.Index;
+            var dragFromIndex = dragFromItem.Index;
+
+            if (dragToIndex == dragFromIndex)
+                return;
+
+            if (dragFromIndex < dragToIndex)
+                dragToIndex++;
+
+            ListViewItem insertItem = (ListViewItem)dragFromItem.Clone();
+            listView1.Items.Insert(dragToIndex, insertItem);
+            listView1.Items.Remove(dragFromItem);
+        }
+
+        private void listView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            var item = listView1.GetItemAt(e.X, e.Y);
+            if (item != null)
             {
-                string val = Convert.ToString(dataGridView1[e.ColumnIndex, e.RowIndex].Value);
-                dataGridView1[e.ColumnIndex, e.RowIndex].Value = int.Parse(val);
+                var subItem = item.GetSubItemAt(e.X, e.Y);
+                if (item.SubItems.IndexOf(subItem) != 0)
+                    item.Selected = true;
             }
-            catch
+
+            if (e.Button == MouseButtons.Right && listView1.SelectedItems.Count > 0)
+                listView1.DoDragDrop(listView1.SelectedItems[0], DragDropEffects.Move);
+            else if (e.Button == MouseButtons.Left && comboBox1.Visible)
+                comboBox1.Visible = false;
+        }
+
+        private void listView1_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            m_listViewSubItem.Text = comboBox1.Text;        // Set text of ListView item
+
+            comboBox1.Visible = false;                      // Hide the combobox
+        }
+
+        private void comboBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)                   // Check if user pressed "ESC"
+                comboBox1.Visible = false;                  // Hide the combobox
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var item = listView1.GetItemAt(e.X, e.Y);       // Get the item that was clicked
+            m_listViewSubItem = item.GetSubItemAt(e.X, e.Y);// Get the sub item that was clicked
+
+            var column = item.SubItems.IndexOf(m_listViewSubItem);
+
+            switch (column)
             {
-                dataGridView1[e.ColumnIndex, e.RowIndex].Value = null;
+                case 0:                                     // name column without combobox
+                    item.BeginEdit();
+                    return;
+                case 1:
+                    comboBox1.Items.Clear();
+                    comboBox1.Items.AddRange(comboBoxItems1);
+                    break;
+                case 2:
+                    comboBox1.Items.Clear();
+                    comboBox1.Items.AddRange(comboBoxItems2);
+                    break;
+                default:
+                    break;
             }
+
+            if (m_listViewSubItem != null)                  // Check if an actual item was clicked
+            {
+                Rectangle ClickedItem = m_listViewSubItem.Bounds;   // Get the bounds of the item clicked
+
+                // Adjust the top and left of the control
+                ClickedItem.X += listView1.Left;
+                ClickedItem.Y += listView1.Top;
+
+                comboBox1.Bounds = ClickedItem;             // Set combobox bounds to match calculation
+
+                comboBox1.Text = m_listViewSubItem.Text;    // Set the default text for the combobox to be the clicked item's text
+
+                comboBox1.Visible = true;                   // Show the combobox
+                comboBox1.BringToFront();                   // Make sure it is on top
+                comboBox1.Focus();                          // Give focus to the combobox
+            }
+        }
+
+        private void listView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Delete || listView1.SelectedItems.Count == 0)
+                return;
+
+            var index = listView1.SelectedItems[0].Index;
+            listView1.Items.RemoveAt(index);
+
+            index = listView1.Items.Count > index ? index : listView1.Items.Count - 1;
+            if (index == -1)
+                return;
+
+            listView1.Items[index].Selected = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Add(new ListViewItem(new string[] { "newField", "int", "False" }));
         }
     }
 }

@@ -391,23 +391,30 @@ namespace DBCViewer
             //}
         }
 
-        private void RunPlugin(string name)
+        private void runPluginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (IPlugin plugin in Plugins)
+            if (m_dataTable == null)
             {
-                if (plugin.Name == name)
-                {
-                    plugin.Run(m_dataTable);
-                    return;
-                }
+                ShowErrorMessageBox("Nothing loaded yet!");
+                return;
             }
 
-            ShowErrorMessageBox("Plugin {0} not found!", name);
-        }
+            if (Plugins.Count == 0)
+            {
+                ShowErrorMessageBox("No plugins found!");
+                return;
+            }
 
-        private void exportToSQLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RunPlugin("Export2SQL");
+            PluginsForm selector = new PluginsForm();
+            selector.SetPlugins(Plugins);
+            var result = selector.ShowDialog(this);
+            if (result != DialogResult.OK || selector.PluginIndex == -1)
+            {
+                ShowErrorMessageBox("No plugin selected!");
+                return;
+            }
+
+            Plugins[selector.PluginIndex].Run(m_dataTable);
         }
     }
 }
