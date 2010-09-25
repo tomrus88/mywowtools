@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     partial class FilterForm
     {

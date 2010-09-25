@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Xml;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     public partial class DefinitionSelect : Form
     {

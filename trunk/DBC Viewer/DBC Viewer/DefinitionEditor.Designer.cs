@@ -1,4 +1,4 @@
-﻿namespace DBC_Viewer
+﻿namespace DBCViewer
 {
     partial class DefinitionEditor
     {

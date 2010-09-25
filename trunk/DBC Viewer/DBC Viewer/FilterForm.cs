@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     public partial class FilterForm : Form
     {

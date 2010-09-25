@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -8,8 +11,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using dbc2sql;
+using PluginInterface;
 
-namespace DBC_Viewer
+namespace DBCViewer
 {
     public partial class MainForm : Form
     {
@@ -23,6 +27,9 @@ namespace DBC_Viewer
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
         public DataView DataView { get { return m_dataView; } }
+
+        [ImportMany(AllowRecomposition = true)]
+        List<IPlugin> Plugins { get; set; }
 
         public MainForm()
         {
@@ -238,8 +245,9 @@ namespace DBC_Viewer
             }
         }
 
-        private void ShowErrorMessageBox(string msg)
+        private void ShowErrorMessageBox(string format, params object[] args)
         {
+            var msg = String.Format(format, args);
             MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -360,6 +368,46 @@ namespace DBC_Viewer
         {
             m_definitions = new XmlDocument();
             m_definitions.Load("dbclayout.xml");
+
+            Compose();
+        }
+
+        private void Compose()
+        {
+            var catalog = new DirectoryCatalog(Environment.CurrentDirectory);
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
+
+            //while (true)
+            //{
+            //    foreach (IPlugin plugin in Plugins)
+            //    {
+            //        plugin.Run(m_dataTable);
+            //    }
+
+            //    Console.ReadLine(); // Thread.Sleep(10);
+
+            //    catalog.Refresh();
+            //}
+        }
+
+        private void RunPlugin(string name)
+        {
+            foreach (IPlugin plugin in Plugins)
+            {
+                if (plugin.Name == name)
+                {
+                    plugin.Run(m_dataTable);
+                    return;
+                }
+            }
+
+            ShowErrorMessageBox("Plugin {0} not found!", name);
+        }
+
+        private void exportToSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RunPlugin("Export2SQL");
         }
     }
 }
