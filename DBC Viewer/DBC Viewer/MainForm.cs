@@ -142,6 +142,7 @@ namespace DBCViewer
 
             XmlNodeList fields = definition.GetElementsByTagName("field");
 
+            // TODO: fix this for fields with length != 4 bytes
             if (fields.Count != m_reader.FieldsCount)
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
@@ -353,6 +354,9 @@ namespace DBCViewer
         {
             if (m_dataTable == null)
                 return;
+
+            if (m_filterForm != null)
+                m_filterForm.ResetFilters();
 
             SetDataView(m_dataTable.DefaultView);
         }
