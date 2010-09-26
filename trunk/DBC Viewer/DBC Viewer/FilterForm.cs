@@ -188,5 +188,11 @@ namespace DBCViewer
                 m_filters[i] = new FilterOptions(args[0], args[1], args[2]);
             }
         }
+
+        public void ResetFilters()
+        {
+            listBox1.Items.Clear();
+            SyncFilters();
+        }
     }
 }
