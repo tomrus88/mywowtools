@@ -312,6 +312,15 @@ namespace DBCViewer
             }
         }
 
+        private void columnsFilterEventHandler(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            dataGridView1.Columns[item.Name].Visible = !item.Checked;
+
+            ((ToolStripMenuItem)item.OwnerItem).ShowDropDown();
+        }
+
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             toolStripProgressBar1.Value = e.ProgressPercentage;
@@ -338,6 +347,27 @@ namespace DBCViewer
                 Text = String.Format("DBC Viewer - {0}", e.Result.ToString());
                 SetDataView(m_dataTable.DefaultView);
                 dataGridView1.VirtualMode = true;
+                InitColumnsFilter();
+            }
+        }
+
+        private void InitColumnsFilter()
+        {
+            XmlNodeList fields = m_definition.GetElementsByTagName("field");
+            columnsFilterToolStripMenuItem.DropDownItems.Clear();
+
+            foreach (XmlElement field in fields)
+            {
+                var colName = field.Attributes["name"].Value;
+                var visible = field.Attributes["visible"] != null ? field.Attributes["visible"].Value == "true" : true;
+
+                var item = new ToolStripMenuItem(colName);
+                item.Click += new EventHandler(columnsFilterEventHandler);
+                item.CheckOnClick = true;
+                item.Name = colName;
+                item.Checked = !visible;
+                dataGridView1.Columns[colName].Visible = visible;
+                columnsFilterToolStripMenuItem.DropDownItems.Add(item);
             }
         }
 
@@ -426,6 +456,15 @@ namespace DBCViewer
             var fmtStr = "{0:" + attribute.Value + "}";
             e.Value = String.Format(new BinaryFormatter(), fmtStr, e.Value);
             e.FormattingApplied = true;
+        }
+
+        private void resetColumnsFilterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                col.Visible = true;
+                ((ToolStripMenuItem)columnsFilterToolStripMenuItem.DropDownItems[col.Name]).Checked = false;
+            }
         }
     }
 }
