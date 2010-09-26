@@ -114,7 +114,7 @@
     <field type="string" name="m_description_lang_16"/>
     <field type="uint" name="m_description_flag"/>
   </Faction>
-  <FactionTemplate>
+  <FactionTemplate build="12340">
     <index>
       <primary>m_ID</primary>
     </index>
