@@ -360,6 +360,7 @@ namespace DBCViewer
             {
                 var colName = field.Attributes["name"].Value;
                 var visible = field.Attributes["visible"] != null ? field.Attributes["visible"].Value == "true" : true;
+                var width = field.Attributes["width"] != null ? Convert.ToInt32(field.Attributes["width"].Value) : 100;
 
                 var item = new ToolStripMenuItem(colName);
                 item.Click += new EventHandler(columnsFilterEventHandler);
@@ -367,6 +368,7 @@ namespace DBCViewer
                 item.Name = colName;
                 item.Checked = !visible;
                 dataGridView1.Columns[colName].Visible = visible;
+                dataGridView1.Columns[colName].Width = width;
                 columnsFilterToolStripMenuItem.DropDownItems.Add(item);
             }
         }
