@@ -819,7 +819,7 @@
     <field type="float" name="pos_x" />
     <field type="float" name="pos_y" />
     <field type="float" name="pos_z" />
-    <field type="string" name="m_name_lang_1" />
+    <field type="string" name="m_name_lang_1" width="300" />
     <field type="string" name="m_name_lang_2" visible="false" />
     <field type="string" name="m_name_lang_3" visible="false" />
     <field type="string" name="m_name_lang_4" visible="false" />
