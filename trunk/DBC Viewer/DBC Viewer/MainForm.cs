@@ -145,8 +145,7 @@ namespace DBCViewer
 
             XmlNodeList fields = definition.GetElementsByTagName("field");
 
-            // TODO: fix this for fields with length != 4 bytes
-            if (fields.Count != m_reader.FieldsCount)
+            if (GetFieldsCount(fields) != m_reader.FieldsCount)
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
@@ -172,7 +171,7 @@ namespace DBCViewer
                 var dataRow = m_dataTable.NewRow();
 
                 // Add cells
-                for (var j = 0; j < m_reader.FieldsCount; ++j)
+                for (var j = 0; j < fields.Count; ++j)
                 {
                     var colName = m_dataTable.Columns[j].ColumnName;
 
@@ -467,6 +466,26 @@ namespace DBCViewer
                 col.Visible = true;
                 ((ToolStripMenuItem)columnsFilterToolStripMenuItem.DropDownItems[col.Name]).Checked = false;
             }
+        }
+
+        private static int GetFieldsCount(XmlNodeList fields)
+        {
+            int count = 0;
+            foreach (XmlElement field in fields)
+            {
+                switch (field.Attributes["type"].Value)
+                {
+                    case "long":
+                    case "ulong":
+                    case "double":
+                        count += 2;
+                        break;
+                    default:
+                        count++;
+                        break;
+                }
+            }
+            return count;
         }
     }
 }
