@@ -390,10 +390,8 @@
     <field type="uint" name="m_attributesExE"/>
     <field type="uint" name="m_attributesExF"/>
     <field type="uint" name="m_attributesExG"/>
-    <field type="uint" name="m_shapeshiftMask1"/>
-    <field type="uint" name="m_shapeshiftMask2"/>
-    <field type="uint" name="m_shapeshiftExclude1"/>
-    <field type="uint" name="m_shapeshiftExclude2"/>
+    <field type="ulong" name="m_shapeshiftMask"/>
+    <field type="ulong" name="m_shapeshiftExclude"/>
     <field type="uint" name="m_targets"/>
     <field type="uint" name="m_targetCreatureType"/>
     <field type="uint" name="m_requiresSpellFocus"/>
