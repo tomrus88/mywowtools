@@ -80,39 +80,39 @@
     <field type="uint" name="spilloverMaxRank"/>
     <field type="uint" name="spilloverRank_unk"/>
     <field type="string" name="m_name_lang_1"/>
-    <field type="string" name="m_name_lang_2"/>
-    <field type="string" name="m_name_lang_3"/>
-    <field type="string" name="m_name_lang_4"/>
-    <field type="string" name="m_name_lang_5"/>
-    <field type="string" name="m_name_lang_6"/>
-    <field type="string" name="m_name_lang_7"/>
-    <field type="string" name="m_name_lang_8"/>
-    <field type="string" name="m_name_lang_9"/>
-    <field type="string" name="m_name_lang_10"/>
-    <field type="string" name="m_name_lang_11"/>
-    <field type="string" name="m_name_lang_12"/>
-    <field type="string" name="m_name_lang_13"/>
-    <field type="string" name="m_name_lang_14"/>
-    <field type="string" name="m_name_lang_15"/>
-    <field type="string" name="m_name_lang_16"/>
-    <field type="uint" name="m_name_flag"/>
+    <field type="string" name="m_name_lang_2" visible="false" />
+    <field type="string" name="m_name_lang_3" visible="false" />
+    <field type="string" name="m_name_lang_4" visible="false" />
+    <field type="string" name="m_name_lang_5" visible="false" />
+    <field type="string" name="m_name_lang_6" visible="false" />
+    <field type="string" name="m_name_lang_7" visible="false" />
+    <field type="string" name="m_name_lang_8" visible="false" />
+    <field type="string" name="m_name_lang_9" visible="false" />
+    <field type="string" name="m_name_lang_10" visible="false" />
+    <field type="string" name="m_name_lang_11" visible="false" />
+    <field type="string" name="m_name_lang_12" visible="false" />
+    <field type="string" name="m_name_lang_13" visible="false" />
+    <field type="string" name="m_name_lang_14" visible="false" />
+    <field type="string" name="m_name_lang_15" visible="false" />
+    <field type="string" name="m_name_lang_16" visible="false" />
+    <field type="uint" name="m_name_flag" visible="false" />
     <field type="string" name="m_description_lang_1"/>
-    <field type="string" name="m_description_lang_2"/>
-    <field type="string" name="m_description_lang_3"/>
-    <field type="string" name="m_description_lang_4"/>
-    <field type="string" name="m_description_lang_5"/>
-    <field type="string" name="m_description_lang_6"/>
-    <field type="string" name="m_description_lang_7"/>
-    <field type="string" name="m_description_lang_8"/>
-    <field type="string" name="m_description_lang_9"/>
-    <field type="string" name="m_description_lang_10"/>
-    <field type="string" name="m_description_lang_11"/>
-    <field type="string" name="m_description_lang_12"/>
-    <field type="string" name="m_description_lang_13"/>
-    <field type="string" name="m_description_lang_14"/>
-    <field type="string" name="m_description_lang_15"/>
-    <field type="string" name="m_description_lang_16"/>
-    <field type="uint" name="m_description_flag"/>
+    <field type="string" name="m_description_lang_2" visible="false" />
+    <field type="string" name="m_description_lang_3" visible="false" />
+    <field type="string" name="m_description_lang_4" visible="false" />
+    <field type="string" name="m_description_lang_5" visible="false" />
+    <field type="string" name="m_description_lang_6" visible="false" />
+    <field type="string" name="m_description_lang_7" visible="false" />
+    <field type="string" name="m_description_lang_8" visible="false" />
+    <field type="string" name="m_description_lang_9" visible="false" />
+    <field type="string" name="m_description_lang_10" visible="false" />
+    <field type="string" name="m_description_lang_11" visible="false" />
+    <field type="string" name="m_description_lang_12" visible="false" />
+    <field type="string" name="m_description_lang_13" visible="false" />
+    <field type="string" name="m_description_lang_14" visible="false" />
+    <field type="string" name="m_description_lang_15" visible="false" />
+    <field type="string" name="m_description_lang_16" visible="false" />
+    <field type="uint" name="m_description_flag" visible="false" />
   </Faction>
   <FactionTemplate build="12340">
     <index>
@@ -513,73 +513,73 @@
     <field type="uint" name="m_activeIconID"/>
     <field type="uint" name="m_spellPriority"/>
     <field type="string" name="m_name_lang_1"/>
-    <field type="string" name="m_name_lang_2"/>
-    <field type="string" name="m_name_lang_3"/>
-    <field type="string" name="m_name_lang_4"/>
-    <field type="string" name="m_name_lang_5"/>
-    <field type="string" name="m_name_lang_6"/>
-    <field type="string" name="m_name_lang_7"/>
-    <field type="string" name="m_name_lang_8"/>
-    <field type="string" name="m_name_lang_9"/>
-    <field type="string" name="m_name_lang_10"/>
-    <field type="string" name="m_name_lang_11"/>
-    <field type="string" name="m_name_lang_12"/>
-    <field type="string" name="m_name_lang_13"/>
-    <field type="string" name="m_name_lang_14"/>
-    <field type="string" name="m_name_lang_15"/>
-    <field type="string" name="m_name_lang_16"/>
-    <field type="uint" name="m_name_flag"/>
+    <field type="string" name="m_name_lang_2" visible="false" />
+    <field type="string" name="m_name_lang_3" visible="false" />
+    <field type="string" name="m_name_lang_4" visible="false" />
+    <field type="string" name="m_name_lang_5" visible="false" />
+    <field type="string" name="m_name_lang_6" visible="false" />
+    <field type="string" name="m_name_lang_7" visible="false" />
+    <field type="string" name="m_name_lang_8" visible="false" />
+    <field type="string" name="m_name_lang_9" visible="false" />
+    <field type="string" name="m_name_lang_10" visible="false" />
+    <field type="string" name="m_name_lang_11" visible="false" />
+    <field type="string" name="m_name_lang_12" visible="false" />
+    <field type="string" name="m_name_lang_13" visible="false" />
+    <field type="string" name="m_name_lang_14" visible="false" />
+    <field type="string" name="m_name_lang_15" visible="false" />
+    <field type="string" name="m_name_lang_16" visible="false" />
+    <field type="uint" name="m_name_flag" visible="false" />
     <field type="string" name="m_nameSubtext_lang_1"/>
-    <field type="string" name="m_nameSubtext_lang_2"/>
-    <field type="string" name="m_nameSubtext_lang_3"/>
-    <field type="string" name="m_nameSubtext_lang_4"/>
-    <field type="string" name="m_nameSubtext_lang_5"/>
-    <field type="string" name="m_nameSubtext_lang_6"/>
-    <field type="string" name="m_nameSubtext_lang_7"/>
-    <field type="string" name="m_nameSubtext_lang_8"/>
-    <field type="string" name="m_nameSubtext_lang_9"/>
-    <field type="string" name="m_nameSubtext_lang_10"/>
-    <field type="string" name="m_nameSubtext_lang_11"/>
-    <field type="string" name="m_nameSubtext_lang_12"/>
-    <field type="string" name="m_nameSubtext_lang_13"/>
-    <field type="string" name="m_nameSubtext_lang_14"/>
-    <field type="string" name="m_nameSubtext_lang_15"/>
-    <field type="string" name="m_nameSubtext_lang_16"/>
-    <field type="uint" name="m_nameSubtext_flag"/>
+    <field type="string" name="m_nameSubtext_lang_2" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_3" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_4" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_5" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_6" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_7" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_8" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_9" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_10" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_11" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_12" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_13" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_14" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_15" visible="false" />
+    <field type="string" name="m_nameSubtext_lang_16" visible="false" />
+    <field type="uint" name="m_nameSubtext_flag" visible="false" />
     <field type="string" name="m_description_lang_1"/>
-    <field type="string" name="m_description_lang_2"/>
-    <field type="string" name="m_description_lang_3"/>
-    <field type="string" name="m_description_lang_4"/>
-    <field type="string" name="m_description_lang_5"/>
-    <field type="string" name="m_description_lang_6"/>
-    <field type="string" name="m_description_lang_7"/>
-    <field type="string" name="m_description_lang_8"/>
-    <field type="string" name="m_description_lang_9"/>
-    <field type="string" name="m_description_lang_10"/>
-    <field type="string" name="m_description_lang_11"/>
-    <field type="string" name="m_description_lang_12"/>
-    <field type="string" name="m_description_lang_13"/>
-    <field type="string" name="m_description_lang_14"/>
-    <field type="string" name="m_description_lang_15"/>
-    <field type="string" name="m_description_lang_16"/>
-    <field type="uint" name="m_description_flag"/>
+    <field type="string" name="m_description_lang_2" visible="false" />
+    <field type="string" name="m_description_lang_3" visible="false" />
+    <field type="string" name="m_description_lang_4" visible="false" />
+    <field type="string" name="m_description_lang_5" visible="false" />
+    <field type="string" name="m_description_lang_6" visible="false" />
+    <field type="string" name="m_description_lang_7" visible="false" />
+    <field type="string" name="m_description_lang_8" visible="false" />
+    <field type="string" name="m_description_lang_9" visible="false" />
+    <field type="string" name="m_description_lang_10" visible="false" />
+    <field type="string" name="m_description_lang_11" visible="false" />
+    <field type="string" name="m_description_lang_12" visible="false" />
+    <field type="string" name="m_description_lang_13" visible="false" />
+    <field type="string" name="m_description_lang_14" visible="false" />
+    <field type="string" name="m_description_lang_15" visible="false" />
+    <field type="string" name="m_description_lang_16" visible="false" />
+    <field type="uint" name="m_description_flag" visible="false" />
     <field type="string" name="m_auraDescription_lang_1"/>
-    <field type="string" name="m_auraDescription_lang_2"/>
-    <field type="string" name="m_auraDescription_lang_3"/>
-    <field type="string" name="m_auraDescription_lang_4"/>
-    <field type="string" name="m_auraDescription_lang_5"/>
-    <field type="string" name="m_auraDescription_lang_6"/>
-    <field type="string" name="m_auraDescription_lang_7"/>
-    <field type="string" name="m_auraDescription_lang_8"/>
-    <field type="string" name="m_auraDescription_lang_9"/>
-    <field type="string" name="m_auraDescription_lang_10"/>
-    <field type="string" name="m_auraDescription_lang_11"/>
-    <field type="string" name="m_auraDescription_lang_12"/>
-    <field type="string" name="m_auraDescription_lang_13"/>
-    <field type="string" name="m_auraDescription_lang_14"/>
-    <field type="string" name="m_auraDescription_lang_15"/>
-    <field type="string" name="m_auraDescription_lang_16"/>
-    <field type="uint" name="m_auraDescription_flag"/>
+    <field type="string" name="m_auraDescription_lang_2" visible="false" />
+    <field type="string" name="m_auraDescription_lang_3" visible="false" />
+    <field type="string" name="m_auraDescription_lang_4" visible="false" />
+    <field type="string" name="m_auraDescription_lang_5" visible="false" />
+    <field type="string" name="m_auraDescription_lang_6" visible="false" />
+    <field type="string" name="m_auraDescription_lang_7" visible="false" />
+    <field type="string" name="m_auraDescription_lang_8" visible="false" />
+    <field type="string" name="m_auraDescription_lang_9" visible="false" />
+    <field type="string" name="m_auraDescription_lang_10" visible="false" />
+    <field type="string" name="m_auraDescription_lang_11" visible="false" />
+    <field type="string" name="m_auraDescription_lang_12" visible="false" />
+    <field type="string" name="m_auraDescription_lang_13" visible="false" />
+    <field type="string" name="m_auraDescription_lang_14" visible="false" />
+    <field type="string" name="m_auraDescription_lang_15" visible="false" />
+    <field type="string" name="m_auraDescription_lang_16" visible="false" />
+    <field type="uint" name="m_auraDescription_flag" visible="false" />
     <field type="uint" name="m_manaCostPct"/>
     <field type="uint" name="m_startRecoveryCategory"/>
     <field type="uint" name="m_startRecoveryTime"/>
