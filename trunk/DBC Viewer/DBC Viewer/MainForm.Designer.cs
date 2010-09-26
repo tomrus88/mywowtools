@@ -45,6 +45,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.columnsFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetColumnsFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -97,7 +99,9 @@
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filterToolStripMenuItem,
-            this.resetFilterToolStripMenuItem});
+            this.resetFilterToolStripMenuItem,
+            this.columnsFilterToolStripMenuItem,
+            this.resetColumnsFilterToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -152,7 +156,6 @@
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.MultiSelect = false;
@@ -209,6 +212,19 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // columnsFilterToolStripMenuItem
+            // 
+            this.columnsFilterToolStripMenuItem.Name = "columnsFilterToolStripMenuItem";
+            this.columnsFilterToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.columnsFilterToolStripMenuItem.Text = "Columns Filter...";
+            // 
+            // resetColumnsFilterToolStripMenuItem
+            // 
+            this.resetColumnsFilterToolStripMenuItem.Name = "resetColumnsFilterToolStripMenuItem";
+            this.resetColumnsFilterToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.resetColumnsFilterToolStripMenuItem.Text = "Reset Columns Filter";
+            this.resetColumnsFilterToolStripMenuItem.Click += new System.EventHandler(this.resetColumnsFilterToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -252,6 +268,8 @@
         private System.Windows.Forms.ToolStripMenuItem resetFilterToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolStripMenuItem runPluginToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem columnsFilterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetColumnsFilterToolStripMenuItem;
     }
 }
 

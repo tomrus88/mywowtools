@@ -820,21 +820,21 @@
     <field type="float" name="pos_y" />
     <field type="float" name="pos_z" />
     <field type="string" name="m_name_lang_1" />
-    <field type="string" name="m_name_lang_2" />
-    <field type="string" name="m_name_lang_3" />
-    <field type="string" name="m_name_lang_4" />
-    <field type="string" name="m_name_lang_5" />
-    <field type="string" name="m_name_lang_6" />
-    <field type="string" name="m_name_lang_7" />
-    <field type="string" name="m_name_lang_8" />
-    <field type="string" name="m_name_lang_9" />
-    <field type="string" name="m_name_lang_10" />
-    <field type="string" name="m_name_lang_11" />
-    <field type="string" name="m_name_lang_12" />
-    <field type="string" name="m_name_lang_13" />
-    <field type="string" name="m_name_lang_14" />
-    <field type="string" name="m_name_lang_15" />
-    <field type="string" name="m_name_lang_16" />
-    <field type="int" name="m_name_lang_flags" />
+    <field type="string" name="m_name_lang_2" visible="false" />
+    <field type="string" name="m_name_lang_3" visible="false" />
+    <field type="string" name="m_name_lang_4" visible="false" />
+    <field type="string" name="m_name_lang_5" visible="false" />
+    <field type="string" name="m_name_lang_6" visible="false" />
+    <field type="string" name="m_name_lang_7" visible="false" />
+    <field type="string" name="m_name_lang_8" visible="false" />
+    <field type="string" name="m_name_lang_9" visible="false" />
+    <field type="string" name="m_name_lang_10" visible="false" />
+    <field type="string" name="m_name_lang_11" visible="false" />
+    <field type="string" name="m_name_lang_12" visible="false" />
+    <field type="string" name="m_name_lang_13" visible="false" />
+    <field type="string" name="m_name_lang_14" visible="false" />
+    <field type="string" name="m_name_lang_15" visible="false" />
+    <field type="string" name="m_name_lang_16" visible="false" />
+    <field type="int" name="m_name_lang_flags" visible="false" />
   </WorldSafeLocs>
 </DBFilesClient>
