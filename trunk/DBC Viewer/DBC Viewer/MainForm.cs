@@ -24,6 +24,7 @@ namespace DBCViewer
         FilterForm m_filterForm;
         XmlDocument m_definitions;
         DirectoryCatalog m_catalog;
+        XmlElement m_definition;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
@@ -49,18 +50,18 @@ namespace DBCViewer
             if (m_filterForm != null)
                 m_filterForm.Dispose();
 
-            var definition = GetDefinition(openFileDialog1.FileName);
+            m_definition = GetDefinition(openFileDialog1.FileName);
 
-            if (definition == null)
+            if (m_definition == null)
             {
-                //StartEditor(definition);
+                //StartEditor(m_definition);
                 return;
             }
 
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Text = "Loading...";
 
-            backgroundWorker1.RunWorkerAsync(new object[] { openFileDialog1.FileName, definition });
+            backgroundWorker1.RunWorkerAsync(new object[] { openFileDialog1.FileName, m_definition });
         }
 
         private void StartEditor(XmlElement def)
@@ -94,6 +95,8 @@ namespace DBCViewer
             {
                 if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(int))
                     val = Convert.ToInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
+                else if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(float))
+                    val = (int)BitConverter.ToUInt32(BitConverter.GetBytes((float)m_dataView[e.RowIndex][e.ColumnIndex]), 0);
                 else
                     val = (int)Convert.ToUInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
             }
@@ -147,7 +150,7 @@ namespace DBCViewer
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
-                //StartEditor(definition);
+                //StartEditor(m_definition);
                 e.Cancel = true;
                 return;
             }
@@ -327,7 +330,7 @@ namespace DBCViewer
             else if (e.Cancelled == true)
             {
                 toolStripStatusLabel1.Text = "Error in definitions.";
-                //StartEditor(null);
+                //StartEditor(m_definition);
             }
             else
             {
@@ -410,6 +413,19 @@ namespace DBCViewer
             }
 
             Plugins[selector.PluginIndex].Run(m_dataTable);
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            XmlNodeList fields = m_definition.GetElementsByTagName("field");
+            var attribute = fields[e.ColumnIndex].Attributes["format"];
+
+            if (attribute == null)
+                return;
+
+            var fmtStr = "{0:" + attribute.Value + "}";
+            e.Value = String.Format(new BinaryFormatter(), fmtStr, e.Value);
+            e.FormattingApplied = true;
         }
     }
 }
