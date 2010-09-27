@@ -54,6 +54,7 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
+            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.LabelEdit = true;
@@ -74,6 +75,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 100;
             // 
             // columnHeader2
             // 
@@ -82,6 +84,7 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "Index";
+            this.columnHeader3.Width = 65;
             // 
             // comboBox1
             // 
@@ -126,8 +129,11 @@
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DefinitionEditor";
-            this.Text = "DefinitionEditor";
+            this.Text = "Definition Editor";
             this.ResumeLayout(false);
 
         }
