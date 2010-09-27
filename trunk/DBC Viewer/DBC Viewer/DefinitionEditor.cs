@@ -10,6 +10,7 @@ namespace DBCViewer
         private ListViewItem.ListViewSubItem m_listViewSubItem;
         private readonly string[] comboBoxItems1 = new string[] { "long", "ulong", "int", "uint", "short", "ushort", "sbyte", "byte", "float", "double", "string" };
         private readonly string[] comboBoxItems2 = new string[] { "True", "False" };
+        private string m_name;
 
         public DefinitionEditor()
         {
@@ -18,17 +19,19 @@ namespace DBCViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            WriteXml("test");
+            WriteXml();
             Close();
+            MessageBox.Show("Reopen the file to check new definition!");
         }
 
-        private void WriteXml(string name)
+        private void WriteXml()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("dbclayout.xml");
 
-            XmlNode oldnode = doc["DBFilesClient"][name];
-            XmlElement newnode = doc.CreateElement(name);
+            XmlNode oldnode = doc["DBFilesClient"][m_name];
+            XmlElement newnode = doc.CreateElement(m_name);
+            newnode.SetAttributeNode("build", "").Value = "0";
 
             if (oldnode == null)
                 doc["DBFilesClient"].AppendChild(newnode);
@@ -42,19 +45,21 @@ namespace DBCViewer
                     XmlElement index = doc.CreateElement("index");
                     XmlNode primary = index.AppendChild(doc.CreateElement("primary"));
                     primary.InnerText = item.SubItems[0].Text;
-                    doc["DBFilesClient"][name].AppendChild(index);
+                    doc["DBFilesClient"][m_name].AppendChild(index);
                 }
 
                 XmlElement ele = doc.CreateElement("field");
                 ele.SetAttributeNode("type", "").Value = item.SubItems[1].Text;
                 ele.SetAttributeNode("name", "").Value = item.SubItems[0].Text;
-                doc["DBFilesClient"][name].AppendChild(ele);
+                doc["DBFilesClient"][m_name].AppendChild(ele);
             }
-            doc.Save("dbclayout_test.xml");
+            doc.Save("dbclayout.xml");
         }
 
-        public void SetDefinitions(XmlElement def)
+        public void SetDefinitions(string name, XmlElement def)
         {
+            m_name = name;
+
             if (def == null)
                 return;
 

@@ -25,6 +25,7 @@ namespace DBCViewer
         XmlDocument m_definitions;
         DirectoryCatalog m_catalog;
         XmlElement m_definition;
+        string m_dbcName;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
@@ -50,24 +51,26 @@ namespace DBCViewer
             if (m_filterForm != null)
                 m_filterForm.Dispose();
 
-            m_definition = GetDefinition(openFileDialog1.FileName);
+            m_dbcName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+
+            m_definition = GetDefinition();
 
             if (m_definition == null)
             {
-                //StartEditor(m_definition);
+                StartEditor();
                 return;
             }
 
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Text = "Loading...";
 
-            backgroundWorker1.RunWorkerAsync(new object[] { openFileDialog1.FileName, m_definition });
+            backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
         }
 
-        private void StartEditor(XmlElement def)
+        private void StartEditor()
         {
             DefinitionEditor editor = new DefinitionEditor();
-            editor.SetDefinitions(def);
+            editor.SetDefinitions(m_dbcName, m_definition);
             editor.ShowDialog(/*this*/);
         }
 
@@ -144,10 +147,8 @@ namespace DBCViewer
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            object[] arg = (object[])e.Argument;
-
-            var file = (string)arg[0];
-            var definition = (XmlElement)arg[1]; ;
+            var file = (string)e.Argument;
+            var definition = m_definition;
 
             if (Path.GetExtension(file).ToLowerInvariant() == ".dbc")
                 m_reader = new DBCReader(file);
@@ -160,7 +161,7 @@ namespace DBCViewer
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
-                //StartEditor(m_definition);
+                StartEditor();
                 e.Cancel = true;
                 return;
             }
@@ -235,13 +236,13 @@ namespace DBCViewer
             e.Result = file;
         }
 
-        private XmlElement GetDefinition(string file)
+        private XmlElement GetDefinition()
         {
-            XmlNodeList definitions = m_definitions["DBFilesClient"].GetElementsByTagName(Path.GetFileNameWithoutExtension(file));
+            XmlNodeList definitions = m_definitions["DBFilesClient"].GetElementsByTagName(m_dbcName);
 
             if (definitions.Count == 0)
             {
-                var msg = String.Format("{0} missing definition!", Path.GetFileName(file));
+                var msg = String.Format("{0} missing definition!", m_dbcName);
                 ShowErrorMessageBox(msg);
                 return null;
             }
@@ -349,7 +350,7 @@ namespace DBCViewer
             else if (e.Cancelled == true)
             {
                 toolStripStatusLabel1.Text = "Error in definitions.";
-                //StartEditor(m_definition);
+                StartEditor();
             }
             else
             {
