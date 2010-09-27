@@ -382,14 +382,14 @@
     <field type="uint" name="m_category"/>
     <field type="uint" name="m_dispelType"/>
     <field type="uint" name="m_mechanic"/>
-    <field type="uint" name="m_attributes"/>
-    <field type="uint" name="m_attributesEx"/>
-    <field type="uint" name="m_attributesExB"/>
-    <field type="uint" name="m_attributesExC"/>
-    <field type="uint" name="m_attributesExD"/>
-    <field type="uint" name="m_attributesExE"/>
-    <field type="uint" name="m_attributesExF"/>
-    <field type="uint" name="m_attributesExG"/>
+    <field type="uint" name="m_attributes" format="X8" />
+    <field type="uint" name="m_attributesEx" format="X8" />
+    <field type="uint" name="m_attributesExB" format="X8" />
+    <field type="uint" name="m_attributesExC" format="X8" />
+    <field type="uint" name="m_attributesExD" format="X8" />
+    <field type="uint" name="m_attributesExE" format="X8" />
+    <field type="uint" name="m_attributesExF" format="X8" />
+    <field type="uint" name="m_attributesExG" format="X8" />
     <field type="ulong" name="m_shapeshiftMask"/>
     <field type="ulong" name="m_shapeshiftExclude"/>
     <field type="uint" name="m_targets"/>

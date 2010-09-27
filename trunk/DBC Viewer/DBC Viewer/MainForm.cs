@@ -121,14 +121,25 @@ namespace DBCViewer
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            var col = dataGridView1.Columns[e.ColumnIndex].Name;
+            //var col = dataGridView1.Columns[e.ColumnIndex].Name;
 
-            if (dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection != SortOrder.Ascending)
-                m_dataView.Sort = String.Format("[{0}] asc", col);
-            else
-                m_dataView.Sort = String.Format("[{0}] desc", col);
+            //if (e.Button == MouseButtons.Left)
+            //    return;
 
-            SetDataView(m_dataView);
+            //if (dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection != SortOrder.Descending)
+            //{
+            //    dataGridView1.Sort(dataGridView1.Columns[e.ColumnIndex], ListSortDirection.Descending);
+            //    //dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = SortOrder.Descending;
+            //    m_dataView.Sort = String.Format("[{0}] desc", col);
+            //}
+            //else
+            //{
+            //    dataGridView1.Sort(dataGridView1.Columns[e.ColumnIndex], ListSortDirection.Ascending);
+            //    //dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+            //    m_dataView.Sort = String.Format("[{0}] asc", col);
+            //}
+
+            //SetDataView(m_dataView);
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -358,6 +369,7 @@ namespace DBCViewer
             foreach (XmlElement field in fields)
             {
                 var colName = field.Attributes["name"].Value;
+                var format = field.Attributes["format"] != null ? field.Attributes["format"].Value : String.Empty;
                 var visible = field.Attributes["visible"] != null ? field.Attributes["visible"].Value == "true" : true;
                 var width = field.Attributes["width"] != null ? Convert.ToInt32(field.Attributes["width"].Value) : 100;
 
@@ -368,7 +380,25 @@ namespace DBCViewer
                 item.Checked = !visible;
                 dataGridView1.Columns[colName].Visible = visible;
                 dataGridView1.Columns[colName].Width = width;
+                dataGridView1.Columns[colName].AutoSizeMode = GetColumnAutoSizeMode(format);
+                dataGridView1.Columns[colName].SortMode = DataGridViewColumnSortMode.Automatic;
                 columnsFilterToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+
+        private DataGridViewAutoSizeColumnMode GetColumnAutoSizeMode(string format)
+        {
+            if (format == String.Empty)
+                return DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            switch (format.Substring(0, 1).ToLower())
+            {
+                case "X":
+                case "B":
+                case "O":
+                    return DataGridViewAutoSizeColumnMode.DisplayedCells;
+                default:
+                    return DataGridViewAutoSizeColumnMode.ColumnHeader;
             }
         }
 
@@ -486,6 +516,49 @@ namespace DBCViewer
                 }
             }
             return count;
+        }
+
+        private void autoSizeColumnsModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var control = (ToolStripMenuItem)sender;
+            foreach (ToolStripMenuItem item in autoSizeModeToolStripMenuItem.DropDownItems)
+            {
+                if (item != control)
+                    item.Checked = false;
+            }
+
+            var index = (int)columnContextMenuStrip.Tag;
+            dataGridView1.Columns[index].AutoSizeMode = (DataGridViewAutoSizeColumnMode)Enum.Parse(typeof(DataGridViewAutoSizeColumnMode), (string)control.Tag);
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var index = (int)columnContextMenuStrip.Tag;
+            dataGridView1.Columns[index].Visible = false;
+            ((ToolStripMenuItem)columnsFilterToolStripMenuItem.DropDownItems[index]).Checked = true;
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                return;
+
+            DataGridView.HitTestInfo hit = dataGridView1.HitTest(e.X, e.Y);
+
+            if (hit.Type == DataGridViewHitTestType.ColumnHeader)
+            {
+                columnContextMenuStrip.Tag = hit.ColumnIndex;
+
+                foreach (ToolStripMenuItem item in autoSizeModeToolStripMenuItem.DropDownItems)
+                {
+                    if (item.Tag.ToString() == dataGridView1.Columns[hit.ColumnIndex].AutoSizeMode.ToString())
+                        item.Checked = true;
+                    else
+                        item.Checked = false;
+                }
+
+                columnContextMenuStrip.Show((Control)sender, e.Location.X, e.Location.Y);
+            }
         }
     }
 }
