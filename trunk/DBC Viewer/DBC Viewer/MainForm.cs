@@ -161,7 +161,6 @@ namespace DBCViewer
             {
                 var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
-                StartEditor();
                 e.Cancel = true;
                 return;
             }
