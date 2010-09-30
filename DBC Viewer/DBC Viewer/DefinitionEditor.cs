@@ -201,7 +201,7 @@ namespace DBCViewer
         private void button2_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count > 0)
-                listView1.Items.Insert(listView1.SelectedItems[0].Index, new ListViewItem(new string[] { "newField", "int", "False" }));
+                listView1.Items.Insert(listView1.SelectedItems[0].Index + 1, new ListViewItem(new string[] { "newField", "int", "False" }));
             else
                 listView1.Items.Add(new ListViewItem(new string[] { "newField", "int", "False" }));
         }
