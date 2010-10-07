@@ -51,8 +51,8 @@
             this.columnContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSizeModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.columnHeaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allCellsExceptHeaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -192,10 +192,10 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView1.Size = new System.Drawing.Size(691, 296);
             this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.VirtualMode = true;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.CellToolTipTextNeeded += new System.Windows.Forms.DataGridViewCellToolTipTextNeededEventHandler(this.dataGridView1_CellToolTipTextNeeded);
             this.dataGridView1.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView1_CellValueNeeded);
-            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
             this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
             this.dataGridView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDown);
             // 
@@ -269,15 +269,6 @@
             this.autoSizeModeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.autoSizeModeToolStripMenuItem.Text = "Auto Size Mode";
             // 
-            // noneToolStripMenuItem
-            // 
-            this.noneToolStripMenuItem.CheckOnClick = true;
-            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.noneToolStripMenuItem.Tag = "None";
-            this.noneToolStripMenuItem.Text = "None";
-            this.noneToolStripMenuItem.Click += new System.EventHandler(this.autoSizeColumnsModeToolStripMenuItem_Click);
-            // 
             // notSetToolStripMenuItem
             // 
             this.notSetToolStripMenuItem.CheckOnClick = true;
@@ -286,6 +277,15 @@
             this.notSetToolStripMenuItem.Tag = "NotSet";
             this.notSetToolStripMenuItem.Text = "Not Set";
             this.notSetToolStripMenuItem.Click += new System.EventHandler(this.autoSizeColumnsModeToolStripMenuItem_Click);
+            // 
+            // noneToolStripMenuItem
+            // 
+            this.noneToolStripMenuItem.CheckOnClick = true;
+            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.noneToolStripMenuItem.Tag = "None";
+            this.noneToolStripMenuItem.Text = "None";
+            this.noneToolStripMenuItem.Click += new System.EventHandler(this.autoSizeColumnsModeToolStripMenuItem_Click);
             // 
             // columnHeaderToolStripMenuItem
             // 

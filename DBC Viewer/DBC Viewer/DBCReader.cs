@@ -18,6 +18,11 @@ namespace dbc2sql
 
         private byte[][] m_rows;
 
+        public byte[] GetRowAsByteArray(int row)
+        {
+            return m_rows[row];
+        }
+
         public BinaryReader this[int row]
         {
             get { return new BinaryReader(new MemoryStream(m_rows[row]), Encoding.UTF8); }
