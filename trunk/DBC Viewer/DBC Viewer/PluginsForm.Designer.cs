@@ -53,6 +53,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PluginsForm";
+            this.ShowInTaskbar = false;
             this.Text = "Select Plugin";
             this.toolTip1.SetToolTip(this, "Double click on item from the list to use it.");
             this.ResumeLayout(false);

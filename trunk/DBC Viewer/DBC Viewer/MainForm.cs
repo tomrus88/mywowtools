@@ -23,13 +23,18 @@ namespace DBCViewer
         IWowClientDBReader m_reader;
         FilterForm m_filterForm;
         XmlDocument m_definitions;
+        XmlNodeList m_fields;
         DirectoryCatalog m_catalog;
         XmlElement m_definition;
         string m_dbcName;
+        DateTime m_startTime;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
         public DataView DataView { get { return m_dataView; } }
+
+        // Delegates
+        delegate void SetDataViewDelegate(DataView view);
 
         [ImportMany(AllowRecomposition = true)]
         List<IPlugin> Plugins { get; set; }
@@ -45,7 +50,6 @@ namespace DBCViewer
                 return;
 
             Text = "DBC Viewer";
-            dataGridView1.VirtualMode = false;
             dataGridView1.DataSource = null;
 
             if (m_filterForm != null)
@@ -64,6 +68,7 @@ namespace DBCViewer
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Text = "Loading...";
 
+            m_startTime = DateTime.Now;
             backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
         }
 
@@ -71,7 +76,7 @@ namespace DBCViewer
         {
             DefinitionEditor editor = new DefinitionEditor();
             editor.SetDefinitions(m_dbcName, m_definition);
-            editor.ShowDialog(/*this*/);
+            editor.ShowDialog(this);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -122,107 +127,145 @@ namespace DBCViewer
                 label1.Text = String.Format("Current Cell: {0}x{1}", dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex);
         }
 
-        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            //var col = dataGridView1.Columns[e.ColumnIndex].Name;
-
-            //if (e.Button == MouseButtons.Left)
-            //    return;
-
-            //if (dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection != SortOrder.Descending)
-            //{
-            //    dataGridView1.Sort(dataGridView1.Columns[e.ColumnIndex], ListSortDirection.Descending);
-            //    //dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = SortOrder.Descending;
-            //    m_dataView.Sort = String.Format("[{0}] desc", col);
-            //}
-            //else
-            //{
-            //    dataGridView1.Sort(dataGridView1.Columns[e.ColumnIndex], ListSortDirection.Ascending);
-            //    //dataGridView1.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
-            //    m_dataView.Sort = String.Format("[{0}] asc", col);
-            //}
-
-            //SetDataView(m_dataView);
-        }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var file = (string)e.Argument;
-            var definition = m_definition;
 
             if (Path.GetExtension(file).ToLowerInvariant() == ".dbc")
                 m_reader = new DBCReader(file);
             else
                 m_reader = new DB2Reader(file);
 
-            XmlNodeList fields = definition.GetElementsByTagName("field");
+            m_fields = m_definition.GetElementsByTagName("field");
 
-            if (GetFieldsCount(fields) != m_reader.FieldsCount)
+            if (GetFieldsCount(m_fields) != m_reader.FieldsCount)
             {
-                var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), fields.Count, m_reader.FieldsCount);
+                var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), m_fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
                 e.Cancel = true;
                 return;
             }
 
-            XmlNodeList indexes = definition.GetElementsByTagName("index");
-
             m_dataTable = new DataTable(Path.GetFileName(file));
 
-            // Add columns
-            CreateColumns(fields);
+            CreateColumns();                                // Add columns
 
-            CreateIndexes(indexes);
+            CreateIndexes();                                // Add indexes
 
-            // Add rows
-            for (var i = 0; i < m_reader.RecordsCount; ++i)
+            string[] types = new string[m_fields.Count];
+
+            for (var j = 0; j < m_fields.Count; ++j)
+                types[j] = m_fields[j].Attributes["type"].Value;
+
+            for (var i = 0; i < m_reader.RecordsCount; ++i) // Add rows
             {
-                var br = m_reader[i];
-
                 var dataRow = m_dataTable.NewRow();
 
-                // Add cells
-                for (var j = 0; j < fields.Count; ++j)
-                {
-                    var colName = m_dataTable.Columns[j].ColumnName;
+                //var bytes = m_reader.GetRowAsByteArray(i);
+                //unsafe
+                //{
+                //    fixed (void* b = bytes)
+                //    {
+                //        IntPtr ptr = new IntPtr(b);
 
-                    switch (fields[j].Attributes["type"].Value)
+                //        int offset = 0;
+
+                //        for (var j = 0; j < m_fields.Count; ++j)    // Add cells
+                //        {
+                //            switch (types[j])
+                //            {
+                //                case "long":
+                //                    dataRow[j] = *(long*)(ptr + offset);
+                //                    offset += 8;
+                //                    break;
+                //                case "ulong":
+                //                    dataRow[j] = *(ulong*)(ptr + offset);
+                //                    offset += 8;
+                //                    break;
+                //                case "int":
+                //                    dataRow[j] = *(int*)(ptr + offset);
+                //                    offset += 4;
+                //                    break;
+                //                case "uint":
+                //                    dataRow[j] = *(uint*)(ptr + offset);
+                //                    offset += 4;
+                //                    break;
+                //                case "short":
+                //                    dataRow[j] = *(short*)(ptr + offset);
+                //                    offset += 2;
+                //                    break;
+                //                case "ushort":
+                //                    dataRow[j] = *(ushort*)(ptr + offset);
+                //                    offset += 2;
+                //                    break;
+                //                case "sbyte":
+                //                    dataRow[j] = *(sbyte*)(ptr + offset);
+                //                    offset += 1;
+                //                    break;
+                //                case "byte":
+                //                    dataRow[j] = *(byte*)(ptr + offset);
+                //                    offset += 1;
+                //                    break;
+                //                case "float":
+                //                    dataRow[j] = *(float*)(ptr + offset);
+                //                    offset += 4;
+                //                    break;
+                //                case "double":
+                //                    dataRow[j] = *(double*)(ptr + offset);
+                //                    offset += 8;
+                //                    break;
+                //                case "string":
+                //                    dataRow[j] = m_reader.StringTable[*(int*)(ptr + offset)];
+                //                    offset += 4;
+                //                    break;
+                //                default:
+                //                    throw new Exception(String.Format("Unknown field type {0}!", m_fields[j].Attributes["type"].Value));
+                //            }
+                //        }
+                //    }
+                //}
+
+                var br = m_reader[i];
+
+                for (var j = 0; j < m_fields.Count; ++j)    // Add cells
+                {
+                    switch (types[j])
                     {
                         case "long":
-                            dataRow[colName] = br.ReadInt64();
+                            dataRow[j] = br.ReadInt64();
                             break;
                         case "ulong":
-                            dataRow[colName] = br.ReadUInt64();
+                            dataRow[j] = br.ReadUInt64();
                             break;
                         case "int":
-                            dataRow[colName] = br.ReadInt32();
+                            dataRow[j] = br.ReadInt32();
                             break;
                         case "uint":
-                            dataRow[colName] = br.ReadUInt32();
+                            dataRow[j] = br.ReadUInt32();
                             break;
                         case "short":
-                            dataRow[colName] = br.ReadInt16();
+                            dataRow[j] = br.ReadInt16();
                             break;
                         case "ushort":
-                            dataRow[colName] = br.ReadUInt16();
+                            dataRow[j] = br.ReadUInt16();
                             break;
                         case "sbyte":
-                            dataRow[colName] = br.ReadSByte();
+                            dataRow[j] = br.ReadSByte();
                             break;
                         case "byte":
-                            dataRow[colName] = br.ReadByte();
+                            dataRow[j] = br.ReadByte();
                             break;
                         case "float":
-                            dataRow[colName] = br.ReadSingle();//.ToString(CultureInfo.InvariantCulture);
+                            dataRow[j] = br.ReadSingle();
                             break;
                         case "double":
-                            dataRow[colName] = br.ReadDouble();//.ToString(CultureInfo.InvariantCulture);
+                            dataRow[j] = br.ReadDouble();
                             break;
                         case "string":
-                            dataRow[colName] = m_reader.StringTable[br.ReadInt32()];
+                            dataRow[j] = m_reader.StringTable[br.ReadInt32()];
                             break;
                         default:
-                            throw new Exception(String.Format("Unknown field type {0}!", fields[j].Attributes["type"].Value));
+                            throw new Exception(String.Format("Unknown field type {0}!", m_fields[j].Attributes["type"].Value));
                     }
                 }
 
@@ -230,6 +273,16 @@ namespace DBCViewer
 
                 int percent = (int)((float)m_dataTable.Rows.Count / (float)m_reader.RecordsCount * 100.0f);
                 (sender as BackgroundWorker).ReportProgress(percent);
+            }
+
+            if (dataGridView1.InvokeRequired)
+            {
+                SetDataViewDelegate d = new SetDataViewDelegate(SetDataView);
+                Invoke(d, new object[] { m_dataTable.DefaultView });
+            }
+            else
+            {
+                SetDataView(m_dataTable.DefaultView);
             }
 
             e.Result = file;
@@ -266,8 +319,9 @@ namespace DBCViewer
             MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void CreateIndexes(XmlNodeList indexes)
+        private void CreateIndexes()
         {
+            XmlNodeList indexes = m_definition.GetElementsByTagName("index");
             var columns = new DataColumn[indexes.Count];
             var idx = 0;
             foreach (XmlElement index in indexes)
@@ -275,9 +329,9 @@ namespace DBCViewer
             m_dataTable.PrimaryKey = columns;
         }
 
-        private void CreateColumns(XmlNodeList fields)
+        private void CreateColumns()
         {
-            foreach (XmlElement field in fields)
+            foreach (XmlElement field in m_fields)
             {
                 var colName = field.Attributes["name"].Value;
 
@@ -353,20 +407,18 @@ namespace DBCViewer
             }
             else
             {
-                toolStripStatusLabel1.Text = "Ready.";
+                TimeSpan total = DateTime.Now - m_startTime;
+                toolStripStatusLabel1.Text = String.Format(CultureInfo.InvariantCulture, "Ready. Loaded in {0} sec", total.TotalSeconds);
                 Text = String.Format("DBC Viewer - {0}", e.Result.ToString());
-                SetDataView(m_dataTable.DefaultView);
-                dataGridView1.VirtualMode = true;
                 InitColumnsFilter();
             }
         }
 
         private void InitColumnsFilter()
         {
-            XmlNodeList fields = m_definition.GetElementsByTagName("field");
             columnsFilterToolStripMenuItem.DropDownItems.Clear();
 
-            foreach (XmlElement field in fields)
+            foreach (XmlElement field in m_fields)
             {
                 var colName = field.Attributes["name"].Value;
                 var format = field.Attributes["format"] != null ? field.Attributes["format"].Value : String.Empty;
@@ -378,11 +430,12 @@ namespace DBCViewer
                 item.CheckOnClick = true;
                 item.Name = colName;
                 item.Checked = !visible;
+                columnsFilterToolStripMenuItem.DropDownItems.Add(item);
+
                 dataGridView1.Columns[colName].Visible = visible;
                 dataGridView1.Columns[colName].Width = width;
                 dataGridView1.Columns[colName].AutoSizeMode = GetColumnAutoSizeMode(format);
                 dataGridView1.Columns[colName].SortMode = DataGridViewColumnSortMode.Automatic;
-                columnsFilterToolStripMenuItem.DropDownItems.Add(item);
             }
         }
 
@@ -478,8 +531,7 @@ namespace DBCViewer
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            XmlNodeList fields = m_definition.GetElementsByTagName("field");
-            var attribute = fields[e.ColumnIndex].Attributes["format"];
+            var attribute = m_fields[e.ColumnIndex].Attributes["format"];
 
             if (attribute == null)
                 return;

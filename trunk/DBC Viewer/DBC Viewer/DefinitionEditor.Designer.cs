@@ -133,6 +133,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DefinitionEditor";
+            this.ShowInTaskbar = false;
             this.Text = "Definition Editor";
             this.ResumeLayout(false);
 

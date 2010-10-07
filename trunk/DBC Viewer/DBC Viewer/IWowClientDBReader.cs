@@ -9,6 +9,7 @@ namespace dbc2sql
         int RecordSize { get; }
         int StringTableSize { get; }
         StringTable StringTable { get; }
+        byte[] GetRowAsByteArray(int row);
         BinaryReader this[int row] { get; }
     }
 }
