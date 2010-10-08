@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -27,7 +28,7 @@ namespace DBCViewer
         private void WriteXml()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load("dbclayout.xml");
+            doc.Load(Path.Combine((Owner as MainForm).WorkingFolder, "dbclayout.xml"));
 
             XmlNode oldnode = doc["DBFilesClient"][m_name];
             XmlElement newnode = doc.CreateElement(m_name);
@@ -53,12 +54,14 @@ namespace DBCViewer
                 ele.SetAttributeNode("name", "").Value = item.SubItems[0].Text;
                 doc["DBFilesClient"][m_name].AppendChild(ele);
             }
-            doc.Save("dbclayout.xml");
+            doc.Save(Path.Combine((Owner as MainForm).WorkingFolder, "dbclayout.xml"));
         }
 
-        public void SetDefinitions(string name, XmlElement def)
+        public void InitDefinitions()
         {
-            m_name = name;
+            m_name = (Owner as MainForm).DBCName;
+
+            XmlElement def = (Owner as MainForm).Definition;
 
             if (def == null)
                 return;
@@ -204,6 +207,11 @@ namespace DBCViewer
                 listView1.Items.Insert(listView1.SelectedItems[0].Index + 1, new ListViewItem(new string[] { "newField", "int", "False" }));
             else
                 listView1.Items.Add(new ListViewItem(new string[] { "newField", "int", "False" }));
+        }
+
+        private void DefinitionEditor_Load(object sender, EventArgs e)
+        {
+            InitDefinitions();
         }
     }
 }
