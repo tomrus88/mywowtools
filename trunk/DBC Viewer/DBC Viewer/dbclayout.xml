@@ -611,7 +611,7 @@
     <field type="uint" name="m_spellDescriptionVariableID" />
     <field type="uint" name="m_spellDifficultyID" />
   </Spell>
-  <Spell build="12984">
+  <Spell build="13117">
     <index>
       <primary>m_ID</primary>
     </index>
@@ -860,4 +860,47 @@
     <field type="uint" name="unk3" />
     <field type="uint" name="unk4" />
   </TerrainType>
+  <SpellClassOptions build="13117">
+    <index>
+      <primary>m_ID</primary>
+    </index>
+    <field type="uint" name="m_ID" />
+    <field type="uint" name="m_modalNextSpell" />
+    <field type="uint" name="m_spellClassMask_1" />
+    <field type="uint" name="m_spellClassMask_2" />
+    <field type="uint" name="m_spellClassMask_3" />
+    <field type="uint" name="m_spellClassSet" />
+    <field type="string" name="m_description" />
+  </SpellClassOptions>
+  <SpellEffect build="13117">
+    <index>
+      <primary>m_ID</primary>
+    </index>
+    <field type="uint" name="m_ID" />
+    <field type="uint" name="m_effect" />
+    <field type="float" name="m_effectAmplitude" />
+    <field type="uint" name="m_effectAura" />
+    <field type="uint" name="m_effectAuraPeriod" />
+    <field type="int" name="m_effectBasePoints" />
+    <field type="float" name="m_effectUnk_320" />
+    <field type="float" name="m_effectChainAmplitude" />
+    <field type="uint" name="m_effectChainTargets" />
+    <field type="uint" name="m_effectDieSides" />
+    <field type="uint" name="m_effectItemType" />
+    <field type="uint" name="m_effectMechanic" />
+    <field type="int" name="m_effectMiscValue" />
+    <field type="int" name="m_effectMiscValueB" />
+    <field type="float" name="m_effectPointsPerCombo" />
+    <field type="uint" name="m_effectRadiusIndex" />
+    <field type="uint" name="m_effectRadiusMaxIndex" />
+    <field type="float" name="m_effectRealPointsPerLevel" />
+    <field type="uint" name="m_effectSpellClassMask_1" />
+    <field type="uint" name="m_effectSpellClassMask_2" />
+    <field type="uint" name="m_effectSpellClassMask_3" />
+    <field type="int" name="m_effectTriggerSpell" />
+    <field type="uint" name="m_implicitTargetA" />
+    <field type="uint" name="m_implicitTargetB" />
+    <field type="uint" name="m_effectSpellId" />
+    <field type="uint" name="m_effectIndex" />
+  </SpellEffect>
 </DBFilesClient>

@@ -135,6 +135,7 @@
             this.Name = "DefinitionEditor";
             this.ShowInTaskbar = false;
             this.Text = "Definition Editor";
+            this.Load += new System.EventHandler(this.DefinitionEditor_Load);
             this.ResumeLayout(false);
 
         }

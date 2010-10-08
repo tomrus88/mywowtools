@@ -53,60 +53,60 @@
     <Compile Include="BinaryReaderExtensions.cs" />
     <Compile Include="DB2Reader.cs" />
     <Compile Include="DBCReader.cs" />
-    <Compile Include="DefinitionEditor.cs">
+    <Compile Include="Forms\DefinitionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DefinitionEditor.Designer.cs">
+    <Compile Include="Forms\DefinitionEditor.Designer.cs">
       <DependentUpon>DefinitionEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="DefinitionSelect.cs">
+    <Compile Include="Forms\DefinitionSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DefinitionSelect.Designer.cs">
+    <Compile Include="Forms\DefinitionSelect.Designer.cs">
       <DependentUpon>DefinitionSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="FilterForm.cs">
+    <Compile Include="Forms\FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FilterForm.Designer.cs">
+    <Compile Include="Forms\FilterForm.Designer.cs">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FilterOptions.cs" />
-    <Compile Include="FilterPredicates.cs">
+    <Compile Include="Forms\FilterForm.Predicates.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Filters.cs">
+    <Compile Include="Forms\FilterForm.Filters.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IWowClientDBReader.cs" />
-    <Compile Include="PluginsForm.cs">
+    <Compile Include="Forms\PluginsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginsForm.Designer.cs">
+    <Compile Include="Forms\PluginsForm.Designer.cs">
       <DependentUpon>PluginsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringTable.cs" />
-    <EmbeddedResource Include="DefinitionEditor.resx">
+    <EmbeddedResource Include="Forms\DefinitionEditor.resx">
       <DependentUpon>DefinitionEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DefinitionSelect.resx">
+    <EmbeddedResource Include="Forms\DefinitionSelect.resx">
       <DependentUpon>DefinitionSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FilterForm.resx">
+    <EmbeddedResource Include="Forms\FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PluginsForm.resx">
+    <EmbeddedResource Include="Forms\PluginsForm.resx">
       <DependentUpon>PluginsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

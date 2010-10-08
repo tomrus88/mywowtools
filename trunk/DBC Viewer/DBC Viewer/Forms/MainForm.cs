@@ -28,10 +28,14 @@ namespace DBCViewer
         XmlElement m_definition;
         string m_dbcName;
         DateTime m_startTime;
+        string m_workingFolder;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
         public DataView DataView { get { return m_dataView; } }
+        public string WorkingFolder { get { return m_workingFolder; } }
+        public XmlElement Definition { get { return m_definition; } }
+        public string DBCName { get { return m_dbcName; } }
 
         // Delegates
         delegate void SetDataViewDelegate(DataView view);
@@ -57,6 +61,8 @@ namespace DBCViewer
 
             m_dbcName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
 
+            LoadDefinitions(); // reload in case of modification
+
             m_definition = GetDefinition();
 
             if (m_definition == null)
@@ -75,7 +81,6 @@ namespace DBCViewer
         private void StartEditor()
         {
             DefinitionEditor editor = new DefinitionEditor();
-            editor.SetDefinitions(m_dbcName, m_definition);
             editor.ShowDialog(this);
         }
 
@@ -161,6 +166,7 @@ namespace DBCViewer
             {
                 var dataRow = m_dataTable.NewRow();
 
+#region Test
                 //var bytes = m_reader.GetRowAsByteArray(i);
                 //unsafe
                 //{
@@ -224,7 +230,7 @@ namespace DBCViewer
                 //        }
                 //    }
                 //}
-
+#endregion
                 var br = m_reader[i];
 
                 for (var j = 0; j < m_fields.Count; ++j)    // Add cells
@@ -421,6 +427,7 @@ namespace DBCViewer
             foreach (XmlElement field in m_fields)
             {
                 var colName = field.Attributes["name"].Value;
+                var type = field.Attributes["type"].Value;
                 var format = field.Attributes["format"] != null ? field.Attributes["format"].Value : String.Empty;
                 var visible = field.Attributes["visible"] != null ? field.Attributes["visible"].Value == "true" : true;
                 var width = field.Attributes["width"] != null ? Convert.ToInt32(field.Attributes["width"].Value) : 100;
@@ -434,13 +441,21 @@ namespace DBCViewer
 
                 dataGridView1.Columns[colName].Visible = visible;
                 dataGridView1.Columns[colName].Width = width;
-                dataGridView1.Columns[colName].AutoSizeMode = GetColumnAutoSizeMode(format);
+                dataGridView1.Columns[colName].AutoSizeMode = GetColumnAutoSizeMode(type, format);
                 dataGridView1.Columns[colName].SortMode = DataGridViewColumnSortMode.Automatic;
             }
         }
 
-        private DataGridViewAutoSizeColumnMode GetColumnAutoSizeMode(string format)
+        private DataGridViewAutoSizeColumnMode GetColumnAutoSizeMode(string type, string format)
         {
+            switch (type)
+            {
+                case "string":
+                    return DataGridViewAutoSizeColumnMode.NotSet;
+                default:
+                    break;
+            }
+
             if (format == String.Empty)
                 return DataGridViewAutoSizeColumnMode.DisplayedCells;
 
@@ -488,10 +503,15 @@ namespace DBCViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            m_definitions = new XmlDocument();
-            m_definitions.Load("dbclayout.xml");
-
+            m_workingFolder = Directory.GetCurrentDirectory();
+            LoadDefinitions();
             Compose();
+        }
+
+        private void LoadDefinitions()
+        {
+            m_definitions = new XmlDocument();
+            m_definitions.Load(Path.Combine(m_workingFolder, "dbclayout.xml"));
         }
 
         private void Compose()
