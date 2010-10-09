@@ -83,6 +83,20 @@ namespace DBCViewer
             backgroundWorker1.RunWorkerAsync(file);
         }
 
+        private void CloseFile()
+        {
+            Text = "DBC Viewer";
+            dataGridView1.DataSource = null;
+
+            if (m_filterForm != null)
+                m_filterForm.Dispose();
+
+            m_definition = null;
+            m_dataTable = null;
+            m_dataView = null;
+            columnsFilterToolStripMenuItem.DropDownItems.Clear();
+        }
+
         private void StartEditor()
         {
             DefinitionEditor editor = new DefinitionEditor();
@@ -171,7 +185,7 @@ namespace DBCViewer
             {
                 var dataRow = m_dataTable.NewRow();
 
-#region Test
+                #region Test
                 //var bytes = m_reader.GetRowAsByteArray(i);
                 //unsafe
                 //{
@@ -235,7 +249,7 @@ namespace DBCViewer
                 //        }
                 //    }
                 //}
-#endregion
+                #endregion
                 var br = m_reader[i];
 
                 for (var j = 0; j < m_fields.Count; ++j)    // Add cells
@@ -642,6 +656,11 @@ namespace DBCViewer
 
                 columnContextMenuStrip.Show((Control)sender, e.Location.X, e.Location.Y);
             }
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseFile();
         }
     }
 }
