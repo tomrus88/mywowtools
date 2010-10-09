@@ -53,13 +53,18 @@ namespace DBCViewer
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
 
+            LoadFile(openFileDialog1.FileName);
+        }
+
+        private void LoadFile(string file)
+        {
             Text = "DBC Viewer";
             dataGridView1.DataSource = null;
 
             if (m_filterForm != null)
                 m_filterForm.Dispose();
 
-            m_dbcName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+            m_dbcName = Path.GetFileNameWithoutExtension(file);
 
             LoadDefinitions(); // reload in case of modification
 
@@ -75,7 +80,7 @@ namespace DBCViewer
             toolStripStatusLabel1.Text = "Loading...";
 
             m_startTime = DateTime.Now;
-            backgroundWorker1.RunWorkerAsync(openFileDialog1.FileName);
+            backgroundWorker1.RunWorkerAsync(file);
         }
 
         private void StartEditor()
@@ -506,6 +511,12 @@ namespace DBCViewer
             m_workingFolder = Directory.GetCurrentDirectory();
             LoadDefinitions();
             Compose();
+
+            var cmds = Environment.GetCommandLineArgs();
+            if (cmds.Length > 1)
+            {
+                LoadFile(cmds[1]);
+            }
         }
 
         private void LoadDefinitions()
