@@ -22,11 +22,13 @@ namespace DBCViewer
         DataView m_dataView;
         IWowClientDBReader m_reader;
         FilterForm m_filterForm;
+        DefinitionSelect m_selector;
         XmlDocument m_definitions;
         XmlNodeList m_fields;
         DirectoryCatalog m_catalog;
         XmlElement m_definition;
         string m_dbcName;
+        string m_dbcFile;
         DateTime m_startTime;
         string m_workingFolder;
 
@@ -36,6 +38,7 @@ namespace DBCViewer
         public string WorkingFolder { get { return m_workingFolder; } }
         public XmlElement Definition { get { return m_definition; } }
         public string DBCName { get { return m_dbcName; } }
+        public int DefinitionIndex { get { return m_selector != null ? m_selector.DefinitionIndex : 0; } }
 
         // Delegates
         delegate void SetDataViewDelegate(DataView view);
@@ -58,6 +61,7 @@ namespace DBCViewer
 
         private void LoadFile(string file)
         {
+            m_dbcFile = file;
             Text = "DBC Viewer";
             dataGridView1.DataSource = null;
 
@@ -100,7 +104,11 @@ namespace DBCViewer
         private void StartEditor()
         {
             DefinitionEditor editor = new DefinitionEditor();
-            editor.ShowDialog(this);
+            var result = editor.ShowDialog(this);
+            if (result == DialogResult.OK)
+                LoadFile(m_dbcFile);
+            else
+                MessageBox.Show("Editor cancelled!");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -329,12 +337,12 @@ namespace DBCViewer
             }
             else
             {
-                DefinitionSelect selector = new DefinitionSelect();
-                selector.SetDefinitions(definitions);
-                var result = selector.ShowDialog(this);
-                if (result != DialogResult.OK || selector.DefinitionIndex == -1)
+                m_selector = new DefinitionSelect();
+                m_selector.SetDefinitions(definitions);
+                var result = m_selector.ShowDialog(this);
+                if (result != DialogResult.OK || m_selector.DefinitionIndex == -1)
                     return null;
-                return ((XmlElement)definitions[selector.DefinitionIndex]);
+                return ((XmlElement)definitions[m_selector.DefinitionIndex]);
             }
         }
 
@@ -526,7 +534,8 @@ namespace DBCViewer
             Size = Properties.Settings.Default.WindowSize;
             Location = Properties.Settings.Default.WindowLocation;
 
-            m_workingFolder = Directory.GetCurrentDirectory();
+            m_workingFolder = Application.StartupPath;
+
             LoadDefinitions();
             Compose();
 
@@ -683,6 +692,19 @@ namespace DBCViewer
             }
 
             Properties.Settings.Default.Save();
+        }
+
+        private void difinitionEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (m_dbcName == null)
+                return;
+
+            StartEditor();
+        }
+
+        private void reloadDefinitionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadDefinitions();
         }
     }
 }
