@@ -21,8 +21,8 @@ namespace DBCViewer
         private void button1_Click(object sender, EventArgs e)
         {
             WriteXml();
+            DialogResult = DialogResult.OK;
             Close();
-            MessageBox.Show("Reopen the file to check new definition!");
         }
 
         private void WriteXml()
@@ -30,14 +30,20 @@ namespace DBCViewer
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.Combine((Owner as MainForm).WorkingFolder, "dbclayout.xml"));
 
-            XmlNode oldnode = doc["DBFilesClient"][m_name];
-            XmlElement newnode = doc.CreateElement(m_name);
-            newnode.SetAttributeNode("build", "").Value = "0";
+            XmlNode oldnode = null; // nodes.Count == 0
 
-            if (oldnode == null)
-                doc["DBFilesClient"].AppendChild(newnode);
-            else
-                doc["DBFilesClient"].ReplaceChild(newnode, oldnode);
+            XmlNodeList nodes = doc["DBFilesClient"].GetElementsByTagName(m_name);
+
+            if (nodes.Count == 1)
+                oldnode = nodes[0];
+            else if (nodes.Count > 1)
+            {
+                int index = (Owner as MainForm).DefinitionIndex;
+                oldnode = nodes[index];
+            }
+
+            XmlElement newnode = doc.CreateElement(m_name);
+            newnode.SetAttributeNode("build", "").Value = oldnode == null ? "0" : oldnode.Attributes["build"].Value;
 
             foreach (ListViewItem item in listView1.Items)
             {
@@ -46,14 +52,20 @@ namespace DBCViewer
                     XmlElement index = doc.CreateElement("index");
                     XmlNode primary = index.AppendChild(doc.CreateElement("primary"));
                     primary.InnerText = item.SubItems[0].Text;
-                    doc["DBFilesClient"][m_name].AppendChild(index);
+                    newnode.AppendChild(index);
                 }
 
                 XmlElement ele = doc.CreateElement("field");
                 ele.SetAttributeNode("type", "").Value = item.SubItems[1].Text;
                 ele.SetAttributeNode("name", "").Value = item.SubItems[0].Text;
-                doc["DBFilesClient"][m_name].AppendChild(ele);
+                newnode.AppendChild(ele);
             }
+
+            if (oldnode == null)
+                doc["DBFilesClient"].AppendChild(newnode);
+            else
+                doc["DBFilesClient"].ReplaceChild(newnode, oldnode);
+
             doc.Save(Path.Combine((Owner as MainForm).WorkingFolder, "dbclayout.xml"));
         }
 

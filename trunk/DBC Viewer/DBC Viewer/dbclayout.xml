@@ -903,4 +903,28 @@
     <field type="uint" name="m_effectSpellId" />
     <field type="uint" name="m_effectIndex" />
   </SpellEffect>
+  <gtBarberShopCostBase build="12340">
+    <index>
+      <primary>m_cost</primary>
+    </index>
+    <field type="float" name="m_cost" />
+  </gtBarberShopCostBase>
+  <gtBarberShopCostBase build="13117">
+    <index>
+      <primary>m_level</primary>
+    </index>
+    <field type="uint" name="m_level" />
+    <field type="float" name="m_cost" />
+  </gtBarberShopCostBase>
+  <AnimKitBoneSet build="13117">
+    <index>
+      <primary>m_id</primary>
+    </index>
+    <field type="uint" name="m_id" />
+    <field type="string" name="m_field1" />
+    <field type="int" name="m_field2" />
+    <field type="int" name="m_field3" />
+    <field type="uint" name="m_field4" />
+    <field type="int" name="m_field5" />
+  </AnimKitBoneSet>
 </DBFilesClient>
