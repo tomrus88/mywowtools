@@ -522,6 +522,10 @@ namespace DBCViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            WindowState = Properties.Settings.Default.WindowState;
+            Size = Properties.Settings.Default.WindowSize;
+            Location = Properties.Settings.Default.WindowLocation;
+
             m_workingFolder = Directory.GetCurrentDirectory();
             LoadDefinitions();
             Compose();
@@ -661,6 +665,24 @@ namespace DBCViewer
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseFile();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.WindowState = WindowState;
+
+            if (WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.WindowSize = Size;
+                Properties.Settings.Default.WindowLocation = Location;
+            }
+            else
+            {
+                Properties.Settings.Default.WindowSize = RestoreBounds.Size;
+                Properties.Settings.Default.WindowLocation = RestoreBounds.Location;
+            }
+
+            Properties.Settings.Default.Save();
         }
     }
 }
