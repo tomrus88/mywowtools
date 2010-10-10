@@ -43,7 +43,7 @@ namespace DBCViewer
             }
 
             XmlElement newnode = doc.CreateElement(m_name);
-            newnode.SetAttributeNode("build", "").Value = oldnode == null ? "0" : oldnode.Attributes["build"].Value;
+            newnode.SetAttributeNode("build", "").Value = textBox1.Text;
 
             foreach (ListViewItem item in listView1.Items)
             {
@@ -61,7 +61,7 @@ namespace DBCViewer
                 newnode.AppendChild(ele);
             }
 
-            if (oldnode == null)
+            if (oldnode == null || oldnode.Attributes["build"].Value != textBox1.Text)
                 doc["DBFilesClient"].AppendChild(newnode);
             else
                 doc["DBFilesClient"].ReplaceChild(newnode, oldnode);
@@ -77,6 +77,8 @@ namespace DBCViewer
 
             if (def == null)
                 return;
+
+            textBox1.Text = def.Attributes["build"].Value;
 
             XmlNodeList fields = def.GetElementsByTagName("field");
             XmlNodeList indexes = def.GetElementsByTagName("index");
