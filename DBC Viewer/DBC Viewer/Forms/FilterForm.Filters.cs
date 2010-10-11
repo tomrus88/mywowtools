@@ -5,10 +5,8 @@ namespace DBCViewer
 {
     partial class FilterForm
     {
-        private bool FilterDouble(string colName, string op, string val)
+        private bool FilterDouble(string op)
         {
-            var locVal = Convert.ToDouble(val);
-
             switch (op)
             {
                 case "==":
@@ -29,10 +27,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterSingle(string colName, string op, string val)
+        private bool FilterSingle(string op)
         {
-            var locVal = Convert.ToSingle(val);
-
             switch (op)
             {
                 case "==":
@@ -53,10 +49,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterUInt8(string colName, string op, string val)
+        private bool FilterUInt8(string op)
         {
-            var locVal = Convert.ToByte(val);
-
             switch (op)
             {
                 case "&":
@@ -83,10 +77,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterInt8(string colName, string op, string val)
+        private bool FilterInt8(string op)
         {
-            var locVal = Convert.ToSByte(val);
-
             switch (op)
             {
                 case "&":
@@ -113,10 +105,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterUInt16(string colName, string op, string val)
+        private bool FilterUInt16(string op)
         {
-            var locVal = Convert.ToUInt16(val);
-
             switch (op)
             {
                 case "&":
@@ -143,10 +133,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterInt16(string colName, string op, string val)
+        private bool FilterInt16(string op)
         {
-            var locVal = Convert.ToInt16(val);
-
             switch (op)
             {
                 case "&":
@@ -173,10 +161,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterUInt32(string colName, string op, string val)
+        private bool FilterUInt32(string op)
         {
-            var locVal = Convert.ToUInt32(val);
-
             switch (op)
             {
                 case "&":
@@ -203,10 +189,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterInt32(string colName, string op, string val)
+        private bool FilterInt32(string op)
         {
-            var locVal = Convert.ToInt32(val);
-
             switch (op)
             {
                 case "&":
@@ -233,10 +217,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterUInt64(string colName, string op, string val)
+        private bool FilterUInt64(string op)
         {
-            var locVal = Convert.ToUInt64(val);
-
             switch (op)
             {
                 case "&":
@@ -263,10 +245,8 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterInt64(string colName, string op, string val)
+        private bool FilterInt64(string op)
         {
-            var locVal = Convert.ToInt64(val);
-
             switch (op)
             {
                 case "&":
@@ -293,7 +273,7 @@ namespace DBCViewer
             return true;
         }
 
-        private bool FilterString(string colName, string op, string val)
+        private bool FilterString(string op)
         {
             switch (op)
             {

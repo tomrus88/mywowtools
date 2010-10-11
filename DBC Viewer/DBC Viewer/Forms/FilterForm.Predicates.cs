@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 
 namespace DBCViewer
 {
@@ -11,7 +12,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "==")
                     continue;
-                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T))) == 0)
+                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T), CultureInfo.InvariantCulture)) == 0)
                     return true;
             }
 
@@ -24,7 +25,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "!=")
                     continue;
-                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T))) != 0)
+                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T), CultureInfo.InvariantCulture)) != 0)
                     return true;
             }
 
@@ -37,7 +38,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "<")
                     continue;
-                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T))) < 0)
+                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T), CultureInfo.InvariantCulture)) < 0)
                     return true;
             }
 
@@ -50,7 +51,7 @@ namespace DBCViewer
             {
                 if (filter.Op != ">")
                     continue;
-                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T))) > 0)
+                if (row.Field<T>(filter.Col).CompareTo((T)Convert.ChangeType(filter.Val, typeof(T), CultureInfo.InvariantCulture)) > 0)
                     return true;
             }
 
@@ -63,7 +64,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "*__")
                     continue;
-                if (row.Field<string>(filter.Col).StartsWith(filter.Val))
+                if (row.Field<string>(filter.Col).StartsWith(filter.Val, StringComparison.Ordinal))
                     return true;
             }
 
@@ -76,7 +77,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "*__")
                     continue;
-                if (row.Field<string>(filter.Col).StartsWith(filter.Val, StringComparison.InvariantCultureIgnoreCase))
+                if (row.Field<string>(filter.Col).StartsWith(filter.Val, StringComparison.OrdinalIgnoreCase))
                     return true;
             }
 
@@ -89,7 +90,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "__*")
                     continue;
-                if (row.Field<string>(filter.Col).EndsWith(filter.Val))
+                if (row.Field<string>(filter.Col).EndsWith(filter.Val, StringComparison.Ordinal))
                     return true;
             }
 
@@ -102,7 +103,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "__*")
                     continue;
-                if (row.Field<string>(filter.Col).EndsWith(filter.Val, StringComparison.InvariantCultureIgnoreCase))
+                if (row.Field<string>(filter.Col).EndsWith(filter.Val, StringComparison.OrdinalIgnoreCase))
                     return true;
             }
 
@@ -128,7 +129,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "_*_")
                     continue;
-                if (row.Field<string>(filter.Col).ToLowerInvariant().Contains(filter.Val.ToLowerInvariant()))
+                if (row.Field<string>(filter.Col).ToUpperInvariant().Contains(filter.Val.ToUpperInvariant()))
                     return true;
             }
 
@@ -141,7 +142,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "&")
                     continue;
-                if (((ulong)Convert.ChangeType(row.Field<T>(filter.Col), typeof(ulong)) & Convert.ToUInt64(filter.Val)) != 0)
+                if (((ulong)Convert.ChangeType(row.Field<T>(filter.Col), typeof(ulong), CultureInfo.InvariantCulture) & Convert.ToUInt64(filter.Val, CultureInfo.InvariantCulture)) != 0)
                     return true;
             }
 
@@ -154,7 +155,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "&")
                     continue;
-                if (((long)Convert.ChangeType(row.Field<T>(filter.Col), typeof(long)) & Convert.ToInt64(filter.Val)) != 0)
+                if (((long)Convert.ChangeType(row.Field<T>(filter.Col), typeof(long), CultureInfo.InvariantCulture) & Convert.ToInt64(filter.Val, CultureInfo.InvariantCulture)) != 0)
                     return true;
             }
 
@@ -167,7 +168,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "~&")
                     continue;
-                if (((ulong)Convert.ChangeType(row.Field<T>(filter.Col), typeof(ulong)) & Convert.ToUInt64(filter.Val)) == 0)
+                if (((ulong)Convert.ChangeType(row.Field<T>(filter.Col), typeof(ulong), CultureInfo.InvariantCulture) & Convert.ToUInt64(filter.Val, CultureInfo.InvariantCulture)) == 0)
                     return true;
             }
 
@@ -180,7 +181,7 @@ namespace DBCViewer
             {
                 if (filter.Op != "~&")
                     continue;
-                if (((long)Convert.ChangeType(row.Field<T>(filter.Col), typeof(long)) & Convert.ToInt64(filter.Val)) == 0)
+                if (((long)Convert.ChangeType(row.Field<T>(filter.Col), typeof(long), CultureInfo.InvariantCulture) & Convert.ToInt64(filter.Val, CultureInfo.InvariantCulture)) == 0)
                     return true;
             }
 

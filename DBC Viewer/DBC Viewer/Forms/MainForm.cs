@@ -106,6 +106,7 @@ namespace DBCViewer
         {
             DefinitionEditor editor = new DefinitionEditor();
             var result = editor.ShowDialog(this);
+            editor.Dispose();
             if (result == DialogResult.OK)
                 LoadFile(m_dbcFile);
             else
@@ -135,14 +136,14 @@ namespace DBCViewer
             if (m_dataTable.Columns[e.ColumnIndex].DataType != typeof(string))
             {
                 if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(int))
-                    val = Convert.ToInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value);
+                    val = Convert.ToInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value, CultureInfo.InvariantCulture);
                 else if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(float))
                     val = (int)BitConverter.ToUInt32(BitConverter.GetBytes((float)dataGridView1[e.ColumnIndex, e.RowIndex].Value), 0);
                 else
-                    val = (int)Convert.ToUInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value);
+                    val = (int)Convert.ToUInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value, CultureInfo.InvariantCulture);
             }
             else
-                val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value, true) == 0 select k.Key).FirstOrDefault();
+                val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value, StringComparison.Ordinal) == 0 select k.Key).FirstOrDefault();
 
             var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "Integer: {0:D}{1}", val, Environment.NewLine);
@@ -157,14 +158,14 @@ namespace DBCViewer
         private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
             if (dataGridView1.CurrentCell != null)
-                label1.Text = String.Format("Current Cell: {0}x{1}", dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex);
+                label1.Text = String.Format(CultureInfo.InvariantCulture, "Current Cell: {0}x{1}", dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex);
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var file = (string)e.Argument;
 
-            if (Path.GetExtension(file).ToLowerInvariant() == ".dbc")
+            if (Path.GetExtension(file).ToUpperInvariant() == ".DBC")
                 m_reader = new DBCReader(file);
             else
                 m_reader = new DB2Reader(file);
@@ -173,13 +174,14 @@ namespace DBCViewer
 
             if (GetFieldsCount(m_fields) != m_reader.FieldsCount)
             {
-                var msg = String.Format("{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), m_fields.Count, m_reader.FieldsCount);
+                var msg = String.Format(CultureInfo.InvariantCulture, "{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), m_fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
                 e.Cancel = true;
                 return;
             }
 
             m_dataTable = new DataTable(Path.GetFileName(file));
+            m_dataTable.Locale = CultureInfo.InvariantCulture;
 
             CreateColumns();                                // Add columns
 
@@ -299,7 +301,7 @@ namespace DBCViewer
                             dataRow[j] = m_reader.StringTable[br.ReadInt32()];
                             break;
                         default:
-                            throw new Exception(String.Format("Unknown field type {0}!", types[j]));
+                            throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "Unknown field type {0}!", types[j]));
                     }
                 }
 
@@ -328,7 +330,7 @@ namespace DBCViewer
 
             if (definitions.Count == 0)
             {
-                var msg = String.Format("{0} missing definition!", m_dbcName);
+                var msg = String.Format(CultureInfo.InvariantCulture, "{0} missing definition!", m_dbcName);
                 ShowErrorMessageBox(msg);
                 return null;
             }
@@ -347,9 +349,9 @@ namespace DBCViewer
             }
         }
 
-        private void ShowErrorMessageBox(string format, params object[] args)
+        private static void ShowErrorMessageBox(string format, params object[] args)
         {
-            var msg = String.Format(format, args);
+            var msg = String.Format(CultureInfo.InvariantCulture, format, args);
             MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -405,7 +407,7 @@ namespace DBCViewer
                         m_dataTable.Columns.Add(colName, typeof(string));
                         break;
                     default:
-                        throw new Exception(String.Format("Unknown field type {0}!", field.Attributes["type"].Value));
+                        throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "Unknown field type {0}!", field.Attributes["type"].Value));
                 }
             }
         }
@@ -443,7 +445,7 @@ namespace DBCViewer
             {
                 TimeSpan total = DateTime.Now - m_startTime;
                 toolStripStatusLabel1.Text = String.Format(CultureInfo.InvariantCulture, "Ready. Loaded in {0} sec", total.TotalSeconds);
-                Text = String.Format("DBC Viewer - {0}", e.Result.ToString());
+                Text = String.Format(CultureInfo.InvariantCulture, "DBC Viewer - {0}", e.Result.ToString());
                 InitColumnsFilter();
             }
         }
@@ -458,7 +460,7 @@ namespace DBCViewer
                 var type = field.Attributes["type"].Value;
                 var format = field.Attributes["format"] != null ? field.Attributes["format"].Value : String.Empty;
                 var visible = field.Attributes["visible"] != null ? field.Attributes["visible"].Value == "true" : true;
-                var width = field.Attributes["width"] != null ? Convert.ToInt32(field.Attributes["width"].Value) : 100;
+                var width = field.Attributes["width"] != null ? Convert.ToInt32(field.Attributes["width"].Value, CultureInfo.InvariantCulture) : 100;
 
                 var item = new ToolStripMenuItem(colName);
                 item.Click += new EventHandler(columnsFilterEventHandler);
@@ -474,7 +476,7 @@ namespace DBCViewer
             }
         }
 
-        private DataGridViewAutoSizeColumnMode GetColumnAutoSizeMode(string type, string format)
+        private static DataGridViewAutoSizeColumnMode GetColumnAutoSizeMode(string type, string format)
         {
             switch (type)
             {
@@ -484,10 +486,10 @@ namespace DBCViewer
                     break;
             }
 
-            if (format == String.Empty)
+            if (String.IsNullOrEmpty(format))
                 return DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            switch (format.Substring(0, 1).ToLower())
+            switch (format.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture))
             {
                 case "X":
                 case "B":
@@ -577,6 +579,7 @@ namespace DBCViewer
             PluginsForm selector = new PluginsForm();
             selector.SetPlugins(Plugins);
             var result = selector.ShowDialog(this);
+            selector.Dispose();
             if (result != DialogResult.OK || selector.PluginIndex == -1)
             {
                 ShowErrorMessageBox("No plugin selected!");
@@ -708,7 +711,7 @@ namespace DBCViewer
 
         private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            label2.Text = String.Format("Rows Displayed: {0}", dataGridView1.RowCount);
+            label2.Text = String.Format(CultureInfo.InvariantCulture, "Rows Displayed: {0}", dataGridView1.RowCount);
         }
     }
 }

@@ -59,5 +59,23 @@ namespace DBCViewer.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Plugin.
+        /// </summary>
+        internal static string selectPlugin {
+            get {
+                return ResourceManager.GetString("selectPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Current.
+        /// </summary>
+        internal static string useCurrent {
+            get {
+                return ResourceManager.GetString("useCurrent", resourceCulture);
+            }
+        }
     }
 }

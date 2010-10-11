@@ -69,7 +69,7 @@
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(82, 17);
             this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Use Current";
+            this.checkBox1.Text = Properties.Resources.useCurrent;
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBox2

@@ -92,7 +92,7 @@ namespace DBCViewer
             }
         }
 
-        private bool IsIndexColumn(string name, XmlNodeList indexes)
+        private static bool IsIndexColumn(string name, XmlNodeList indexes)
         {
             foreach (XmlNode index in indexes)
                 if (index["primary"].InnerText == name)

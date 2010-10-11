@@ -14,9 +14,9 @@
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+            if (disposing && (m_catalog != null))
+                m_catalog.Dispose();
             base.Dispose(disposing);
         }
 

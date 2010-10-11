@@ -31,8 +31,8 @@ namespace DBCViewer
             byte[] bytes;
             if (arg is sbyte)
             {
-                string byteString = ((sbyte)arg).ToString("X2");
-                bytes = new byte[1] { Byte.Parse(byteString, System.Globalization.NumberStyles.HexNumber) };
+                string byteString = ((sbyte)arg).ToString("X2", CultureInfo.InvariantCulture);
+                bytes = new byte[1] { Byte.Parse(byteString, NumberStyles.HexNumber, CultureInfo.InvariantCulture) };
             }
             else if (arg is byte)
             {
@@ -74,11 +74,11 @@ namespace DBCViewer
                 }
                 catch (FormatException e)
                 {
-                    throw new FormatException(String.Format("The format of '{0}' is invalid.", format), e);
+                    throw new FormatException(String.Format(CultureInfo.InvariantCulture, "The format of '{0}' is invalid.", format), e);
                 }
             }
 
-            switch (thisFmt.ToUpper())
+            switch (thisFmt.ToUpper(CultureInfo.InvariantCulture))
             {
                 // Binary formatting.
                 case "B":
@@ -98,7 +98,7 @@ namespace DBCViewer
                     }
                     catch (FormatException e)
                     {
-                        throw new FormatException(String.Format("The format of '{0}' is invalid.", format), e);
+                        throw new FormatException(String.Format(CultureInfo.InvariantCulture, "The format of '{0}' is invalid.", format), e);
                     }
             }
 
@@ -120,10 +120,11 @@ namespace DBCViewer
             return numericString.Trim();
         }
 
-        private string HandleOtherFormats(string format, object arg)
+        private static string HandleOtherFormats(string format, object arg)
         {
-            if (arg is IFormattable)
-                return ((IFormattable)arg).ToString(format, CultureInfo.CurrentCulture);
+            var iFmt = arg as IFormattable;
+            if (iFmt != null)
+                return iFmt.ToString(format, CultureInfo.CurrentCulture);
             else if (arg != null)
                 return arg.ToString();
             else
