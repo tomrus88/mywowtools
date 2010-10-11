@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace DBCViewer
@@ -57,30 +58,29 @@ namespace DBCViewer
                 var colName = filter.Value.Col;
                 var col = dt.Columns[colName];
                 var op = filter.Value.Op;
-                var val = filter.Value.Val;
 
                 if (col.DataType == typeof(string))
-                    result = FilterString(colName, op, val);
+                    result = FilterString(op);
                 else if (col.DataType == typeof(long))
-                    result = FilterInt64(colName, op, val);
+                    result = FilterInt64(op);
                 else if (col.DataType == typeof(int))
-                    result = FilterInt32(colName, op, val);
+                    result = FilterInt32(op);
                 else if (col.DataType == typeof(short))
-                    result = FilterInt16(colName, op, val);
+                    result = FilterInt16(op);
                 else if (col.DataType == typeof(sbyte))
-                    result = FilterInt8(colName, op, val);
+                    result = FilterInt8(op);
                 else if (col.DataType == typeof(ulong))
-                    result = FilterUInt64(colName, op, val);
+                    result = FilterUInt64(op);
                 else if (col.DataType == typeof(uint))
-                    result = FilterUInt32(colName, op, val);
+                    result = FilterUInt32(op);
                 else if (col.DataType == typeof(ushort))
-                    result = FilterUInt16(colName, op, val);
+                    result = FilterUInt16(op);
                 else if (col.DataType == typeof(byte))
-                    result = FilterUInt8(colName, op, val);
+                    result = FilterUInt8(op);
                 else if (col.DataType == typeof(float))
-                    result = FilterSingle(colName, op, val);
+                    result = FilterSingle(op);
                 else if (col.DataType == typeof(double))
-                    result = FilterDouble(colName, op, val);
+                    result = FilterDouble(op);
                 else
                     MessageBox.Show("Unhandled type?");
             }
@@ -133,7 +133,7 @@ namespace DBCViewer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (textBox2.Text == String.Empty)
+            if (String.IsNullOrEmpty(textBox2.Text))
             {
                 MessageBox.Show("Enter something first!");
                 textBox2.Focus();
@@ -150,7 +150,7 @@ namespace DBCViewer
 
             try
             {
-                Convert.ChangeType(val, col.DataType);
+                Convert.ChangeType(val, col.DataType, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -158,7 +158,7 @@ namespace DBCViewer
                 return;
             }
 
-            listBox1.Items.Add(String.Format("{0} {1} {2}", colName, op, val));
+            listBox1.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", colName, op, val));
             SyncFilters();
         }
 

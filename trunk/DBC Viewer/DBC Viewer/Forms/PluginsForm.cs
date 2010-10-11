@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using PluginInterface;
 
@@ -14,11 +15,11 @@ namespace DBCViewer
             InitializeComponent();
         }
 
-        public void SetPlugins(List<IPlugin> plugins)
+        public void SetPlugins(IList<IPlugin> plugins)
         {
             foreach (IPlugin plugin in plugins)
             {
-                var item = String.Format("{0}", plugin.GetType().Name);
+                var item = String.Format(CultureInfo.InvariantCulture, "{0}", plugin.GetType().Name);
                 listBox1.Items.Add(item);
             }
 

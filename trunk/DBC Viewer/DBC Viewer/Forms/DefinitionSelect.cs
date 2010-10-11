@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -24,7 +25,7 @@ namespace DBCViewer
         {
             foreach (XmlElement def in definitions)
             {
-                var item = String.Format("{0} (build {1})", def.Name, def.Attributes["build"].Value);
+                var item = String.Format(CultureInfo.InvariantCulture, "{0} (build {1})", def.Name, def.Attributes["build"].Value);
                 listBox1.Items.Add(item);
             }
 
