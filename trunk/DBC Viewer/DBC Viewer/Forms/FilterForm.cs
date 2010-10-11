@@ -44,7 +44,7 @@ namespace DBCViewer
                 m_filter = dt.AsEnumerable();
 
             if (FilterTable(dt))
-                owner.SetDataView(m_filter.AsDataView());
+                owner.SetDataSource(m_filter.AsDataView());
             else
                 MessageBox.Show("Unhandled type?");
         }

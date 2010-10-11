@@ -19,22 +19,20 @@ namespace DBCViewer
     {
         // Fields
         DataTable m_dataTable;
-        DataView m_dataView;
         IWowClientDBReader m_reader;
         FilterForm m_filterForm;
         DefinitionSelect m_selector;
         XmlDocument m_definitions;
         XmlNodeList m_fields;
         DirectoryCatalog m_catalog;
-        XmlElement m_definition;
-        string m_dbcName;
-        string m_dbcFile;
+        XmlElement m_definition;        // definition for current file
+        string m_dbcName;               // file name without extension
+        string m_dbcFile;               // path to current file
         DateTime m_startTime;
         string m_workingFolder;
 
         // Properties
         public DataTable DataTable { get { return m_dataTable; } }
-        public DataView DataView { get { return m_dataView; } }
         public string WorkingFolder { get { return m_workingFolder; } }
         public XmlElement Definition { get { return m_definition; } }
         public string DBCName { get { return m_dbcName; } }
@@ -63,10 +61,9 @@ namespace DBCViewer
         {
             m_dbcFile = file;
             Text = "DBC Viewer";
-            dataGridView1.DataSource = null;
+            SetDataSource(null);
 
-            if (m_filterForm != null)
-                m_filterForm.Dispose();
+            DisposeFilterForm();
 
             m_dbcName = Path.GetFileNameWithoutExtension(file);
 
@@ -90,15 +87,19 @@ namespace DBCViewer
         private void CloseFile()
         {
             Text = "DBC Viewer";
-            dataGridView1.DataSource = null;
+            SetDataSource(null);
 
-            if (m_filterForm != null)
-                m_filterForm.Dispose();
+            DisposeFilterForm();
 
             m_definition = null;
             m_dataTable = null;
-            m_dataView = null;
             columnsFilterToolStripMenuItem.DropDownItems.Clear();
+        }
+
+        private void DisposeFilterForm()
+        {
+            if (m_filterForm != null)
+                m_filterForm.Dispose();
         }
 
         private void StartEditor()
@@ -108,7 +109,7 @@ namespace DBCViewer
             if (result == DialogResult.OK)
                 LoadFile(m_dbcFile);
             else
-                MessageBox.Show("Editor cancelled!");
+                MessageBox.Show("Editor canceled! You can't open that file until you add proper definitions");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,7 +122,7 @@ namespace DBCViewer
             if (e.RowIndex == -1)
                 return;
 
-            e.Value = m_dataView[e.RowIndex][e.ColumnIndex];
+            e.Value = dataGridView1[e.ColumnIndex, e.RowIndex].Value;
         }
 
         private void dataGridView1_CellToolTipTextNeeded(object sender, DataGridViewCellToolTipTextNeededEventArgs e)
@@ -134,14 +135,14 @@ namespace DBCViewer
             if (m_dataTable.Columns[e.ColumnIndex].DataType != typeof(string))
             {
                 if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(int))
-                    val = Convert.ToInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
+                    val = Convert.ToInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value);
                 else if (m_dataTable.Columns[e.ColumnIndex].DataType == typeof(float))
-                    val = (int)BitConverter.ToUInt32(BitConverter.GetBytes((float)m_dataView[e.RowIndex][e.ColumnIndex]), 0);
+                    val = (int)BitConverter.ToUInt32(BitConverter.GetBytes((float)dataGridView1[e.ColumnIndex, e.RowIndex].Value), 0);
                 else
-                    val = (int)Convert.ToUInt32(m_dataView[e.RowIndex][e.ColumnIndex]);
+                    val = (int)Convert.ToUInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value);
             }
             else
-                val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)m_dataView[e.RowIndex][e.ColumnIndex], true) == 0 select k.Key).FirstOrDefault();
+                val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value, true) == 0 select k.Key).FirstOrDefault();
 
             var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "Integer: {0:D}{1}", val, Environment.NewLine);
@@ -298,7 +299,7 @@ namespace DBCViewer
                             dataRow[j] = m_reader.StringTable[br.ReadInt32()];
                             break;
                         default:
-                            throw new Exception(String.Format("Unknown field type {0}!", m_fields[j].Attributes["type"].Value));
+                            throw new Exception(String.Format("Unknown field type {0}!", types[j]));
                     }
                 }
 
@@ -310,12 +311,12 @@ namespace DBCViewer
 
             if (dataGridView1.InvokeRequired)
             {
-                SetDataViewDelegate d = new SetDataViewDelegate(SetDataView);
+                SetDataViewDelegate d = new SetDataViewDelegate(SetDataSource);
                 Invoke(d, new object[] { m_dataTable.DefaultView });
             }
             else
             {
-                SetDataView(m_dataTable.DefaultView);
+                SetDataSource(m_dataTable.DefaultView);
             }
 
             e.Result = file;
@@ -517,15 +518,12 @@ namespace DBCViewer
             if (m_filterForm != null)
                 m_filterForm.ResetFilters();
 
-            SetDataView(m_dataTable.DefaultView);
+            SetDataSource(m_dataTable.DefaultView);
         }
 
-        public void SetDataView(DataView dataView)
+        public void SetDataSource(DataView dataView)
         {
-            m_dataView = dataView;
-            dataGridView1.DataSource = m_dataView;
-
-            label2.Text = String.Format("Rows Displayed: {0}", m_dataView.Count);
+            bindingSource1.DataSource = dataView;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -535,6 +533,7 @@ namespace DBCViewer
             Location = Properties.Settings.Default.WindowLocation;
 
             m_workingFolder = Application.StartupPath;
+            dataGridView1.AutoGenerateColumns = true;
 
             LoadDefinitions();
             Compose();
@@ -705,6 +704,11 @@ namespace DBCViewer
         private void reloadDefinitionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadDefinitions();
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            label2.Text = String.Format("Rows Displayed: {0}", dataGridView1.RowCount);
         }
     }
 }
