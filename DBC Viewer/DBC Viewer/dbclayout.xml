@@ -616,16 +616,16 @@
       <primary>m_ID</primary>
     </index>
     <field type="int" name="m_ID" />
-    <field type="uint" name="m_attributes" />
-    <field type="uint" name="m_attributesEx" />
-    <field type="uint" name="m_attributesExB" />
-    <field type="uint" name="m_attributesExC" />
-    <field type="uint" name="m_attributesExD" />
-    <field type="uint" name="m_attributesExE" />
-    <field type="uint" name="m_attributesExF" />
-    <field type="uint" name="m_attributesExG" />
-    <field type="uint" name="m_attributesExH" />
-    <field type="uint" name="m_unk_400_1" />
+    <field type="uint" name="m_attributes" format="X8" />
+    <field type="uint" name="m_attributesEx" format="X8" />
+    <field type="uint" name="m_attributesExB" format="X8" />
+    <field type="uint" name="m_attributesExC" format="X8" />
+    <field type="uint" name="m_attributesExD" format="X8" />
+    <field type="uint" name="m_attributesExE" format="X8" />
+    <field type="uint" name="m_attributesExF" format="X8" />
+    <field type="uint" name="m_attributesExG" format="X8" />
+    <field type="uint" name="m_attributesExH" format="X8" />
+    <field type="uint" name="m_unk_400_1" format="X8" />
     <field type="int" name="m_castingTimeIndex" />
     <field type="int" name="m_durationIndex" />
     <field type="int" name="m_powerType" />
@@ -635,10 +635,10 @@
     <field type="uint" name="m_spellVisualID_2" />
     <field type="int" name="m_spellIconID" />
     <field type="int" name="m_activeIconID" />
-    <field type="string" name="m_name_lang_1" />
-    <field type="string" name="m_nameSubtext_lang_1" />
-    <field type="string" name="m_description_lang_1" />
-    <field type="string" name="m_auraDescription_lang_1" />
+    <field type="string" name="m_name" />
+    <field type="string" name="m_nameSubtext" />
+    <field type="string" name="m_description" />
+    <field type="string" name="m_auraDescription" />
     <field type="int" name="m_schoolMask" />
     <field type="int" name="m_runeCostID" />
     <field type="int" name="m_spellMissileID" />
