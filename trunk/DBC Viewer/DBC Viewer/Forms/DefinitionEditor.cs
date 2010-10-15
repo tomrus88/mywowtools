@@ -227,5 +227,17 @@ namespace DBCViewer
         {
             InitDefinitions();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                var index = listView1.SelectedItems[0].Index;
+                var cloned = (ListViewItem)listView1.Items[index].Clone();
+                listView1.Items.Insert(index, cloned);
+                listView1.Items[index + 1].Selected = true;
+                listView1.Select();
+            }
+        }
     }
 }
