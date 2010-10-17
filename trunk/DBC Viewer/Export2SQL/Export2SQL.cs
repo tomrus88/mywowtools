@@ -12,6 +12,9 @@ namespace Export2SQL
     [Export(typeof(IPlugin))]
     public class Export2SQL : IPlugin
     {
+        [Import("PluginFinished")]
+        public Func<int, int> Finished { get; set; }
+
         public void Run(DataTable data)
         {
             StreamWriter sqlWriter = new StreamWriter(Path.GetFileNameWithoutExtension(data.TableName) + ".sql");
@@ -78,6 +81,8 @@ namespace Export2SQL
 
             sqlWriter.Flush();
             sqlWriter.Close();
+
+            Finished(data.Rows.Count);
         }
 
         private void WriteSqlStructure(StreamWriter sqlWriter, DataTable data)
