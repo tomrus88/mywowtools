@@ -183,7 +183,7 @@ namespace DBCViewer
 
             m_fields = m_definition.GetElementsByTagName("field");
 
-            // hack for *adb files (basecause they don't have FieldsCount)
+            // hack for *.adb files (because they don't have FieldsCount)
             var notADB = !(m_reader is ADBReader);
 
             if (GetFieldsCount(m_fields) != m_reader.FieldsCount && notADB)
