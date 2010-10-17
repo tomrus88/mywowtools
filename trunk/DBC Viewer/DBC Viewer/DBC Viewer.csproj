@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="BinaryFormatter.cs" />
     <Compile Include="BinaryReaderExtensions.cs" />
+    <Compile Include="Readers\ADBReader.cs" />
     <Compile Include="Readers\DB2Reader.cs" />
     <Compile Include="Readers\DBCReader.cs" />
     <Compile Include="Forms\DefinitionEditor.cs">
@@ -133,6 +134,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\WDBReader.cs" />
     <Compile Include="StringTable.cs" />
     <EmbeddedResource Include="Forms\DefinitionEditor.resx">
       <DependentUpon>DefinitionEditor.cs</DependentUpon>

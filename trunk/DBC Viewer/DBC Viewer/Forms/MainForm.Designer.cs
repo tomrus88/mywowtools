@@ -201,7 +201,7 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = "WoW Client DB Files|*.dbc;*.db2|All files|*.*";
+            this.openFileDialog1.Filter = "WoW Client DB Files|*.dbc;*.db2;*.adb|All files|*.*";
             // 
             // dataGridView1
             // 

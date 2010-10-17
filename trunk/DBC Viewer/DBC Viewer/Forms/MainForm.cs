@@ -167,12 +167,26 @@ namespace DBCViewer
 
             if (Path.GetExtension(file).ToUpperInvariant() == ".DBC")
                 m_reader = new DBCReader(file);
-            else
+            else if (Path.GetExtension(file).ToUpperInvariant() == ".DB2")
                 m_reader = new DB2Reader(file);
+            else if (Path.GetExtension(file).ToUpperInvariant() == ".ADB")
+                m_reader = new ADBReader(file);
+            //else if (Path.GetExtension(file).ToUpperInvariant() == ".WDB")
+            //    m_reader = new WDBReader(file);
+            else
+            {
+                var msg = String.Format(CultureInfo.InvariantCulture, "Unknown file type {0}", Path.GetExtension(file));
+                ShowErrorMessageBox(msg);
+                e.Cancel = true;
+                return;
+            }
 
             m_fields = m_definition.GetElementsByTagName("field");
 
-            if (GetFieldsCount(m_fields) != m_reader.FieldsCount)
+            // hack for *adb files (basecause they don't have FieldsCount)
+            var notADB = !(m_reader is ADBReader);
+
+            if (GetFieldsCount(m_fields) != m_reader.FieldsCount && notADB)
             {
                 var msg = String.Format(CultureInfo.InvariantCulture, "{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), m_fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
