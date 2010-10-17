@@ -134,9 +134,9 @@
     <field type="uint" name="m_friend_4" />
   </FactionTemplate>
   <Item build="12984">
-    <index>
+    <!--<index>
       <primary>id</primary>
-    </index>
+    </index>-->
     <field type="uint" name="id" />
     <field type="uint" name="class" />
     <field type="uint" name="subclass" />
@@ -185,9 +185,9 @@
     <field type="int" name="pieces_8" />
   </ItemSet>
   <Item-sparse build="12984">
-    <index>
+    <!--<index>
       <primary>id</primary>
-    </index>
+    </index>-->
     <field type="int" name="id" />
     <field type="int" name="quality" />
     <field type="uint" name="flags" />

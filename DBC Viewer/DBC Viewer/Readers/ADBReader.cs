@@ -4,10 +4,10 @@ using System.Text;
 
 namespace dbc2sql
 {
-    class WDBReader : IWowClientDBReader
+    class ADBReader : IWowClientDBReader
     {
         private const int HeaderSize = 48;
-        private const uint WIDBFmtSig = 0x57494442;          // WIDB
+        private const uint ADBFmtSig = 0x32484357;          // WCH2
 
         public int RecordsCount { get; private set; }
         public int FieldsCount { get; private set; }
@@ -28,7 +28,7 @@ namespace dbc2sql
             get { return new BinaryReader(new MemoryStream(m_rows[row]), Encoding.UTF8); }
         }
 
-        public WDBReader(string fileName)
+        public ADBReader(string fileName)
         {
             using (var reader = BinaryReaderExtensions.FromFile(fileName))
             {
@@ -40,17 +40,32 @@ namespace dbc2sql
 
                 var signature = reader.ReadUInt32();
 
-                if (signature != WIDBFmtSig)
+                if (signature != ADBFmtSig)
                 {
                     Console.WriteLine("File {0} isn't valid DBC file!", fileName);
                     return;
                 }
 
-                uint build = reader.ReadUInt32();
-                uint locale = reader.ReadUInt32();
-                var unk1 = reader.ReadInt32();
-                var unk2 = reader.ReadInt32();
-                var version = reader.ReadInt32();
+                RecordsCount = reader.ReadInt32();
+                FieldsCount = reader.ReadInt32(); // not fields count in WCH2
+                RecordSize = reader.ReadInt32();
+                StringTableSize = reader.ReadInt32();
+
+                // WCH2 specific fields
+                uint tableHash = reader.ReadUInt32(); // new field in WCH2
+                uint build = reader.ReadUInt32(); // new field in WCH2
+
+                int unk1 = reader.ReadInt32(); // Unix time in WCH2
+                int unk2 = reader.ReadInt32(); // new field in WCH2
+                int unk3 = reader.ReadInt32(); // new field in WCH2 (index table?)
+                int locale = reader.ReadInt32(); // new field in WCH2
+                int unk5 = reader.ReadInt32(); // new field in WCH2
+
+                if (unk3 != 0)
+                {
+                    reader.ReadBytes(unk3 * 4 - HeaderSize);     // an index for rows
+                    reader.ReadBytes(unk3 * 2 - HeaderSize * 2); // a memory allocation bank
+                }
 
                 m_rows = new byte[RecordsCount][];
 
