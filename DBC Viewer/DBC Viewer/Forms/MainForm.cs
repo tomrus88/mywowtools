@@ -41,9 +41,19 @@ namespace DBCViewer
         // Delegates
         delegate void SetDataViewDelegate(DataView view);
 
+        // Plugins
         [ImportMany(AllowRecomposition = true)]
         List<IPlugin> Plugins { get; set; }
 
+        [Export("PluginFinished")]
+        public int PluginFinished(int result)
+        {
+            var msg = String.Format("Plugin finished! {0} rows affected.", result);
+            MessageBox.Show(msg);
+            return 0;
+        }
+
+        // MainForm
         public MainForm()
         {
             InitializeComponent();
@@ -116,14 +126,6 @@ namespace DBCViewer
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void dataGridView1_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-            if (e.RowIndex == -1)
-                return;
-
-            e.Value = dataGridView1[e.ColumnIndex, e.RowIndex].Value;
         }
 
         private void dataGridView1_CellToolTipTextNeeded(object sender, DataGridViewCellToolTipTextNeededEventArgs e)
