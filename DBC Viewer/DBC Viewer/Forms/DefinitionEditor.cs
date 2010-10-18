@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -20,9 +21,22 @@ namespace DBCViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!CheckColumns())
+            {
+                MessageBox.Show("Column names aren't unique. Please fix them first.");
+                return;
+            }
             WriteXml();
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private bool CheckColumns()
+        {
+            var names = from ListViewItem i in listView1.Items select i.SubItems[1].Text;
+            if (names.Distinct().Count() != names.Count())
+                return false;
+            return true;
         }
 
         private void WriteXml()
