@@ -1,13 +1,26 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace dbc2sql
 {
     class WDBReader : IWowClientDBReader
     {
-        private const int HeaderSize = 48;
-        private const uint WIDBFmtSig = 0x57494442;          // WIDB
+        private const int HeaderSize = 24;
+        private uint[] WDBSigs = new uint[]
+        {
+            0x574D4F42, // creaturecache.wdb
+            0x57474F42, // gameobjectcache.wdb
+            0x57494442, // itemcache.wdb
+            0x574E4442, // itemnamecache.wdb
+            0x57495458, // itemtextcache.wdb
+            0x574E5043, // npccache.wdb
+            0x57505458, // pagetextcache.wdb
+            0x57515354, // questcache.wdb
+            0x5752444E  // wowcache.wdb
+        };
 
         public int RecordsCount { get; private set; }
         public int FieldsCount { get; private set; }
@@ -16,7 +29,7 @@ namespace dbc2sql
 
         public StringTable StringTable { get; private set; }
 
-        private byte[][] m_rows;
+        private Dictionary<int, byte[]> m_rows;
 
         public byte[] GetRowAsByteArray(int row)
         {
@@ -25,7 +38,7 @@ namespace dbc2sql
 
         public BinaryReader this[int row]
         {
-            get { return new BinaryReader(new MemoryStream(m_rows[row]), Encoding.UTF8); }
+            get { return new BinaryReader(new MemoryStream(m_rows.ElementAt(row).Value), Encoding.UTF8); }
         }
 
         public WDBReader(string fileName)
@@ -34,16 +47,14 @@ namespace dbc2sql
             {
                 if (reader.BaseStream.Length < HeaderSize)
                 {
-                    Console.WriteLine("File {0} is corrupted!", fileName);
-                    return;
+                    throw new InvalidDataException(String.Format("File {0} is corrupted!", fileName));
                 }
 
                 var signature = reader.ReadUInt32();
 
-                if (signature != WIDBFmtSig)
+                if (!WDBSigs.Contains(signature))
                 {
-                    Console.WriteLine("File {0} isn't valid DBC file!", fileName);
-                    return;
+                    throw new InvalidDataException(String.Format("File {0} isn't valid WDB file!", fileName));
                 }
 
                 uint build = reader.ReadUInt32();
@@ -52,20 +63,22 @@ namespace dbc2sql
                 var unk2 = reader.ReadInt32();
                 var version = reader.ReadInt32();
 
-                m_rows = new byte[RecordsCount][];
-
-                for (int i = 0; i < RecordsCount; i++)
-                    m_rows[i] = reader.ReadBytes(RecordSize);
-
-                int stringTableStart = (int)reader.BaseStream.Position;
-
-                StringTable = new StringTable();
+                m_rows = new Dictionary<int, byte[]>();
 
                 while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {
-                    int index = (int)reader.BaseStream.Position - stringTableStart;
-                    StringTable[index] = reader.ReadStringNull();
+                    var entry = reader.ReadInt32();
+                    var size = reader.ReadInt32();
+                    if (entry == 0 && size == 0 && reader.BaseStream.Position == reader.BaseStream.Length)
+                        break;
+                    var row = new byte[0]
+                        .Concat(BitConverter.GetBytes(entry))
+                        .Concat(reader.ReadBytes(size))
+                        .ToArray();
+                    m_rows.Add(entry, row);
                 }
+
+                RecordsCount = m_rows.Count;
             }
         }
     }

@@ -927,4 +927,69 @@
     <field type="uint" name="m_field4" />
     <field type="int" name="m_field5" />
   </AnimKitBoneSet>
+  <SpellFlyout build="13202">
+    <index>
+      <primary>newField0</primary>
+    </index>
+    <field type="uint" name="newField0" />
+    <field type="int" name="zerosField1" />
+    <field type="int" name="intField2" />
+    <field type="uint" name="flagsField3" />
+    <field type="uint" name="spellIconId" />
+    <field type="string" name="name" />
+    <field type="string" name="description" />
+  </SpellFlyout>
+  <AnimationData build="12340">
+    <index>
+      <primary>newField0</primary>
+    </index>
+    <field type="int" name="newField0" />
+    <field type="string" name="newField1" />
+    <field type="int" name="newField2" />
+    <field type="int" name="newField3" />
+    <field type="int" name="newField4" />
+    <field type="int" name="newField5" />
+    <field type="int" name="newField6" />
+    <field type="int" name="newField7" />
+  </AnimationData>
+  <ServerMessages build="13205">
+    <index>
+      <primary>id</primary>
+    </index>
+    <field type="uint" name="id" />
+    <field type="string" name="message" />
+  </ServerMessages>
+  <creaturecache build="13221">
+    <index>
+      <primary>Entry</primary>
+    </index>
+    <field type="int" name="Entry" />
+    <field type="string" name="Name" />
+    <field type="string" name="Name2" visible="false" />
+    <field type="string" name="Name3" visible="false" />
+    <field type="string" name="Name4" visible="false" />
+    <field type="string" name="SubName" />
+    <field type="string" name="IconName" />
+    <field type="int" name="Flags" />
+    <field type="int" name="Type" />
+    <field type="int" name="Family" />
+    <field type="int" name="Rank" />
+    <field type="int" name="KillCredit1" />
+    <field type="int" name="KillCredit2" />
+    <field type="int" name="Modelid1" />
+    <field type="int" name="Modelid2" />
+    <field type="int" name="Modelid3" />
+    <field type="int" name="Modelid4" />
+    <field type="float" name="HealthModifier" />
+    <field type="float" name="PowerModifier" />
+    <field type="byte" name="RacialLeader" />
+    <field type="int" name="QuestItem_1" />
+    <field type="int" name="QuestItem_2" />
+    <field type="int" name="QuestItem_3" />
+    <field type="int" name="QuestItem_4" />
+    <field type="int" name="QuestItem_5" />
+    <field type="int" name="QuestItem_6" />
+    <field type="int" name="MovementId" />
+    <field type="int" name="Unk1" />
+  </creaturecache>
 </DBFilesClient>

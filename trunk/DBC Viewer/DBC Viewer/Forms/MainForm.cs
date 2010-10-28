@@ -145,7 +145,10 @@ namespace DBCViewer
                     val = (int)Convert.ToUInt32(dataGridView1[e.ColumnIndex, e.RowIndex].Value, CultureInfo.InvariantCulture);
             }
             else
-                val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value, StringComparison.Ordinal) == 0 select k.Key).FirstOrDefault();
+            {
+                if (!(m_reader is WDBReader))
+                    val = (from k in m_reader.StringTable where string.Compare(k.Value, (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value, StringComparison.Ordinal) == 0 select k.Key).FirstOrDefault();
+            }
 
             var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "Integer: {0:D}{1}", val, Environment.NewLine);
@@ -153,7 +156,7 @@ namespace DBCViewer
             sb.AppendFormat(new BinaryFormatter(), "BIN: {0:B}{1}", val, Environment.NewLine);
             sb.AppendFormat(CultureInfo.InvariantCulture, "Float: {0}{1}", BitConverter.ToSingle(BitConverter.GetBytes(val), 0), Environment.NewLine);
             //sb.AppendFormat(CultureInfo.InvariantCulture, "Double: {0}{1}", BitConverter.ToDouble(BitConverter.GetBytes(val), 0), Environment.NewLine);
-            sb.AppendFormat(CultureInfo.InvariantCulture, "String: {0}{1}", m_reader.StringTable[(int)val], Environment.NewLine);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "String: {0}{1}", !(m_reader is WDBReader) ? m_reader.StringTable[(int)val] : String.Empty, Environment.NewLine);
             e.ToolTipText = sb.ToString();
         }
 
@@ -167,28 +170,39 @@ namespace DBCViewer
         {
             var file = (string)e.Argument;
 
-            if (Path.GetExtension(file).ToUpperInvariant() == ".DBC")
-                m_reader = new DBCReader(file);
-            else if (Path.GetExtension(file).ToUpperInvariant() == ".DB2")
-                m_reader = new DB2Reader(file);
-            else if (Path.GetExtension(file).ToUpperInvariant() == ".ADB")
-                m_reader = new ADBReader(file);
-            //else if (Path.GetExtension(file).ToUpperInvariant() == ".WDB")
-            //    m_reader = new WDBReader(file);
-            else
+            try
             {
-                var msg = String.Format(CultureInfo.InvariantCulture, "Unknown file type {0}", Path.GetExtension(file));
-                ShowErrorMessageBox(msg);
+                if (Path.GetExtension(file).ToUpperInvariant() == ".DBC")
+                    m_reader = new DBCReader(file);
+                else if (Path.GetExtension(file).ToUpperInvariant() == ".DB2")
+                    m_reader = new DB2Reader(file);
+                else if (Path.GetExtension(file).ToUpperInvariant() == ".ADB")
+                    m_reader = new ADBReader(file);
+                else if (Path.GetExtension(file).ToUpperInvariant() == ".WDB")
+                    m_reader = new WDBReader(file);
+                else
+                    throw new InvalidDataException(String.Format("Unknown file type {0}", Path.GetExtension(file)));
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message);
                 e.Cancel = true;
                 return;
             }
 
             m_fields = m_definition.GetElementsByTagName("field");
 
+            string[] types = new string[m_fields.Count];
+
+            for (var j = 0; j < m_fields.Count; ++j)
+                types[j] = m_fields[j].Attributes["type"].Value;
+
             // hack for *.adb files (because they don't have FieldsCount)
             var notADB = !(m_reader is ADBReader);
+            // hack for *.wdb files (because they don't have FieldsCount)
+            var notWDB = !(m_reader is WDBReader);
 
-            if (GetFieldsCount(m_fields) != m_reader.FieldsCount && notADB)
+            if (GetFieldsCount(m_fields) != m_reader.FieldsCount && notADB && notWDB)
             {
                 var msg = String.Format(CultureInfo.InvariantCulture, "{0} has invalid definition!\nFields count mismatch: got {1}, expected {2}", Path.GetFileName(file), m_fields.Count, m_reader.FieldsCount);
                 ShowErrorMessageBox(msg);
@@ -202,11 +216,6 @@ namespace DBCViewer
             CreateColumns();                                // Add columns
 
             CreateIndexes();                                // Add indexes
-
-            string[] types = new string[m_fields.Count];
-
-            for (var j = 0; j < m_fields.Count; ++j)
-                types[j] = m_fields[j].Attributes["type"].Value;
 
             for (var i = 0; i < m_reader.RecordsCount; ++i) // Add rows
             {
@@ -314,7 +323,7 @@ namespace DBCViewer
                             dataRow[j] = br.ReadDouble();
                             break;
                         case "string":
-                            dataRow[j] = m_reader.StringTable[br.ReadInt32()];
+                            dataRow[j] = m_reader is WDBReader ? br.ReadStringNull() : m_reader.StringTable[br.ReadInt32()];
                             break;
                         default:
                             throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "Unknown field type {0}!", types[j]));
