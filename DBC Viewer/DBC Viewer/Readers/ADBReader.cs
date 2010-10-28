@@ -34,16 +34,14 @@ namespace dbc2sql
             {
                 if (reader.BaseStream.Length < HeaderSize)
                 {
-                    Console.WriteLine("File {0} is corrupted!", fileName);
-                    return;
+                    throw new InvalidDataException(String.Format("File {0} is corrupted!", fileName));
                 }
 
                 var signature = reader.ReadUInt32();
 
                 if (signature != ADBFmtSig)
                 {
-                    Console.WriteLine("File {0} isn't valid DBC file!", fileName);
-                    return;
+                    throw new InvalidDataException(String.Format("File {0} isn't valid DBC file!", fileName));
                 }
 
                 RecordsCount = reader.ReadInt32();
