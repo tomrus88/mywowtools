@@ -125,6 +125,10 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainForm.EventHandlers.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Readers\IWowClientDBReader.cs" />
     <Compile Include="Forms\PluginsForm.cs">
       <SubType>Form</SubType>
