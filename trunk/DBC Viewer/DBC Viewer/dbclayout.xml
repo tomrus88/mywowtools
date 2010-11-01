@@ -417,7 +417,7 @@
     <field type="uint" name="m_baseLevel" />
     <field type="uint" name="m_spellLevel" />
     <field type="uint" name="m_durationIndex" />
-    <field type="uint" name="m_powerType" />
+    <field type="int" name="m_powerType" />
     <field type="uint" name="m_manaCost" />
     <field type="uint" name="m_manaCostPerLevel" />
     <field type="uint" name="m_manaPerSecond" />
@@ -436,14 +436,14 @@
     <field type="int" name="m_reagent_6" />
     <field type="int" name="m_reagent_7" />
     <field type="int" name="m_reagent_8" />
-    <field type="uint" name="m_reagentCount_1" />
-    <field type="uint" name="m_reagentCount_2" />
-    <field type="uint" name="m_reagentCount_3" />
-    <field type="uint" name="m_reagentCount_4" />
-    <field type="uint" name="m_reagentCount_5" />
-    <field type="uint" name="m_reagentCount_6" />
-    <field type="uint" name="m_reagentCount_7" />
-    <field type="uint" name="m_reagentCount_8" />
+    <field type="int" name="m_reagentCount_1" />
+    <field type="int" name="m_reagentCount_2" />
+    <field type="int" name="m_reagentCount_3" />
+    <field type="int" name="m_reagentCount_4" />
+    <field type="int" name="m_reagentCount_5" />
+    <field type="int" name="m_reagentCount_6" />
+    <field type="int" name="m_reagentCount_7" />
+    <field type="int" name="m_reagentCount_8" />
     <field type="int" name="m_equippedItemClass" />
     <field type="int" name="m_equippedItemSubclass" />
     <field type="int" name="m_equippedItemInvTypes" />
@@ -604,7 +604,7 @@
     <field type="uint" name="m_schoolMask" />
     <field type="uint" name="m_runeCostID" />
     <field type="uint" name="m_spellMissileID" />
-    <field type="uint" name="m_powerDisplayID" />
+    <field type="int" name="m_powerDisplayID" />
     <field type="float" name="m_unk1_1" />
     <field type="float" name="m_unk1_2" />
     <field type="float" name="m_unk1_3" />
