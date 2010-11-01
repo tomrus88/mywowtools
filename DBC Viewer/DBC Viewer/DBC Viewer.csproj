@@ -89,6 +89,9 @@
   <ItemGroup>
     <Compile Include="BinaryFormatter.cs" />
     <Compile Include="BinaryReaderExtensions.cs" />
+    <Compile Include="MyDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Readers\ADBReader.cs" />
     <Compile Include="Readers\DB2Reader.cs" />
     <Compile Include="Readers\DBCReader.cs" />
