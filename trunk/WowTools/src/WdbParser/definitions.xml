@@ -29,6 +29,7 @@
     <wdbElement name="QuestItem_5" type="uinteger" />
     <wdbElement name="QuestItem_6" type="uinteger" />
     <wdbElement name="MovementId" type="uinteger" />
+    <wdbElement name="Unk1" type="uinteger" />
   </wdbId>
   <wdbId name="itemcache">
     <wdbElement name="Entry" type="uinteger" key="yes" />
@@ -64,22 +65,11 @@
     <wdbElement name="NumberOfStats" type="struct" maxcount="10">
       <structElement name="ItemModType" type="uinteger" />
       <structElement name="ItemModValue" type="integer" />
+      <structElement name="ItemModUnk1" type="uinteger" />
+      <structElement name="ItemModUnk2" type="uinteger" />
     </wdbElement>
     <wdbElement name="ScalingStatDistribution" type="uinteger" />
     <wdbElement name="ScalingStatValue" type="uinteger" />
-    <wdbElement name="DmgMin1" type="single" />
-    <wdbElement name="DmgMax1" type="single" />
-    <wdbElement name="DmgType1" type="uinteger" />
-    <wdbElement name="DmgMin2" type="single" />
-    <wdbElement name="DmgMax2" type="single" />
-    <wdbElement name="DmgType2" type="uinteger" />
-    <wdbElement name="Armor" type="uinteger" />
-    <wdbElement name="HolyRes" type="uinteger" />
-    <wdbElement name="FireRes" type="uinteger" />
-    <wdbElement name="NatureRes" type="uinteger" />
-    <wdbElement name="FrostRes" type="uinteger" />
-    <wdbElement name="ShadowRes" type="uinteger" />
-    <wdbElement name="ArcaneRes" type="uinteger" />
     <wdbElement name="Delay" type="uinteger" />
     <wdbElement name="AmmoType" type="uinteger" />
     <wdbElement name="RangedModRange" type="single" />
@@ -144,6 +134,9 @@
     <wdbElement name="Duration" type="integer" />
     <wdbElement name="ItemLimitCategory" type="uinteger" />
     <wdbElement name="HolidayID" type="uinteger" />
+    <wdbElement name="StatScalingFactor" type="single" />
+    <wdbElement name="Unk1" type="uinteger" />
+    <wdbElement name="Unk2" type="uinteger" />
   </wdbId>
   <wdbId name="questcache">
     <wdbElement name="Entry" type="uinteger" key="yes" />
@@ -169,11 +162,16 @@
     <wdbElement name="Honor2" type="single" />
     <wdbElement name="SrcItemId" type="uinteger" />
     <wdbElement name="QuestFlags" type="uinteger" />
+    <wdbElement name="QuestFlags2" type="uinteger" />
     <wdbElement name="CharTitleId" type="uinteger" />
     <wdbElement name="PlayersSlain" type="integer" />
     <wdbElement name="BonusTalents" type="integer" />
     <wdbElement name="BonusArenaPoints" type="integer" />
+    <wdbElement name="skill_reward" type="integer" />
+    <wdbElement name="skill_points_reward" type="integer" />
     <wdbElement name="Unk2" type="integer" />
+    <wdbElement name="Unk4" type="integer" />
+    <wdbElement name="Unk5" type="integer" />
     <wdbElement name="RewItemId1" type="uinteger" /> 
     <wdbElement name="RewItemCount1" type="uinteger" />
     <wdbElement name="RewItemId2" type="uinteger" />
@@ -194,21 +192,21 @@
     <wdbElement name="RewChoiceItemCount5" type="uinteger" />
     <wdbElement name="RewChoiceItemId6" type="uinteger" />
     <wdbElement name="RewChoiceItemCount6" type="uinteger" />
-    <wdbElement name="RawFactionId1" type="uinteger" />
-    <wdbElement name="RawFactionId2" type="uinteger" />
-    <wdbElement name="RawFactionId3" type="uinteger" />
-    <wdbElement name="RawFactionId4" type="uinteger" />
-    <wdbElement name="RawFactionId5" type="uinteger" />
-    <wdbElement name="RawFactionVal1" type="integer" />
-    <wdbElement name="RawFactionVal2" type="integer" />
-    <wdbElement name="RawFactionVal3" type="integer" />
-    <wdbElement name="RawFactionVal4" type="integer" />
-    <wdbElement name="RawFactionVal5" type="integer" />
-    <wdbElement name="RawFactionValOverride1" type="uinteger" />
-    <wdbElement name="RawFactionValOverride2" type="uinteger" />
-    <wdbElement name="RawFactionValOverride3" type="uinteger" />
-    <wdbElement name="RawFactionValOverride4" type="uinteger" />
-    <wdbElement name="RawFactionValOverride5" type="uinteger" />
+    <wdbElement name="RewFactionId1" type="uinteger" />
+    <wdbElement name="RewFactionId2" type="uinteger" />
+    <wdbElement name="RewFactionId3" type="uinteger" />
+    <wdbElement name="RewFactionId4" type="uinteger" />
+    <wdbElement name="RewFactionId5" type="uinteger" />
+    <wdbElement name="RewFactionVal1" type="integer" />
+    <wdbElement name="RewFactionVal2" type="integer" />
+    <wdbElement name="RewFactionVal3" type="integer" />
+    <wdbElement name="RewFactionVal4" type="integer" />
+    <wdbElement name="RewFactionVal5" type="integer" />
+    <wdbElement name="RewFactionValOverride1" type="uinteger" />
+    <wdbElement name="RewFactionValOverride2" type="uinteger" />
+    <wdbElement name="RewFactionValOverride3" type="uinteger" />
+    <wdbElement name="RewFactionValOverride4" type="uinteger" />
+    <wdbElement name="RewFactionValOverride5" type="uinteger" />
     <wdbElement name="PointMapId" type="uinteger" />
     <wdbElement name="PointX" type="single" />
     <wdbElement name="PointY" type="single" />
@@ -246,10 +244,33 @@
     <wdbElement name="ReqItemCount5" type="uinteger" />
     <wdbElement name="ReqItemId6" type="uinteger" />
     <wdbElement name="ReqItemCount6" type="uinteger" />
+    <wdbElement name="Unk6" type="uinteger" />
     <wdbElement name="ObjectiveText1" type="varChar" />
     <wdbElement name="ObjectiveText2" type="varChar" />
     <wdbElement name="ObjectiveText3" type="varChar" />
     <wdbElement name="ObjectiveText4" type="varChar" />
+    <wdbElement name="RewCurrency1" type="uinteger" />
+    <wdbElement name="RewCurrencyCount1" type="uinteger" />
+    <wdbElement name="RewCurrency2" type="uinteger" />
+    <wdbElement name="RewCurrencyCount2" type="uinteger" />
+    <wdbElement name="RewCurrency3" type="uinteger" />
+    <wdbElement name="RewCurrencyCount3" type="uinteger" />
+    <wdbElement name="RewCurrency4" type="uinteger" />
+    <wdbElement name="RewCurrencyCount4" type="uinteger" />
+    <wdbElement name="ReqCurrency1" type="uinteger" />
+    <wdbElement name="ReqCurrencyCount1" type="uinteger" />
+    <wdbElement name="ReqCurrency2" type="uinteger" />
+    <wdbElement name="ReqCurrencyCount2" type="uinteger" />
+    <wdbElement name="ReqCurrency3" type="uinteger" />
+    <wdbElement name="ReqCurrencyCount3" type="uinteger" />
+    <wdbElement name="ReqCurrency4" type="uinteger" />
+    <wdbElement name="ReqCurrencyCount4" type="uinteger" />
+    <wdbElement name="npcframe_accept_text1" type="varChar" />
+    <wdbElement name="npcframe_accept_text2" type="varChar" />
+    <wdbElement name="npcframe_handin_text1" type="varChar" />
+    <wdbElement name="npcframe_handin_text2" type="varChar" />
+    <wdbElement name="Unk7" type="uinteger" />
+    <wdbElement name="Unk8" type="uinteger" />
   </wdbId>
   <wdbId name="npccache">
     <wdbElement name="ID" type="uinteger" key="yes" />
