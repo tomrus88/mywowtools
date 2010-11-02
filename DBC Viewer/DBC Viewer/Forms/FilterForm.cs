@@ -178,10 +178,12 @@ namespace DBCViewer
         {
             m_filters.Clear();
 
+            var delimiter = new char[] { ' ' };
+
             for (var i = 0; i < listBox1.Items.Count; ++i)
             {
                 string filter = (string)listBox1.Items[i];
-                var args = filter.Split(' ');
+                var args = filter.Split(delimiter, 3);
                 if (args.Length != 3)
                     throw new ArgumentException("We got a trouble!");
 

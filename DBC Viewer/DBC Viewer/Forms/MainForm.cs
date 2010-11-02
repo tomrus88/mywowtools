@@ -264,7 +264,7 @@ namespace DBCViewer
 
         private void Compose()
         {
-            m_catalog = new DirectoryCatalog(Environment.CurrentDirectory);
+            m_catalog = new DirectoryCatalog(m_workingFolder);
             var container = new CompositionContainer(m_catalog);
             container.ComposeParts(this);
         }
