@@ -29,7 +29,7 @@ namespace StormLib
         LOCAL_FILE      = 0xFFFFFFFF,  // Open the file from the MPQ archive
     };
 
-    public unsafe class StormLib
+    public class StormLib
     {
         [DllImport("StormLib.dll")]
         public static extern bool SFileOpenArchive([MarshalAs(UnmanagedType.LPStr)] string szMpqName,
@@ -136,6 +136,20 @@ namespace StormLib
         }
     }
 
+    public class MpqLocale
+    {
+        private static readonly string[] Locales = new string[] {
+            "enUS", "koKR", "frFR", "deDE", "zhTW", "esES", "esMX", "ruRU", "enGB", "enTW" };
+
+        public static string GetPrefix(string file)
+        {
+            foreach (var loc in Locales)
+                if(file.Contains(loc))
+                    return loc;
+            return "base";
+        }
+    }
+
     public class MpqArchive : IDisposable
     {
         private IntPtr handle = IntPtr.Zero;
@@ -162,10 +176,9 @@ namespace StormLib
 
         private void OpenPatch(string file)
         {
-            var patches = System.IO.Directory.GetFiles(MpqArchiveSet.SetGameDirFromReg(), "Data\\wow-update-*.mpq");
+            var patches = Directory.GetFiles(MpqArchiveSet.SetGameDirFromReg(), "Data\\wow-update-*.mpq");
 
-            // we need locales support
-            var prefix = file.Contains("enGB") ? "enGB" : "base";
+            var prefix = MpqLocale.GetPrefix(file);
 
             foreach (var patch in patches)
             {
