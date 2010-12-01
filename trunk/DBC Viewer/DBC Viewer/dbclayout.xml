@@ -1280,4 +1280,22 @@
     <field type="int" name="m_summonType" />
     <field type="uint" name="m_flags" />
   </SummonProperties>
+  <GameTables build="13240">
+    <index>
+      <primary>field0</primary>
+    </index>
+    <field type="string" name="field0" />
+    <field type="int" name="field1" />
+    <field type="int" name="field2" />
+  </GameTables>
+  <gtOCTClassCombatRatingScalar build="13240">
+    <index>
+      <primary>field0</primary>
+    </index>
+    <field type="int" name="field0" />
+    <field type="float" name="field1" />
+  </gtOCTClassCombatRatingScalar>
+  <gtCombatRatings build="12340">
+    <field type="float" name="field0" />
+  </gtCombatRatings>
 </DBFilesClient>
