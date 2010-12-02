@@ -2,6 +2,7 @@
 
 namespace Blizzard
 {
+    [StructLayout(LayoutKind.Sequential)]
     struct PTCH
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -11,6 +12,7 @@ namespace Blizzard
         public uint m_sizeAfter;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     struct MD5_
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -22,13 +24,17 @@ namespace Blizzard
         public byte[] m_md5After;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     struct XFRM
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public byte[] m_magic;
         public uint m_xfrmBlockSize;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] m_type;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     struct BSDIFF40
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]

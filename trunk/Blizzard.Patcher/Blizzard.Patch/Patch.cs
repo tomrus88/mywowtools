@@ -36,7 +36,7 @@ namespace Blizzard
                 m_XFRM = br.ReadStruct<XFRM>();
                 Debug.Assert(m_XFRM.m_magic.FourCC() == "XFRM");
 
-                m_type = br.ReadBytes(4).FourCC(); // part of XFRM?
+                m_type = m_XFRM.m_type.FourCC();
 
                 switch (m_type)
                 {
@@ -49,7 +49,7 @@ namespace Blizzard
                         m_compressedDiff = br.ReadRemaining();
                         return;
                     default:
-                        Debug.Assert(false);
+                        Debug.Assert(false, String.Format("Unknown patch type: {0}", m_type));
                         break;
                 }
             }
@@ -64,7 +64,7 @@ namespace Blizzard
         {
             Console.WriteLine("PTCH: patchSize {0}, sizeBefore {1}, sizeAfter {2}", m_PTCH.m_patchSize, m_PTCH.m_sizeBefore, m_PTCH.m_sizeAfter);
             Console.WriteLine("MD5_: md5BlockSize {0}\n md5Before {1}\n md5After {2}", m_MD5.m_md5BlockSize, m_MD5.m_md5Before.ToHexString(), m_MD5.m_md5After.ToHexString());
-            Console.WriteLine("XFRM: xfrmBlockSize {0}", m_XFRM.m_xfrmBlockSize);
+            Console.WriteLine("XFRM: xfrmBlockSize {0}, patch type: {1}", m_XFRM.m_xfrmBlockSize, m_XFRM.m_type.FourCC());
         }
 
         private void BSDIFFParseHeader(BinaryReader br)
@@ -100,17 +100,15 @@ namespace Blizzard
             using (MemoryStream ms = new MemoryStream(m_compressedDiff))
             using (BinaryReader br = new BinaryReader(ms))
             {
-                byte b;
-                while ((b = br.ReadByte()) != 0)
+                while (br.PeekChar() >= 0)
                 {
+                    byte b = br.ReadByte();
                     if ((b & 0x80) != 0)
                         ret.AddRange(br.ReadBytes((b & 0x7F) + 1));
                     else
                         ret.AddRange(new byte[b + 1]);
                 }
             }
-
-            ret.Add(0);
 
             Debug.Assert(ret.Count == m_unpackedSize);
 
@@ -132,7 +130,7 @@ namespace Blizzard
                 Debug.Assert(oldFile.Length == m_PTCH.m_sizeBefore);
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
                 var hash = md5.ComputeHash(oldFile);
-                Debug.Assert(hash.Compare(m_MD5.m_md5Before));
+                Debug.Assert(hash.Compare(m_MD5.m_md5Before), "Input MD5 mismatch!");
             }
 
             var ctrlBlock = m_ctrlBlock.ToBinaryReader();
@@ -183,7 +181,7 @@ namespace Blizzard
                 Debug.Assert(newFile.Length == m_PTCH.m_sizeAfter);
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
                 var hash = md5.ComputeHash(newFile);
-                Debug.Assert(hash.Compare(m_MD5.m_md5After));
+                Debug.Assert(hash.Compare(m_MD5.m_md5After), "Output MD5 mismatch!");
             }
 
             File.WriteAllBytes(newFileName, newFile);
