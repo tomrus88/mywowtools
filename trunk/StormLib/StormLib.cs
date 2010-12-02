@@ -75,7 +75,7 @@ namespace StormLib
             GameDir = dir;
         }
 
-        public static string SetGameDirFromReg()
+        public static string GetGameDirFromReg()
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Blizzard Entertainment\\World of Warcraft");
             if (key == null)
@@ -144,7 +144,7 @@ namespace StormLib
         public static string GetPrefix(string file)
         {
             foreach (var loc in Locales)
-                if(file.Contains(loc))
+                if (file.Contains(loc))
                     return loc;
             return "base";
         }
@@ -176,7 +176,7 @@ namespace StormLib
 
         private void OpenPatch(string file)
         {
-            var patches = Directory.GetFiles(MpqArchiveSet.SetGameDirFromReg(), "Data\\wow-update-*.mpq");
+            var patches = Directory.GetFiles(MpqArchiveSet.GetGameDirFromReg(), "Data\\wow-update-*.mpq");
 
             var prefix = MpqLocale.GetPrefix(file);
 
