@@ -20,6 +20,12 @@ namespace WoWPacketViewer
             Init();
         }
 
+        public static void ReInit()
+        {
+            Parsers.Clear();
+            Init();
+        }
+
         private static void Init()
         {
             LoadAssembly(Assembly.GetCallingAssembly());

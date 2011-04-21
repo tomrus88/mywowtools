@@ -300,5 +300,10 @@ namespace WoWPacketViewer
                             p.Data.Length.ToString()
                         });
         }
+
+        private void reloadDefinitionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ParserFactory.ReInit();
+        }
     }
 }
