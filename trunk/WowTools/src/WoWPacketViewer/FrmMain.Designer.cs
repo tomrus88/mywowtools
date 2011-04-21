@@ -42,6 +42,7 @@
             this.saveAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveWardenAsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsParsedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadDefinitionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +52,6 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this._openDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.reloadDefinitionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -204,6 +204,13 @@
             this.saveAsParsedTextToolStripMenuItem.Text = "Save As Parsed Text...";
             this.saveAsParsedTextToolStripMenuItem.Click += new System.EventHandler(this.saveAsParsedTextToolStripMenuItem_Click);
             // 
+            // reloadDefinitionsToolStripMenuItem
+            // 
+            this.reloadDefinitionsToolStripMenuItem.Name = "reloadDefinitionsToolStripMenuItem";
+            this.reloadDefinitionsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.reloadDefinitionsToolStripMenuItem.Text = "Reload definitions";
+            this.reloadDefinitionsToolStripMenuItem.Click += new System.EventHandler(this.reloadDefinitionsToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -225,7 +232,7 @@
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             this.findToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.findToolStripMenuItem.Text = "Find...";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.FindMenu_Click);
             // 
@@ -289,14 +296,7 @@
             // 
             // _openDialog
             // 
-            this._openDialog.Filter = "WoW Binary Files|*.bin|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
-            // 
-            // reloadDefinitionsToolStripMenuItem
-            // 
-            this.reloadDefinitionsToolStripMenuItem.Name = "reloadDefinitionsToolStripMenuItem";
-            this.reloadDefinitionsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.reloadDefinitionsToolStripMenuItem.Text = "Reload definitions";
-            this.reloadDefinitionsToolStripMenuItem.Click += new System.EventHandler(this.reloadDefinitionsToolStripMenuItem_Click);
+            this._openDialog.Filter = "WoW Binary Files|*.bin;*.pkt|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
             // FrmMain
             // 
