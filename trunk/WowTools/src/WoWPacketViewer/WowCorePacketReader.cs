@@ -35,8 +35,8 @@ namespace WoWPacketViewer
                         Build = gr.ReadUInt32();        // client build
                         gr.ReadBytes(4);                // client locale
                         gr.ReadBytes(40);               // session key
-                        uint optionalHeaderLength = gr.ReadUInt32();
-                        gr.ReadBytes((int)optionalHeaderLength);
+                        var optionalHeaderLength = gr.ReadInt32();
+                        gr.ReadBytes(optionalHeaderLength);
                         break;
                     default:
                         throw new Exception(String.Format("Unknown sniff version {0:X2}", version));
@@ -65,11 +65,11 @@ namespace WoWPacketViewer
                         Direction direction = gr.ReadUInt32() == 0x47534d53 ? Direction.Server : Direction.Client;
                         uint unixtime = gr.ReadUInt32();
                         uint tickcount = gr.ReadUInt32();
-                        uint optionalSize = gr.ReadUInt32();
-                        uint dataSize = gr.ReadUInt32();
-                        gr.ReadBytes((int)optionalSize);
+                        int optionalSize = gr.ReadInt32();
+                        int dataSize = gr.ReadInt32();
+                        gr.ReadBytes(optionalSize);
                         OpCodes opcode = (OpCodes)gr.ReadUInt32();
-                        byte[] data = gr.ReadBytes((int)dataSize - 4);
+                        byte[] data = gr.ReadBytes(dataSize - 4);
                         packets.Add(new Packet(direction, opcode, data, unixtime, tickcount));
                     }
                 }
