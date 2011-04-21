@@ -1,6 +1,5 @@
-using System;
 
-namespace WoWPacketViewer
+namespace WowTools.Core
 {
     public enum Direction
     {

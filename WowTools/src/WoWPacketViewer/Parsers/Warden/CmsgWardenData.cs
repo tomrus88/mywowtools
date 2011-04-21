@@ -34,7 +34,7 @@ namespace WoWPacketViewer.Parsers.Warden
                     break;
                 case 0x04:
                     byte[] hash = gr.ReadBytes(20); // SHA1 hash of tranformed seed
-                    AppendFormatLine("SHA1: 0x{0}", Utility.ByteArrayToHexString(hash));
+                    AppendFormatLine("SHA1: 0x{0}", hash.ToHexString());
                     AppendLine();
                     break;
                 default:
@@ -158,7 +158,7 @@ namespace WoWPacketViewer.Parsers.Warden
             if(res == 0)
             {
                 var sha1 = reader.ReadBytes(20);
-                AppendFormatLine("MPQ SHA1: {0}", Utility.ByteArrayToHexString(sha1));
+                AppendFormatLine("MPQ SHA1: {0}", sha1.ToHexString());
             }
 
             //AppendFormatLine("====== MPQ_CHECK result END ======");
@@ -182,7 +182,7 @@ namespace WoWPacketViewer.Parsers.Warden
             if (res == 0)
             {
                 var bytes = reader.ReadBytes(check.m_length);
-                AppendFormatLine("MEM Bytes: {0}", Utility.ByteArrayToHexString(bytes));
+                AppendFormatLine("MEM Bytes: {0}", bytes.ToHexString());
             }
             //AppendFormatLine("====== MEM_CHECK result END ======");
             //AppendLine();

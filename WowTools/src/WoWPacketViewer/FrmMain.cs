@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -66,7 +65,7 @@ namespace WoWPacketViewer
 
             var packet = packets[SelectedIndex];
 
-            textBox1.Text = Utility.HexLike(packet);
+            textBox1.Text = packet.HexLike();
             var parser = ParserFactory.CreateParser(packet);
             textBox2.Text = parser.Parse();
         }
@@ -119,7 +118,7 @@ namespace WoWPacketViewer
             {
                 foreach (var p in packets)
                 {
-                    stream.Write(Utility.HexLike(p));
+                    stream.Write(p.HexLike());
                 }
             }
         }
