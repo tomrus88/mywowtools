@@ -4,7 +4,7 @@ using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
-    [Parser(OpCodes.SMSG_EQUIPMENT_SET_LIST)]
+    [Parser(OpCodes.SMSG_LOAD_EQUIPMENT_SET)]
     internal class EquipmentSetListParser : Parser
     {
         public EquipmentSetListParser(Packet packet)

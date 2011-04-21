@@ -1,7 +1,6 @@
 ﻿using System.IO;
-using WowTools.Core;
 
-namespace WoWPacketViewer
+namespace WowTools.Core
 {
     public class Packet
     {

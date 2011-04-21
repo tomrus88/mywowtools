@@ -1,7 +1,6 @@
 ﻿using System;
-using WowTools.Core;
 
-namespace WoWPacketViewer
+namespace WowTools.Core
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ParserAttribute : Attribute

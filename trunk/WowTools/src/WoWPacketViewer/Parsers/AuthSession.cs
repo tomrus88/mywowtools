@@ -31,14 +31,14 @@ namespace WoWPacketViewer.Parsers
             AppendFormatLine("Unk2: {0}", unk2);
             AppendFormatLine("Client Seed: {0}", clientSeed);
             AppendFormatLine("Unk3: {0}", unk3);
-            AppendFormatLine("Digest: {0}", Utility.ByteArrayToHexString(digest));
+            AppendFormatLine("Digest: {0}", digest.ToHexString());
 
             // addon info
             var addonData = gr.ReadBytes((int)gr.BaseStream.Length - (int)gr.BaseStream.Position);
-            var decompressed = Utility.Decompress(addonData);
+            var decompressed = addonData.Decompress();
 
             AppendFormatLine("Decompressed addon data:");
-            AppendFormatLine(Utility.PrintHex(decompressed, 0, decompressed.Length));
+            AppendFormatLine(decompressed.HexLike(0, decompressed.Length));
 
             using (var reader = new BinaryReader(new MemoryStream(decompressed)))
             {

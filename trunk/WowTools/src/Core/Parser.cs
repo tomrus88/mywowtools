@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WoWPacketViewer
+namespace WowTools.Core
 {
     public abstract class Parser
     {
