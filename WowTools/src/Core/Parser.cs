@@ -34,11 +34,6 @@ namespace WowTools.Core
             stringBuilder.AppendFormat(format, args).AppendLine();
         }
 
-        public string GetParsedString()
-        {
-            return stringBuilder.ToString();
-        }
-
         public void CheckPacket(BinaryReader gr)
         {
             if (gr.BaseStream.Position != gr.BaseStream.Length)
@@ -53,8 +48,14 @@ namespace WowTools.Core
         protected Parser(Packet packet)
         {
             Packet = packet;
+            Parse();
         }
 
-        public abstract string Parse();
+        public abstract void Parse();
+
+        public override string ToString()
+        {
+            return stringBuilder.ToString();
+        }
     }
 }
