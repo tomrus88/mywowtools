@@ -44,23 +44,33 @@ namespace WoWPacketViewer
                     }
                 }
 
-                foreach (string file in Directory.GetFiles("parsers", "*.cs", SearchOption.AllDirectories))
+                var extensions = new string[] { "*.cs", "*.vb", "*.js" };
+
+                foreach (var ext in extensions)
                 {
-                    try
+                    foreach (string file in Directory.GetFiles("parsers", ext, SearchOption.AllDirectories))
                     {
-                        Assembly assembly = CompileParser(file);
-                        LoadAssembly(assembly);
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            Assembly assembly = CompileParser(file);
+                            LoadAssembly(assembly);
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
         }
 
+        private static string GetLanguageFromExtension(string file)
+        {
+            return CodeDomProvider.GetLanguageFromExtension(Path.GetExtension(file));
+        }
+
         private static Assembly CompileParser(string file)
         {
-            using (CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp"))
+            using (CodeDomProvider provider = CodeDomProvider.CreateProvider(GetLanguageFromExtension(file)))
             {
                 CompilerParameters cp = new CompilerParameters();
 
