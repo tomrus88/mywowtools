@@ -12,7 +12,7 @@ namespace WoWPacketViewer.Parsers
         {
         }
 
-        public override string Parse()
+        public override void Parse()
         {
             var gr = Packet.CreateReader();
 
@@ -66,8 +66,6 @@ namespace WoWPacketViewer.Parsers
             }
 
             CheckPacket(gr);
-
-            return GetParsedString();
         }
     }
 }

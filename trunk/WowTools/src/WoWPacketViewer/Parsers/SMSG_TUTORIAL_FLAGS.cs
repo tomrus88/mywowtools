@@ -10,7 +10,7 @@ namespace WoWPacketViewer.Parsers
         {
         }
 
-        public override string Parse()
+        public override void Parse()
         {
             var gr = Packet.CreateReader();
 
@@ -18,8 +18,6 @@ namespace WoWPacketViewer.Parsers
                 AppendFormatLine("Mask {0}: {1:X8}", i, gr.ReadUInt32());
 
             CheckPacket(gr);
-
-            return GetParsedString();
         }
     }
 }

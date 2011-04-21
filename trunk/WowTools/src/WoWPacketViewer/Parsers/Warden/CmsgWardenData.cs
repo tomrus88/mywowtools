@@ -12,7 +12,7 @@ namespace WoWPacketViewer.Parsers.Warden
         {
         }
 
-        public override string Parse()
+        public override void Parse()
         {
             BinaryReader gr = Packet.CreateReader();
 
@@ -44,8 +44,6 @@ namespace WoWPacketViewer.Parsers.Warden
             }
 
             CheckPacket(gr);
-
-            return GetParsedString();
         }
 
         private void Parse_CHEAT_CHECKS_RESULTS(BinaryReader gr)

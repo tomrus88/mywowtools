@@ -9,9 +9,9 @@ namespace WoWPacketViewer.Parsers
         {
         }
 
-        public override string Parse()
+        public override void Parse()
         {
-            return string.Empty;
+
         }
     }
 }
