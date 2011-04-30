@@ -26,17 +26,17 @@ namespace Test
             archive.AddArchives(archiveNames);
         }
 
-        public static bool ExtractFile(string from, string to)
+        public static bool ExtractFile(string from, string to, OpenFileFlags dwSearchScope)
         {
             if (!archive.HasFile(from))
                 return false;
 
             var dir = Path.GetDirectoryName(to);
 
-            if (!Directory.Exists(dir))
+            if (!Directory.Exists(dir) && !String.IsNullOrEmpty(dir))
                 Directory.CreateDirectory(dir);
 
-            return archive.ExtractFile(from, to);
+            return archive.ExtractFile(from, to, dwSearchScope);
         }
 
         public static void Close()

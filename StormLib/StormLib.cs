@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
@@ -18,8 +19,7 @@ namespace StormLib
         ENCRYPTED           = 0x0200, // Opens an encrypted MPQ archive (Example: Starcraft II installation)
     };
 
-    // Values for SFileOpenFileEx
-    [Flags]
+    // Values for SFileExtractFile
     public enum OpenFileFlags : uint
     {
         FROM_MPQ        = 0x00000000,  // Open the file from the MPQ archive
@@ -39,23 +39,9 @@ namespace StormLib
         public static extern bool SFileCloseArchive(IntPtr hMpq);
 
         [DllImport("StormLib.dll")]
-        public static extern bool SFileOpenFileEx(IntPtr hMpq, [MarshalAs(UnmanagedType.LPStr)] string szFileName,
-            [MarshalAs(UnmanagedType.U4)] OpenFileFlags dwSearchScope, IntPtr phFile);
-
-        [DllImport("StormLib.dll")]
-        public static extern bool SFileCloseFile(IntPtr hFile);
-
-        [DllImport("StormLib.dll")]
-        public static extern uint SFileGetFileSize(IntPtr hFile, out uint pdwFileSizeHigh);
-
-        [DllImport("StormLib.dll")]
-        public static extern bool SFileReadFile(IntPtr hFile, [MarshalAs(UnmanagedType.LPArray)] byte[] lpBuffer, int dwToRead,
-            out int pdwRead, IntPtr lpOverlapped);
-
-        [DllImport("StormLib.dll")]
         public static extern bool SFileExtractFile(IntPtr hMpq,
             [MarshalAs(UnmanagedType.LPStr)] string szToExtract,
-            [MarshalAs(UnmanagedType.LPStr)] string szExtracted);
+            [MarshalAs(UnmanagedType.LPStr)] string szExtracted, [MarshalAs(UnmanagedType.U4)] OpenFileFlags dwSearchScope);
 
         [DllImport("StormLib.dll")]
         public static extern bool SFileHasFile(IntPtr hMpq, [MarshalAs(UnmanagedType.LPStr)] string szFileName);
@@ -115,11 +101,11 @@ namespace StormLib
             return false;
         }
 
-        public bool ExtractFile(string from, string to)
+        public bool ExtractFile(string from, string to, OpenFileFlags dwSearchScope)
         {
             foreach (MpqArchive a in archives)
                 if (a.HasFile(from))
-                    return a.ExtractPatchedFile(from, to);
+                    return a.ExtractFile(from, to, dwSearchScope);
             return false;
         }
 
@@ -138,7 +124,7 @@ namespace StormLib
 
     public class MpqLocale
     {
-        private static readonly string[] Locales = new string[] {
+        public static readonly string[] Locales = new string[] {
             "enUS", "koKR", "frFR", "deDE", "zhTW", "esES", "esMX", "ruRU", "enGB", "enTW" };
 
         public static string GetPrefix(string file)
@@ -146,6 +132,7 @@ namespace StormLib
             foreach (var loc in Locales)
                 if (file.Contains(loc))
                     return loc;
+
             return "base";
         }
     }
@@ -180,12 +167,14 @@ namespace StormLib
 
             var prefix = MpqLocale.GetPrefix(file);
 
+            if (prefix != "base")
+            {
+                var patches2 = Directory.GetFiles(MpqArchiveSet.GetGameDirFromReg(), String.Format("Data\\{0}\\wow-update-*.mpq", prefix));
+                patches = new string[0].Concat(patches).Concat(patches2).ToArray();
+            }
+
             foreach (var patch in patches)
             {
-                // hack due to multiple variants of game world in current client (world.mpq + oldworld.mpq), which can't be used at same time
-                if (patch.Contains("oldworld"))
-                    continue;
-
                 bool r = StormLib.SFileOpenPatchArchive(handle, patch, prefix, 0);
             }
         }
@@ -203,92 +192,14 @@ namespace StormLib
             return r;
         }
 
-        public unsafe MpqFile OpenFile(string szFileName, OpenFileFlags dwSearchScope)
-        {
-            IntPtr h;
-            IntPtr hp = (IntPtr)(&h);
-            bool r = StormLib.SFileOpenFileEx(handle, szFileName, dwSearchScope, hp);
-            if (!r)
-                return null;
-            return new MpqFile(this, h);
-        }
-
         public bool HasFile(string name)
         {
             return StormLib.SFileHasFile(handle, name);
         }
 
-        public bool ExtractFile(string from, string to)
+        public bool ExtractFile(string from, string to, OpenFileFlags dwSearchScope)
         {
-            return StormLib.SFileExtractFile(handle, from, to);
-        }
-
-        public bool ExtractPatchedFile(string from, string to)
-        {
-            using (MpqFile f = OpenFile(from, OpenFileFlags.PATCHED_FILE))
-            {
-                if (f == null)
-                    return false;
-
-                return f.ExtractTo(to);
-            }
-        }
-    }
-
-    public class MpqFile : IDisposable
-    {
-        IntPtr handle;
-        MpqArchive archive;
-
-        public MpqFile(MpqArchive a, IntPtr h)
-        {
-            archive = a;
-            handle = h;
-        }
-
-        public void Dispose()
-        {
-            Close();
-        }
-
-        public bool Close()
-        {
-            bool r = StormLib.SFileCloseFile(handle);
-            if (r)
-                handle = IntPtr.Zero;
-            return r;
-        }
-
-        public uint GetSize()
-        {
-            uint high;
-            return StormLib.SFileGetFileSize(handle, out high);
-        }
-
-        public bool ExtractTo(string to)
-        {
-            uint dwSize = GetSize();
-
-            if (dwSize == 0)
-                return false;
-
-            // hope we won't run OOM
-            byte[] szBuffer = new byte[dwSize];
-
-            using (FileStream file = File.Create(to))
-            {
-                int dwBytes;
-
-                bool r = StormLib.SFileReadFile(handle, szBuffer, szBuffer.Length, out dwBytes, IntPtr.Zero);
-
-                if (dwBytes != szBuffer.Length)
-                    throw new IOException(String.Format("Can't extract {0} properly!", to));
-
-                if (dwBytes > 0)
-                    file.Write(szBuffer, 0, dwBytes);
-
-                return r;
-            }
+            return StormLib.SFileExtractFile(handle, from, to, dwSearchScope);
         }
     }
 }
