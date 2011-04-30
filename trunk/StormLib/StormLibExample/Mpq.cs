@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using StormLib;
 
 namespace Test
@@ -26,16 +27,8 @@ namespace Test
             archive.AddArchives(archiveNames);
         }
 
-        public static bool ExtractFile(string from, string to, OpenFileFlags dwSearchScope)
+        public static bool ExtractFile(string from, string to, OpenFile dwSearchScope)
         {
-            if (!archive.HasFile(from))
-                return false;
-
-            var dir = Path.GetDirectoryName(to);
-
-            if (!Directory.Exists(dir) && !String.IsNullOrEmpty(dir))
-                Directory.CreateDirectory(dir);
-
             return archive.ExtractFile(from, to, dwSearchScope);
         }
 
