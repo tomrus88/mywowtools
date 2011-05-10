@@ -32,7 +32,7 @@ namespace WoWPacketViewer
 
             if (Directory.Exists("parsers"))
             {
-                foreach (string file in Directory.GetFiles("parsers", "*.dll", SearchOption.AllDirectories))
+                foreach (string file in Directory.GetFiles("parsers", "*.dll", SearchOption.TopDirectoryOnly))
                 {
                     try
                     {
@@ -44,11 +44,11 @@ namespace WoWPacketViewer
                     }
                 }
 
-                var extensions = new string[] { "*.cs", "*.vb", "*.js" };
+                var extensions = new string[] { "*.cs", "*.vb" };
 
                 foreach (var ext in extensions)
                 {
-                    foreach (string file in Directory.GetFiles("parsers", ext, SearchOption.AllDirectories))
+                    foreach (string file in Directory.GetFiles("parsers", ext, SearchOption.TopDirectoryOnly))
                     {
                         try
                         {
@@ -60,6 +60,20 @@ namespace WoWPacketViewer
                         }
                     }
                 }
+
+                foreach (var dir in Directory.GetDirectories("parsers"))
+                {
+                    foreach (var ext in extensions)
+                    {
+                        var files = Directory.GetFiles(dir, ext, SearchOption.TopDirectoryOnly);
+
+                        if (files.Length != 0)
+                        {
+                            Assembly assembly = CompileParser(files);
+                            LoadAssembly(assembly);
+                        }
+                    }
+                }
             }
         }
 
@@ -68,23 +82,25 @@ namespace WoWPacketViewer
             return CodeDomProvider.GetLanguageFromExtension(Path.GetExtension(file));
         }
 
-        private static Assembly CompileParser(string file)
+        private static Assembly CompileParser(params string[] files)
         {
-            using (CodeDomProvider provider = CodeDomProvider.CreateProvider(GetLanguageFromExtension(file)))
+            using (CodeDomProvider provider = CodeDomProvider.CreateProvider(GetLanguageFromExtension(files[0])))
             {
                 CompilerParameters cp = new CompilerParameters();
 
                 cp.GenerateInMemory = true;
                 cp.TreatWarningsAsErrors = false;
                 cp.GenerateExecutable = false;
+                cp.ReferencedAssemblies.Add("System.dll");
+                cp.ReferencedAssemblies.Add("System.Core.dll");
                 cp.ReferencedAssemblies.Add("WowTools.Core.dll");
 
-                CompilerResults cr = provider.CompileAssemblyFromFile(cp, file);
+                CompilerResults cr = provider.CompileAssemblyFromFile(cp, files);
 
                 if (cr.Errors.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Errors building {0}", file).AppendLine();
+                    sb.AppendFormat("Errors building {0}", files).AppendLine();
                     foreach (CompilerError ce in cr.Errors)
                     {
                         sb.AppendFormat("  {0}", ce.ToString()).AppendLine();

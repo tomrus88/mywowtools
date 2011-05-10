@@ -91,27 +91,66 @@
     <Compile Include="ISupportFind.cs" />
     <Compile Include="PacketReaderFactory.cs" />
     <Compile Include="ParserFactory.cs" />
-    <Compile Include="Parsers\AuraUpdateParser.cs" />
-    <Compile Include="Parsers\AuthSession.cs" />
-    <Compile Include="Parsers\EquipmentSetsParser.cs" />
-    <Compile Include="Parsers\InitialSpellsParser.cs" />
-    <Compile Include="Parsers\InspectParser.cs" />
-    <Compile Include="Parsers\LFGParser.cs" />
-    <Compile Include="Parsers\MailListResult.cs" />
-    <Compile Include="Parsers\MonsterMoveParser.cs" />
-    <Compile Include="Parsers\PetSpellsParser.cs" />
-    <Compile Include="Parsers\PowerUpdateParser.cs" />
+    <Content Include="Parsers\AuraUpdateParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\AuthSession.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\EquipmentSetsParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\InitialSpellsParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\InspectParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\LFGParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\MailListResult.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\MonsterMoveParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\PetSpellsParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\PowerUpdateParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Parsers\SMSG_TUTORIAL_FLAGS.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Parsers\Spells\CastFlags.cs" />
-    <Compile Include="Parsers\Spells\CooldownMask.cs" />
-    <Compile Include="Parsers\Spells\SpellGoParser.cs" />
-    <Compile Include="Parsers\Spells\SpellParserBase.cs" />
-    <Compile Include="Parsers\Spells\SpellStartParser.cs" />
-    <Compile Include="Parsers\Spells\TargetFlags.cs" />
-    <Compile Include="Parsers\UnknownPacketParser.cs" />
-    <Compile Include="Parsers\UpdatePacketParser.cs" />
+    <Content Include="Parsers\SMSG_AUCTION_LIST_PENDING_SALES.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\CastFlags.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\CooldownMask.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\SpellGoParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\SpellParserBase.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\SpellStartParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parsers\Spells\TargetFlags.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Parsers\UnknownPacketParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Content Include="Parsers\UpdatePacketParser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Parsers\Warden\CheckInfo.cs" />
     <Compile Include="Parsers\Warden\CheckType.cs" />
     <Compile Include="Parsers\Warden\CmsgWardenData.cs" />
@@ -159,7 +198,6 @@
     </Compile>
     <Compile Include="SniffitztPacketReader.cs" />
     <Compile Include="SqLitePacketReader.cs" />
-    <Compile Include="Utility.cs" />
     <Compile Include="WowCorePacketReader.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -83,14 +83,14 @@ namespace WoWPacketViewer.Parsers.Spells
 
             for (var i = 0; i < hitCount; ++i)
             {
-                AppendFormatLine("GO Hit Target {0}: 0x{0:X16}", i, br.ReadUInt64());
+                AppendFormatLine("GO Hit Target {0}: 0x{1:X16}", i, br.ReadUInt64());
             }
 
             var missCount = br.ReadByte();
 
             for (var i = 0; i < missCount; ++i)
             {
-                AppendFormatLine("GO Miss Target {0}: 0x{0:X16}", i, br.ReadUInt64());
+                AppendFormatLine("GO Miss Target {0}: 0x{1:X16}", i, br.ReadUInt64());
                 var missReason = br.ReadByte();
                 AppendFormatLine("GO Miss Reason {0}: {1}", i, missReason);
                 if (missReason == 11) // reflect
