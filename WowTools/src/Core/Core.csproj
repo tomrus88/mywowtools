@@ -83,6 +83,7 @@
     <Compile Include="SplineInfo.cs" />
     <Compile Include="TransportInfo.cs" />
     <Compile Include="UpdateFields.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

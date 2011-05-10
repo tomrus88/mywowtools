@@ -32,6 +32,7 @@ namespace WoWPacketViewer.Parsers.Spells
 
             if (tf.HasFlag(TargetFlags.TARGET_FLAG_SOURCE_LOCATION))
             {
+                AppendFormatLine("SrcTargetGuid: {0}", br.ReadPackedGuid().ToString("X16"));
                 AppendFormatLine("SrcTarget: {0} {1} {2}", br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
             }
 
