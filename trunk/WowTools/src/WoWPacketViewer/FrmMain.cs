@@ -66,8 +66,7 @@ namespace WoWPacketViewer
             var packet = packets[SelectedIndex];
 
             textBox1.Text = packet.HexLike();
-            var parser = ParserFactory.CreateParser(packet);
-            textBox2.Text = parser.ToString();
+            textBox2.Text = ParserFactory.CreateParser(packet).ToString();
         }
 
         private void OpenMenu_Click(object sender, EventArgs e)

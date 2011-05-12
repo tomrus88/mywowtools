@@ -22,49 +22,40 @@ namespace WoWPacketViewer.Parsers
             Negative = 0x80,
         }
 
-        public AuraUpdateParser(Packet packet)
-            : base(packet)
-        {
-        }
-
         public override void Parse()
         {
-            var gr = Packet.CreateReader();
+            AppendFormatLine("GUID: {0:X16}", Reader.ReadPackedGuid());
 
-            AppendFormatLine("GUID: {0:X16}", gr.ReadPackedGuid());
-
-            while (gr.BaseStream.Position < gr.BaseStream.Length)
+            while (Reader.BaseStream.Position < Reader.BaseStream.Length)
             {
-                AppendFormatLine("Slot: {0:X2}", gr.ReadByte());
+                AppendFormatLine("Slot: {0:X2}", Reader.ReadByte());
 
-                var spellId = gr.ReadUInt32();
+                var spellId = Reader.ReadUInt32();
                 AppendFormatLine("Spell: {0:X8}", spellId);
 
                 if (spellId > 0)
                 {
-                    var af = (AuraFlags)gr.ReadByte();
+                    var af = (AuraFlags)Reader.ReadByte();
                     AppendFormatLine("Flags: {0}", af);
 
-                    AppendFormatLine("Level: {0:X2}", gr.ReadByte());
+                    AppendFormatLine("Level: {0:X2}", Reader.ReadByte());
 
-                    AppendFormatLine("Charges: {0:X2}", gr.ReadByte());
+                    AppendFormatLine("Charges: {0:X2}", Reader.ReadByte());
 
-                    if (af.HasFlag(AuraFlags.NotOwner) == false)
+                    if (!af.HasFlag(AuraFlags.NotOwner))
                     {
-                        AppendFormatLine("GUID2: {0:X16}", gr.ReadPackedGuid());
+                        AppendFormatLine("GUID2: {0:X16}", Reader.ReadPackedGuid());
                     }
 
                     if (af.HasFlag(AuraFlags.Duration))
                     {
-                        AppendFormatLine("Full duration: {0:X8}", gr.ReadUInt32());
+                        AppendFormatLine("Full duration: {0:X8}", Reader.ReadUInt32());
 
-                        AppendFormatLine("Rem. duration: {0:X8}", gr.ReadUInt32());
+                        AppendFormatLine("Rem. duration: {0:X8}", Reader.ReadUInt32());
                     }
                 }
                 AppendLine();
             }
-
-            CheckPacket(gr);
         }
     }
 }
