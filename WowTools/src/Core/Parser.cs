@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace WowTools.Core
 {
-    public abstract class Parser
+    public class Parser
     {
         private readonly StringBuilder stringBuilder = new StringBuilder();
 
@@ -34,24 +34,34 @@ namespace WowTools.Core
             stringBuilder.AppendFormat(format, args).AppendLine();
         }
 
-        public void CheckPacket(BinaryReader gr)
+        public void CheckPacket()
         {
-            if (gr.BaseStream.Position != gr.BaseStream.Length)
+            if (Reader.BaseStream.Position != Reader.BaseStream.Length)
             {
-                string msg = String.Format("{0}: Packet size changed, should be {1} instead of {2}", Packet.Code, gr.BaseStream.Position, gr.BaseStream.Length);
+                string msg = String.Format("{0}: Packet size changed, should be {1} instead of {2}", Packet.Code, Reader.BaseStream.Position, Reader.BaseStream.Length);
                 MessageBox.Show(msg);
             }
         }
 
         protected Packet Packet { get; private set; }
 
-        protected Parser(Packet packet)
+        protected BinaryReader Reader { get; private set; }
+
+        protected Parser() { }
+
+        public void Initialize(Packet packet)
         {
             Packet = packet;
-            Parse();
+
+            if (packet != null)
+            {
+                Reader = Packet.CreateReader();
+                Parse();
+                CheckPacket();
+            }
         }
 
-        public abstract void Parse();
+        public virtual void Parse() { }
 
         public override string ToString()
         {

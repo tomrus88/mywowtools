@@ -40,11 +40,11 @@ namespace WoWPacketViewer
 
                     if (counter == size)
                     {
-                        result += "\r\n";
+                        result += Environment.NewLine;
                         break;
                     }
                 }
-                result += "\r\n";
+                result += Environment.NewLine;
             }
             return result;
         }

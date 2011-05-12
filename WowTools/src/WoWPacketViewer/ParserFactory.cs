@@ -100,12 +100,9 @@ namespace WoWPacketViewer
                 if (cr.Errors.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Errors building {0}", files).AppendLine();
                     foreach (CompilerError ce in cr.Errors)
-                    {
-                        sb.AppendFormat("  {0}", ce.ToString()).AppendLine();
-                    }
-                    MessageBox.Show(sb.ToString());
+                        sb.AppendFormat("{0}", ce.ToString()).AppendLine();
+                    MessageBox.Show(sb.ToString(), "Compile error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 return cr.CompiledAssembly;
@@ -120,9 +117,7 @@ namespace WoWPacketViewer
                 {
                     var attributes = (ParserAttribute[])type.GetCustomAttributes(typeof(ParserAttribute), true);
                     foreach (ParserAttribute attribute in attributes)
-                    {
                         Parsers[(int)attribute.Code] = type;
-                    }
                 }
             }
         }
@@ -131,10 +126,11 @@ namespace WoWPacketViewer
         {
             Type type;
             if (!Parsers.TryGetValue((int)packet.Code, out type))
-            {
                 return UnknownParser;
-            }
-            return (Parser)Activator.CreateInstance(type, packet);
+
+            var parser = (Parser)Activator.CreateInstance(type);
+            parser.Initialize(packet);
+            return parser;
         }
     }
 }
