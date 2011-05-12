@@ -304,5 +304,10 @@ namespace WoWPacketViewer
         {
             ParserFactory.ReInit();
         }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            ParserFactory.Init();
+        }
     }
 }

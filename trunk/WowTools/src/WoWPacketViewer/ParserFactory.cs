@@ -15,18 +15,13 @@ namespace WoWPacketViewer
         private static readonly Dictionary<int, Type> Parsers = new Dictionary<int, Type>();
         private static readonly Parser UnknownParser = new UnknownPacketParser();
 
-        static ParserFactory()
-        {
-            Init();
-        }
-
         public static void ReInit()
         {
             Parsers.Clear();
             Init();
         }
 
-        private static void Init()
+        public static void Init()
         {
             LoadAssembly(Assembly.GetCallingAssembly());
 
