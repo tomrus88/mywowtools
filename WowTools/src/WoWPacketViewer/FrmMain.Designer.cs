@@ -46,6 +46,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllButThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -173,16 +175,32 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.closeTabToolStripMenuItem});
+            this.closeTabToolStripMenuItem,
+            this.closeAllToolStripMenuItem,
+            this.closeAllButThisToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 92);
             // 
             // closeTabToolStripMenuItem
             // 
             this.closeTabToolStripMenuItem.Name = "closeTabToolStripMenuItem";
             this.closeTabToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeTabToolStripMenuItem.Text = "Close tab";
+            this.closeTabToolStripMenuItem.Text = "Close";
             this.closeTabToolStripMenuItem.Click += new System.EventHandler(this.closeTabToolStripMenuItem_Click);
+            // 
+            // closeAllToolStripMenuItem
+            // 
+            this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeAllToolStripMenuItem.Text = "Close All";
+            this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.closeAllToolStripMenuItem_Click);
+            // 
+            // closeAllButThisToolStripMenuItem
+            // 
+            this.closeAllButThisToolStripMenuItem.Name = "closeAllButThisToolStripMenuItem";
+            this.closeAllButThisToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeAllButThisToolStripMenuItem.Text = "Close All But This";
+            this.closeAllButThisToolStripMenuItem.Click += new System.EventHandler(this.closeAllButThisToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -230,5 +248,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeAllButThisToolStripMenuItem;
     }
 }
