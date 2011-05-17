@@ -25,7 +25,7 @@ namespace WoWPacketViewer
 
             FrmView view = new FrmView();
             view.File = file;
-            view.Text = Path.GetFileNameWithoutExtension(file);
+            view.Text = Path.GetFileName(file);
             view.MdiParent = this;
             view.TabCtrl = tabControl1;
             selectedView = view;
@@ -206,15 +206,44 @@ namespace WoWPacketViewer
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button != System.Windows.Forms.MouseButtons.Right)
+                return;
+
             for (int i = 0; i < tabControl1.TabCount; i++)
             {
                 var r = tabControl1.GetTabRect(i);
                 if (r.Contains(e.Location))
                 {
-                    closeTabToolStripMenuItem.Tag = tabControl1.TabPages[i];
+                    closeTabToolStripMenuItem.Tag = tabControl1.TabPages[i].Tag;
+                    closeAllButThisToolStripMenuItem.Tag = tabControl1.TabPages[i];
                     contextMenuStrip1.Show(tabControl1, e.Location);
                     break;
                 }
+            }
+        }
+
+        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            while(tabControl1.HasChildren)
+            {
+                ((FrmView)tabControl1.TabPages[0].Tag).Close();
+            }
+        }
+
+        private void closeAllButThisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var thisTab = ((ToolStripMenuItem)sender).Tag;
+
+            int index = 0;
+            while (tabControl1.TabPages.Count != 1)
+            {
+                if (tabControl1.TabPages[index] == thisTab)
+                {
+                    index++;
+                    continue;
+                }
+
+                ((FrmView)tabControl1.TabPages[index].Tag).Close();
             }
         }
     }
