@@ -172,7 +172,10 @@ namespace WoWPacketViewer
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Tag != null)
+            {
+                (tabControl1.SelectedTab.Tag as Form).WindowState = FormWindowState.Minimized;
                 (tabControl1.SelectedTab.Tag as Form).Select();
+            }
         }
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
@@ -225,22 +228,18 @@ namespace WoWPacketViewer
 
         private void FrmMain_MdiChildActivate(object sender, EventArgs e)
         {
-            var child = (FrmView)ActiveMdiChild;
-
-            if (child == null)
+            if (ActiveMdiChild == null)
             {
                 tabControl1.Visible = false;
             }
             else
             {
-                ActiveMdiChild.Width = 0;
                 ActiveMdiChild.WindowState = FormWindowState.Maximized;
 
                 if (ActiveMdiChild.Tag == null)
                 {
-                    TabPage tp = new TabPage();
+                    TabPage tp = new TabPage(ActiveMdiChild.Text);
                     tp.Parent = tabControl1;
-                    tp.Text = ActiveMdiChild.Text;
                     tp.Tag = ActiveMdiChild;
                     tp.Show();
 
