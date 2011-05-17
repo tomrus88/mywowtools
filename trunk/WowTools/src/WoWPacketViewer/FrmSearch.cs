@@ -5,6 +5,8 @@ namespace WoWPacketViewer
 {
     public partial class FrmSearch : Form
     {
+        public PacketViewTab CurrentTab { get; set; }
+
         public FrmSearch()
         {
             InitializeComponent();
@@ -22,10 +24,10 @@ namespace WoWPacketViewer
 
         public void FindNext()
         {
-            var frmView = Owner as ISupportFind;
+            var viewTab = CurrentTab as ISupportFind;
             var opcode = textBox1.Text;
-            if (frmView != null && !String.IsNullOrEmpty(opcode))
-                frmView.Search(opcode, radioButton1.Checked, !checkBox1.Checked);
+            if (viewTab != null && !String.IsNullOrEmpty(opcode))
+                viewTab.Search(opcode, radioButton1.Checked, !checkBox1.Checked);
         }
 
         private void FrmSearch_FormClosing(object sender, FormClosingEventArgs e)

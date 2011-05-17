@@ -7,7 +7,7 @@ using WowTools.Core;
 
 namespace WoWPacketViewer
 {
-    public partial class FrmView : Form, ISupportFind
+    public partial class PacketViewTab : UserControl, ISupportFind
     {
         private IPacketReader packetViewer;
         private List<Packet> packets;
@@ -16,9 +16,19 @@ namespace WoWPacketViewer
         private bool ignoreCase;
         private string file;
 
-        public FrmView()
+        public PacketViewTab(string file)
         {
             InitializeComponent();
+
+            Text = Path.GetFileName(file);
+
+            packetViewer = PacketReaderFactory.Create(Path.GetExtension(file));
+
+            packets = packetViewer.ReadPackets(file).ToList();
+
+            _list.VirtualMode = true;
+            _list.VirtualListSize = packets.Count;
+            _list.EnsureVisible(0);
         }
 
         private int SelectedIndex
@@ -73,13 +83,13 @@ namespace WoWPacketViewer
 
         private void _list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox1.Clear();
-            textBox2.Clear();
+            richTextBox1.Clear();
+            richTextBox2.Clear();
 
             var packet = packets[SelectedIndex];
 
-            textBox1.Text = packet.HexLike();
-            textBox2.Text = ParserFactory.CreateParser(packet).ToString();
+            richTextBox1.Text = packet.HexLike();
+            richTextBox2.Text = ParserFactory.CreateParser(packet).ToString();
         }
 
         private void _list_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -160,33 +170,22 @@ namespace WoWPacketViewer
             var p = packets[index];
 
             return p.Direction == Direction.Client
-                    ? new ListViewItem(new[]
-                        {
-                            p.UnixTime.ToString("X8"), 
-                            p.TicksCount.ToString("X8"), 
-                            p.Code.ToString(),
-                            String.Empty,
-                            p.Data.Length.ToString()
-                        })
-                    : new ListViewItem(new[]
-                        {
-                            p.UnixTime.ToString("X8"), 
-                            p.TicksCount.ToString("X8"), 
-                            String.Empty,
-                            p.Code.ToString(), 
-                            p.Data.Length.ToString()
-                        });
-        }
-
-        private void FrmView_Load(object sender, EventArgs e)
-        {
-            packetViewer = PacketReaderFactory.Create(Path.GetExtension(file));
-
-            packets = packetViewer.ReadPackets(file).ToList();
-
-            _list.VirtualMode = true;
-            _list.VirtualListSize = packets.Count;
-            _list.EnsureVisible(0);
+                ? new ListViewItem(new[]
+                    {
+                        p.UnixTime.ToString("X8"), 
+                        p.TicksCount.ToString("X8"), 
+                        p.Code.ToString(),
+                        String.Empty,
+                        p.Data.Length.ToString()
+                    })
+                : new ListViewItem(new[]
+                    {
+                        p.UnixTime.ToString("X8"), 
+                        p.TicksCount.ToString("X8"), 
+                        String.Empty,
+                        p.Code.ToString(), 
+                        p.Data.Length.ToString()
+                    });
         }
     }
 }
