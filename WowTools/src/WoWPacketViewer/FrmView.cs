@@ -15,8 +15,6 @@ namespace WoWPacketViewer
         private bool searchUp;
         private bool ignoreCase;
         private string file;
-        private TabControl tabCtrl;
-        private TabPage tabPage;
 
         public FrmView()
         {
@@ -43,17 +41,6 @@ namespace WoWPacketViewer
         {
             get { return file; }
             set { file = value; }
-        }
-
-        public TabPage TabPage
-        {
-            get { return tabPage; }
-            set { tabPage = value; }
-        }
-
-        public TabControl TabCtrl
-        {
-            set { tabCtrl = value; }
         }
 
         #region ISupportFind Members
@@ -200,22 +187,6 @@ namespace WoWPacketViewer
             _list.VirtualMode = true;
             _list.VirtualListSize = packets.Count;
             _list.EnsureVisible(0);
-        }
-
-        private void FrmView_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            tabPage.Dispose();
-
-            if (!tabCtrl.HasChildren)
-                tabCtrl.Visible = false;
-        }
-
-        private void FrmView_Activated(object sender, EventArgs e)
-        {
-            tabCtrl.SelectedTab = tabPage;
-
-            if (!tabCtrl.Visible)
-                tabCtrl.Visible = true;
         }
     }
 }

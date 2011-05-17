@@ -8,7 +8,11 @@ namespace WoWPacketViewer
     public partial class FrmMain : Form
     {
         private FrmSearch searchForm;
-        private FrmView selectedView;
+
+        private FrmView SelectedView
+        {
+            get { return (FrmView)ActiveMdiChild; }
+        }
 
         public FrmMain()
         {
@@ -27,31 +31,17 @@ namespace WoWPacketViewer
             view.File = file;
             view.Text = Path.GetFileName(file);
             view.MdiParent = this;
-            view.TabCtrl = tabControl1;
-            selectedView = view;
-
-            TabPage tp = new TabPage();
-            tp.Parent = tabControl1;
-            tp.Text = view.Text;
-            tp.Tag = view;
-            tp.Show();
-
-            view.TabPage = tp;
-
             view.Show();
-            view.WindowState = FormWindowState.Maximized;
-
-            tabControl1.SelectedTab = tp;
 
             _statusLabel.Text = String.Format("Done.");
         }
 
         private void SaveMenu_Click(object sender, EventArgs e)
         {
-            if (!tabControl1.HasChildren)
+            if (SelectedView == null)
                 return;
 
-            if (!selectedView.Loaded)
+            if (!SelectedView.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -64,7 +54,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in selectedView.Packets)
+                foreach (var p in SelectedView.Packets)
                 {
                     stream.Write(p.HexLike());
                 }
@@ -78,7 +68,7 @@ namespace WoWPacketViewer
 
         private void FindMenu_Click(object sender, EventArgs e)
         {
-            if (!tabControl1.HasChildren)
+            if (SelectedView == null)
                 return;
 
             CreateSearchFormIfNeed();
@@ -92,7 +82,7 @@ namespace WoWPacketViewer
             if (searchForm == null || searchForm.IsDisposed)
             {
                 searchForm = new FrmSearch();
-                searchForm.Owner = selectedView;
+                searchForm.Owner = SelectedView;
                 searchForm.Show();
                 return true;
             }
@@ -101,7 +91,7 @@ namespace WoWPacketViewer
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!tabControl1.HasChildren)
+            if (SelectedView == null)
                 return;
 
             if (e.KeyCode != Keys.F3)
@@ -113,10 +103,10 @@ namespace WoWPacketViewer
 
         private void saveAsParsedTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!tabControl1.HasChildren)
+            if (SelectedView == null)
                 return;
 
-            if (!selectedView.Loaded)
+            if (!SelectedView.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -127,7 +117,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in selectedView.Packets)
+                foreach (var p in SelectedView.Packets)
                 {
                     string parsed = ParserFactory.CreateParser(p).ToString();
                     if (String.IsNullOrEmpty(parsed))
@@ -139,10 +129,10 @@ namespace WoWPacketViewer
 
         private void saveWardenAsTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!tabControl1.HasChildren)
+            if (SelectedView == null)
                 return;
 
-            if (!selectedView.Loaded)
+            if (!SelectedView.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -155,7 +145,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in selectedView.Packets)
+                foreach (var p in SelectedView.Packets)
                 {
                     if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
                         continue;
@@ -181,27 +171,8 @@ namespace WoWPacketViewer
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (FrmView childForm in MdiChildren)
-            {
-                if (childForm.TabPage.Equals(tabControl1.SelectedTab))
-                {
-                    SetCurrentView(childForm);
-                    break;
-                }
-            }
-        }
-
-        private void SetCurrentView(FrmView childForm)
-        {
-            selectedView = childForm;
-            if (searchForm != null)
-                searchForm.Owner = childForm;
-            childForm.Select();
-        }
-
-        private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ((FrmView)((ToolStripMenuItem)sender).Tag).Close();
+            if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Tag != null)
+                (tabControl1.SelectedTab.Tag as Form).Select();
         }
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
@@ -222,9 +193,14 @@ namespace WoWPacketViewer
             }
         }
 
+        private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ((FrmView)((ToolStripMenuItem)sender).Tag).Close();
+        }
+
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            while(tabControl1.HasChildren)
+            while (tabControl1.HasChildren)
             {
                 ((FrmView)tabControl1.TabPages[0].Tag).Close();
             }
@@ -245,6 +221,46 @@ namespace WoWPacketViewer
 
                 ((FrmView)tabControl1.TabPages[index].Tag).Close();
             }
+        }
+
+        private void FrmMain_MdiChildActivate(object sender, EventArgs e)
+        {
+            var child = (FrmView)ActiveMdiChild;
+
+            if (child == null)
+            {
+                tabControl1.Visible = false;
+            }
+            else
+            {
+                ActiveMdiChild.Width = 0;
+                ActiveMdiChild.WindowState = FormWindowState.Maximized;
+
+                if (ActiveMdiChild.Tag == null)
+                {
+                    TabPage tp = new TabPage();
+                    tp.Parent = tabControl1;
+                    tp.Text = ActiveMdiChild.Text;
+                    tp.Tag = ActiveMdiChild;
+                    tp.Show();
+
+                    ActiveMdiChild.Tag = tp;
+                    ActiveMdiChild.FormClosing += new FormClosingEventHandler(ActiveMdiChild_FormClosing);
+                }
+
+                tabControl1.SelectedTab = (ActiveMdiChild.Tag as TabPage);
+
+                if (!tabControl1.Visible)
+                    tabControl1.Visible = true;
+
+                if (searchForm != null)
+                    searchForm.Owner = ActiveMdiChild;
+            }
+        }
+
+        void ActiveMdiChild_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ((sender as Form).Tag as TabPage).Dispose();
         }
     }
 }

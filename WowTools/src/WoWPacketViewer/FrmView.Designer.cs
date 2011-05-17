@@ -185,8 +185,6 @@
             this.KeyPreview = true;
             this.Name = "FrmView";
             this.Text = "FrmView";
-            this.Activated += new System.EventHandler(this.FrmView_Activated);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmView_FormClosing);
             this.Load += new System.EventHandler(this.FrmView_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

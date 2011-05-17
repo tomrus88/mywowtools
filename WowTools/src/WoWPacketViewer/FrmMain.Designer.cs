@@ -179,7 +179,7 @@
             this.closeAllToolStripMenuItem,
             this.closeAllButThisToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 70);
             // 
             // closeTabToolStripMenuItem
             // 
@@ -216,6 +216,7 @@
             this.Name = "FrmMain";
             this.Text = "Packet Viewer";
             this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.MdiChildActivate += new System.EventHandler(this.FrmMain_MdiChildActivate);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
