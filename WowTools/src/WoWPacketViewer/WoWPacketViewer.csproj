@@ -81,12 +81,6 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmView.Designer.cs">
-      <DependentUpon>FrmView.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmWardenDebug.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +90,12 @@
     <Compile Include="IPacketReader.cs" />
     <Compile Include="ISupportFind.cs" />
     <Compile Include="PacketReaderFactory.cs" />
+    <Compile Include="PacketViewTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PacketViewTab.Designer.cs">
+      <DependentUpon>PacketViewTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="ParserFactory.cs" />
     <Compile Include="Parsers\AuraUpdateParser.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -168,12 +168,12 @@
       <DependentUpon>FrmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmView.resx">
-      <DependentUpon>FrmView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FrmWardenDebug.resx">
       <DependentUpon>FrmWardenDebug.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PacketViewTab.resx">
+      <DependentUpon>PacketViewTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

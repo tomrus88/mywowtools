@@ -9,9 +9,19 @@ namespace WoWPacketViewer
     {
         private FrmSearch searchForm;
 
-        private FrmView SelectedView
+        private PacketViewTab SelectedTab
         {
-            get { return (FrmView)ActiveMdiChild; }
+            get
+            {
+                try
+                {
+                    return (PacketViewTab)tabControl1.SelectedTab.Controls[0];
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
 
         public FrmMain()
@@ -27,21 +37,29 @@ namespace WoWPacketViewer
             _statusLabel.Text = "Loading...";
             var file = _openDialog.FileName;
 
-            FrmView view = new FrmView();
-            view.File = file;
-            view.Text = Path.GetFileName(file);
-            view.MdiParent = this;
-            view.Show();
+            CreateTab(file);
 
             _statusLabel.Text = String.Format("Done.");
         }
 
+        private void CreateTab(string file)
+        {
+            var viewTab = new PacketViewTab(file);
+            viewTab.Dock = DockStyle.Fill;
+            var tabPage = new TabPage(viewTab.Text);
+            tabPage.Controls.Add(viewTab);
+            tabControl1.Controls.Add(tabPage);
+
+            if (!tabControl1.Visible)
+                tabControl1.Visible = true;
+        }
+
         private void SaveMenu_Click(object sender, EventArgs e)
         {
-            if (SelectedView == null)
+            if (SelectedTab == null)
                 return;
 
-            if (!SelectedView.Loaded)
+            if (!SelectedTab.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -54,7 +72,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in SelectedView.Packets)
+                foreach (var p in SelectedTab.Packets)
                 {
                     stream.Write(p.HexLike());
                 }
@@ -68,13 +86,15 @@ namespace WoWPacketViewer
 
         private void FindMenu_Click(object sender, EventArgs e)
         {
-            if (SelectedView == null)
+            if (SelectedTab == null)
                 return;
 
             CreateSearchFormIfNeed();
 
             if (!searchForm.Visible)
-                searchForm.Show();
+                searchForm.Show(this);
+
+            searchForm.Select();
         }
 
         private bool CreateSearchFormIfNeed()
@@ -82,8 +102,8 @@ namespace WoWPacketViewer
             if (searchForm == null || searchForm.IsDisposed)
             {
                 searchForm = new FrmSearch();
-                searchForm.Owner = SelectedView;
-                searchForm.Show();
+                searchForm.CurrentTab = SelectedTab;
+                searchForm.Show(this);
                 return true;
             }
             return false;
@@ -91,7 +111,7 @@ namespace WoWPacketViewer
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if (SelectedView == null)
+            if (SelectedTab == null)
                 return;
 
             if (e.KeyCode != Keys.F3)
@@ -103,10 +123,10 @@ namespace WoWPacketViewer
 
         private void saveAsParsedTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (SelectedView == null)
+            if (SelectedTab == null)
                 return;
 
-            if (!SelectedView.Loaded)
+            if (!SelectedTab.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -117,7 +137,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in SelectedView.Packets)
+                foreach (var p in SelectedTab.Packets)
                 {
                     string parsed = ParserFactory.CreateParser(p).ToString();
                     if (String.IsNullOrEmpty(parsed))
@@ -129,10 +149,10 @@ namespace WoWPacketViewer
 
         private void saveWardenAsTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (SelectedView == null)
+            if (SelectedTab == null)
                 return;
 
-            if (!SelectedView.Loaded)
+            if (!SelectedTab.Loaded)
             {
                 MessageBox.Show("You should load something first!");
                 return;
@@ -145,7 +165,7 @@ namespace WoWPacketViewer
 
             using (var stream = new StreamWriter(_saveDialog.OpenFile()))
             {
-                foreach (var p in SelectedView.Packets)
+                foreach (var p in SelectedTab.Packets)
                 {
                     if (p.Code != OpCodes.CMSG_WARDEN_DATA && p.Code != OpCodes.SMSG_WARDEN_DATA)
                         continue;
@@ -171,11 +191,11 @@ namespace WoWPacketViewer
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Tag != null)
-            {
-                (tabControl1.SelectedTab.Tag as Form).WindowState = FormWindowState.Minimized;
-                (tabControl1.SelectedTab.Tag as Form).Select();
-            }
+            if (!tabControl1.HasChildren)
+                tabControl1.Visible = false;
+
+            if (searchForm != null)
+                searchForm.CurrentTab = SelectedTab;
         }
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
@@ -188,7 +208,7 @@ namespace WoWPacketViewer
                 var r = tabControl1.GetTabRect(i);
                 if (r.Contains(e.Location))
                 {
-                    closeTabToolStripMenuItem.Tag = tabControl1.TabPages[i].Tag;
+                    closeTabToolStripMenuItem.Tag = tabControl1.TabPages[i];
                     closeAllButThisToolStripMenuItem.Tag = tabControl1.TabPages[i];
                     contextMenuStrip1.Show(tabControl1, e.Location);
                     break;
@@ -198,15 +218,13 @@ namespace WoWPacketViewer
 
         private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((FrmView)((ToolStripMenuItem)sender).Tag).Close();
+            ((PacketViewTab)((ToolStripMenuItem)sender).Tag).Dispose();
         }
 
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             while (tabControl1.HasChildren)
-            {
-                ((FrmView)tabControl1.TabPages[0].Tag).Close();
-            }
+                tabControl1.TabPages[0].Dispose();
         }
 
         private void closeAllButThisToolStripMenuItem_Click(object sender, EventArgs e)
@@ -222,44 +240,24 @@ namespace WoWPacketViewer
                     continue;
                 }
 
-                ((FrmView)tabControl1.TabPages[index].Tag).Close();
+                tabControl1.TabPages[index].Dispose();
             }
         }
 
-        private void FrmMain_MdiChildActivate(object sender, EventArgs e)
+        private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (ActiveMdiChild == null)
-            {
-                tabControl1.Visible = false;
-            }
-            else
-            {
-                ActiveMdiChild.WindowState = FormWindowState.Maximized;
+            if (e.Button != System.Windows.Forms.MouseButtons.Left)
+                return;
 
-                if (ActiveMdiChild.Tag == null)
+            for (int i = 0; i < tabControl1.TabCount; i++)
+            {
+                var r = tabControl1.GetTabRect(i);
+                if (r.Contains(e.Location))
                 {
-                    TabPage tp = new TabPage(ActiveMdiChild.Text);
-                    tp.Parent = tabControl1;
-                    tp.Tag = ActiveMdiChild;
-                    tp.Show();
-
-                    ActiveMdiChild.Tag = tp;
-                    ActiveMdiChild.FormClosing += new FormClosingEventHandler(ActiveMdiChild_FormClosing);
+                    tabControl1.TabPages[i].Dispose();
+                    break;
                 }
-
-                tabControl1.SelectedTab = (ActiveMdiChild.Tag as TabPage);
-
-                if (!tabControl1.Visible)
-                    tabControl1.Visible = true;
-
-                if (searchForm != null)
-                    searchForm.Owner = ActiveMdiChild;
             }
-        }
-
-        void ActiveMdiChild_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            ((sender as Form).Tag as TabPage).Dispose();
         }
     }
 }
