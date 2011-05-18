@@ -1,9 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace WowTools.Core
 {
@@ -72,85 +71,72 @@ namespace WowTools.Core
 
         public byte ReadUInt8(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
             var ret = Reader.ReadByte();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
+            AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }
 
         // for enums
         public T ReadUInt8<T>(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
-            var ret = Reader.ReadByte();
-            newArgs.Add(Enum.ToObject(typeof(T), ret));
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
-            return (T)Enum.ToObject(typeof(T), ret);
+            var obj = Enum.ToObject(typeof(T), Reader.ReadByte());
+            AppendFormatLine(format, MergeArguments(args, obj));
+            return (T)obj;
         }
 
         public uint ReadUInt32(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
             var ret = Reader.ReadUInt32();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
+            AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }
 
         public ulong ReadUInt64(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
             var ret = Reader.ReadUInt32();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
+            AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }
 
         public string ReadCString(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
             var ret = Reader.ReadCString();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
+            AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }
 
         public float ReadSingle(string format, params object[] args)
         {
-            var newArgs = new List<object>();
-            newArgs.AddRange(args);
             var ret = Reader.ReadSingle();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
+            AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }
 
         public ulong ReadPackedGuid(string format, params object[] args)
         {
+            var ret = Reader.ReadPackedGuid();
+            AppendFormatLine(format, MergeArguments(args, ret));
+            return ret;
+        }
+
+        public T Read<T>(string format, params object[] args) where T : struct
+        {
+            var ret = Reader.ReadStruct<T>();
+            AppendFormatLine(format, MergeArguments(args, ret));
+            return ret;
+        }
+
+        private object[] MergeArguments(object[] args, object arg)
+        {
             var newArgs = new List<object>();
             newArgs.AddRange(args);
-            var ret = Reader.ReadPackedGuid();
-            newArgs.Add(ret);
-            var str = String.Format(format, newArgs.ToArray());
-            AppendLine(str);
-            return ret;
+            newArgs.Add(arg);
+            return newArgs.ToArray();
         }
 
         public void For(int count, Action func)
         {
-            for(var i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
                 func();
         }
 
