@@ -7,15 +7,14 @@ namespace WoWPacketViewer.Parsers
     {
         public override void Parse()
         {
-            var count = Reader.ReadUInt32();
-            for(var i = 0; i < count; ++i)
-            {
-                AppendFormatLine("Sale {0}: string {1}", i, Reader.ReadCString());
-                AppendFormatLine("Sale {0}: string {1}", i, Reader.ReadCString());
-                AppendFormatLine("Sale {0}: uint {1}", i, Reader.ReadUInt32());
-                AppendFormatLine("Sale {0}: uint {1}", i, Reader.ReadUInt32());
-                AppendFormatLine("Sale {0}: float {1}", i, Reader.ReadSingle());
-            }
+            For(Reader.ReadInt32(), i =>
+                {
+                    ReadCString("Sale {0}: string {1}", i);
+                    ReadCString("Sale {0}: string {1}", i);
+                    ReadUInt32("Sale {0}: uint {1}", i);
+                    ReadUInt32("Sale {0}: uint {1}", i);
+                    ReadSingle("Sale {0}: float {1}", i);
+                });
         }
     }
 }

@@ -24,34 +24,30 @@ namespace WoWPacketViewer.Parsers
 
         public override void Parse()
         {
-            AppendFormatLine("GUID: {0:X16}", Reader.ReadPackedGuid());
+            ReadPackedGuid("GUID: {0:X16}");
 
             while (Reader.BaseStream.Position < Reader.BaseStream.Length)
             {
-                AppendFormatLine("Slot: {0:X2}", Reader.ReadByte());
+                ReadUInt8("Slot: {0:X2}");
 
-                var spellId = Reader.ReadUInt32();
-                AppendFormatLine("Spell: {0:X8}", spellId);
+                var spellId = ReadUInt32("Spell: {0:X8}");
 
-                if (spellId > 0)
+                if (spellId != 0)
                 {
-                    var af = (AuraFlags)Reader.ReadByte();
-                    AppendFormatLine("Flags: {0}", af);
+                    var af = ReadUInt8<AuraFlags>("Flags: {0}");
 
-                    AppendFormatLine("Level: {0:X2}", Reader.ReadByte());
-
-                    AppendFormatLine("Charges: {0:X2}", Reader.ReadByte());
+                    ReadUInt8("Level: {0:X2}");
+                    ReadUInt8("Charges: {0:X2}");
 
                     if (!af.HasFlag(AuraFlags.NotOwner))
                     {
-                        AppendFormatLine("GUID2: {0:X16}", Reader.ReadPackedGuid());
+                        ReadPackedGuid("GUID2: {0:X16}");
                     }
 
                     if (af.HasFlag(AuraFlags.Duration))
                     {
-                        AppendFormatLine("Full duration: {0:X8}", Reader.ReadUInt32());
-
-                        AppendFormatLine("Rem. duration: {0:X8}", Reader.ReadUInt32());
+                        ReadUInt32("Full duration: {0:X8}");
+                        ReadUInt32("Rem. duration: {0:X8}");
                     }
                 }
                 AppendLine();

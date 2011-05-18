@@ -3,12 +3,11 @@ using WowTools.Core;
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_TUTORIAL_FLAGS)]
-    internal class TutorialFlags : Parser
+    class TutorialFlagsParser : Parser
     {
         public override void Parse()
         {
-            for(var i = 0; i < 8; ++i)
-                AppendFormatLine("Mask {0}: {1:X8}", i, Reader.ReadUInt32());
+            For(8, i => ReadUInt32("Mask {0}: 0x{1:X8}", i));
         }
     }
 }
