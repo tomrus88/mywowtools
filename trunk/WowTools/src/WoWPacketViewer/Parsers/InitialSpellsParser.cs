@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_INITIAL_SPELLS)]
-    internal class InitialSpellsParser : Parser
+    class InitialSpellsParser : Parser
     {
         public override void Parse()
         {

@@ -3,7 +3,7 @@ using WowTools.Core;
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_AUCTION_LIST_PENDING_SALES)]
-    internal class AuctionListPendngSales : Parser
+    class AuctionListPendngSales : Parser
     {
         public override void Parse()
         {

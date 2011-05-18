@@ -4,7 +4,7 @@ namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_MONSTER_MOVE)]
     [Parser(OpCodes.SMSG_MONSTER_MOVE_TRANSPORT)]
-    internal class MonsterMoveParser : Parser
+    class MonsterMoveParser : Parser
     {
         public override void Parse()
         {

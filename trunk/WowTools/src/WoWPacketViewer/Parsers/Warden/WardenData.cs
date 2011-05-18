@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WoWPacketViewer.Parsers.Warden
 {
-    internal static class WardenData
+    static class WardenData
     {
         public static IList<CheckInfo> CheckInfos = new List<CheckInfo>();
         public static IDictionary<byte, CheckType> CheckTypes = new Dictionary<byte, CheckType>();

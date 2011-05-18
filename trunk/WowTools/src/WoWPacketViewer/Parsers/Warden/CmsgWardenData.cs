@@ -5,7 +5,7 @@ using WowTools.Core;
 namespace WoWPacketViewer.Parsers.Warden
 {
     [Parser(OpCodes.CMSG_WARDEN_DATA)]
-    internal class CmsgWardenData : Parser
+    class CmsgWardenData : Parser
     {
         public override void Parse()
         {

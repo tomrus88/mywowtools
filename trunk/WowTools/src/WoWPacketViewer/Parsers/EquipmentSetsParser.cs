@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_LOAD_EQUIPMENT_SET)]
-    internal class EquipmentSetListParser : Parser
+    class EquipmentSetListParser : Parser
     {
         public override void Parse()
         {

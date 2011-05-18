@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_PET_SPELLS)]
-    internal class PetSpellsParser : Parser
+    class PetSpellsParser : Parser
     {
         public override void Parse()
         {

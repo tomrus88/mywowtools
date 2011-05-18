@@ -3,7 +3,7 @@
 namespace WoWPacketViewer.Parsers.Spells
 {
     [Parser(OpCodes.SMSG_SPELL_START)]
-    internal class SpellStartParser : SpellParserBase
+    class SpellStartParser : SpellParserBase
     {
         public override void Parse()
         {

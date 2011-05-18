@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_MAIL_LIST_RESULT)]
-    internal class MailListResult : Parser
+    class MailListResult : Parser
     {
         public override void Parse()
         {

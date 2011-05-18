@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.IO;
 using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
@@ -26,7 +24,7 @@ namespace WoWPacketViewer.Parsers
 
     [Parser(OpCodes.CMSG_LFG_SEARCH_JOIN)]
     [Parser(OpCodes.SMSG_LFG_SEARCH_RESULTS)]
-    internal class LookingForGroupParser : Parser
+    class LookingForGroupParser : Parser
     {
         public override void Parse()
         {

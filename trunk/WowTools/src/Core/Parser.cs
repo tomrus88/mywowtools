@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace WowTools.Core
 {
-    public class Parser
+    public abstract class Parser
     {
         private readonly StringBuilder stringBuilder = new StringBuilder();
 
@@ -62,7 +62,7 @@ namespace WowTools.Core
             }
         }
 
-        public virtual void Parse() { }
+        public abstract void Parse();
 
         public override string ToString()
         {
@@ -93,7 +93,7 @@ namespace WowTools.Core
 
         public ulong ReadUInt64(string format, params object[] args)
         {
-            var ret = Reader.ReadUInt32();
+            var ret = Reader.ReadUInt64();
             AppendFormatLine(format, MergeArguments(args, ret));
             return ret;
         }

@@ -1,11 +1,9 @@
-using System;
-using System.Text;
 using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_POWER_UPDATE)]
-    internal class PowerUpdateParser : Parser
+    class PowerUpdateParser : Parser
     {
         private enum PowerType
         {

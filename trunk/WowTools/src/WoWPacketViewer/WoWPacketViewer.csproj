@@ -127,6 +127,9 @@
     <Compile Include="Parsers\PowerUpdateParser.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Parsers\SMSG_CHAR_ENUM.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Parsers\SMSG_TUTORIAL_FLAGS.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

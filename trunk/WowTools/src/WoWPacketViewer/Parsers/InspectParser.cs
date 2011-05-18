@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_INSPECT_RESULTS)]
-    internal class InspectTalentParser : Parser
+    class InspectTalentParser : Parser
     {
         public override void Parse()
         {
