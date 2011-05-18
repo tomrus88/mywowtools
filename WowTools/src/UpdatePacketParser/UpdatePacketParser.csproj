@@ -364,8 +364,6 @@
     <Compile Include="SniffitztPacketReader.cs" />
     <Compile Include="SqLitePacketReader.cs" />
     <Compile Include="WowCorePacketReader.cs" />
-    <Compile Include="WoWObject.cs" />
-    <Compile Include="WoWObjectUpdate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

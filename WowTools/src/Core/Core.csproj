@@ -112,6 +112,8 @@
     <Compile Include="TransportInfo.cs" />
     <Compile Include="UpdateFields.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="WoWObject.cs" />
+    <Compile Include="WoWObjectUpdate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
