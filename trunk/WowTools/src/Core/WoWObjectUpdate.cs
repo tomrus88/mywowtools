@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace WoWObjects
+namespace WowTools.Core
 {
     public class WoWObjectUpdate
     {

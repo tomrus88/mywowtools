@@ -6,7 +6,7 @@ using System.IO.Compression;
 using System.Text;
 using WowTools.Core;
 
-namespace WoWPacketViewer
+namespace WowTools.Core
 {
     public static class Extensions
     {

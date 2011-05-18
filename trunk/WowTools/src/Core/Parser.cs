@@ -50,7 +50,7 @@ namespace WowTools.Core
 
         protected Parser() { }
 
-        public void Initialize(Packet packet)
+        public virtual void Initialize(Packet packet)
         {
             Packet = packet;
 

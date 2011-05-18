@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WowTools.Core;
 
-namespace WoWObjects
+namespace WowTools.Core
 {
     /// <summary>
     /// WoW Object Class
