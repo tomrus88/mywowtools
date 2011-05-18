@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.tbInfo = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,21 +59,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.tbPageCheckB = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.tbInfo = new System.Windows.Forms.RichTextBox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tbInfo
-            // 
-            this.tbInfo.BackColor = System.Drawing.SystemColors.WindowText;
-            this.tbInfo.ContextMenuStrip = this.contextMenuStrip1;
-            this.tbInfo.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbInfo.ForeColor = System.Drawing.SystemColors.Window;
-            this.tbInfo.Location = new System.Drawing.Point(12, 12);
-            this.tbInfo.Multiline = true;
-            this.tbInfo.Name = "tbInfo";
-            this.tbInfo.ReadOnly = true;
-            this.tbInfo.Size = new System.Drawing.Size(448, 257);
-            this.tbInfo.TabIndex = 0;
             // 
             // contextMenuStrip1
             // 
@@ -355,6 +342,19 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "PAGE_CHECK_B";
             // 
+            // tbInfo
+            // 
+            this.tbInfo.BackColor = System.Drawing.SystemColors.WindowText;
+            this.tbInfo.ContextMenuStrip = this.contextMenuStrip1;
+            this.tbInfo.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbInfo.ForeColor = System.Drawing.SystemColors.Window;
+            this.tbInfo.Location = new System.Drawing.Point(12, 15);
+            this.tbInfo.Name = "tbInfo";
+            this.tbInfo.ReadOnly = true;
+            this.tbInfo.Size = new System.Drawing.Size(448, 254);
+            this.tbInfo.TabIndex = 0;
+            this.tbInfo.Text = "";
+            // 
             // FrmWardenDebug
             // 
             this.AcceptButton = this.button1;
@@ -362,6 +362,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(631, 284);
+            this.Controls.Add(this.tbInfo);
             this.Controls.Add(this.tbPageCheckB);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
@@ -382,7 +383,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -398,7 +398,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox tbInfo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
@@ -429,5 +428,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+        private System.Windows.Forms.RichTextBox tbInfo;
     }
 }

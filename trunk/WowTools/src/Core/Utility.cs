@@ -35,7 +35,8 @@ namespace WoWPacketViewer
             {
                 for (var i = 0; i < 0x10; ++i)
                 {
-                    result += String.Format("{0:X2} ", data[counter]);
+                    result += String.Format(i != 0xF ? "{0,-3:X2}" : "{0,-2:X2}", data[counter]);
+
                     counter++;
 
                     if (counter == size)

@@ -120,6 +120,9 @@
     <Compile Include="Forms\FrmWardenDebug.Designer.cs">
       <DependentUpon>FrmWardenDebug.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ListViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Parsers\SMSG_MOTD.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

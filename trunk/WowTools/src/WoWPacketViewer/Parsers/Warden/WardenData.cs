@@ -18,7 +18,7 @@ namespace WoWPacketViewer.Parsers.Warden
             CheckTypes = wardenDebugForm.CheckTypes;
         }
 
-        public static void ShowForm(IEnumerable<string> strings, byte[] checks, byte checkByte)
+        public static void ShowForm(IEnumerable<string> strings, byte[] checks, byte checkByte, long position)
         {
             if (wardenDebugForm == null || wardenDebugForm.IsDisposed)
                 wardenDebugForm = new FrmWardenDebug();
@@ -27,7 +27,7 @@ namespace WoWPacketViewer.Parsers.Warden
 
             wardenDebugForm.Text = String.Format("Warden Debug: 0x{0:X2}", checkByte);
 
-            wardenDebugForm.SetInfo(CreateTextInfo(strings, checks));
+            wardenDebugForm.SetInfo(CreateTextInfo(strings, checks), position);
 
             wardenDebugForm.CheckTypes = CheckTypes;
 
@@ -38,10 +38,9 @@ namespace WoWPacketViewer.Parsers.Warden
         private static string CreateTextInfo(IEnumerable<string> strings, byte[] checks)
         {
             var sb = new StringBuilder();
+            sb.Append(checks.HexLike(0, checks.Length));
             foreach (string s in strings)
                 sb.AppendLine(s);
-            sb.AppendLine();
-            sb.AppendLine(checks.HexLike(0, checks.Length));
             return sb.ToString();
         }
 

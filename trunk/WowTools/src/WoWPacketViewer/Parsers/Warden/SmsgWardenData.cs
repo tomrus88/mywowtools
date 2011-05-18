@@ -104,7 +104,7 @@ namespace WoWPacketViewer.Parsers.Warden
                 CheckType checkType2;
                 if (!WardenData.CheckTypes.TryGetValue(checkType, out checkType2))
                 {
-                    WardenData.ShowForm(strings, checks, check);
+                    WardenData.ShowForm(strings, checks, check, reader.BaseStream.Position);
                     break;
                 }
 
