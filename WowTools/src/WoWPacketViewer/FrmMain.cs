@@ -46,9 +46,12 @@ namespace WoWPacketViewer
         {
             var viewTab = new PacketViewTab(file);
             viewTab.Dock = DockStyle.Fill;
+
             var tabPage = new TabPage(viewTab.Text);
             tabPage.Controls.Add(viewTab);
+
             tabControl1.Controls.Add(tabPage);
+            tabControl1.SelectedTab = tabPage;
 
             if (!tabControl1.Visible)
                 tabControl1.Visible = true;
@@ -216,9 +219,25 @@ namespace WoWPacketViewer
             }
         }
 
+        private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != System.Windows.Forms.MouseButtons.Left)
+                return;
+
+            for (int i = 0; i < tabControl1.TabCount; i++)
+            {
+                var r = tabControl1.GetTabRect(i);
+                if (r.Contains(e.Location))
+                {
+                    tabControl1.TabPages[i].Dispose();
+                    break;
+                }
+            }
+        }
+
         private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((PacketViewTab)((ToolStripMenuItem)sender).Tag).Dispose();
+            ((TabPage)((ToolStripMenuItem)sender).Tag).Dispose();
         }
 
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -241,22 +260,6 @@ namespace WoWPacketViewer
                 }
 
                 tabControl1.TabPages[index].Dispose();
-            }
-        }
-
-        private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button != System.Windows.Forms.MouseButtons.Left)
-                return;
-
-            for (int i = 0; i < tabControl1.TabCount; i++)
-            {
-                var r = tabControl1.GetTabRect(i);
-                if (r.Contains(e.Location))
-                {
-                    tabControl1.TabPages[i].Dispose();
-                    break;
-                }
             }
         }
     }
