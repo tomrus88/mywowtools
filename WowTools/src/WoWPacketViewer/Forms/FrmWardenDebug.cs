@@ -58,9 +58,12 @@ namespace WoWPacketViewer
             }
         }
 
-        public void SetInfo(string value)
+        public void SetInfo(string value, long position)
         {
+            tbInfo.ResetText();
             tbInfo.Text = value;
+            tbInfo.Select(((int)position - 1) * 3, 2);
+            tbInfo.SelectionColor = System.Drawing.Color.Red;
         }
 
         public IDictionary<byte, CheckType> CheckTypes
@@ -74,7 +77,8 @@ namespace WoWPacketViewer
                     {
                         try
                         {
-                            checkTypes.Add(Convert.ToByte(tb.Text, 16), (CheckType)tb.TabIndex);
+                            var type = Convert.ToByte(tb.Text, 16);
+                            checkTypes[type] = (CheckType)tb.TabIndex;
                         }
                         catch
                         {

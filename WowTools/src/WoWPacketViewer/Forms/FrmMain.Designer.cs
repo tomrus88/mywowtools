@@ -160,6 +160,10 @@
             // 
             this._openDialog.Filter = "WoW Binary Files|*.bin;*.pkt|SQLite Files|*.sqlite|Sniffitzt XML Files|*.xml";
             // 
+            // _saveDialog
+            // 
+            this._saveDialog.Filter = "Text Files|*.txt";
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
