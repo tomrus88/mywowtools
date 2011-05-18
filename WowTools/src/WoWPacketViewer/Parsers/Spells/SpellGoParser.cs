@@ -1,10 +1,9 @@
-﻿using System.IO;
-using WowTools.Core;
+﻿using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers.Spells
 {
     [Parser(OpCodes.SMSG_SPELL_GO)]
-    internal class SpellGoParser : SpellParserBase
+    class SpellGoParser : SpellParserBase
     {
         public override void Parse()
         {

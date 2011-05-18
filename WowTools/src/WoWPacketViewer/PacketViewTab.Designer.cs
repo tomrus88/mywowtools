@@ -64,7 +64,7 @@ namespace WoWPacketViewer
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(888, 585);
-            this.splitContainer1.SplitterDistance = 315;
+            this.splitContainer1.SplitterDistance = 375;
             this.splitContainer1.TabIndex = 0;
             // 
             // _list
@@ -85,7 +85,7 @@ namespace WoWPacketViewer
             this._list.Location = new System.Drawing.Point(0, 0);
             this._list.MultiSelect = false;
             this._list.Name = "_list";
-            this._list.Size = new System.Drawing.Size(888, 315);
+            this._list.Size = new System.Drawing.Size(888, 375);
             this._list.TabIndex = 0;
             this._list.UseCompatibleStateImageBehavior = false;
             this._list.View = System.Windows.Forms.View.Details;
@@ -132,8 +132,8 @@ namespace WoWPacketViewer
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(888, 266);
-            this.splitContainer2.SplitterDistance = 447;
+            this.splitContainer2.Size = new System.Drawing.Size(888, 206);
+            this.splitContainer2.SplitterDistance = 379;
             this.splitContainer2.TabIndex = 0;
             // 
             // richTextBox1
@@ -146,7 +146,7 @@ namespace WoWPacketViewer
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox1.Size = new System.Drawing.Size(447, 266);
+            this.richTextBox1.Size = new System.Drawing.Size(379, 206);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -160,7 +160,7 @@ namespace WoWPacketViewer
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
             this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox2.Size = new System.Drawing.Size(437, 266);
+            this.richTextBox2.Size = new System.Drawing.Size(505, 206);
             this.richTextBox2.TabIndex = 0;
             this.richTextBox2.Text = "";
             // 

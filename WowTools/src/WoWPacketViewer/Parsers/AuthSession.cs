@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.CMSG_AUTH_SESSION)]
-    internal class CMSG_AUTH_SESSION : Parser
+    class CMSG_AUTH_SESSION : Parser
     {
         public override void Parse()
         {

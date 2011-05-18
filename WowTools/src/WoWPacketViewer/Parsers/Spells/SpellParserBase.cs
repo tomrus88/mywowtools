@@ -1,9 +1,8 @@
-using System.IO;
 using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers.Spells
 {
-    internal abstract class SpellParserBase : Parser
+    abstract class SpellParserBase : Parser
     {
         protected TargetFlags ReadTargets()
         {

@@ -2,7 +2,8 @@ using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
-    internal class UnknownPacketParser : Parser
+    class UnknownPacketParser : Parser
     {
+        public override void Parse() { }
     }
 }

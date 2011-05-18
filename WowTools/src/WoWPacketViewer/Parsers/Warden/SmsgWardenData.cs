@@ -7,7 +7,7 @@ using WowTools.Core;
 namespace WoWPacketViewer.Parsers.Warden
 {
     [Parser(OpCodes.SMSG_WARDEN_DATA)]
-    internal class SmsgWardenData : Parser
+    class SmsgWardenData : Parser
     {
         public override void Parse()
         {

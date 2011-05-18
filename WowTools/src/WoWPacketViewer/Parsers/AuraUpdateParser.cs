@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Text;
 using WowTools.Core;
 
 namespace WoWPacketViewer.Parsers
 {
     [Parser(OpCodes.SMSG_AURA_UPDATE)]
     [Parser(OpCodes.SMSG_AURA_UPDATE_ALL)]
-    internal class AuraUpdateParser : Parser
+    class AuraUpdateParser : Parser
     {
         [Flags]
         private enum AuraFlags : byte
