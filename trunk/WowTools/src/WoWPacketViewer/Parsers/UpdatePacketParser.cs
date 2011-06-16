@@ -11,6 +11,7 @@ namespace WoWPacketViewer.Parsers
 
         public override void Initialize(Packet packet)
         {
+            // covert SMSG_COMPRESSED_UPDATE_OBJECT to SMSG_UPDATE_OBJECT
             if (packet.Code == OpCodes.SMSG_COMPRESSED_UPDATE_OBJECT)
                 packet.DecompressDataAndSetOpcode(OpCodes.SMSG_UPDATE_OBJECT);
 
