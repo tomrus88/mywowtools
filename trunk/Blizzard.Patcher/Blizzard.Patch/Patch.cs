@@ -23,13 +23,17 @@ namespace Blizzard
 
         string m_type;
 
+        public string PatchType { get { return m_type; } }
+        
         public Patch(string patchFile)
         {
             using (FileStream fs = new FileStream(patchFile, FileMode.Open, FileAccess.Read))
             using (BinaryReader br = new BinaryReader(fs))
             {
                 m_PTCH = br.ReadStruct<PTCH>();
-                Debug.Assert(m_PTCH.m_magic.FourCC() == "PTCH");
+                //Debug.Assert(m_PTCH.m_magic.FourCC() == "PTCH");
+                if (m_PTCH.m_magic.FourCC() != "PTCH")
+                    throw new InvalidDataException("not PTCH");
 
                 m_MD5 = br.ReadStruct<MD5_>();
                 Debug.Assert(m_MD5.m_magic.FourCC() == "MD5_");
