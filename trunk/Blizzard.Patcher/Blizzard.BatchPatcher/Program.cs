@@ -8,6 +8,13 @@ namespace Blizzard.BatchPatcher
 {
     class Program
     {
+        static string[] skipFiles = new string[]
+        {
+            "(attributes)",
+            "(listfile)",
+            "base-Win-md5.lst"
+        };
+
         static void Main(string[] args)
         {
             //using (Patch p = new Patch(args[1]))
@@ -16,40 +23,57 @@ namespace Blizzard.BatchPatcher
             //    p.Apply(args[0], args[2], true);
             //}
 
-            string[] oldfiles = Directory.GetFiles("old", "*.stl");
+            string[] oldfiles = Directory.GetFiles(args[0], "*.*", SearchOption.AllDirectories);
 
-            string[] ptchs = Directory.GetFiles("ptch", "*.stl");
+            string[] ptchs = Directory.GetFiles(args[1], "*.*", SearchOption.AllDirectories);
 
             foreach (string of in oldfiles)
             {
-                if (ptchs.Any(s => Path.GetFileName(s) == Path.GetFileName(of)))
+                if (skipFiles.Contains(Path.GetFileName(of)))
+                    continue;
+
+                if (ptchs.Any(s => s.Substring(args[1].Length) == of.Substring(args[0].Length)))
                 {
                     Console.WriteLine("has patch for {0}", of);
 
-                    string patch = Path.Combine("ptch", Path.GetFileName(of));
+                    //string patch = Path.Combine(args[1], of.Substring(args[0].Length));
+                    string patch = args[1] + of.Substring(args[0].Length);
 
-                    if (File.ReadAllBytes(patch).Length == 0) // removed
+                    FileInfo fi = new FileInfo(patch);
+                    if (fi.Length == 0) // removed
                         continue;
 
-                    using (Patch p = new Patch(patch))
+                    try
                     {
-                        //p.PrintHeaders();
-                        p.Apply(of, Path.Combine("new", Path.GetFileName(of)), true);
+                        using (Patch p = new Patch(patch))
+                        {
+                            //p.PrintHeaders();
+                            p.Apply(of, args[2] + of.Substring(args[0].Length), true);
+                        }
+                    }
+                    catch (InvalidDataException)
+                    {
+                        File.Copy(of, args[2] + of.Substring(args[0].Length), true);
                     }
                 }
                 else
                 {
-                    File.Copy(of, Path.Combine("new", Path.GetFileName(of)));
+                    string file = args[2] + of.Substring(args[0].Length);
+
+                    if (!Directory.Exists(Path.GetDirectoryName(file)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(file));
+
+                    File.Copy(of, file, true);
                 }
             }
 
             foreach (string pf in ptchs)
             {
-                if (File.ReadAllBytes(pf).Length == 0) // removed
+                FileInfo fi = new FileInfo(pf);
+                if (fi.Length == 0) // removed
                     continue;
 
-                
-                string newfile = Path.Combine("new", Path.GetFileName(pf));
+                string newfile = args[2] + pf.Substring(args[1].Length);
 
                 try
                 {
@@ -64,9 +88,9 @@ namespace Blizzard.BatchPatcher
                         p.Apply("oldfile", newfile, true);
                     }
                 }
-                catch (InvalidDataException exc)
+                catch (InvalidDataException)
                 {
-                    File.Copy(pf, newfile);
+                    File.Copy(pf, newfile, true);
                 }
             }
         }
